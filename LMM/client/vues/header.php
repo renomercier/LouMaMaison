@@ -17,7 +17,7 @@
 	    </div>
 	    <ul class="nav navbar-nav">
       		<?php
-			if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])))
+			if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)
 			{
 			?>
 			 	<li><a href="index.php?Usagers">Usagers</a></li>

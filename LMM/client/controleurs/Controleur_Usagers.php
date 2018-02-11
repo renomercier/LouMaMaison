@@ -84,7 +84,7 @@
 						break;
 
 					case "affiche":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
+						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
 							{
@@ -106,14 +106,19 @@
 						break;
 												
 					case "inversBan":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
+						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
 							{
 								//bannir ou réhabiliter l'usager
-								$modeleUsagers = $this->getDAO("Usagers");							
-								$data = $modeleUsagers->banirRehabiliter('banni', 'NOT banni' , $params["idUsager"]);
-								$this->afficheListeUsagers();
+								$modeleUsagers = $this->getDAO("Usagers");
+                                
+                                // changement de l'état de banissement
+								$modeleUsagers->misAjourChampUnique('banni', 'NOT banni' , $params["idUsager"]);
+                                
+                                // insertion du nom de l'administrateur qui à exécuté l'action
+                                $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
+								header('location:index.php?Usagers');
 							}
 							else
 							{
@@ -127,14 +132,19 @@
 						break;
 						
 						case "inversActiv":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
+						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
 							{
 								//activer ou désactiver un usager
-								$modeleUsagers = $this->getDAO("Usagers");							
-								$data = $modeleUsagers->banirRehabiliter('valideParAdmin', 'NOT valideParAdmin' , $params["idUsager"]);
-								$this->afficheListeUsagers();
+								$modeleUsagers = $this->getDAO("Usagers");
+                                
+                                // changement de l'état de validation
+								$modeleUsagers->misAjourChampUnique('valideParAdmin', 'NOT valideParAdmin' , $params["idUsager"]);
+                                
+                                // insertion du nom de l'administrateur qui à exécuté l'action
+                                $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
+								header('location:index.php?Usagers');
 							}
 							else
 							{

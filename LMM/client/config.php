@@ -19,7 +19,7 @@
 	}
 	
 	//déclaration de la racine du projet
-	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison/LMM/client/");
+	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/loumamaison-V2\LouMaMaison-1\LMM\client/");
 	//déclaration des infos de connexion
 	define("HOST", "localhost");
 	define("DBNAME", "loumamaison");

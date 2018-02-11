@@ -115,10 +115,11 @@
 		* @param 		id d'usager dans la base de données
 		* @return    	la rangée modifiée
 		*/
-		public function banirRehabiliter($leChamp, $laValeur, $id)
+		public function misAjourChampUnique($leChamp, $laValeur, $id)
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
 		}
+        
         
         /**
 		* @brief		Fonction pour effectuer une jointure entre l'usager et son role, son mode de paiement
