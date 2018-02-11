@@ -23,9 +23,11 @@
 		private $banni;
 		private $id_moyenComm;
 		private $id_modePaiement;
+        private $id_adminBan;
+        private $id_adminValid;
 		
 		// Constructeur
-		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = "", $iMP = "") {			
+		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = "", $iMP = "", $iAB = "", $iAV = "") {			
 			$this->username = $u;
 			$this->nom = $n;
 			$this->prenom = $p;
@@ -37,6 +39,8 @@
 			$this->banni = false;
 			$this->id_moyennComm = $iMC;
 			$this->id_modePaiement = $iMP;
+            $this->id_adminBan = $iAB;
+			$this->id_adminValid = $iAV;
 		}
 
 
@@ -72,7 +76,7 @@
 			return $this->telephone;
 		}
 
-		//$this->prenom = $p;
+		//
 		public function getMotDePasse () {
 			return $this->motDePasse;
 		}
@@ -95,8 +99,17 @@
 		//
 		public function getIdModePaiement () {
 			return $this->id_modePaiement;
+		}
+        
+		//
+		public function getAdminBan () {
+			return $this->$id_adminBan;
 		}	
 
+		//
+		public function getAdminValid () {
+			return $this->$id_adminValid;
+		}
 
 		/*****   Setters   *****/
 
@@ -154,7 +167,16 @@
 		public function setIdModePaiement ($iMP) {
 			$this->id_modePaiement = $iMP;
 		}
+        
+		//
+		public function setAdminBan ($iAB) {
+			$this->$id_adminBan = $iAB;
+		}	
 
+		//
+		public function setAdminValid ($iAV) {
+			$this->$id_adminValid = $iAV;
+		}
 
 	}
 

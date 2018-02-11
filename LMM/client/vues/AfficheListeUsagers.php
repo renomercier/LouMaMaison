@@ -41,7 +41,7 @@
                     </div>
                 </td>
                 <?php
-				if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"])) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isBanned"] ==0 && !$isAdmin))
+				if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin))
 				{
 				?>
 					<td><a href="index.php?Usagers&action=inversBan&idUsager=<?=$usager->getUsername()?>"><?=$etatBann?></a></td>
