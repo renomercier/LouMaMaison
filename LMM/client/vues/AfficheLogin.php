@@ -1,3 +1,11 @@
+<!--
+* @file         /AfficheLogin.php
+* @brief        Projet WEB 2
+* @details      Affichage du formulaire de connexion - vue partielle
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018
+-->
+
 <div class="row">
     <div class="col-sm-4 col-sm-offset-4">
         <form method="POST" action="index.php?Usagers&action=authentifier">
@@ -18,11 +26,11 @@
                 <input type="submit" class="btn btn-primary btn-block btn-lg" value="Connexion">						
         </form>
     </div>
-</div>
+</div> <!-- fin div row -->
 <div class="row">
     <div class="col-sm-4 col-sm-offset-4">
         <?= $data?>
     </div>
-</div>
+</div> <!-- fin div row -->
 
 

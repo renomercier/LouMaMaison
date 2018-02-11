@@ -1,6 +1,26 @@
 <?php
+/**
+* @file 		/controller/Controleur_Usagers.php
+* @brief 		Projet WEB 2
+* @details								
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018 	
+*/
+
+	/**
+    * @class    Controleur_Usagers - herite de la classe BaseController
+    * @details 	
+    *
+    *   ... methodes  |   traite(), afficheListeUsagers()
+    */
 	class Controleur_Usagers extends BaseControleur
-	{		
+	{	
+		/**
+		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
+		* @details    gere les actions (switch case) ainsi que les parametres envoyes
+		* @param      <array>  	$params 	les parametres envoyes
+		* @return     <...>  	( tout depend du case )
+		*/	
 		public function traite(array $params)
 		{
             /*
