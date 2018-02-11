@@ -30,7 +30,7 @@
 		protected function afficheVue($nomVue, $data = null)
 		{  
 			// Inclure le header pour chaque vue
-            include(ROOT . "view/header.php");
+            //include(RACINE . "view/header.php");
 
 			$cheminVue = RACINE . "vues/" . $nomVue . ".php";
 
@@ -44,7 +44,7 @@
 			}
 
 			// Inclure le footer pour chaque vue
-            include(ROOT . "view/footer.php");
+            //include(RACINE . "view/footer.php");
 		}
 
 		/**
