@@ -12,9 +12,10 @@
     	</div>
         <div class="col-md-6">
             <div class="error-template">
-                <h1>Oops!</h1>
-                <h2>Vous n'êstes pas autorisé à voir ce contenu</h2>
-
+                <h1>
+                    Oops!</h1>
+                <h2>
+                    Vous n'êstes pas autorisé à voir ce contenu</h2>
                 <div class="error-details">
                     Contactez l'administrateur pour infos!
                 </div>

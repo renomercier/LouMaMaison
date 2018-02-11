@@ -125,7 +125,7 @@
 		* @param 		<VAR>		$id 			id d'usager dans la base de données
 		* @return    	<bool>		résultat de la requete
 		*/
-		public function banirRehabiliter($leChamp, $laValeur, $id)
+		public function misAjourChampUnique($leChamp, $laValeur, $id)
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
 		}

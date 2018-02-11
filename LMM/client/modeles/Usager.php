@@ -27,6 +27,8 @@
 		private $banni;
 		private $id_moyenComm;
 		private $id_modePaiement;
+		private $id_adminBan;
+        private $id_adminValid;
 		
 		/**
         *   constructeur de la classe Usager
@@ -39,9 +41,11 @@
         *   @param <string>        $telephone              no de telephone de l'utilisateur
         *   @param <string>        $motDePasse             mot de passe de l'utilisateur
         *   @param <int>           $id_moyenComm           id du moyen de communication de l'utilisateur     
-        *   @param <int>           $id_modePaiement        id du mode de paiement de l'utilisateur       
+        *   @param <int>           $id_modePaiement        id du mode de paiement de l'utilisateur
+        *   @param <string>        $id_adminBan            admin qui gere le bannissement de l'usager 
+        *   @param <string>        $id_adminValid          admin qui valide un usager afin qu'il puisse utiliser les services du site       
         */
-		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0) {			
+		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0, $iAB = "", $iAV = "") {			
 			$this->setUsername($u);
 			$this->setNom($n);
 			$this->setPrenom($p);
@@ -53,6 +57,8 @@
 			$this->banni = false;
 			$this->setIdMoyenComm($iMC);
 			$this->setIdModePaiement($iMP);
+			$this->setAdminBan($iAB);
+			$this->setAdminValid($iAV);
 		}
 
 
@@ -101,6 +107,14 @@
 		//
 		public function getIdModePaiement () {
 			return $this->id_modePaiement;
+		}
+		//
+		public function getAdminBan () {
+			return $this->$id_adminBan;
+		}	
+		//
+		public function getAdminValid () {
+			return $this->$id_adminValid;
 		}	
 
 
@@ -168,6 +182,18 @@
 		public function setIdModePaiement ($iMP) {
 			if (is_int($iMP) &&  $iMP != 0) {
 				$this->id_modePaiement = $iMP;
+			}
+		}
+		//
+		public function setAdminBan ($iAB) {
+			if (is_string($iAB) &&  trim($iAB) != "") {
+				$this->$id_adminBan = $iAB;
+			}
+		}	
+		//
+		public function setAdminValid ($iAV) {
+			if (is_string($iAB) &&  trim($iAB) != "") {
+				$this->$id_adminValid = $iAV;
 			}
 		}
 

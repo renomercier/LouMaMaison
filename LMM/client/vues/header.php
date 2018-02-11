@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<title>Projet WEB 2</title>	
+	<title>Projet WEB 2 - Loue ma maison</title>	
 	<!-- meta tags requis -->
 	<meta charset="UTF-8">
     <meta name="description" content="ProjetWEB2">
@@ -30,12 +30,11 @@
 	<nav class="navbar navbar-inverse">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-<!-- -->    <a class="navbar-brand" href="index.php?Sujets">LE LOGO</a>
+		   <a class="navbar-brand" href="index.php">LE LOGO</a>
 	    </div>
 	    <ul class="nav navbar-nav">
       		<?php
-			if(isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]))
-			{
+if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)			{
 			?>
 			 	<li><a href="index.php?Usagers">Usagers</a></li>
 			<?php
