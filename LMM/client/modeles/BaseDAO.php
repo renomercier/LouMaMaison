@@ -1,19 +1,38 @@
 <?php
+/**
+* @file 		/modeles/BaseDAO.php
+* @brief 		Projet WEB 2
+* @details								
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018 	
+*/
+
+	/**
+	* @class 	model BaseDao - classe abstraite
+	* @details 	Classe BaseDao qui gere et prepare les requetes a la BD
+	*					- Cette classe est protegee et n'est accedee que pas les modeles qui en herite
+	*
+	* 	8 methodes	|	supprimer(), lire(), lireTous(), miseAjourChamp(), requete(), getClePrimaire(), getTableName(), filtre()
+	*/
 	abstract class BaseDao
 	{
+		// attribut de la classe BaseDao
 		protected $db;
 
+		/**
+        *   constructeur de la classe BaseDao   
+        *   @param BD   	$dbPDO      la base de donnee        
+        */
 		public function __construct(PDO $dbPDO)
 		{			
 			$this->db = $dbPDO;
 		}
 			
-
 		/**
-		 * Delete a row from a table
-		 * @param      <STRING>  $clePrimaire     The primary key
-		 * @return     <type>  ( description_of_the_return_value )
-		 */
+		* @brief      Supprime une rangee dans une table
+		* @param      <STRING>  	$clePrimaire     La cle primaire
+		* @return     <boolean>  	( resultat de la requete )
+		*/
 		protected function supprimer($clePrimaire)
 		{
 			$query = "DELETE FROM " . $this->getTableName() . " WHERE " . $this->getClePrimaire() ."=?";
@@ -22,14 +41,11 @@
 		}
 
 		/**
-		 * reads the content from a table
-		 *
-		 * @param      VAR             $valeurCherchee  The cle primaire from the
-		 *                                              table you'll want to read
-		 * @param      boolean|string  $clePrimaire   The other column
-		 *
-		 * @return     <type>          ( description_of_the_return_value )
-		 */
+		* @brief      Selectionne le contenu d'une table
+		* @param      VAR             	$valeurCherchee  	La valeur de recherche - clause WHERE
+		* @param      boolean|string  	$clePrimaire   		La colonne de recherche - clause WHERE
+		* @return     <object>          ( la/les rangee(s) selectionnee(s) )
+		*/
 		protected function lire($valeurCherchee, $clePrimaire = NULL)
 		{
 			if(!isset($clePrimaire)){
@@ -43,9 +59,9 @@
 		}
 
 		/**
-		 * { read all the rows from a table }
-		 * @return     <type>  ( description_of_the_return_value )
-		 */
+		* @brief      Selectionne toutes les rangees d'une table
+		* @return     <object>  ( toutes les rangees d'une table )
+		*/
 		protected function lireTous()
 		{
 			$query = "SELECT * from " . $this->getTableName();
@@ -53,13 +69,12 @@
 		}
 
 		/**
-		 * mise a jour d'un champ particulier d'une table
-		 * @param      STRING  $leChamp  le champ a mettre a jour
-		 * @param      array   $laValeur   la nouvelle valeur du champ
-		 * @param      array   $id   valeur de la clé primaire de la rangée sur laquelle on intervient
-		 * @return     <type>  ( description_of_the_return_value )
-		 */
-		 
+		* @brief  		mise a jour d'un champ particulier d'une table
+		* @param      	<STRING>  	$leChamp  	le champ a mettre a jour
+		* @param      	<array>   	$laValeur   la nouvelle valeur du champ
+		* @param      	<array>  	$id   		valeur de la clé primaire de la rangée sur laquelle on intervient
+		* @return     	<boolean>  ( resultat de la requete )
+		*/	 
 		protected function miseAjourChamp($leChamp, $laValeur, $id)
 		{
 			$query = "UPDATE " . $this->getTableName() . " SET ".$leChamp." = ".$laValeur." WHERE " . $this->getClePrimaire() ."=?";
@@ -67,13 +82,12 @@
 			return $this->requete($query, $donnees);
 		}
 
-
 		/**
-		 * Makes a query to a table with the parameters you'll send
-		 * @param      STRING  $query  The query
-		 * @param      array   $data   The values to insert into the query
-		 * @return     <type>  ( description_of_the_return_value )
-		 */
+		* @brief      Prepare et execute les requetes envoyees
+		* @param      <STRING>   $query  	La requete
+		* @param      <array>    $data   	Les valeurs a inserer dans la requete
+		* @return     <type>     ( $stmt )
+		*/
 		final protected function requete($query, $data = array())
 		{
 			try
@@ -87,7 +101,11 @@
 			}
 			return $stmt;
 		}
-		
+
+		/**
+		* @brief      Selectionne la cle primaire d'une table
+		* @return     <VAR>  ( valeur de la cle primaire )
+		*/
 		final protected function getClePrimaire()
 		{
 			//copyright salim
@@ -103,12 +121,13 @@
 		}
 
 		/**
-		 * Gets the table name.
-		 */
+		* @brief    	Fournit le nom d'une table
+		*/
 		abstract function getTableName();	
 		
 		/**
-		* filtrer les donnees avant de les inserer dans BD
+		* @brief 	filtre les donnees avant de les inserer dans BD
+		* @return 	<type> 		la donnée nettoyée
 		*/
 		protected function filtre($data)
 		{

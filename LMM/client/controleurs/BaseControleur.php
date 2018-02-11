@@ -1,11 +1,37 @@
 <?php
+/**
+* @file 		/controller/BaseControleur.php
+* @brief 		Projet WEB 2
+* @details								
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018 	
+*/
+
+	/**
+    * @class    BaseController - classe abstraite
+    * @details  Gere les chargements de vues et modeles, traite les actions et paramêtres
+    *
+    *   4 methodes  |   traite(), afficheVue(), getDAO(), initialiseMessages()
+    */
 	abstract class BaseControleur
 	{		
-		//la méthode qui sera appelée par le routeur
+		/**
+        * @brief       la méthode qui sera appelée par le routeur
+        * @param       <array>       $params         Les parametres a traiter
+        * @details     methode abstraite redefinie par chaque controleur qui herite de BaseControleur    
+        */
 		public abstract function traite(array $params);
 
+		/**
+        * @brief       la méthode qui charge la vue a afficher
+        * @param       <string>      $nomVue        La vue a traiter          
+        * @param       <array>       $data         	Le tableau de donnees a traiter          
+        */
 		protected function afficheVue($nomVue, $data = null)
 		{  
+			// Inclure le header pour chaque vue
+            include(ROOT . "view/header.php");
+
 			$cheminVue = RACINE . "vues/" . $nomVue . ".php";
 
 			if(file_exists($cheminVue))
@@ -16,8 +42,15 @@
 			{
 				trigger_error("Erreur 404! La vue $cheminVue n'existe pas.");
 			}
+
+			// Inclure le footer pour chaque vue
+            include(ROOT . "view/footer.php");
 		}
 
+		/**
+        * @brief       la méthode qui charge le modele requis
+        * @param       <string>       $nomModele         Le nom du modele          
+        */
 		protected function getDAO($nomModele)
 		{
 			$classe = "Modele_" . $nomModele;
@@ -28,7 +61,6 @@
 				$laDB = DBFactory::getDB(DBTYPE, DBNAME, HOST, USERNAME, PWD);
 
 				//on crée une instance de la classe Modele_$classe
-				
 				$objetModele = new $classe($laDB);
 				if($objetModele instanceof BaseDAO)
 				{
@@ -40,8 +72,11 @@
 				}
 			}
 		}
-        //
-        // initialiser les messages a retourner à l'utilisateur
+
+        /**
+        * @brief       la méthode qui initialise les messages a retourner à l'utilisateur
+        * @param       <array>       $data         Tableau de messages à l'usager          
+        */
         protected function initialiseMessages()
         {
             $data['message'] = (isset($_SESSION["username"])) ? "<p class='alert alert-success'>Bienvenue ".$_SESSION['prenom']. " " .$_SESSION['nom'] ."</p>" : "<p class='alert alert-warning'>Vous n'êtes pas connecté. Vos privilèges seront limités!</p>";

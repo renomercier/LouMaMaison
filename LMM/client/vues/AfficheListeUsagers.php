@@ -1,3 +1,11 @@
+<!--
+* @file         /AfficheListeUsagers.php
+* @brief        Projet WEB 2
+* @details      Affichage de tous les usagers - vue partielle
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018
+-->
+
 <h1>Liste de tous les usagers</h1>
 <div class="container">          
   <table class="table table-striped">
@@ -7,48 +15,36 @@
         <th>Nom</th>
         <th>Prenom</th>
         <th>Statut</th>
-
+        <th>Etat</th>
       </tr>
     </thead>
     <tbody>
 		<?php
        
 			foreach($data["usagers"] as $usager)
-			{    
-                $isAdmin = false;
-				$etatBann = ($usager->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
-                $etatActiv = ($usager->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
+			{         
+				$etat = ($usager->getBanni()=="0") ? 'Bannir' : 'Réhabiliter'; 
 		?>
 			<tr>
 				<td><a href="index.php?Usagers&action=affiche&idUsager=<?=$usager->getUsername()?>"><?=$usager->getUsername()?></a></td>
 				<td><?=$usager->getNom()?></td>
 				<td><?=$usager->getPrenom()?></td>
-                <td>
-                    <div>
+                <td><div>
 				<?php
                     foreach($usager->roles as $role)
                     {
-                        if($role->id_nomRole == 1 || $role->id_nomRole == 2)
-                        {
-                            $isAdmin = true;
-                        }
                 ?> 
-                    <span><?=$role->nomRole?></span><span> / </span>
+                    <p><?=$role->nomRole?></p>
                 
                 <?php
                     }
-                ?>
-                    </div>
-                </td>
-                <?php
-				if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin))
+				if(isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isBanned"] ==0)
 				{
 				?>
-					<td><a href="index.php?Usagers&action=inversBan&idUsager=<?=$usager->getUsername()?>"><?=$etatBann?></a></td>
-                    <td><a href="index.php?Usagers&action=inversActiv&idUsager=<?=$usager->getUsername()?>"><?=$etatActiv?></a></td>
+                    </div></td>
+					<td><a href="index.php?Usagers&action=inversBan&idUsager=<?=$usager->getUsername()?>"><?=$etat?></a></td>
 				<?php
 				}
-
 				?>
 	      </tr>
 		<?php

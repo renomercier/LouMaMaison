@@ -1,6 +1,26 @@
 <?php
+/**
+* @file 		/controller/Controleur_Usagers.php
+* @brief 		Projet WEB 2
+* @details								
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018 	
+*/
+
+	/**
+    * @class    Controleur_Usagers - herite de la classe BaseController
+    * @details 	
+    *
+    *   ... methodes  |   traite(), afficheListeUsagers()
+    */
 	class Controleur_Usagers extends BaseControleur
-	{		
+	{	
+		/**
+		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
+		* @details    gere les actions (switch case) ainsi que les parametres envoyes
+		* @param      <array>  	$params 	les parametres envoyes
+		* @return     <...>  	( tout depend du case )
+		*/	
 		public function traite(array $params)
 		{
             /*
@@ -40,13 +60,13 @@
 								//si l'usager est authentifié
 								if($data)
 								{
+									//session_start();
                                     $data = $modeleUsagers->obtenir_par_id($params["username"]);
 									//on crée la session
 									$_SESSION["username"] = $data->getUsername();
 									$_SESSION["nom"] = $data->getNom();
 									$_SESSION["prenom"] = $data->getPrenom();
 									$_SESSION["isBanned"] = $data->getBanni();
-                                    $_SESSION["isActiv"] = $data->getValideParAdmin();
                                     foreach($data->roles as $role)
                                     {
 									   $_SESSION["role"][] = $role->id_nomRole;
@@ -71,7 +91,7 @@
 						break;
 
 					case "afficheListeUsagers":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
+						if(isset($_SESSION["username"]) && $_SESSION["isAdmin"] ==1 && $_SESSION["isBanned"] ==0)
 						{
 							//affiche tous les usagers
 							$this->afficheListeUsagers();
@@ -79,12 +99,12 @@
 						else
 						{
 							//affiche page d'erreur
-							$this->afficheVue("404");
+							parent::affiche404();
 						}
 						break;
 
 					case "affiche":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
+						if(isset($_SESSION["username"]) && $_SESSION["isAdmin"] ==1 && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
 							{
@@ -101,24 +121,19 @@
 						else
 						{
 							//affiche page d'erreur
-							$this->afficheVue("404");
+							parent::affiche404();
 						}
 						break;
 												
 					case "inversBan":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
+						if(isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
 							{
-								//bannir ou réhabiliter l'usager
-								$modeleUsagers = $this->getDAO("Usagers");
-                                
-                                // changement de l'état de banissement
-								$modeleUsagers->misAjourChampUnique('banni', 'NOT banni' , $params["idUsager"]);
-                                
-                                // insertion du nom de l'administrateur qui à exécuté l'action
-                                $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								header('location:index.php?Usagers');
+								//réhabiliter l'usager
+								$modeleUsagers = $this->getDAO("Usagers");							
+								$data = $modeleUsagers->banirRehabiliter('banni', 'NOT banni' , $params["idUsager"]);
+								$this->afficheListeUsagers();
 							}
 							else
 							{
@@ -127,24 +142,19 @@
 						}
 						else
 						{
-							$this->afficheVue("404");
+							parent::affiche404();
 						}
 						break;
 						
-						case "inversActiv":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
+						case "inversAdmin":
+						if(isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
 							{
-								//activer ou désactiver un usager
-								$modeleUsagers = $this->getDAO("Usagers");
-                                
-                                // changement de l'état de validation
-								$modeleUsagers->misAjourChampUnique('valideParAdmin', 'NOT valideParAdmin' , $params["idUsager"]);
-                                
-                                // insertion du nom de l'administrateur qui à exécuté l'action
-                                $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								header('location:index.php?Usagers');
+								//enleve les droits d'admin
+								$modeleUsagers = $this->getDAO("Usagers");							
+								$data = $modeleUsagers->banirRehabiliter('isAdmin', 'NOT isAdmin' , $params["idUsager"]);
+								$this->afficheListeUsagers();
 							}
 							else
 							{
@@ -163,21 +173,23 @@
 			}
 			else
 			{
-                // redirection temporaire
-               $this->afficheListeUsagers(); 
- /*               
+                // redirection temporaire a completer
+                $this->afficheListeUsagers();
+
+				/*
                 
-               //action par défaut - afficher la liste des sujets/usagers
-				if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
+                //action par défaut - afficher la liste des sujets/usagers
+				if(isset($_SESSION["username"]) && $_SESSION["isAdmin"] ==1 && $_SESSION["isBanned"] ==0)
 				{
 					$this->afficheListeUsagers();
 				}
 				else
 				{
-					//afficher la page d'erreur
-					$this->afficheVue("404");
+					//action par défaut - afficher la liste des sujets
+					header('location:index.php?Sujets');
 				}
-*/
+                
+                */
 			}
             //
             // afficher le footer
