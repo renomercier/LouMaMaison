@@ -28,10 +28,8 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $data = $this->initialiseMessages();
+            $data= $this->initialiseMessages();
             //
-            // afficher le header
-            $this->afficheVue("header", $data);
             //
 			//si le paramètre action existe
 			if(isset($params["action"]))
@@ -41,6 +39,7 @@
 				switch($params["action"])
 				{
 					case "login":
+                        $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
 						break;
 						
@@ -67,18 +66,13 @@
 									$_SESSION["prenom"] = $data->getPrenom();
 									$_SESSION["isBanned"] = $data->getBanni();
                                     $_SESSION["isActiv"] = $data->getValideParAdmin();
-/*                                    
-?>
-<pre>
-<?php var_dump($data->roles); ?>
-</pre>
-<?php*/
+
                                     foreach($data->roles as $role)
                                     {
 									   $_SESSION["role"][] = $role->id_nomRole;
                                     }
 									//on affiche la liste des sujets en respectant les droits d'usager
-                                    header('location:index.php');
+                                    $this->afficheListeUsagers();
 								}
 								else
 								{
@@ -145,7 +139,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								header('location:index.php?Usagers');
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -172,7 +166,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								header('location:index.php?Usagers');
+								$this->afficheListeUsagers();
 							}
 							else
 							{
@@ -196,8 +190,7 @@
                                 
                                 // changement de l'état de role Admin dans la table role_usager
 								$modeleUsagers->definir_admin($params["idUsager"]);
-
-								header('location:index.php?Usagers');
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -243,6 +236,8 @@
 		*/	
 		private function afficheListeUsagers()
 		{
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
 			$modeleUsagers = $this->getDAO("Usagers");
 			$data["usagers"] = $modeleUsagers->obtenir_tous();
 			$this->afficheVue("AfficheListeUsagers", $data);
