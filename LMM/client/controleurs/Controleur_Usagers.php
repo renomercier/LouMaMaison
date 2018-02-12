@@ -28,10 +28,8 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $data = $this->initialiseMessages();
+            $data= $this->initialiseMessages();
             //
-////////////// l'affichage du footer et du header pourraient se faire ds baseControleur, ce qui eviterait de les appeler a chaque controleur, mais ca @bug avec des variables du login
-            $this->afficheVue("header", $data);
             //
 			//si le paramètre action existe
 			if(isset($params["action"]))
@@ -41,6 +39,7 @@
 				switch($params["action"])
 				{
 					case "login":
+                        $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
 						break;
 						
@@ -67,23 +66,19 @@
 									$_SESSION["prenom"] = $data->getPrenom();
 									$_SESSION["isBanned"] = $data->getBanni();
                                     $_SESSION["isActiv"] = $data->getValideParAdmin();
-/*                                    
-?>
-<pre>
-<?php var_dump($data->roles); ?>
-</pre>
-<?php*/
+
                                     foreach($data->roles as $role)
                                     {
 									   $_SESSION["role"][] = $role->id_nomRole;
                                     }
 									//on affiche la liste des sujets en respectant les droits d'usager
-                                    header('location:index.php');
+                                    $this->afficheListeUsagers();
 								}
 								else
 								{
 									//si l'usager n'est pas authentifié
 									$data="<p class='alert alert-warning'>Username ou password invalide!</p>";
+                                    $this->afficheVue("header", $data);
 									$this->afficheVue("AfficheLogin", $data);
 								}
 							}
@@ -91,6 +86,7 @@
 							{
 								//si la session existe déjà
 								$data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
+                                $this->afficheVue("header", $data);
 								$this->afficheVue("AfficheLogin", $data);
 							}
 						}
@@ -117,6 +113,7 @@
 								//affiche details du profil d'usager
 								$modeleUsagers = $this->getDAO("Usagers");
 								$data = $modeleUsagers->obtenir_par_id($params["idUsager"]);
+                                $this->afficheVue("header", $data);
 								$this->afficheVue("AfficheUsager", $data);
 							}
 							else
@@ -145,7 +142,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								header('location:index.php?Usagers');
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -172,7 +169,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								header('location:index.php?Usagers');
+								$this->afficheListeUsagers();
 							}
 							else
 							{
@@ -196,8 +193,7 @@
                                 
                                 // changement de l'état de role Admin dans la table role_usager
 								$modeleUsagers->definir_admin($params["idUsager"]);
-
-								header('location:index.php?Usagers');
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -217,6 +213,7 @@
 						$data['paiement'] = $modeleUsagers->getModePaiement();
 						$data['communication'] = $modeleUsagers->getModeCommunication();
 						if($data) {
+                            $this->afficheVue("header", $data);
 							$this->afficheVue("afficheInscriptionUsager", $data);
 						}
 						break;
@@ -224,8 +221,8 @@
 					// case de sauvegarde d'un usager
 					case "sauvegarderUsager" :
 
-/* ajouter !empty */	if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && isset($params['nom']) && isset($params['prenom']) && isset($params['adresse']) && 
-							isset($params['telephone']) && isset($params['pwd0']) && isset($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm'])) {
+/* ajouter !empty */	
+                        if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && isset($params['nom']) && isset($params['prenom']) && isset($params['adresse']) && isset($params['telephone']) && isset($params['pwd0']) && isset($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm'])) {
 							
 							if(isset($params['photo'])) {
 							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
@@ -302,6 +299,8 @@
 		*/	
 		private function afficheListeUsagers()
 		{
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
 			$modeleUsagers = $this->getDAO("Usagers");
 			$data["usagers"] = $modeleUsagers->obtenir_tous();
 			$this->afficheVue("AfficheListeUsagers", $data);
@@ -324,6 +323,8 @@
 			$data['communication'] = $modeleUsagers->getModeCommunication();
 
 			if($data) {
+                $data= $this->initialiseMessages();
+                $this->afficheVue("header", $data);
 				$this->afficheVue("afficheInscriptionUsager", $data);
 			}
 		}
