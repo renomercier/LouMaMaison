@@ -12,7 +12,8 @@
 	* @details  Classe qui lie les requetes d'objects Usagers a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-	* 	6 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), banirRehabiliter(), 
+	* 	11 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
+	*					misAjourChampUnique(), obtenir_avec_role(), definir_admin(), getModePaiement(), getModeCommunication()
 	*/
 	class Modele_Usagers extends BaseDAO
 	{	
@@ -38,7 +39,7 @@
 			$resultat = $this->lire($username);
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Usager'); 
 			$lUsager = $resultat->fetch();
-            $this->jointure_Tables($lUsager);
+            $this->obtenir_avec_role($lUsager);
 			return $lUsager;
 		}
 				
@@ -53,7 +54,7 @@
 			$lesUsagers = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
             foreach($lesUsagers as $usager)
             {
-                $this->jointure_Tables($usager);
+                $this->obtenir_avec_role($usager);
             }
 
 			return $lesUsagers;
@@ -131,7 +132,7 @@
 		}
         
         /**
-		* @brief		Fonction pour effectuer une jointure entre l'usager et son role, son mode de paiement et son moyen de comminication ...
+		* @brief		Fonction pour effectuer une jointure entre l'usager et son role
 		* @details		Permet de recuperer toutes les informations relative à un usager
 		* @param 		<string>		$usager		
 		* @return    	<...> 		les rangées correspondant à un usager donné
@@ -141,15 +142,37 @@
         ////////////////////////////////////////////////////////////////////////////////////
         // fonction incomplete, à completer les jointures a mesure que le projet avance
         
-		private function jointure_Tables($usager)
+		public function obtenir_avec_role($usager)
         {
             $query = "SELECT * from role_user JOIN role ON id_nomRole = id WHERE id_username =?";
             $donnees = array($usager->getUsername());
             $resultat = $this->requete($query, $donnees);
             $usager->roles = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
         }
-
-//////////////////////	ajout nat
+        
+        /**
+		* @brief		Fonction qui donne ou enleve les droits d'admin a un usager
+		* @details		Cette fonction n'est accessible qu'au superAdmin
+		* @param 		<string>		$usager			l'id de lusager	
+		* @return    	<bool> 			Le résultat de la requete
+		*/
+        public function definir_admin($usager)
+        {
+			$query = "SELECT * from role_user WHERE id_username =? AND id_nomRole =2";
+			$donnees = array($usager);
+			if($this->requete($query, $donnees)->fetch())
+            {
+                $query = "DELETE FROM role_user WHERE id_username =? AND id_nomRole =2";
+                $donnees = array($usager);
+                return $this->requete($query, $donnees);
+            }
+            else
+            {
+                $query = "INSERT INTO role_user (id_username, id_nomRole) VALUES (?, 2)";
+				$donnees = array($usager);
+				return $this->requete($query, $donnees); 
+            }
+        }
 
         /**
 		* @brief		Lecture des modes de paiements de la BD
@@ -172,8 +195,5 @@
 			$query = "SELECT * from communication";
 			return $this->requete($query);
 		}
-
-//////////////////////	fin ajout nat
-
 	}
 ?>

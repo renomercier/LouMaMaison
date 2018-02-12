@@ -7,7 +7,7 @@
 -->
 
 <div class="row">
-    <div class="col-sm-4 col-sm-offset-4">
+    <div class="col-sm-4 offset-sm-4">
         <form method="POST" action="index.php?Usagers&action=authentifier">
 
             <div class="form-group row">
@@ -28,7 +28,7 @@
     </div>
 </div> <!-- fin div row -->
 <div class="row">
-    <div class="col-sm-4 col-sm-offset-4">
+    <div class="col-sm-4 offset-sm-4">
         <?= $data?>
     </div>
 </div> <!-- fin div row -->

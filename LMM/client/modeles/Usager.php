@@ -45,7 +45,8 @@
         *   @param <string>        $id_adminBan            admin qui gere le bannissement de l'usager 
         *   @param <string>        $id_adminValid          admin qui valide un usager afin qu'il puisse utiliser les services du site       
         */
-		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0) /*, $iAB = "", $iAV = ""*/  {			
+		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0, $vA = false, $b = false, $iAB = "", $iAV = "") {			
+
 			$this->setUsername($u);
 			$this->setNom($n);
 			$this->setPrenom($p);
@@ -56,12 +57,11 @@
 			$this->setIdMoyenComm($iMC);
 			$this->setIdModePaiement($iMP);
 
-			$this->setValideParAdmin(false);
-			$this->setBanni(false);
-	//		$this->setAdminBan($iAB);
-	//		$this->setAdminValid($iAV);
+			$this->setValideParAdmin ($vA);
+			$this->setBanni ($b);
+			$this->setAdminBan($iAB);
+			$this->setAdminValid($iAV);
 		}
-
 
 		/*****   Getters   *****/
 
@@ -193,7 +193,7 @@
 		}	
 		//
 		public function setAdminValid ($iAV) {
-			if (is_string($iAB) &&  trim($iAB) != "") {
+			if (is_string($iAV) &&  trim($iAV) != "") {
 				$this->$id_adminValid = $iAV;
 			}
 		}

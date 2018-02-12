@@ -67,12 +67,18 @@
 									$_SESSION["prenom"] = $data->getPrenom();
 									$_SESSION["isBanned"] = $data->getBanni();
                                     $_SESSION["isActiv"] = $data->getValideParAdmin();
+/*                                    
+?>
+<pre>
+<?php var_dump($data->roles); ?>
+</pre>
+<?php*/
                                     foreach($data->roles as $role)
                                     {
 									   $_SESSION["role"][] = $role->id_nomRole;
                                     }
 									//on affiche la liste des sujets en respectant les droits d'usager
-									 header('location:index.php');
+                                    header('location:index.php');
 								}
 								else
 								{
@@ -124,7 +130,8 @@
 							$this->afficheVue("404");
 						}
 						break;
-												
+					
+                        // bannir | réahabiliter un usager
 					case "inversBan":
 						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
@@ -150,8 +157,9 @@
 							$this->afficheVue("404");
 						}
 						break;
-						
-						case "inversActiv":
+					
+                        // activer | désactiver un usager
+                    case "inversActiv":
 						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
 							if(isset($params["idUsager"]))
@@ -164,6 +172,31 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
+								header('location:index.php?Usagers');
+							}
+							else
+							{
+								trigger_error("Pas d'id spécifié...");
+							}
+						}
+						else
+						{
+							$this->afficheVue("404");
+						}
+						break;
+                    
+                        // Promouvoire | Déchoir un usager
+                    case "inversAdmin":
+						if(isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]))
+						{
+							if(isset($params["idUsager"]))
+							{
+								// Promouvoire | Déchoir un usager
+								$modeleUsagers = $this->getDAO("Usagers");
+                                
+                                // changement de l'état de role Admin dans la table role_usager
+								$modeleUsagers->definir_admin($params["idUsager"]);
+
 								header('location:index.php?Usagers');
 							}
 							else
