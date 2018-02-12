@@ -1,0 +1,20 @@
+
+
+@todo
+
+	Inscription d'un Usager:
+		- hash du mot de passe avant insertion BD
+		- validation côté client avec js
+		- regex à finaliser...
+		- photo insertion + src(nom de la photo)
+
+
+	Ajout ds la BD
+		- champ coordonnées de moyen de communication (ex: si c'est e-mail, l'adresse e-mail)
+
+
+	Vérifier si tout est compatible sur les différents navigateurs:
+
+		- css ajout des webkit-mox-o
+		- types d'inputs, placeholder
+		- balises html (ex:small)

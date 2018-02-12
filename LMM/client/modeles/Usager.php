@@ -45,7 +45,8 @@
         *   @param <string>        $id_adminBan            admin qui gere le bannissement de l'usager 
         *   @param <string>        $id_adminValid          admin qui valide un usager afin qu'il puisse utiliser les services du site       
         */
-		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "",$vA = false, $b = false, $iMC = 0, $iMP = 0, $iAB = "", $iAV = "") {			
+		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0, $vA = false, $b = false, $iAB = "", $iAV = "") {			
+
 			$this->setUsername($u);
 			$this->setNom($n);
 			$this->setPrenom($p);
@@ -53,14 +54,14 @@
 			$this->setAdresse($a);
 			$this->setTelephone($t);
 			$this->setMotDePasse($mP);
-			$this->setValideParAdmin ($vA);
-			$this->setBanni ($b);
 			$this->setIdMoyenComm($iMC);
 			$this->setIdModePaiement($iMP);
+
+			$this->setValideParAdmin ($vA);
+			$this->setBanni ($b);
 			$this->setAdminBan($iAB);
 			$this->setAdminValid($iAV);
 		}
-
 
 		/*****   Getters   *****/
 
@@ -174,13 +175,13 @@
 		}
 		//
 		public function setIdMoyenComm ($iMC) {
-			if (is_int($iMC) &&  $iMC != 0) {
+			if (is_int(intval($iMC)) &&  intval($iMC) != 0) {
 				$this->id_moyenComm = $iMC;
 			}
 		}
 		//
 		public function setIdModePaiement ($iMP) {
-			if (is_int($iMP) &&  $iMP != 0) {
+			if (is_int(intval($iMP)) &&  intval($iMP) != 0) {
 				$this->id_modePaiement = $iMP;
 			}
 		}
