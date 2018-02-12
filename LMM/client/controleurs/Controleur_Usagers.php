@@ -55,7 +55,7 @@
 							//si la session n'existe pas, on authentifier l'usager
 							if (!isset($_SESSION["username"]))
 							{
-								$modeleUsagers = $this->getDAO("Usagers");
+								$modeleUsagers = $this->getDAO("Usagers"); 
 								$data = $modeleUsagers->authentification($params["username"], $params["password"]);
 								//si l'usager est authentifié
 								if($data)
