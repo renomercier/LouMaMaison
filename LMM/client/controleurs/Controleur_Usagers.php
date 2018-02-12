@@ -78,6 +78,7 @@
 								{
 									//si l'usager n'est pas authentifié
 									$data="<p class='alert alert-warning'>Username ou password invalide!</p>";
+                                    $this->afficheVue("header", $data);
 									$this->afficheVue("AfficheLogin", $data);
 								}
 							}
@@ -85,6 +86,7 @@
 							{
 								//si la session existe déjà
 								$data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
+                                $this->afficheVue("header", $data);
 								$this->afficheVue("AfficheLogin", $data);
 							}
 						}
@@ -111,6 +113,7 @@
 								//affiche details du profil d'usager
 								$modeleUsagers = $this->getDAO("Usagers");
 								$data = $modeleUsagers->obtenir_par_id($params["idUsager"]);
+                                $this->afficheVue("header", $data);
 								$this->afficheVue("AfficheUsager", $data);
 							}
 							else
@@ -203,6 +206,65 @@
 						}
 						break;
 
+					// case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
+					case "afficherInscriptionUsager" :
+
+						$modeleUsagers = $this->getDAO("Usagers");
+						$data['paiement'] = $modeleUsagers->getModePaiement();
+						$data['communication'] = $modeleUsagers->getModeCommunication();
+						if($data) {
+                            $this->afficheVue("header", $data);
+							$this->afficheVue("afficheInscriptionUsager", $data);
+						}
+						break;
+
+					// case de sauvegarde d'un usager
+					case "sauvegarderUsager" :
+
+/* ajouter !empty */	
+                        if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && isset($params['nom']) && isset($params['prenom']) && isset($params['adresse']) && isset($params['telephone']) && isset($params['pwd0']) && isset($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm'])) {
+							
+							if(isset($params['photo'])) {
+							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
+							} else {
+								$photo = "profil.jpg";
+							}
+
+							// validation des champs input du formulaire d'inscription d'un usager
+							$params['erreurs'] = $this->validerUsager([ 'Le nom d\'utilisateur'=>$params['username'], 'Le nom'=>$params["nom"], 'Le prénom'=>$params["prenom"], 'L\'adresse'=>$params['adresse'], 'Le téléphone'=>$params['telephone'], 'Le mot de passe'=>$params['pwd0'], 'La validation du mot de passe'=>$params['pwd1'], 'Le mode de paiement'=>$params['modePaiement'], 'Le moyen de communication'=>$params['moyenComm'] ]);
+							// si pas d'erreurs, on instancie l'usager et on l'insère dans la BD
+							if(!$params['erreurs']) {
+								// on instancie un nouvel Usager
+								$usager = new Usager($params['username'], $params["nom"], $params["prenom"], $photo, $params['adresse'], $params['telephone'], $params['pwd0'], $params['moyenComm'], $params['modePaiement']);
+								// appel du modele_Usagers et insertion dans la BD
+								$modeleUsagers = $this->getDAO("Usagers");
+								$resultat = $modeleUsagers->sauvegarder($usager);
+								// si la sauvegarde a fonctionné, message à l'usager 
+								if($resultat) {
+									// message à l'usager - success de l'insertion dans la BD
+									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées</p>";
+/* affichage vue profil */			$this->afficheVue("afficheInscriptionUsager", $data);
+									
+								}
+								else {
+									// message à l'usager - s'il la requete echoue
+									$params['erreurs'] = "<p class='alert alert-warning'>Votre compte n'a pu être créé, veuillez contacter l'administration ou recommencer</p>";
+									$this->afficheFormInscription($params);
+								}
+							}
+							// si on a des erreurs
+							else {
+								// message à l'usager - erreurs dans la validation des inputs du formulaire d'inscription
+								$this->afficheFormInscription($params);
+							}
+						}
+						else {
+							// message à l'usager - s'il manque des params requis
+							$params['erreurs'] = "<p class='alert alert-warning'>Veuillez vous assurer de remplir tous les champs requis</p>";
+							$this->afficheFormInscription($params);						
+						}
+						break;
+
 					default:
 						trigger_error("Action invalide.");		
 				}				
@@ -225,14 +287,15 @@
 				}
 */
 			}
-            //
-            // afficher le footer
+            
+////////////// l'affichage du footer et du header pourraient se faire ds baseControleur, ce qui eviterait de les appeler a chaque controleur, mais ca @bug avec des variables du login
             $this->afficheVue("footer");
 		}
 
 		/**
 		* @brief 		Affichage de la liste de tous les usagers
-		* @return		la vue
+		* @param 		Aucun parametre envoye
+		* @return		charge la vue avec le tableau de donnees
 		*/	
 		private function afficheListeUsagers()
 		{
@@ -241,6 +304,65 @@
 			$modeleUsagers = $this->getDAO("Usagers");
 			$data["usagers"] = $modeleUsagers->obtenir_tous();
 			$this->afficheVue("AfficheListeUsagers", $data);
+		}
+
+		/**
+		* @brief 		Affichage du formulaire d'inscription d'un usager
+		* @details 		Recupere des donnees en parametre pour affichage des choix de l'usager et des erreurs à afficher
+		*				Ajoute ensuite le data paiment et communication pour populer les selects
+		* @param 		<array>		$data 		tableau Usager et erreurs
+		* @return		charge la vue avec le tableau de donnees
+		*/	
+		private function afficheFormInscription($data)
+		{
+			// formatage du message d'erreurs à afficher
+			$data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
+			// recuperation des donnees pour populer les select
+			$modeleUsagers = $this->getDAO("Usagers");
+			$data['paiement'] = $modeleUsagers->getModePaiement();
+			$data['communication'] = $modeleUsagers->getModeCommunication();
+
+			if($data) {
+                $data= $this->initialiseMessages();
+                $this->afficheVue("header", $data);
+				$this->afficheVue("afficheInscriptionUsager", $data);
+			}
+		}
+
+		/**
+		* @brief		Fonction de validation des parametres du formulaire d'inscription d'un usager
+		* @details		Validation des différents inputs avant l'instanciation et l'insertion dans la BD
+		* @param 		<array> 	$tabUsager 		tableau des parametres de l'usager	
+		* @return    	<string> 	Les messages d'erreur à afficher à l'usager 
+		*/
+        private function validerUsager(array $tabUsager) {
+
+        	// declaration de la 'string' d'erreurs
+			$erreurs = "";
+
+			// verification si le champ est rempli et pret à l'insertion 
+			foreach($tabUsager AS $t => $valeur) {
+				
+				$resultat = htmlspecialchars(stripslashes(trim($valeur)));
+				$erreurs .= ($resultat == "") ? "Le champ " . $t . " est requis<br>" : "";
+
+				if($t == "Le nom d'utilisateur" || $t == "Le mot de passe" || $t == "La validation du mot de passe") {
+					$erreurs .= (strlen($valeur) < 8 || strlen($valeur) > 50) ? $t . " doit contenir entre 8 et 50 caractères.<br>" : "";
+				}
+				if($t == "Le téléphone") {
+					$erreurs .= (strlen($valeur) < 10 || strlen($valeur) > 20) ? $t . " doit contenir entre 10 et 20 caractères.<br>" : "";
+				}
+				if($t == "Le mode de paiement" || $t == "Le moyen de communication") {
+					$erreurs .= (intval($valeur) == 0) ? $t . " est requis<br>" : "";
+				}
+			}
+
+			// verification par specificite de champ
+			if ($tabUsager['Le mot de passe'] !== $tabUsager['La validation du mot de passe']) {
+			  	$erreurs .= "Les mots de passe entrés doivent être identiques.<br>";
+			}
+			return $erreurs;
+		
 		}
 	}
 ?>
