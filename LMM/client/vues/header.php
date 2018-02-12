@@ -46,9 +46,18 @@
 			<?php
 			}
 			?>
-
+        
 	      <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
 	      <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
+           <?php
+            if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
+            {
+			?>
+            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
+            
+            <?php
+			}
+			?>
 	    </ul>
           
       </div>

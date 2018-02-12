@@ -67,12 +67,12 @@
 									$_SESSION["prenom"] = $data->getPrenom();
 									$_SESSION["isBanned"] = $data->getBanni();
                                     $_SESSION["isActiv"] = $data->getValideParAdmin();
-/*                                    
+                                   
 ?>
 <pre>
 <?php var_dump($data->roles); ?>
 </pre>
-<?php*/
+<?php
                                     foreach($data->roles as $role)
                                     {
 									   $_SESSION["role"][] = $role->id_nomRole;
@@ -130,6 +130,44 @@
 							$this->afficheVue("404");
 						}
 						break;
+                        
+                    //pour afficher le profil public du client 
+                    case "afficheUsager" :
+                        if(isset($params["idUsager"]))
+				        {
+                            $modeleUsagers = $this->getDAO("Usagers");
+                            $data["usager"] = $modeleUsagers->obtenir_par_id($params["idUsager"]);
+                            $data["isProprio"] = false;
+                            $data["isClient"] = false;
+                            $data["isAdmin"] = false;
+                            $data["isSuperAdmin"] = false;
+                                                   
+                            foreach($data["usager"]->roles as $role)
+                            {
+                                if($role->id_nomRole == 3)
+                                {
+                                    $data["isProprio"] = true;
+                                }
+                                if($role->id_nomRole == 4)
+                                {
+                                    $data["isClient"] = true;
+                                }
+                                if($role->id_nomRole == 2)
+                                {
+                                    $data["isAdmin"] = true;
+                                }
+                                if($role->id_nomRole == 1)
+                                {
+                                    $data["isSuperAdmin"] = true;
+                                }
+                            }
+                            $this->afficheVue("AfficheUsager", $data); 
+                        }
+                        else
+                        {
+                            trigger_error("Pas d'id spécifié...");
+                        }
+                        break;
 					
                         // bannir | réahabiliter un usager
 					case "inversBan":
