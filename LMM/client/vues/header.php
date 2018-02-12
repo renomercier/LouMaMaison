@@ -34,13 +34,15 @@
 	    </div>
 	    <ul class="nav navbar-nav">
       		<?php
-if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)			{
+			if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)			
+			{
 			?>
 			 	<li><a href="index.php?Usagers">Usagers</a></li>
 			<?php
 			}
 			?>
 	      <li><a href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
+	      <li><a href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
 	    </ul>
 	  </div>
 	</nav>

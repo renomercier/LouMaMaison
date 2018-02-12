@@ -45,7 +45,7 @@
         *   @param <string>        $id_adminBan            admin qui gere le bannissement de l'usager 
         *   @param <string>        $id_adminValid          admin qui valide un usager afin qu'il puisse utiliser les services du site       
         */
-		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0, $iAB = "", $iAV = "") {			
+		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0) /*, $iAB = "", $iAV = ""*/  {			
 			$this->setUsername($u);
 			$this->setNom($n);
 			$this->setPrenom($p);
@@ -53,12 +53,13 @@
 			$this->setAdresse($a);
 			$this->setTelephone($t);
 			$this->setMotDePasse($mP);
-			$this->valideParAdmin = false;
-			$this->banni = false;
 			$this->setIdMoyenComm($iMC);
 			$this->setIdModePaiement($iMP);
-			$this->setAdminBan($iAB);
-			$this->setAdminValid($iAV);
+
+			$this->setValideParAdmin(false);
+			$this->setBanni(false);
+	//		$this->setAdminBan($iAB);
+	//		$this->setAdminValid($iAV);
 		}
 
 
@@ -158,7 +159,7 @@
 		}
 		//
 		public function setMotDePasse ($mP) {
-			if (is_string($t) && trim($t)!="") {
+			if (is_string($mP) && trim($mP)!="") {
 				$this->motDePasse = $mP;
 			}
 		}
@@ -174,13 +175,13 @@
 		}
 		//
 		public function setIdMoyenComm ($iMC) {
-			if (is_int($iMC) &&  $iMC != 0) {
+			if (is_int(intval($iMC)) &&  intval($iMC) != 0) {
 				$this->id_moyenComm = $iMC;
 			}
 		}
 		//
 		public function setIdModePaiement ($iMP) {
-			if (is_int($iMP) &&  $iMP != 0) {
+			if (is_int(intval($iMP)) &&  intval($iMP) != 0) {
 				$this->id_modePaiement = $iMP;
 			}
 		}

@@ -56,7 +56,7 @@ CREATE TABLE `communication` (
 --
 
 INSERT INTO `communication` (`id`, `moyenComm`) VALUES
-(1, 'skype');
+(1, 'skype'), (2, 'e-mail'), (3, 'facebook'), (4, 'texto');
 
 -- --------------------------------------------------------
 
@@ -143,7 +143,7 @@ CREATE TABLE `paiement` (
 --
 
 INSERT INTO `paiement` (`id`, `modePaiement`) VALUES
-(1, 'visa');
+(1, 'paypal'), (2, 'chèque');
 
 -- --------------------------------------------------------
 
@@ -184,10 +184,10 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `nomRole`) VALUES
-(1, 'admin'),
-(2, 'client'),
-(3, 'super admin'),
-(4, 'proprio');
+(1, 'super admin'),
+(2, 'admin'),
+(3, 'proprio '),
+(4, 'client');
 
 -- --------------------------------------------------------
 
