@@ -180,9 +180,18 @@
 		* @param 		Aucun parametre envoyé	
 		* @return    	<type> 		toutes les rangées de la table paiement
 		*/
-		public function getModePaiement()  {
-			$query = "SELECT * from paiement";
-			return $this->requete($query);
+		public function getModePaiement($usager='')  {
+			$query = "SELECT id, modePaiement from paiement p";
+            if(isset($usager) && !empty($usager)) {
+                $query.= " JOIN usager u ON p.id = u.id_modePaiement WHERE username = ?";
+                $donnees = array($usager);
+                $resultat = $this->requete($query, $donnees);
+                $paiement = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
+                return $paiement;
+            }
+            else {
+                return $this->requete($query);
+            }
 		}
 
 		/**
@@ -191,9 +200,18 @@
 		* @param 		Aucun parametre envoyé	
 		* @return    	<type> 		toutes les rangées de la table communication
 		*/
-		public function getModeCommunication() {
-			$query = "SELECT * from communication";
-			return $this->requete($query);
-		}
-	}
+		public function getModeCommunication($idUsager="") {
+			$query = "SELECT id, moyenComm	from communication c";
+            if(isset($idUsager) && !empty($idUsager)) {
+                $query.= " JOIN usager u ON c.id = u.id_moyenComm  WHERE username = ?";
+                $donnees = array($idUsager);
+				$resultat = $this->requete($query, $donnees);
+                $communication = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
+                return $communication;
+            }
+            else {
+                return $this->requete($query);
+            }
+        }
+}   
 ?>

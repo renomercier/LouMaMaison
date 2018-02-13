@@ -70,7 +70,7 @@
                                    
 ?>
 <pre>
-<?php var_dump($data->roles); ?>
+<?php //var_dump($data->roles); ?>
 </pre>
 <?php
                                     foreach($data->roles as $role)
@@ -109,29 +109,8 @@
 						}
 						break;
 
-					case "affiche":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
-						{
-							if(isset($params["idUsager"]))
-							{
-								//affiche details du profil d'usager
-								$modeleUsagers = $this->getDAO("Usagers");
-								$data = $modeleUsagers->obtenir_par_id($params["idUsager"]);
-								$this->afficheVue("AfficheUsager", $data);
-							}
-							else
-							{
-								trigger_error("Pas d'id spécifié...");
-							}
-						}
-						else
-						{
-							//affiche page d'erreur
-							$this->afficheVue("404");
-						}
-						break;
                         
-                    //pour afficher le profil public du client 
+                    //pour afficher le profil du client 
                     case "afficheUsager" :
                         if(isset($params["idUsager"]))
 				        {
@@ -141,7 +120,8 @@
                             $data["isClient"] = false;
                             $data["isAdmin"] = false;
                             $data["isSuperAdmin"] = false;
-                                                   
+                            $data["modePaiement"] = $modeleUsagers->getModePaiement($params["idUsager"]);
+                            $data["modeCommunication"] = $modeleUsagers->getModeCommunication($params["idUsager"]);
                             foreach($data["usager"]->roles as $role)
                             {
                                 if($role->id_nomRole == 3)
