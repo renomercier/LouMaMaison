@@ -54,7 +54,7 @@
 							//si la session n'existe pas, on authentifier l'usager
 							if (!isset($_SESSION["username"]))
 							{
-								$modeleUsagers = $this->getDAO("Usagers");
+								$modeleUsagers = $this->getDAO("Usagers"); 
 								$data = $modeleUsagers->authentification($params["username"], $params["password"]);
 								//si l'usager est authentifié
 								if($data)
@@ -105,28 +105,44 @@
 						}
 						break;
 
-					case "affiche":
-						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
-						{
-							if(isset($params["idUsager"]))
-							{
-								//affiche details du profil d'usager
-								$modeleUsagers = $this->getDAO("Usagers");
-								$data = $modeleUsagers->obtenir_par_id($params["idUsager"]);
-                                $this->afficheVue("header", $message);
-								$this->afficheVue("AfficheUsager", $data);
-							}
-							else
-							{
-								trigger_error("Pas d'id spécifié...");
-							}
-						}
-						else
-						{
-							//affiche page d'erreur
-							$this->afficheVue("404");
-						}
-						break;
+                    //pour afficher le profil du client 
+                    case "afficheUsager" :
+                        if(isset($params["idUsager"]))
+				        {
+                            $modeleUsagers = $this->getDAO("Usagers");
+                            $data["usager"] = $modeleUsagers->obtenir_par_id($params["idUsager"]);
+                            $data["isProprio"] = false;
+                            $data["isClient"] = false;
+                            $data["isAdmin"] = false;
+                            $data["isSuperAdmin"] = false;
+                            $data["modePaiement"] = $modeleUsagers->getModePaiement($params["idUsager"]);
+                            $data["modeCommunication"] = $modeleUsagers->getModeCommunication($params["idUsager"]);
+                            foreach($data["usager"]->roles as $role)
+                            {
+                                if($role->id_nomRole == 3)
+                                {
+                                    $data["isProprio"] = true;
+                                }
+                                if($role->id_nomRole == 4)
+                                {
+                                    $data["isClient"] = true;
+                                }
+                                if($role->id_nomRole == 2)
+                                {
+                                    $data["isAdmin"] = true;
+                                }
+                                if($role->id_nomRole == 1)
+                                {
+                                    $data["isSuperAdmin"] = true;
+                                }
+                            }
+                            $this->afficheVue("AfficheUsager", $data); 
+                        }
+                        else
+                        {
+                            trigger_error("Pas d'id spécifié...");
+                        }
+                        break;
 					
                         // bannir | réahabiliter un usager
 					case "inversBan":

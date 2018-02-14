@@ -21,6 +21,7 @@
 	//déclaration de la racine du projet
 	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/originLocal/LouMaMaison/LMM/client/");
+
 	//déclaration des infos de connexion
 	define("HOST", "localhost");
 	//define("HOST", "127.0.0.1");
