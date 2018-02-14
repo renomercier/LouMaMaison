@@ -8,21 +8,19 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+    
 <head>
+<meta charset="UTF-8">
 	<title>Projet WEB 2 - Loue ma maison</title>	
-	<!-- meta tags requis -->
-	<meta charset="UTF-8">
-    <meta name="description" content="ProjetWEB2">
-  	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Bootstrap - CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-	<!-- src script js -->
-   	<script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-   	<script src="https://use.fontawesome.com/e58c171d55.js"></script>
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>			
-</head>
+    <meta name="description" content="TP architecture MVC">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap - CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- scripts -->
 
+</head>
+    
 <header>
 </header>
 
@@ -45,19 +43,18 @@
 			 	<li class="nav-item"><a class="nav-link" href="index.php?Usagers">Usagers</a></li>
 			<?php
 			}
+            else{
+                ?>
+                <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
+            <?php
+            }
 			?>
         
 	      <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-	      <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
-           <?php
-            if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
-            {
-			?>
+
             <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
-            
-            <?php
-			}
-			?>
+
+
 	    </ul>
           
       </div>

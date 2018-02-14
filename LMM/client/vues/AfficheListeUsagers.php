@@ -67,9 +67,9 @@
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin && !$isSuperAdmin))
                         {
                         ?>
-                            <td><a href="index.php?Usagers&action=inversBan&idUsager=<?=$usager->getUsername()?>"><?=$etatBann?></a></td>
-                            <td><a href="index.php?Usagers&action=inversActiv&idUsager=<?=$usager->getUsername()?>"><?=$etatActiv?></a></td>
-                            <td><a href="index.php?Usagers&action=inversAdmin&idUsager=<?=$usager->getUsername()?>"><?=$etatAdmin?></a></td>
+                            <td><button class="btn btn-default actionAdmin" name="inversBan" id="<?=$usager->getUsername()?>"><?=$etatBann?></button></td>
+                            <td><button class="btn btn-default actionAdmin" name="inversActiv" id="<?=$usager->getUsername()?>"><?=$etatActiv?></button></td>
+                            <td><button class="btn btn-default actionAdmin" name="inversAdmin" id="<?=$usager->getUsername()?>"><?=$etatAdmin?></button></td>
                         <?php
                         }
                         ?>
