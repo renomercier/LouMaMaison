@@ -136,6 +136,7 @@
                                     $data["isSuperAdmin"] = true;
                                 }
                             }
+                            $this->afficheVue("header", $message);
                             $this->afficheVue("AfficheUsager", $data); 
                         }
                         else
