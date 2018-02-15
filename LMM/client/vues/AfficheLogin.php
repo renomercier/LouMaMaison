@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-sm-4 offset-sm-4">
-        <form method="POST" action="index.php?Usagers&action=authentifier">
+        <form id="formLogin" method="POST" action="index.php?Usagers&action=authentifier">
 
             <div class="form-group row">
               <label for="inputEmail3" class="col-sm-2 form-control-label sr-only">Username</label>

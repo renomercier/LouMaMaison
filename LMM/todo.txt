@@ -3,18 +3,22 @@
 @todo
 
 	Inscription d'un Usager:
+		PHP
 		- hash du mot de passe avant insertion BD
-		- validation côté client avec js
-		- regex à finaliser...
+@bug	- retour du controleur PHP, comment faire afficher la div modePaiement? requete ajax??
+		JS
 		- photo insertion + src(nom de la photo)
+		- regex à paufiner... username - pwd - tel (international)
 
 
 	Ajout ds la BD
 		- champ coordonnées de moyen de communication (ex: si c'est e-mail, l'adresse e-mail)
-
+		- bool appartement (actif) 
+		- ajout de commentaire ds la table evaluation
+		- changer float pour int (rating)
 
 	Vérifier si tout est compatible sur les différents navigateurs:
 
 		- css ajout des webkit-mox-o
-		- types d'inputs, placeholder
+		- types d'inputs
 		- balises html (ex:small)
