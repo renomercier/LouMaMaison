@@ -15,12 +15,15 @@
     <meta name="description" content="ProjetWEB2">
   	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Bootstrap - CSS -->
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<!-- src script js -->
-   	<script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
    	<script src="https://use.fontawesome.com/e58c171d55.js"></script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>			
+   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 </head>
 
 <header>

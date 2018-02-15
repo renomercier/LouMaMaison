@@ -28,7 +28,7 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $data= $this->initialiseMessages();
+            $message= $this->initialiseMessages();
             //
             //
 			//si le paramètre action existe
@@ -39,7 +39,7 @@
 				switch($params["action"])
 				{
 					case "login":
-                        $this->afficheVue("header", $data);
+                        $this->afficheVue("header", $message);
 						$this->afficheVue("AfficheLogin");
 						break;
 						
@@ -78,7 +78,7 @@
 								{
 									//si l'usager n'est pas authentifié
 									$data="<p class='alert alert-warning'>Username ou password invalide!</p>";
-                                    $this->afficheVue("header", $data);
+                                    $this->afficheVue("header", $message);
 									$this->afficheVue("AfficheLogin", $data);
 								}
 							}
@@ -86,7 +86,7 @@
 							{
 								//si la session existe déjà
 								$data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
-                                $this->afficheVue("header", $data);
+                                $this->afficheVue("header", $message);
 								$this->afficheVue("AfficheLogin", $data);
 							}
 						}
@@ -113,7 +113,7 @@
 								//affiche details du profil d'usager
 								$modeleUsagers = $this->getDAO("Usagers");
 								$data = $modeleUsagers->obtenir_par_id($params["idUsager"]);
-                                $this->afficheVue("header", $data);
+                                $this->afficheVue("header", $message);
 								$this->afficheVue("AfficheUsager", $data);
 							}
 							else
@@ -213,7 +213,7 @@
 						$data['paiement'] = $modeleUsagers->getModePaiement();
 						$data['communication'] = $modeleUsagers->getModeCommunication();
 						if($data) {
-                            $this->afficheVue("header", $data);
+                            $this->afficheVue("header", $message);
 							$this->afficheVue("afficheInscriptionUsager", $data);
 						}
 						break;
@@ -299,8 +299,8 @@
 		*/	
 		private function afficheListeUsagers()
 		{
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
+            $message= $this->initialiseMessages();
+            $this->afficheVue("header",$message);
 			$modeleUsagers = $this->getDAO("Usagers");
 			$data["usagers"] = $modeleUsagers->obtenir_tous();
 			$this->afficheVue("AfficheListeUsagers", $data);
@@ -323,8 +323,8 @@
 			$data['communication'] = $modeleUsagers->getModeCommunication();
 
 			if($data) {
-                $data= $this->initialiseMessages();
-                $this->afficheVue("header", $data);
+                $message= $this->initialiseMessages();
+                $this->afficheVue("header", $message);
 				$this->afficheVue("afficheInscriptionUsager", $data);
 			}
 		}

@@ -68,6 +68,7 @@
                         {
                         ?>
                             <td><a href="index.php?Usagers&action=inversBan&idUsager=<?=$usager->getUsername()?>"><?=$etatBann?></a></td>
+                            <button class="btn btn-default" onclick="inverseBann('<?=$usager->getUsername()?>')"><?=$etatBann?></button>
                             <td><a href="index.php?Usagers&action=inversActiv&idUsager=<?=$usager->getUsername()?>"><?=$etatActiv?></a></td>
                             <td><a href="index.php?Usagers&action=inversAdmin&idUsager=<?=$usager->getUsername()?>"><?=$etatAdmin?></a></td>
                         <?php
@@ -82,3 +83,26 @@
     </tbody>
   </table>
 </div>
+<script>
+  
+function inverseBann(idUser){
+// envoi de la requete
+
+   $.ajax({
+        method: "POST",
+        url: "index.php",
+        data:{
+                action: 'inversBan',
+                idUsager: idUser
+            },
+        dataType:"html",
+// comportement en cas de success ou d'echec
+      success:function(reponse) {
+
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+}
+</script>
