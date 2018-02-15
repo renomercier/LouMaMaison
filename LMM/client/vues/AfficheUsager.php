@@ -36,9 +36,11 @@
                 <div class="col-md-6" id="info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
                 </div>
-				<div class="col-md-12" id="div_info_plus"></div>
-				<div class="col-md-12" id="div_info_contact">Moyen de contact : </div>
-				<div class="col-md-12" id="div_modif_profil"></div>
+                <form class="form">
+                    <div class="col-md-12 form-group row" id="div_info_plus"></div>
+                    <div class="col-md-12 form-group row" id="div_info_contact"></div>
+                    <div class="col-md-12 form-group row" id="div_modif_profil"></div>
+                </form>
             </div>
         </div>
         <div class="col-md-8">
@@ -46,20 +48,18 @@
                 
                 <ul class="nav">
                     <li class="nav-item" id="div_messagerie"></li>
-                    <li id="div_historique"></li>
-				    <li id="div_reservations"></li>
-				    <li id="div_mes_appts"></li>
-                    <li class="dropdown col-md-6" id="div_action_admin">
+                    <li class="nav-item" id="div_historique"></li>
+				    <li class="nav-item" id="div_reservations"></li>
+				    <li class="nav-item" id="div_mes_appts"></li>
+                    <li class="dropdown nav-item col-md-6" id="div_action_admin">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Actions Admin
                       </button>
                     </li>
                 </ul>
-                
-
 			</div>
 			<div class="row">
-				
+				<div></div>
 			</div>
 		</div>
     </div>
@@ -70,15 +70,15 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <span id="info_contact"><?=$data["modeCommunication"][0]->moyenComm;?></span>
-                <a href="#" id="historique">Voyages</a>
-                <a href="#" id="messagerie" ><?=$messagerie?></a>
+                <div id="info_contact">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div>
+                <a class="nav-link" href="#" id="historique">Voyages</a>
+                <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <a href="#" id="mes_appts">Appartements</a>
+                       <a class="nav-link" href="#" id="mes_appts">Appartements</a>
                    <?php      
                     }
                     ?>
@@ -93,10 +93,10 @@
                     {
                     ?>
                         <span id="info_plus" class="">
-                           <p>Username : <?=$data["usager"]->getUsername();?></p> 
-                           <p>Adresse : <?=$data["usager"]->getAdresse();?></p> 
-                           <p>Téléphone : <?=$data["usager"]->getTelephone();?></p> 
-                           <p>Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></p> 
+                           <div class="form-group row">Username : <?=$data["usager"]->getUsername();?></div> 
+                           <div class="form-group row">Adresse : <?=$data["usager"]->getAdresse();?></div> 
+                           <div class="form-group row">Téléphone : <?=$data["usager"]->getTelephone();?></div> 
+                           <div class="form-group row">Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></div> 
                         </span>
                         <?php 
                         if($data["isClient"]) 
@@ -104,7 +104,7 @@
                         ?>  
 
                         <!-- s'i j'ai des réservations comme client -->
-                        <a href="#" id="reservations">Réservations</a>
+                        <a class="nav-link" href="#" id="reservations">Réservations</a>
 
                         <?php 
                         }
