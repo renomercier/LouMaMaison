@@ -10,8 +10,7 @@
 <html lang="fr">
     
 <head>
-<meta charset="UTF-8">
-	<title>Projet WEB 2 - Loue ma maison</title>	
+
 
 	<!-- meta tags requis -->
 	<meta charset="UTF-8">
@@ -32,6 +31,7 @@
 	<script src="https://use.fontawesome.com/e58c171d55.js"></script>
 	<script src="./javascript/script.js" ></script>
 	<script src="js/formEvt.js"></script>  
+
 
 </head>
     
