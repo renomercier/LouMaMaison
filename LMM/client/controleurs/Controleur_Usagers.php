@@ -76,6 +76,7 @@
                                         }
 
                                         // redirection temporaire
+                                        $message= $this->initialiseMessages();
                                         $this->afficheVue("header", $message);
                                         $this->afficheVue("accueil", $data); 
                                     }
