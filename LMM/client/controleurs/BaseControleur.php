@@ -29,9 +29,6 @@
         */
 		protected function afficheVue($nomVue, $data = null)
 		{  
-			// Inclure le header pour chaque vue
-            // include(RACINE . "vues/header.php");
-
 			$cheminVue = RACINE . "vues/" . $nomVue . ".php";
 
 			if(file_exists($cheminVue))
@@ -42,9 +39,6 @@
 			{
 				trigger_error("Erreur 404! La vue $cheminVue n'existe pas.");
 			}
-
-			// Inclure le footer pour chaque vue
-            // include(RACINE . "vues/footer.php");
 		}
 
 		/**
