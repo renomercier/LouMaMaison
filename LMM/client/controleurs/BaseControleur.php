@@ -65,6 +65,10 @@
 					trigger_error("Le modèle n'est pas conforme.");
 				}
 			}
+            else {
+                trigger_error("Erreur de nom de modele");
+                
+            }
 		}
 
         /**
