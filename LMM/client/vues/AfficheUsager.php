@@ -26,34 +26,49 @@
 
 
 <div class="container">
-    <h1>Profil d'usager</h1>
     <!-- Tout le monde peut voir -->
-    <div class="row d-flex flex-row">
+    <div class="row">
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-6">
-                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" style="width:50%"> </div>
+                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" style="width:80%"> </div>
                 </div>
                 <div class="col-md-6" id="info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
                 </div>
+				<div class="col-md-12" id="div_info_plus"></div>
+				<div class="col-md-12" id="div_info_contact">Moyen de contact : </div>
+				<div class="col-md-12" id="div_modif_profil"></div>
             </div>
         </div>
-        <div class="col-md-8 d-flex flex-column">
-        <!-- Les gens connectes -->           
+        <div class="col-md-8">
+			<div class="row">
+				<div class="col-md-6" id="div_messagerie"></div>
+				<div class="col-md-6" id="div_action_admin"></div>
+			</div>
+			<div class="row">			
+				<div class="col-md-12" id="div_historique"></div>
+				<div class="col-md-12" id="div_reservations"></div>
+				<div class="col-md-12" id="div_mes_appts"></div>
+			</div>
+		</div>
+    </div>
+</div>
+
+ <!-- Les gens connectes -->           
             <?php                                    
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <div id="info_contact">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div>
-                <div id="historique"><button class="btn btn-primary mb-2">Voyages</button></div>
-                <div id="message"><button class="btn btn-primary mb-2"><?=$messagerie?></button></div>
+                <span id="info_contact"><?=$data["modeCommunication"][0]->moyenComm;?></span>
+                <span id="historique"><button class="btn btn-primary mb-2">Voyages</button></span>
+                <span id="messagerie"><button class="btn btn-primary mb-2"><?=$messagerie?></button></span>
 
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <div id="mesappts" class="btn btn-primary mb-2"><button class="btn btn-primary">Appartements</button></div>
+                       <span id="mes_appts" class="btn btn-primary mb-2"><button class="btn btn-primary">Mes Appartements</button></span>
                    <?php      
                     }
                     ?>
@@ -67,19 +82,19 @@
                     if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
                     {
                     ?>
-                        <div id="info_plus" class=".order-first">
+                        <span id="info_plus" class="">
                            <p>Username : <?=$data["usager"]->getUsername();?></p> 
                            <p>Adresse : <?=$data["usager"]->getAdresse();?></p> 
                            <p>Téléphone : <?=$data["usager"]->getTelephone();?></p> 
                            <p>Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></p> 
-                        </div>
+                        </span>
                         <?php 
                         if($data["isClient"]) 
                         {
                         ?>  
 
                         <!-- s'i j'ai des réservations comme client -->
-                        <div id="reservations"><button class="btn btn-primary mb-2">Mes réservations</button></div>
+                        <span id="reservations"><button class="btn btn-primary mb-2">Mes réservations</button></span>
 
                         <?php 
                         }
@@ -100,7 +115,7 @@
                     foreach($data["usager"]->roles as $role)
                     {
                     ?> 
-                        <div><span>Role : <?=$role->nomRole?></span><span>  </span></div>
+                       <span id="role">Role : <?=$role->nomRole?></span>
 
                     <?php
                     }
@@ -109,25 +124,40 @@
                     {
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin && !$isSuperAdmin))
                         {
-                        ?>
-                            <a href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
-                            <a href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
-                            <a href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
+                        ?>	
+							<span id="action_admin">
+								<a href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
+								<a href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
+								<a href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
+							</span>
                         <?php
                         }    
                     }
 
                 }
             ?>
-        </div>
-    </div>
-</div>
+
+
 
 <script>
     $(document).ready(function() {
-        $(".btn-modifier").
+		$("#div_info_plus").append($("#info_plus"));
+		
+		$("#div_info_contact").append($("#info_contact"));
         
-    })
+		$("#div_modif_profil").append($(".btn-modifier"));
+		
+		$("#div_messagerie").append($("#messagerie"));
+		
+		$("#div_action_admin").append($("#action_admin"));
+		
+		$("#div_historique").append($("#historique"));
+		
+		$("#div_reservations").append($("#reservations"));
+		
+		$("#div_mes_appts").append($("#mes_appts"));
+        
+    });
 </script>
 
 
