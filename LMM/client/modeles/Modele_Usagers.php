@@ -131,13 +131,27 @@
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
 		}
         
+        /**  
+		* @brief     	Definir un ou plusieurs roles associes a un usager
+		* @details   	Cette fonction attribue un ou plusieurs roles a un usager
+		* @param   		<string>		$idUsager 		id d'un Usager
+		* @param   		<array>			$tabRoles 		tableau des differents roles
+		* @return    	<bool>			Résultat de la requête SQL
+		*/
+		public function definir_role_usager($idUsager, $idRole) {
+
+				$query = "INSERT INTO role_user VALUES (?, ?);";
+				$donnees = array($idUsager, $idRole);
+				return $this->requete($query, $donnees);	
+		}
+
+
         /**
 		* @brief		Fonction pour effectuer une jointure entre l'usager et son role
 		* @details		Permet de recuperer toutes les informations relative à un usager
 		* @param 		<string>		$usager		
 		* @return    	<...> 		les rangées correspondant à un usager donné
 		*/
-        
         ////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////
         // fonction incomplete, à completer les jointures a mesure que le projet avance
@@ -149,6 +163,7 @@
             $resultat = $this->requete($query, $donnees);
             $usager->roles = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
         }
+
         
         /**
 		* @brief		Fonction qui donne ou enleve les droits d'admin a un usager

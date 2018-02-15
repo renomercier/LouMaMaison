@@ -1,0 +1,39 @@
+
+
+
+/* --------------------------------------------------- Inputs	*/
+/* ref: https://stackoverflow.com/questions/2610497 */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #999 !important;
+    font-size: 0.8em !important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #999 !important;
+   opacity:  1;
+   font-size: 0.8em !important;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #999 !important;
+   opacity:  1;
+   font-size: 0.8em !important;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #999 !important;
+   font-size: 0.8em !important;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #999 !important;
+   font-size: 0.8em !important;
+}
+::placeholder { /* Most modern browsers support this now. */
+   color:    #999 !important;
+   font-size: 0.8em !important;
+}
+
+#formUsager select {
+	font-size: 0.9em !important;
+}
+#formUsager small {
+	padding-left: 15px;
+	color: #682b28!important;
+}
