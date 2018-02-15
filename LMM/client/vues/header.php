@@ -8,8 +8,11 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+    
 <head>
+<meta charset="UTF-8">
 	<title>Projet WEB 2 - Loue ma maison</title>	
+
 	<!-- meta tags requis -->
 	<meta charset="UTF-8">
     <meta name="description" content="ProjetWEB2">
@@ -18,14 +21,9 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<!-- src script js -->
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
    	<script src="https://use.fontawesome.com/e58c171d55.js"></script>
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 
 </head>
-
 <header>
 </header>
 
@@ -48,10 +46,14 @@
 			 	<li class="nav-item"><a class="nav-link" href="index.php?Usagers">Usagers</a></li>
 			<?php
 			}
+            else{
+                ?>
+                <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
+            <?php
+            }
 			?>
 
 	      <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-	      <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
 	    </ul>
           
       </div>

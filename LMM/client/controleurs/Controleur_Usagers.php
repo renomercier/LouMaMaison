@@ -49,47 +49,51 @@
 						break;
 						
 					case "authentifier":
-						if(isset($params["username"]) && isset($params["password"]))
+                        if(isset($params["login"]))
 						{
-							//si la session n'existe pas, on authentifier l'usager
-							if (!isset($_SESSION["username"]))
-							{
-								$modeleUsagers = $this->getDAO("Usagers");
-								$data = $modeleUsagers->authentification($params["username"], $params["password"]);
-								//si l'usager est authentifié
-								if($data)
-								{
-                                    $data = $modeleUsagers->obtenir_par_id($params["username"]);
-									//on crée la session
-									$_SESSION["username"] = $data->getUsername();
-									$_SESSION["nom"] = $data->getNom();
-									$_SESSION["prenom"] = $data->getPrenom();
-									$_SESSION["isBanned"] = $data->getBanni();
-                                    $_SESSION["isActiv"] = $data->getValideParAdmin();
-
-                                    foreach($data->roles as $role)
+                            if(isset($params["username"]) && isset($params["password"]))
+                            {
+                                //si la session n'existe pas, on authentifier l'usager
+                                if (!isset($_SESSION["username"]))
+                                {
+                                    $modeleUsagers = $this->getDAO("Usagers");
+                                    $data = $modeleUsagers->authentification($params["username"], $params["password"]);
+                                    //si l'usager est authentifié
+                                    if($data)
                                     {
-									   $_SESSION["role"][] = $role->id_nomRole;
+                                        $data = $modeleUsagers->obtenir_par_id($params["username"]);
+                                        //on crée la session
+                                        $_SESSION["username"] = $data->getUsername();
+                                        $_SESSION["nom"] = $data->getNom();
+                                        $_SESSION["prenom"] = $data->getPrenom();
+                                        $_SESSION["isBanned"] = $data->getBanni();
+                                        $_SESSION["isActiv"] = $data->getValideParAdmin();
+
+                                        foreach($data->roles as $role)
+                                        {
+                                           $_SESSION["role"][] = $role->id_nomRole;
+                                        }
+                                        //on affiche la liste des sujets en respectant les droits d'usager
+                                        $this->afficheListeUsagers();
                                     }
-									//on affiche la liste des sujets en respectant les droits d'usager
+                                    else
+                                    {
+                                        //si l'usager n'est pas authentifié
+                                        $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
+                                        $this->afficheVue("header", $message);
+                                        $this->afficheVue("AfficheLogin", $data);
+                                    }
+                                }
+                                else
+                                {
+                                    //si la session existe déjà
+                                    $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
+                                    //affiche tous les usagers
                                     $this->afficheListeUsagers();
-								}
-								else
-								{
-									//si l'usager n'est pas authentifié
-									$data="<p class='alert alert-warning'>Username ou password invalide!</p>";
-                                    $this->afficheVue("header", $message);
-									$this->afficheVue("AfficheLogin", $data);
-								}
-							}
-							else
-							{
-								//si la session existe déjà
-								$data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
-                                $this->afficheVue("header", $message);
-								$this->afficheVue("AfficheLogin", $data);
-							}
-						}
+                                }
+                            }
+                        }
+
 						break;
 
 					case "afficheListeUsagers":
