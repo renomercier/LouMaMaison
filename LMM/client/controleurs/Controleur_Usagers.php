@@ -186,7 +186,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								$this->afficheListeUsagers();
+                                $this->afficheListeUsagers();
 							}
 							else
 							{

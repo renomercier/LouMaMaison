@@ -25,7 +25,7 @@
  ?>
 
 
-<div class="container">
+<div class="container detail">
     <!-- Tout le monde peut voir -->
     <div class="row">
         <div class="col-md-4">
@@ -42,14 +42,24 @@
             </div>
         </div>
         <div class="col-md-8">
-			<div class="row">
-				<div class="col-md-6" id="div_messagerie"></div>
-				<div class="col-md-6" id="div_action_admin"></div>
+			<div class="row  justify-content-end" >
+                
+                <ul class="nav">
+                    <li class="nav-item" id="div_messagerie"></li>
+                    <li id="div_historique"></li>
+				    <li id="div_reservations"></li>
+				    <li id="div_mes_appts"></li>
+                    <li class="dropdown col-md-6" id="div_action_admin">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions Admin
+                      </button>
+                    </li>
+                </ul>
+                
+
 			</div>
-			<div class="row">			
-				<div class="col-md-12" id="div_historique"></div>
-				<div class="col-md-12" id="div_reservations"></div>
-				<div class="col-md-12" id="div_mes_appts"></div>
+			<div class="row">
+				
 			</div>
 		</div>
     </div>
@@ -61,14 +71,14 @@
                 {
             ?>
                 <span id="info_contact"><?=$data["modeCommunication"][0]->moyenComm;?></span>
-                <span id="historique"><button class="btn btn-primary mb-2">Voyages</button></span>
-                <span id="messagerie"><button class="btn btn-primary mb-2"><?=$messagerie?></button></span>
+                <a href="#" id="historique">Voyages</a>
+                <a href="#" id="messagerie" ><?=$messagerie?></a>
 
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <span id="mes_appts" class="btn btn-primary mb-2"><button class="btn btn-primary">Mes Appartements</button></span>
+                       <a href="#" id="mes_appts">Appartements</a>
                    <?php      
                     }
                     ?>
@@ -94,7 +104,7 @@
                         ?>  
 
                         <!-- s'i j'ai des réservations comme client -->
-                        <span id="reservations"><button class="btn btn-primary mb-2">Mes réservations</button></span>
+                        <a href="#" id="reservations">Réservations</a>
 
                         <?php 
                         }
@@ -125,19 +135,17 @@
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin && !$isSuperAdmin))
                         {
                         ?>	
-							<span id="action_admin">
-								<a href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
-								<a href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
-								<a href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
-							</span>
+							<div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
+								<a class="dropdown-item" href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
+								<a class="dropdown-item" href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
+							</div>
                         <?php
                         }    
                     }
 
                 }
             ?>
-
-
 
 <script>
     $(document).ready(function() {
