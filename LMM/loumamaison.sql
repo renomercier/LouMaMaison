@@ -236,7 +236,7 @@ CREATE TABLE `usager` (
   `valideParAdmin` tinyint(1) NOT NULL DEFAULT '0',
   `banni` tinyint(1) NOT NULL DEFAULT '0',
   `id_moyenComm` int(11) NOT NULL,
-  `id_modePaiement` int(11) NOT NULL,
+  `id_modePaiement` int(11) NULL,
   `id_adminBan` varchar(255) DEFAULT NULL,
   `id_adminValid` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -122,7 +122,7 @@
     $(document).ready(function() {
         $(".btn-modifier").
         
-    })
+    });
 </script>
 
 
