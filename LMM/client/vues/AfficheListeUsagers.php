@@ -44,7 +44,7 @@
                 
                 ?>
                     <tr>
-                        <td><a href="index.php?Usagers&action=affiche&idUsager=<?=$usager->getUsername()?>"><?=$usager->getUsername()?></a></td>
+                        <td><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$usager->getUsername()?>"><?=$usager->getUsername()?></a></td>
                         <td><?=$usager->getNom()?></td>
                         <td><?=$usager->getPrenom()?></td>
                         <td>

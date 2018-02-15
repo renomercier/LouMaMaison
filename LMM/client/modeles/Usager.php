@@ -66,55 +66,55 @@
 		/*****   Getters   *****/
 
 		//
-		public function getUsername () {
+		public function getUsername() {
 			return $this->username;
 		}
 		//
-		public function getNom () {
+		public function getNom() {
 			return $this->nom;
 		}
 		//
-		public function getPrenom () {
+		public function getPrenom() {
 			return $this->prenom;
 		}
 		//
-		public function getPhoto () {
+		public function getPhoto() {
 			return $this->photo;
 		}
 		//
-		public function getAdresse () {
+		public function getAdresse() {
 			return $this->adresse;
 		}
 		//
-		public function getTelephone () {
+		public function getTelephone() {
 			return $this->telephone;
 		}
 		//
-		public function getMotDePasse () {
+		public function getMotDePasse() {
 			return $this->motDePasse;
 		}
 		//
-		public function getValideParAdmin () {
+		public function getValideParAdmin() {
 			return $this->valideParAdmin;
 		}	
 		//
-		public function getBanni () {
+		public function getBanni() {
 			return $this->banni;
 		}	
 		//
-		public function getIdMoyenComm () {
+		public function getIdMoyenComm() {
 			return $this->id_moyenComm;
 		}	
 		//
-		public function getIdModePaiement () {
+		public function getIdModePaiement() {
 			return $this->id_modePaiement;
 		}
 		//
-		public function getAdminBan () {
+		public function getAdminBan() {
 			return $this->$id_adminBan;
 		}	
 		//
-		public function getAdminValid () {
+		public function getAdminValid() {
 			return $this->$id_adminValid;
 		}	
 
@@ -122,77 +122,77 @@
 		/*****   Setters   *****/
 
 		//
-		public function setUsername ($u) {
+		public function setUsername($u) {
 			if (is_string($u) && trim($u)!="") {
 				$this->username = $u;
 			}
 		}
 		//
-		public function setNom ($n) {
+		public function setNom($n) {
 			if (is_string($n) && trim($n)!="") {
 				$this->nom = $n;
 			}		
 		}
 		//
-		public function setPrenom ($p) {
+		public function setPrenom($p) {
 			if (is_string($p) && trim($p)!="") {
 				$this->prenom = $p;
 			}	
 		}
 		//
-		public function setPhoto ($ph) {
+		public function setPhoto($ph) {
 			if (is_string($ph) && trim($ph)!="") {
 				$this->photo = $ph;
 			}
 		}
 		//
-		public function setAdresse ($a) {
+		public function setAdresse($a) {
 			if (is_string($a) && trim($a)!="") {
 				$this->adresse = $a;
 			}
 		}
 		//
-		public function setTelephone ($t) {
+		public function setTelephone($t) {
 			if (is_string($t) && trim($t)!="") {
 				$this->telephone = $t;
 			}
 		}
 		//
-		public function setMotDePasse ($mP) {
+		public function setMotDePasse($mP) {
 			if (is_string($mP) && trim($mP)!="") {
 				$this->motDePasse = $mP;
 			}
 		}
 		//
-		public function setValideParAdmin ($vA) {
+		public function setValideParAdmin($vA) {
 			// validation
 			$this->valideParAdmin = $vA;
 		}
 		//
-		public function setBanni ($b) {
+		public function setBanni($b) {
 			// validation
 			$this->banni = $b;
 		}
 		//
-		public function setIdMoyenComm ($iMC) {
+		public function setIdMoyenComm($iMC) {
 			if (is_int(intval($iMC)) &&  intval($iMC) != 0) {
 				$this->id_moyenComm = $iMC;
 			}
 		}
 		//
-		public function setIdModePaiement ($iMP) {
+		public function setIdModePaiement($iMP) {
 			if (is_int(intval($iMP)) &&  intval($iMP) != 0) {
 				$this->id_modePaiement = $iMP;
 			}
 		}
 		//
-		public function setAdminBan ($iAB) {
+		public function setAdminBan($iAB) {
 			if (is_string($iAB) &&  trim($iAB) != "") {
 				$this->$id_adminBan = $iAB;
 			}
 		}	
 		//
-		public function setAdminValid ($iAV) {
+		public function setAdminValid($iAV) {
 			if (is_string($iAV) &&  trim($iAV) != "") {
 				$this->$id_adminValid = $iAV;
 			}
