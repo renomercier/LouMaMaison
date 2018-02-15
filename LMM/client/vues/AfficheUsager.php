@@ -85,9 +85,6 @@
          
      }
      
-     
-     
-     
             $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
             $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
             $etatAdmin = ($isAdmin) ? 'Déchoir' : 'Promouvoir';
@@ -117,13 +114,6 @@
 
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        $(".btn-modifier").
-        
-    })
-</script>
 
 
  

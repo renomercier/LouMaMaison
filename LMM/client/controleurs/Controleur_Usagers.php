@@ -74,8 +74,10 @@
                                         {
                                            $_SESSION["role"][] = $role->id_nomRole;
                                         }
-                                        //on affiche la liste des sujets en respectant les droits d'usager
-                                        $this->afficheListeUsagers();
+
+                                        // redirection temporaire
+                                        $this->afficheVue("header", $message);
+                                        $this->afficheVue("accueil", $data); 
                                     }
                                     else
                                     {
@@ -89,8 +91,10 @@
                                 {
                                     //si la session existe déjà
                                     $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
-                                    //affiche tous les usagers
-                                    $this->afficheListeUsagers();
+
+                                    // redirection temporaire
+                                    $this->afficheVue("header",$message);
+                                    $this->afficheVue("accueil", $data); 
                                 }
                             }
                         }
@@ -141,6 +145,7 @@
                                     $data["isSuperAdmin"] = true;
                                 }
                             }
+                            $this->afficheVue("header",$message);
                             $this->afficheVue("AfficheUsager", $data); 
                         }
                         else
@@ -264,6 +269,7 @@
 								if($resultat) {
 									// message à l'usager - success de l'insertion dans la BD
 									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées</p>";
+                                    
 /* affichage vue profil */			$this->afficheVue("afficheInscriptionUsager", $data);
 									
 								}
@@ -293,7 +299,8 @@
 			else
 			{
                 // redirection temporaire
-               $this->afficheListeUsagers(); 
+                $this->afficheVue("header",$message);
+                $this->afficheVue("accueil", $data); 
  /*               
                 
                //action par défaut - afficher la liste des sujets/usagers
