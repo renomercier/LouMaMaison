@@ -134,18 +134,18 @@
 
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
                         {
-                        ?>	
-							<div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<a class="dropdown-item" href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
-								<a class="dropdown-item" href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
-								<a class="dropdown-item" href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
-							</div>
+                        ?>	               
+                            <div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="actionAdmin" href="" name="inversBan" id="<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a></li>
+                                <li><a class="actionAdmin" href="" name="inversActiv" id="<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a></li>
+                                <li><a class="actionAdmin" href="" name="inversAdmin" id="<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a></li>
+                            </div>
+							
                         <?php
                         }    
 
                 }
             ?>
-
 
 <script>
    $(document).ready(function() {
