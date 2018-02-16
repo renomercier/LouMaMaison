@@ -23,7 +23,7 @@
                 <input type="password" name="password"  class="form-control" id="inputPassword3" placeholder="Mot de passe">
               </div>
             </div>          	
-                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Connexion">						
+                <input type="submit" name="login" class="btn btn-primary btn-block btn-lg" value="Connexion">						
         </form>
     </div>
 </div> <!-- fin div row -->
@@ -32,5 +32,4 @@
         <?= $data?>
     </div>
 </div> <!-- fin div row -->
-
 

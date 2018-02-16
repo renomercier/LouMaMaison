@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
 * @file 		/modeles/Usagers.php
 * @brief 		Projet WEB 2
@@ -13,7 +13,7 @@
 	*					- definit les requetes specifiques a la classe
 	*
 	* 	11 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
-	*					misAjourChampUnique(), obtenir_avec_role(), definir_admin(), getModePaiement(), getModeCommunication()
+	*					misAjourChampUnique(), definir_role_usager(), obtenir_avec_role(), definir_admin(), getModePaiement(), getModeCommunication()
 	*/
 	class Modele_Usagers extends BaseDAO
 	{	
@@ -21,7 +21,7 @@
 		/**  
 		* @brief     	Renvoie le nom de la table usager
 		* @details   	Retourne le nom de la table contenant les usagers pour la BD 
-		* @param   			Aucun
+		* @param   		Aucun
 		* @return    	Le nom de la table usager
 		*/
 		public function getTableName()
@@ -145,7 +145,6 @@
 				return $this->requete($query, $donnees);	
 		}
 
-
         /**
 		* @brief		Fonction pour effectuer une jointure entre l'usager et son role
 		* @details		Permet de recuperer toutes les informations relative à un usager
@@ -163,8 +162,7 @@
             $resultat = $this->requete($query, $donnees);
             $usager->roles = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
         }
-
-        
+       
         /**
 		* @brief		Fonction qui donne ou enleve les droits d'admin a un usager
 		* @details		Cette fonction n'est accessible qu'au superAdmin
