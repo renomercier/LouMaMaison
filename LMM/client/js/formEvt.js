@@ -1,19 +1,18 @@
 
-(function() {
+// (function() {
 
     // on s'assure que le document soit pret 
-	$(document).ready(function(){
+	$(document).ready(function() {
 
         // div modePaiement: visible ou invisible selon si la case est cochee  
-        if($('#client'))  {
-           $('#client')[0].checked ? $('#divPaiement').show() : $('#divPaiement').hide(); 
-        } 
+        if($('#client')[0]) {
+             $('#client')[0].checked ? $('#divPaiement').show() : $('#divPaiement').hide(); 
+        }
 
         /**
         *   Ecouteur d'evenement ('submit') attache a l'element #formUsager
         */
-        var form = $('#formUsager');
-        form.on( "submit", function(e) {
+        $('#formUsager').on( "submit", function(e) {
           
             // recuperation du formulaire
             var form = e.target;
@@ -96,7 +95,7 @@
 
 	});
 
-})();
+// })();
 
 
 /*  ------------------------------------------------    @fonctions de validation    */

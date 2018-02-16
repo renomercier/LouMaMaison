@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 * @file         /404.php
 * @brief        Projet WEB 2
 * @details      

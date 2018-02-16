@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
 * @file 		/modeles/Usagers.php
 * @brief 		Projet WEB 2
