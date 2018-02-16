@@ -13,7 +13,7 @@
     *
     *   1 methode  |   traite()
     */
-	class Controleur_Appartement extends BaseControleur
+	class Controleur_Appartements extends BaseControleur
 	{	
 		/**
 		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
@@ -46,8 +46,8 @@
 				}				
 			}
             else{
-                $this->afficheVue("header", $message);
-                $this->afficheVue("accueil");
+                
+                $this->afficheListeAppartements();
             }
             
             // affichage du footer
@@ -61,11 +61,11 @@
 		*/	
 		private function afficheListeAppartements()
 		{
-            $message= $this->initialiseMessages();
-            $this->afficheVue("header",$message);
-			$modeleUsagers = $this->getDAO("Usagers");
-			$data["usagers"] = $modeleUsagers->obtenir_tous();
-			$this->afficheVue("AfficheListeUsagers", $data);
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
+			$modeleAppartement= $this->getDAO("Appartements");
+			$data["appartements"] = $modeleAppartement->obtenir_tous();
+			$this->afficheVue("Accueil", $data);
 		}
 	}
 ?>

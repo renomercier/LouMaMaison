@@ -15,14 +15,14 @@
     *
 *** *   ... methodes  |   getTableName(), getAllAuditorium(), saveAuditorium(), deleteAuditorium()
     */
-    class Modele_Appartement extends BaseDAO {
+    class Modele_Appartements extends BaseDAO {
 
     	/**
 		* @brief      Retourne le nom de la table dans la BD
 		* @return     <string>  	( le nom de la table )
 		*/
 		public function getTableName() {
-			return "Appartement";
+			return "appartement";
 		}
 
         /**  
