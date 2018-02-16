@@ -1,11 +1,10 @@
 <?php
 /**
-* @file     
-* @brief    
-* @details  
-*                               
-* @author   
-* @version    
+* @file         /Appartement.php
+* @brief        Projet WEB 2
+* @details                              
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018  
 */
 
     /**
@@ -82,7 +81,7 @@
         public function getVille() {
             return $this->ville;
         }
-
+        //
         public function getOptions() {
             return $this->summary;
         }

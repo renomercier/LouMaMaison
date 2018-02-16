@@ -1,6 +1,6 @@
 <?php
 /**
-* @file 		/controller/Controleur_Usagers.php
+* @file 		/controller/Controleur_Accueil.php
 * @brief 		Projet WEB 2
 * @details								
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -11,7 +11,7 @@
     * @class    Controleur_Accueil - herite de la classe BaseController
     * @details 	
     *
-    *   ... methodes  |   traite(), afficheListeUsagers()
+    *   1 methode  |   traite()
     */
 	class Controleur_Accueil extends BaseControleur
 	{	
