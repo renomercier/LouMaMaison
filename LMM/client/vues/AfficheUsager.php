@@ -126,28 +126,9 @@
 				</div>
 			  </div>
 			</div>
-				
-				
-				
+	
             </div>
-            <?php 
-            if($data["isClient"]) 
-            {
-            ?>  
-
-            <!-- s'i j'ai des réservations comme client -->
-            <div id="reservations"><button class="btn btn-primary mb-2">Mes réservations</button></div>
-            
-            <?php 
-            }
-
-        foreach($data["usager"]->roles as $role)
-        {
-        ?> 
-            <div><span>Role : <?=$role->nomRole?></span><span>  </span></div>
-        <?php
-         }
-        ?>                                
+                             
         </div>
         <div class="col-md-8">
 			<div class="row  justify-content-end" >
@@ -235,7 +216,8 @@
 
                     <?php
                     }
-
+                    if(!$data["isSuperAdmin"])
+                    {
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
                         {
                         ?>	
@@ -246,7 +228,7 @@
 							</div>
                         <?php
                         }    
-
+                    }
                 }
             ?>
 
