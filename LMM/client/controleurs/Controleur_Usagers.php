@@ -120,8 +120,10 @@
 
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
+                        
                         if(isset($params["idUsager"]))
 				        {
+                           
                             $modeleUsagers = $this->getDAO("Usagers");
                             $data["usager"] = $modeleUsagers->obtenir_par_id($params["idUsager"]);
                             $data["isProprio"] = false;
@@ -188,7 +190,7 @@
 									
 									$motdepasse =$data["usager"]-> getMotDePasse();	
 								}
-								
+
 								$modeleUsagers = $this->getDAO("Usagers");
 								$usager = new Usager($idUser, $_REQUEST["nom"], $_REQUEST["prenom"], $photo, $_REQUEST['adresse'], $_REQUEST['telephone'], $motdepasse, $_REQUEST['moyenComm'], $_REQUEST["paiement"]);
 
@@ -196,16 +198,26 @@
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {
 									// message à l'usager - success de l'insertion dans la BD
-									
-                					$this->afficheVue("header");
-									$this->afficheVue("afficheUsager", $data);									
-								}
-								else {
-									// message à l'usager - s'il la requete echoue
-									
-								}
-							}
-						}
+									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
+                				//	$this->afficheVue("header");
+								//	$this->afficheVue("afficheUsager", $data);									
+                                    }
+                                    else 
+                                    {
+                                        // message à l'usager - s'il la requete echoue
+                                        echo "la requete echoue";
+                                    }
+                                }
+                                else 
+                                {
+                                    echo "Veuillez vous assurer de remplir tous les champs requis";	
+                                }
+                            }
+                            else
+                            {
+                                echo "pas de request";
+                            }
+				    
 					break;
 					
                     // case pour bannir | réahabiliter un usager
@@ -418,7 +430,7 @@
 		* @param 		<array> 	$tabUsager 		tableau des parametres de l'usager	
 		* @return    	<string> 	Les messages d'erreur à afficher à l'usager 
 		*/
-        private function validerUsager(array $tabUsager, array $tabRoles) {
+        private function validerUsager(array $tabUsager, array $tabRoles=null) {
 
         	// declaration de la 'string' d'erreurs
 			$erreurs = "";

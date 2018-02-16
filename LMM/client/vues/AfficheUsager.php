@@ -14,6 +14,12 @@
 <div class="container detail">
     <!-- Tout le monde peut voir -->
     <div class="row">
+        <div class="row">
+          <div class="col-sm-12">            
+             <?= isset($data['succes']) ? $data['succes'] : '' ?>
+          </div>
+        </div> <!-- fin div row -->
+        
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-6">
@@ -60,14 +66,9 @@
 									</td>
 									<td>
 										<select name="moyenComm" class="" id="moyenComm">
-									      <?php if(isset($data["modeCommunication"])) { ?>
-												  <option selected value=<?=  $data['modeCommunication'][0]->id ?>><?=  $data['modeCommunication'][0]->moyenComm ?></option>
-										<?php 
-												}	  
-										?>
-											<?php foreach($data['modeCommunicationGeneral'] AS $c) { 
-													if(isset($data['moyenComm'])) { 
-													  if($data['moyenComm'] == $c['id']) { ?>
+									   		<?php foreach($data['modeCommunicationGeneral'] AS $c) { 
+													if(isset($data['modeCommunication'][0]->id )) { 
+													  if($data['modeCommunication'][0]->id  == $c['id']) { ?>
 														<option selected value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
 											<?php     } 
 													  else { ?>
@@ -87,17 +88,10 @@
 									</td>
 									<td>
 										<select class="" name="paiement" id="modePaiement">
-										<?php if(isset($data['modePaiement'])) 
-										{ 
-										?>
-											<option selected value=<?=  $data['modePaiement'][0]->id ?>><?=  $data['modePaiement'][0]->modePaiement ?></option>
-										<?php 
-										}	  
-										?>
 									  <?php 
 										foreach($data['modePaiementGeneral'] AS $p) {
-											if(isset($data['paiement'])) {
-												if($data['paiement'] == $p['id']) { ?>
+											if(isset($data['modePaiement'][0]->id)) {
+												if($data['modePaiement'][0]->id == $p['id']) { ?>
 												  <option selected value=<?=  $p['id'] ?>><?= $p['modePaiement'] ?></option>
 									  <?php     } 
 												else { 
@@ -121,6 +115,8 @@
 					</form>
 				  </div>
 				  <div class="modal-footer bg-primary">
+                      <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+                    
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				  </div>
 				</div>
@@ -133,16 +129,12 @@
         <div class="col-md-8">
 			<div class="row  justify-content-end" >
                 
-                <ul class="nav">
+                <ul class="nav menuProfil">
                     <li class="nav-item" id="div_messagerie"></li>
                     <li class="nav-item" id="div_historique"></li>
 				    <li class="nav-item" id="div_reservations"></li>
 				    <li class="nav-item" id="div_mes_appts"></li>
-                    <li class="dropdown nav-item col-md-6" id="div_action_admin">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Actions Admin
-                      </button>
-                    </li>
+                
                 </ul>
 			</div>
 			<div class="row">
@@ -220,11 +212,18 @@
                     {
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
                         {
-                        ?>	               
+                        ?>	  
+                            <li class="dropdown nav-item col-md-6" id="div_action_admin">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions Admin
+                              </button>
+                            </li>
                             <div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="actionAdmin" href="" name="inversBan" id="<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a></li>
-                                <li><a class="actionAdmin" href="" name="inversActiv" id="<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a></li>
-                                <li><a class="actionAdmin" href="" name="inversAdmin" id="<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a></li>
+                                
+                                <li><button class="btn btn-default actionAdmin" name="inversBan" id="<?=$data["usager"]->getUsername()?>"><?=$etatBann?></button></li>
+                                <li><button class="btn btn-default actionAdmin" name="inversActiv" id="<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></button> </li>
+                                <li><button class="btn btn-default actionAdmin" name="inversAdmin" id="<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></button> </li>
+
                             </div>
 							
                         <?php
@@ -234,46 +233,7 @@
             ?>
 
 <script>
-   $(document).ready(function() {
-		$("#div_info_plus").append($("#info_plus"));
-		
-		$("#div_info_contact").append($("#info_contact"));
-        
-		$("#div_modif_profil").append($(".btn-modifier"));
-		
-		$("#div_messagerie").append($("#messagerie"));
-		
-		$("#div_action_admin").append($("#action_admin"));
-		
-		$("#div_historique").append($("#historique"));
-		
-		$("#div_reservations").append($("#reservations"));
-		
-		$("#div_mes_appts").append($("#mes_appts"));
-		
-		//Action: Modifier la presentation
-	$(document).on('click', '.sauvegarder', function(e){
-	e.preventDefault();
-	var idUser = $(this).prev().val();
-	$.ajax({
-      url: 'index.php?Usagers&action=modifierProfil', //ajouter des parametres
-      dataType: 'html',
-	  data: $("#modifierProfil"+idUser).serialize(),
-      success: function(htmlText) {	
-		/*$('.modal-backdrop.fade.show').remove();
-		$('.listePresentations'+idCat).empty();
-		$('.listePresentations'+idCat).prepend(htmlText);
-		$('.listePresentations'+idCat).children().last().prev().children().first().removeClass("bg-info").addClass("bg-success"); //changer la couleur*/
-		
-      },
-      error: function(xhr, ajaxOptions, thrownError) {
-        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-      }
-    });
-	
-});
-        
-    });
+   
 </script>
 
 

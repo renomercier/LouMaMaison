@@ -35,3 +35,48 @@
         });
 
     });
+
+$(document).ready(function() {
+    
+    //Afficher profil d'usager
+		$("#div_info_plus").append($("#info_plus"));
+		
+		$("#div_info_contact").append($("#info_contact"));
+        
+		$("#div_modif_profil").append($(".btn-modifier"));
+		
+		$("#div_messagerie").append($("#messagerie"));
+		
+		$("#div_action_admin").append($("#action_admin"));
+       
+		$(".menuProfil").append($("#div_action_admin"));
+		
+		$("#div_historique").append($("#historique"));
+		
+		$("#div_reservations").append($("#reservations"));
+		
+		$("#div_mes_appts").append($("#mes_appts"));
+		
+    //Action: Modifier le profil d'usager
+	$(document).on('click', '.sauvegarder', function(e){
+	e.preventDefault();
+	var idUser = $(this).prev().val();
+	$.ajax({
+      url: 'index.php?Usagers&action=modifierProfil', //ajouter des parametres
+      dataType: 'html',
+	  data: $("#modifierProfil"+idUser).serialize(),
+      success: function(htmlText) {	
+		/*$('.modal-backdrop.fade.show').remove();
+		$('.listePresentations'+idCat).empty();
+		$('.listePresentations'+idCat).prepend(htmlText);
+		$('.listePresentations'+idCat).children().last().prev().children().first().removeClass("bg-info").addClass("bg-success"); //changer la couleur*/
+		
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+	
+});
+        
+    });
