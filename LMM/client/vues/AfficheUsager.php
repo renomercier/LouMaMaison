@@ -6,21 +6,7 @@
 * @version      v.1 | fevrier 2018
 -->
 
-<?php 
-    $isAdmin = false;
-    $isSuperAdmin = false;
-
-    foreach($data["usager"]->roles as $role)
-    {
-        if($role->id_nomRole == 1)
-        {
-            $isSuperAdmin = true;
-        }
-        if($role->id_nomRole == 2)
-        {
-            $isAdmin = true;
-        }
-    }                      
+<?php              
     $messagerie = (isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) ? "Messagerie" : "Contacter";
  ?>
 
@@ -50,16 +36,6 @@
             
             <?php 
             }
-             if($_SESSION["username"] == $_REQUEST["idUsager"]) 
-            {
-            ?>
-             <button class="btn btn-info mb-2 btn-modifier" id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
-            <?php
-             }
-
-            $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
-            $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
-            $etatAdmin = ($isAdmin) ? 'Déchoir' : 'Promouvoir';
 
         foreach($data["usager"]->roles as $role)
         {
@@ -146,7 +122,7 @@
 
                         $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
                         $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
-                        $etatAdmin = ($isAdmin) ? 'Déchoir' : 'Promouvoir';
+                        $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
 
                     foreach($data["usager"]->roles as $role)
                     {
@@ -156,9 +132,7 @@
                     <?php
                     }
 
-                    if(!$isSuperAdmin)
-                    {
-                        if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin && !$isSuperAdmin))
+                        if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
                         {
                         ?>	
 							<div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -168,14 +142,13 @@
 							</div>
                         <?php
                         }    
-                    }
 
                 }
             ?>
 
 
 <script>
-  /*  $(document).ready(function() {
+   $(document).ready(function() {
 		$("#div_info_plus").append($("#info_plus"));
 		
 		$("#div_info_contact").append($("#info_contact"));
@@ -192,7 +165,7 @@
 		
 		$("#div_mes_appts").append($("#mes_appts"));
         
-    });*/
+    });
 </script>
 
 
