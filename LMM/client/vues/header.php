@@ -11,7 +11,6 @@
     
 <head>
 
-
 	<!-- meta tags requis -->
 	<meta charset="UTF-8">
   	<meta name="description" content="ProjetWEB2">
@@ -32,9 +31,7 @@
 	<script src="./javascript/script.js" ></script>
 	<script src="js/formEvt.js"></script>  
 
-
 </head>
-    
 <header>
 </header>
 
@@ -51,21 +48,25 @@
             </li>
       		<?php
 
-			if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)
+			if(isset($_SESSION["username"])) 
             {
+                if((in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)
+                {
 			?>
-			 	<li class="nav-item"><a class="nav-link" href="index.php?Usagers">Usagers</a></li>
+			 	<li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheListeUsagers">Usagers</a></li>
 			<?php
-			}
+                }
+                ?>
+            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
+			<?php
+            }
             else{
                 ?>
                 <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
             <?php
             }
 			?>
-        
-	      	<li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
 
 	    </ul>
           

@@ -6,21 +6,7 @@
 * @version      v.1 | fevrier 2018
 -->
 
-<?php 
-    $isAdmin = false;
-    $isSuperAdmin = false;
-
-    foreach($data["usager"]->roles as $role)
-    {
-        if($role->id_nomRole == 1)
-        {
-            $isSuperAdmin = true;
-        }
-        if($role->id_nomRole == 2)
-        {
-            $isAdmin = true;
-        }
-    }                      
+<?php              
     $messagerie = (isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) ? "Messagerie" : "Contacter";
  ?>
 
@@ -31,7 +17,7 @@
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-6">
-                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" style="width:80%"> </div>
+                    <div id="photo"> <img src="./images/<?=$data["usager"]->getPhoto() ?>" style="width:80%"> </div>
                 </div>
                 <div class="col-md-6" id="info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
@@ -40,6 +26,24 @@
 				<div class="col-md-12" id="div_info_contact">Moyen de contact : </div>
 				<div class="col-md-12" id="div_modif_profil"></div>
             </div>
+            <?php 
+            if($data["isClient"]) 
+            {
+            ?>  
+
+            <!-- s'i j'ai des réservations comme client -->
+            <div id="reservations"><button class="btn btn-primary mb-2">Mes réservations</button></div>
+            
+            <?php 
+            }
+
+        foreach($data["usager"]->roles as $role)
+        {
+        ?> 
+            <div><span>Role : <?=$role->nomRole?></span><span>  </span></div>
+        <?php
+         }
+        ?>                                
         </div>
         <div class="col-md-8">
 			<div class="row  justify-content-end" >
@@ -55,8 +59,6 @@
                       </button>
                     </li>
                 </ul>
-                
-
 			</div>
 			<div class="row">
 				
@@ -120,7 +122,7 @@
 
                         $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
                         $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
-                        $etatAdmin = ($isAdmin) ? 'Déchoir' : 'Promouvoir';
+                        $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
 
                     foreach($data["usager"]->roles as $role)
                     {
@@ -130,9 +132,7 @@
                     <?php
                     }
 
-                    if(!$isSuperAdmin)
-                    {
-                        if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin && !$isSuperAdmin))
+                        if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
                         {
                         ?>	
 							<div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -142,13 +142,13 @@
 							</div>
                         <?php
                         }    
-                    }
 
                 }
             ?>
 
+
 <script>
-    $(document).ready(function() {
+   $(document).ready(function() {
 		$("#div_info_plus").append($("#info_plus"));
 		
 		$("#div_info_contact").append($("#info_contact"));

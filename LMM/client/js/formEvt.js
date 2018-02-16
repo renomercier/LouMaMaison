@@ -56,7 +56,7 @@
             (!valModePaiement) ? ($('#' + form.modePaiement.id).addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($('#' + form.modePaiement.id).removeClass('alert-warning'), $('#aideModePaiement').empty());
            
             // une fois les validations faites, on soumet le formulaire
-            if(valTypeUsager && valUsername && valNom && valPrenom && valAdresse && valTelephone && valPwd0 && valPwd1 && valMoyenComm) {
+            if(valTypeUsager && valUsername && valNom && valPrenom && valAdresse && valTelephone && valPwd0 && valPwd1 && valMoyenComm && valModePaiement) {
                 
                 // soumission du formulaire
                 $(this).unbind('submit').submit();
