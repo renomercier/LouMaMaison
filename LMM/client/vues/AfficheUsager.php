@@ -36,11 +36,113 @@
                 <div class="col-md-6" id="info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
                 </div>
-                <form class="form">
-                    <div class="col-md-12 form-group row" id="div_info_plus"></div>
-                    <div class="col-md-12 form-group row" id="div_info_contact"></div>
-                    <div class="col-md-12 form-group row" id="div_modif_profil"></div>
-                </form>
+				<div id="profilUser" class="col-md-12">
+					<form class="form">
+						<div class="col-md-12 form-group row" id="div_info_plus"></div>
+						<div class="col-md-12 form-group row" id="div_info_contact"></div>
+						<div class="col-md-12 form-group row" id="div_modif_profil"></div>
+					</form>
+				</div>
+				
+			<!-- Modal -->
+			<div class="modal fade" id="myModal<?=$_SESSION["username"]?>" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header bg-primary">
+					<h3 class="modal-title">Modifier votre profil</h3>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				  </div>
+				  <div class="modal-body">
+				  <form id="modifierProfil<?=$_SESSION["username"]?>">
+					   <table class="table table-hover">
+							<tbody>
+								<tr>
+									<td>Prénom</td><td><input type="text" name="prenom" value="<?= isset($data['prenom']) ? $data['prenom'] : '' ?>"></td>
+								</tr>
+								<tr>
+									<td>Nom</td><td><input type="text" name="nom" value="<?= isset($data['nom']) ? $data['nom'] : '' ?>"></td>
+								</tr>
+								<tr>
+									<td>Adresse</td><td><input type="text" name="adresse" value="<?= isset($data['adresse']) ? $data['adresse'] : '' ?>"></td>
+								</tr>
+								<tr>
+									<td>Téléphone</td><td><input type="text" name="telephone" value="<?= isset($data['telephone']) ? $data['telephone'] : '' ?>"></td>
+								</tr>
+								<tr>
+									<td>
+										<label for="moyenComm" class="form-control-label mr-sm-2">Moyen de contact</label>
+									</td>
+									<td>
+										<select name="moyenComm" class="" id="moyenComm">
+									      <?php if(isset($data["modeCommunication"])) { ?>
+												  <option selected value=<?=  $data['modeCommunication'][0]->id ?>><?=  $data['modeCommunication'][0]->moyenComm ?></option>
+										<?php 
+												}	  
+										?>
+											<?php foreach($data['modeCommunicationGeneral'] AS $c) { 
+													if(isset($data['moyenComm'])) { 
+													  if($data['moyenComm'] == $c['id']) { ?>
+														<option selected value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
+											<?php     } 
+													  else { ?>
+													  <option value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
+											<?php     }
+													} 
+													else { ?>
+													  <option value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
+											<?php   }
+												  } ?>
+											</select>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label for="paiement" class="form-control-label mr-sm-2">Type de paiement</label>
+									</td>
+									<td>
+										<select class="" name="paiement" id="modePaiement">
+										<?php if(isset($data['modePaiement'])) 
+										{ 
+										?>
+											<option selected value=<?=  $data['modePaiement'][0]->id ?>><?=  $data['modePaiement'][0]->modePaiement ?></option>
+										<?php 
+										}	  
+										?>
+									  <?php 
+										foreach($data['modePaiementGeneral'] AS $p) {
+											if(isset($data['paiement'])) {
+												if($data['paiement'] == $p['id']) { ?>
+												  <option selected value=<?=  $p['id'] ?>><?= $p['modePaiement'] ?></option>
+									  <?php     } 
+												else { 
+										?>
+												  <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
+									  <?php     }
+											}
+										
+											  else { ?>
+												<option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
+									  <?php   }
+										}
+											 ?>
+										</select>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
+						<button type="button" class="btn btn-success sauvegarder">Save changes</button>
+					</form>
+				  </div>
+				  <div class="modal-footer bg-primary">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+				
+				
+				
             </div>
         </div>
         <div class="col-md-8">
@@ -70,7 +172,7 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <div id="info_contact">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div>
+                <span id="info_contact"><div  class="form-group row">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
                 <a class="nav-link" href="#" id="historique">Voyages</a>
                 <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
@@ -96,7 +198,7 @@
                            <div class="form-group row">Username : <?=$data["usager"]->getUsername();?></div> 
                            <div class="form-group row">Adresse : <?=$data["usager"]->getAdresse();?></div> 
                            <div class="form-group row">Téléphone : <?=$data["usager"]->getTelephone();?></div> 
-                           <div class="form-group row">Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></div> 
+                           <div class="form-group row mb-0">Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></div> 
                         </span>
                         <?php 
                         if($data["isClient"]) 
@@ -112,8 +214,8 @@
                          if($_SESSION["username"] == $_REQUEST["idUsager"]) 
                         {
                         ?>
-                         <button class="btn btn-info mb-2 btn-modifier" id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
-                        <?php
+                         <button type="button" class="btn btn-info mb-2 btn-modifier" data-toggle="modal" data-target="#myModal<?=$_SESSION["username"]?>"  id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
+						<?php
                          }
 
                  }
@@ -164,6 +266,28 @@
 		$("#div_reservations").append($("#reservations"));
 		
 		$("#div_mes_appts").append($("#mes_appts"));
+		
+		//Action: Modifier la presentation
+	$(document).on('click', '.sauvegarder', function(e){
+	e.preventDefault();
+	var idUser = $(this).prev().val();
+	$.ajax({
+      url: 'index.php?Usagers&action=modifierProfil', //ajouter des parametres
+      dataType: 'html',
+	  data: $("#modifierProfil"+idUser).serialize(),
+      success: function(htmlText) {	
+		/*$('.modal-backdrop.fade.show').remove();
+		$('.listePresentations'+idCat).empty();
+		$('.listePresentations'+idCat).prepend(htmlText);
+		$('.listePresentations'+idCat).children().last().prev().children().first().removeClass("bg-info").addClass("bg-success"); //changer la couleur*/
+		
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+	
+});
         
     });
 </script>

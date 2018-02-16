@@ -117,7 +117,13 @@
                             $data["isAdmin"] = false;
                             $data["isSuperAdmin"] = false;
                             $data["modePaiement"] = $modeleUsagers->getModePaiement($params["idUsager"]);
+                            $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
                             $data["modeCommunication"] = $modeleUsagers->getModeCommunication($params["idUsager"]);
+                            $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
+							$data['prenom'] = $data["usager"]->getPrenom();
+							$data['nom'] = $data["usager"]->getNom();
+							$data['adresse'] = $data["usager"]->getAdresse();
+							$data['telephone'] = $data["usager"]->getTelephone();
                             foreach($data["usager"]->roles as $role)
                             {
                                 if($role->id_nomRole == 3)
@@ -145,6 +151,49 @@
                             trigger_error("Pas d'id spécifié...");
                         }
                         break;
+						
+					case "modifierProfil":
+						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
+						{
+							if(!empty($_REQUEST["prenom"]) && !empty($_REQUEST["nom"])&& !empty($_REQUEST["adresse"]) && !empty($_REQUEST["telephone"]) && !empty($_REQUEST["moyenComm"]) && !empty($_REQUEST["paiement"])) 
+							{
+								if(!isset($_REQUEST['idUser']) || $_REQUEST['idUser'] == '')
+								{
+									$idUser = 0; //on cree usager
+								}
+								else
+								{
+									$idUser = $_REQUEST['idUser']; //sinon, on modifie l'existante
+									$modeleUsagers = $this->getDAO("Usagers");
+									$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
+									//a changer
+									if(isset($_REQUEST['photo'])) {
+										// ajout d'insertion d'une photo (src) à faire... + upload de l'image
+									} else {
+										$photo =$data["usager"]->getPhoto();
+									}
+									
+									$motdepasse =$data["usager"]-> getMotDePasse();	
+								}
+								
+								$modeleUsagers = $this->getDAO("Usagers");
+								$usager = new Usager($idUser, $_REQUEST["nom"], $_REQUEST["prenom"], $photo, $_REQUEST['adresse'], $_REQUEST['telephone'], $motdepasse, $_REQUEST['moyenComm'], $_REQUEST["paiement"]);
+
+								// appel du modele_Usagers et insertion dans la BD
+								$resultat = $modeleUsagers->sauvegarder($usager);
+									if($resultat) {
+									// message à l'usager - success de l'insertion dans la BD
+									
+                					$this->afficheVue("header");
+									$this->afficheVue("afficheUsager", $data);									
+								}
+								else {
+									// message à l'usager - s'il la requete echoue
+									
+								}
+							}
+						}
+					break;
 					
                         // bannir | réahabiliter un usager
 					case "inversBan":

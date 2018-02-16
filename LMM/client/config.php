@@ -30,8 +30,8 @@
 	//define("HOST", "127.0.0.1");
 	define("DBNAME", "loumamaison");
 	define("USERNAME", "root");
-	//define("PWD", "root");
-	define("PWD", "");
+	define("PWD", "root");
+	//define("PWD", "");
 	define("DBTYPE", "mysql");
 
 ?>
