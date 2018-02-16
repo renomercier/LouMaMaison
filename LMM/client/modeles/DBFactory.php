@@ -36,6 +36,7 @@
 			}
 			else
 				trigger_error("Le type de BD spécifié n'est pas supporté.");
+			
 			//else if...
 			
 			$laDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

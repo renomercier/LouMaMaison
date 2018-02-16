@@ -11,14 +11,14 @@
     * @class    Controleur_Usagers - herite de la classe BaseController
     * @details 	
     *
-    *   ... methodes  |   traite(), afficheListeUsagers()
+    *   5 methodes  |   traite(), afficheListeUsagers(), afficheFormInscription(), validerUsager(), attribution_role()
     */
 	class Controleur_Usagers extends BaseControleur
 	{	
 		/**
 		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
 		* @details    gere les actions (switch case) ainsi que les parametres envoyes
-		* @param      <array>  	$params 	les parametres envoyes
+		* @param      <array>  		$params 	les parametres envoyes
 		* @return     <...>  	( tout depend du case )
 		*/	
 		public function traite(array $params)
@@ -29,26 +29,28 @@
                 et ses droits sur le site
             */
             $message= $this->initialiseMessages();
-            //
      
-            //
-			//si le paramètre action existe
+			// si le paramètre action existe
 			if(isset($params["action"]))
 			{
 				//switch en fonction de l'action qui nous est envoyée
 				//ce switch détermine la vue et obtient le modèle
 				switch($params["action"])
 				{
+					// case de connexion d'un usager
 					case "login":
                         $this->afficheVue("header", $message);
 						$this->afficheVue("AfficheLogin");
 						break;
-						
+
+					// case de deconnexion d'un usager	
 					case "logout":
 						session_destroy();
-						header('location:index.php');
+                        $this->afficheVue("header", $message);
+						$this->afficheVue("accueil");
 						break;
-						
+
+					// case d'authetification d'un usager	
 					case "authentifier":
                         if(isset($params["login"]))
 						{
@@ -64,7 +66,7 @@
                                     if($data)
                                     {
                                         $data = $modeleUsagers->obtenir_par_id($params["username"]);
-                                        //on crée la session
+                                        // on crée la session
                                         $_SESSION["username"] = $data->getUsername();
                                         $_SESSION["nom"] = $data->getNom();
                                         $_SESSION["prenom"] = $data->getPrenom();
@@ -83,7 +85,7 @@
                                     }
                                     else
                                     {
-                                        //si l'usager n'est pas authentifié
+                                        // si l'usager n'est pas authentifié
                                         $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
                                         $this->afficheVue("header", $message);
                                         $this->afficheVue("AfficheLogin", $data);
@@ -91,7 +93,7 @@
                                 }
                                 else
                                 {
-                                    //si la session existe déjà
+                                    // si la session existe déjà
                                     $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
 
                                     // redirection temporaire
@@ -102,7 +104,7 @@
                         }
 
 						break;
-
+					// case d'affichage de la liste de tous les usagers
 					case "afficheListeUsagers":
 						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
 						{
@@ -116,7 +118,7 @@
 						}
 						break;
 
-                    //pour afficher le profil du client 
+                    // case d'affichage le profil du client 
                     case "afficheUsager" :
                         if(isset($params["idUsager"]))
 				        {
@@ -127,7 +129,13 @@
                             $data["isAdmin"] = false;
                             $data["isSuperAdmin"] = false;
                             $data["modePaiement"] = $modeleUsagers->getModePaiement($params["idUsager"]);
+                            $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
                             $data["modeCommunication"] = $modeleUsagers->getModeCommunication($params["idUsager"]);
+                            $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
+							$data['prenom'] = $data["usager"]->getPrenom();
+							$data['nom'] = $data["usager"]->getNom();
+							$data['adresse'] = $data["usager"]->getAdresse();
+							$data['telephone'] = $data["usager"]->getTelephone();
                             foreach($data["usager"]->roles as $role)
                             {
                                 if($role->id_nomRole == 3)
@@ -156,8 +164,51 @@
                             trigger_error("Pas d'id spécifié...");
                         }
                         break;
+						
+					case "modifierProfil":
+						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
+						{
+							if(!empty($_REQUEST["prenom"]) && !empty($_REQUEST["nom"])&& !empty($_REQUEST["adresse"]) && !empty($_REQUEST["telephone"]) && !empty($_REQUEST["moyenComm"]) && !empty($_REQUEST["paiement"])) 
+							{
+								if(!isset($_REQUEST['idUser']) || $_REQUEST['idUser'] == '')
+								{
+									$idUser = 0; //on cree usager
+								}
+								else
+								{
+									$idUser = $_REQUEST['idUser']; //sinon, on modifie l'existante
+									$modeleUsagers = $this->getDAO("Usagers");
+									$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
+									//a changer
+									if(isset($_REQUEST['photo'])) {
+										// ajout d'insertion d'une photo (src) à faire... + upload de l'image
+									} else {
+										$photo =$data["usager"]->getPhoto();
+									}
+									
+									$motdepasse =$data["usager"]-> getMotDePasse();	
+								}
+								
+								$modeleUsagers = $this->getDAO("Usagers");
+								$usager = new Usager($idUser, $_REQUEST["nom"], $_REQUEST["prenom"], $photo, $_REQUEST['adresse'], $_REQUEST['telephone'], $motdepasse, $_REQUEST['moyenComm'], $_REQUEST["paiement"]);
+
+								// appel du modele_Usagers et insertion dans la BD
+								$resultat = $modeleUsagers->sauvegarder($usager);
+									if($resultat) {
+									// message à l'usager - success de l'insertion dans la BD
+									
+                					$this->afficheVue("header");
+									$this->afficheVue("afficheUsager", $data);									
+								}
+								else {
+									// message à l'usager - s'il la requete echoue
+									
+								}
+							}
+						}
+					break;
 					
-                        // bannir | réahabiliter un usager
+                    // case pour bannir | réahabiliter un usager
 					case "inversBan":
 						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
@@ -171,6 +222,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
+
 							}
 							else
 							{
@@ -183,7 +235,7 @@
 						}
 						break;
 					
-                        // activer | désactiver un usager
+                    // case pour activer | désactiver un usager
                     case "inversActiv":
 						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)
 						{
@@ -209,7 +261,7 @@
 						}
 						break;
                     
-                        // Promouvoire | Déchoir un usager
+                    // case pour promouvoir | Déchoir un usager
                     case "inversAdmin":
 						if(isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]))
 						{
@@ -295,30 +347,30 @@
 						}
 						break;
 
+					// case par defaut
 					default:
-						trigger_error("Action invalide.");		
-				}				
+						trigger_error("Action invalide.");				
+				} // fin du switch case 				
 			}
 			else
 			{
                 // redirection temporaire
                 $this->afficheVue("header",$message);
                 $this->afficheVue("accueil", $data); 
- /*               
-                
-               //action par défaut - afficher la liste des sujets/usagers
+
+/*               
+               // action par défaut - afficher la liste des sujets/usagers
 				if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
 				{
 					$this->afficheListeUsagers();
 				}
 				else
 				{
-					//afficher la page d'erreur
+					// afficher la page d'erreur
 					$this->afficheVue("404");
 				}
 */
 			}
-            
 			// affichage du footer
             $this->afficheVue("footer");
 		}
@@ -384,7 +436,7 @@
 			}
 			// verification si le champ est rempli et pret à l'insertion 
 			foreach($tabUsager AS $t => $valeur) {
-				
+				// 'nettoyage' des donnees et verification si le champ est vide
 				$resultat = htmlspecialchars(stripslashes(trim($valeur)));
 				$erreurs .= ($resultat == "") ? "Le champ " . $t . " est requis<br>" : "";
 

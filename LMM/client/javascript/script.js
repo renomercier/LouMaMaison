@@ -1,8 +1,7 @@
-window.onload = function(){
 /**
-	fonction pour afficher la liste des présentations
-	par categorie.
-	defini les styles css des elements et leurs effets.
+  fonction pour afficher la liste des présentations
+  par categorie.
+  defini les styles css des elements et leurs effets.
 */
     $(".actionAdmin").click(function(e) {
         $(this).each(function() {
@@ -33,7 +32,6 @@ window.onload = function(){
               }
             });
 
-          });
-    });
+        });
 
-}
+    });
