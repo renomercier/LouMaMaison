@@ -51,10 +51,10 @@
 
 			if(class_exists($classe))
 			{
-				//on fait une connexion à la base de données
+				// on fait une connexion à la base de données
 				$laDB = DBFactory::getDB(DBTYPE, DBNAME, HOST, USERNAME, PWD);
 
-				//on crée une instance de la classe Modele_$classe
+				// on crée une instance de la classe Modele_$classe
 				$objetModele = new $classe($laDB);
 				if($objetModele instanceof BaseDAO)
 				{
@@ -73,7 +73,7 @@
 
         /**
         * @brief       la méthode qui initialise les messages a retourner à l'utilisateur
-        * @param       <array>       $data         Tableau de messages à l'usager          
+        * @return      <array>       $data       Tableau de messages à l'usager          
         */
         protected function initialiseMessages()
         {

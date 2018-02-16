@@ -4,12 +4,13 @@
     // on s'assure que le document soit pret 
 	$(document).ready(function(){
 
-        // div modePaiement cachee par defaut
-        // $('#divPaiement').hide();       
-        $('#client')[0].checked ? $('#divPaiement').show() : $('#divPaiement').hide();
+        // div modePaiement: visible ou invisible selon si la case est cochee  
+        if($('#client'))  {
+           $('#client')[0].checked ? $('#divPaiement').show() : $('#divPaiement').hide(); 
+        } 
 
         /**
-        *   Ecouteur d'evenement ('submit') attache a l'element input#formUsager
+        *   Ecouteur d'evenement ('submit') attache a l'element #formUsager
         */
         var form = $('#formUsager');
         form.on( "submit", function(e) {
@@ -57,7 +58,7 @@
             (!valModePaiement) ? ($('#' + form.modePaiement.id).addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($('#' + form.modePaiement.id).removeClass('alert-warning'), $('#aideModePaiement').empty());
            
             // une fois les validations faites, on soumet le formulaire
-            if(valTypeUsager && valUsername && valNom && valPrenom && valAdresse && valTelephone && valPwd0 && valPwd1 && (form.client.checked ? valMoyenComm  && valModePaiement : valMoyenComm)) {
+            if(valTypeUsager && valUsername && valNom && valPrenom && valAdresse && valTelephone && valPwd0 && valPwd1 && (form.client.checked ? valMoyenComm  && valModePaiement : valMoyenComm)) {  
                 
                 // soumission du formulaire
                 $(this).unbind('submit').submit();

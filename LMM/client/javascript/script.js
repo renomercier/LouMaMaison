@@ -13,7 +13,7 @@ window.onload = function(){
             var action = $(this).attr('name');
             var text = $(this).html();
             var newText ='';
-            
+
             if(action=='inversBan')
                  newText = (text == 'Bannir')? "Réhabiliter":"Bannir";
             if(action=='inversActiv')

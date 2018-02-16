@@ -1,15 +1,20 @@
 <?php
 /**
-* @file     
-* @brief    
-* @details  
-*                               
-* @author   
-* @version    
+* @file 		/Location.php
+* @brief 		Projet WEB 2
+* @details								
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018 	
 */
 	/**
-	* Classe Location
+	* Classe 
 	*/
+	/**
+    * @class    Location 
+    * @details  Instancie un object de type Location
+    *
+    *   1 constructeur  |   getters & setters
+    */
 	class Location
 	{
 		//attributs privés
