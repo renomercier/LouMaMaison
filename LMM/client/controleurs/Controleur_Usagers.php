@@ -46,7 +46,8 @@
 					// case de deconnexion d'un usager	
 					case "logout":
 						session_destroy();
-						header('location:index.php');
+                        $this->afficheVue("header", $message);
+						$this->afficheVue("accueil");
 						break;
 
 					// case d'authetification d'un usager	
