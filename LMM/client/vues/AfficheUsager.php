@@ -25,7 +25,7 @@
  ?>
 
 
-<div class="container">
+<div class="container detail">
     <!-- Tout le monde peut voir -->
     <div class="row">
         <div class="col-md-4">
@@ -36,20 +36,30 @@
                 <div class="col-md-6" id="info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
                 </div>
-				<div class="col-md-12" id="div_info_plus"></div>
-				<div class="col-md-12" id="div_info_contact">Moyen de contact : </div>
-				<div class="col-md-12" id="div_modif_profil"></div>
+                <form class="form">
+                    <div class="col-md-12 form-group row" id="div_info_plus"></div>
+                    <div class="col-md-12 form-group row" id="div_info_contact"></div>
+                    <div class="col-md-12 form-group row" id="div_modif_profil"></div>
+                </form>
             </div>
         </div>
         <div class="col-md-8">
-			<div class="row">
-				<div class="col-md-6" id="div_messagerie"></div>
-				<div class="col-md-6" id="div_action_admin"></div>
+			<div class="row  justify-content-end" >
+                
+                <ul class="nav">
+                    <li class="nav-item" id="div_messagerie"></li>
+                    <li class="nav-item" id="div_historique"></li>
+				    <li class="nav-item" id="div_reservations"></li>
+				    <li class="nav-item" id="div_mes_appts"></li>
+                    <li class="dropdown nav-item col-md-6" id="div_action_admin">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions Admin
+                      </button>
+                    </li>
+                </ul>
 			</div>
-			<div class="row">			
-				<div class="col-md-12" id="div_historique"></div>
-				<div class="col-md-12" id="div_reservations"></div>
-				<div class="col-md-12" id="div_mes_appts"></div>
+			<div class="row">
+				<div></div>
 			</div>
 		</div>
     </div>
@@ -60,15 +70,15 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <span id="info_contact"><?=$data["modeCommunication"][0]->moyenComm;?></span>
-                <span id="historique"><button class="btn btn-primary mb-2">Voyages</button></span>
-                <span id="messagerie"><button class="btn btn-primary mb-2"><?=$messagerie?></button></span>
+                <div id="info_contact">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div>
+                <a class="nav-link" href="#" id="historique">Voyages</a>
+                <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <span id="mes_appts" class="btn btn-primary mb-2"><button class="btn btn-primary">Mes Appartements</button></span>
+                       <a class="nav-link" href="#" id="mes_appts">Appartements</a>
                    <?php      
                     }
                     ?>
@@ -83,10 +93,10 @@
                     {
                     ?>
                         <span id="info_plus" class="">
-                           <p>Username : <?=$data["usager"]->getUsername();?></p> 
-                           <p>Adresse : <?=$data["usager"]->getAdresse();?></p> 
-                           <p>Téléphone : <?=$data["usager"]->getTelephone();?></p> 
-                           <p>Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></p> 
+                           <div class="form-group row">Username : <?=$data["usager"]->getUsername();?></div> 
+                           <div class="form-group row">Adresse : <?=$data["usager"]->getAdresse();?></div> 
+                           <div class="form-group row">Téléphone : <?=$data["usager"]->getTelephone();?></div> 
+                           <div class="form-group row">Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></div> 
                         </span>
                         <?php 
                         if($data["isClient"]) 
@@ -94,7 +104,7 @@
                         ?>  
 
                         <!-- s'i j'ai des réservations comme client -->
-                        <span id="reservations"><button class="btn btn-primary mb-2">Mes réservations</button></span>
+                        <a class="nav-link" href="#" id="reservations">Réservations</a>
 
                         <?php 
                         }
@@ -125,19 +135,17 @@
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$isAdmin && !$isSuperAdmin))
                         {
                         ?>	
-							<span id="action_admin">
-								<a href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
-								<a href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
-								<a href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
-							</span>
+							<div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="index.php?Usagers&action=inversBan&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatBann?></a>
+								<a class="dropdown-item" href="index.php?Usagers&action=inversActiv&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></a>
+								<a class="dropdown-item" href="index.php?Usagers&action=inversAdmin&idUsager=<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></a>
+							</div>
                         <?php
                         }    
                     }
 
                 }
             ?>
-
-
 
 <script>
     $(document).ready(function() {

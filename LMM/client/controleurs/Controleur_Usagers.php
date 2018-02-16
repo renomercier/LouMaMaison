@@ -30,6 +30,7 @@
             */
             $message= $this->initialiseMessages();
             //
+     
             //
 			//si le paramètre action existe
 			if(isset($params["action"]))
@@ -186,7 +187,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
-								$this->afficheListeUsagers();
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -237,9 +238,10 @@
 
 					// case de sauvegarde d'un usager
 					case "sauvegarderUsager" :
+					
+/* ajouter !empty */	if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && isset($params['nom']) && isset($params['prenom']) && isset($params['adresse']) && 
+							isset($params['telephone']) && isset($params['pwd0']) && isset($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm'])) {
 
-/* ajouter !empty */	
-                        if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && isset($params['nom']) && isset($params['prenom']) && isset($params['adresse']) && isset($params['telephone']) && isset($params['pwd0']) && isset($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm'])) {
 							
 							if(isset($params['photo'])) {
 							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
@@ -248,24 +250,28 @@
 							}
 
 							// validation des champs input du formulaire d'inscription d'un usager
-							$params['erreurs'] = $this->validerUsager([ 'Le nom d\'utilisateur'=>$params['username'], 'Le nom'=>$params["nom"], 'Le prénom'=>$params["prenom"], 'L\'adresse'=>$params['adresse'], 'Le téléphone'=>$params['telephone'], 'Le mot de passe'=>$params['pwd0'], 'La validation du mot de passe'=>$params['pwd1'], 'Le mode de paiement'=>$params['modePaiement'], 'Le moyen de communication'=>$params['moyenComm'] ]);
+							$params['erreurs'] = $this->validerUsager([ 'Le nom d\'utilisateur'=>$params['username'], 'Le nom'=>$params["nom"], 'Le prénom'=>$params["prenom"], 'L\'adresse'=>$params['adresse'], 'Le téléphone'=>$params['telephone'], 'Le mot de passe'=>$params['pwd0'], 'La validation du mot de passe'=>$params['pwd1'], 'Le mode de paiement'=>$params['modePaiement'], 'Le moyen de communication'=>$params['moyenComm'] ], [ 'client'=>isset($params['client']), 'prestataire'=>isset($params['prestataire']) ]);
 							// si pas d'erreurs, on instancie l'usager et on l'insère dans la BD
 							if(!$params['erreurs']) {
 								// on instancie un nouvel Usager
-								$usager = new Usager($params['username'], $params["nom"], $params["prenom"], $photo, $params['adresse'], $params['telephone'], $params['pwd0'], $params['moyenComm'], $params['modePaiement']);
+								$usager = new Usager($params['username'], $params["nom"], $params["prenom"], $photo, $params['adresse'], $params['telephone'], $params['pwd0'], $params['moyenComm'], (isset($params['modePaiement']) ? $params['modePaiement'] : 0));
 								// appel du modele_Usagers et insertion dans la BD
 								$modeleUsagers = $this->getDAO("Usagers");
 								$resultat = $modeleUsagers->sauvegarder($usager);
 								// si la sauvegarde a fonctionné, message à l'usager 
 								if($resultat) {
-									// message à l'usager - success de l'insertion dans la BD
-									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées</p>";
-/* affichage vue profil */			$this->afficheVue("afficheInscriptionUsager", $data);
 									
+									// attribution du ou des roles choisis par l'usager
+									$roles = (isset($params['client']) && isset($params['prestataire'])) ? [ $params['client'], $params['prestataire'] ] : (isset($params['prestataire']) ? [ $params['prestataire'] ] : [ $params['client'] ]);
+/* verif si role avant success*/	$nouveauxRoles = $this->attribution_role($usager->getUsername(), $roles);
+									// message à l'usager - success de l'insertion dans la BD
+									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
+                					$this->afficheVue("header");
+/* affichage vue a changer */		$this->afficheVue("afficheInscriptionUsager", $data);									
 								}
 								else {
 									// message à l'usager - s'il la requete echoue
-									$params['erreurs'] = "<p class='alert alert-warning'>Votre compte n'a pu être créé, veuillez contacter l'administration ou recommencer</p>";
+									$params['erreurs'] = "Votre compte n'a pu être créé, veuillez contacter l'administration ou recommencer</p>";
 									$this->afficheFormInscription($params);
 								}
 							}
@@ -277,7 +283,7 @@
 						}
 						else {
 							// message à l'usager - s'il manque des params requis
-							$params['erreurs'] = "<p class='alert alert-warning'>Veuillez vous assurer de remplir tous les champs requis</p>";
+							$params['erreurs'] = "Veuillez vous assurer de remplir tous les champs requis";
 							$this->afficheFormInscription($params);						
 						}
 						break;
@@ -305,7 +311,7 @@
 */
 			}
             
-////////////// l'affichage du footer et du header pourraient se faire ds baseControleur, ce qui eviterait de les appeler a chaque controleur, mais ca @bug avec des variables du login
+			// affichage du footer
             $this->afficheVue("footer");
 		}
 
@@ -352,11 +358,22 @@
 		* @param 		<array> 	$tabUsager 		tableau des parametres de l'usager	
 		* @return    	<string> 	Les messages d'erreur à afficher à l'usager 
 		*/
-        private function validerUsager(array $tabUsager) {
+        private function validerUsager(array $tabUsager, array $tabRoles) {
 
         	// declaration de la 'string' d'erreurs
 			$erreurs = "";
 
+			// on s'assure qu'un des deux roles usager est a true (on reverifie, même si )
+			if($tabRoles['client'] == false && $tabRoles['prestataire'] == false) {
+				$erreurs .= 'Vous devez choisir au moins un role usager';
+			}
+			// on s'assure que les roles sont de type boolean
+			$erreurs .= is_bool($tabRoles['client']) ? "" : "Role invalide<br>";
+			$erreurs .= is_bool($tabRoles['prestataire']) ? "" : "Role invalide<br>";
+			// verification si le mode de paiement est valide si l'usager est un client
+			if($tabRoles['client'] == true) {
+				$erreurs .= ($tabUsager['Le mode de paiement'] == 0) ? "Le mode de paiement est requis" : "" ;
+			}
 			// verification si le champ est rempli et pret à l'insertion 
 			foreach($tabUsager AS $t => $valeur) {
 				
@@ -369,17 +386,39 @@
 				if($t == "Le téléphone") {
 					$erreurs .= (strlen($valeur) < 10 || strlen($valeur) > 20) ? $t . " doit contenir entre 10 et 20 caractères.<br>" : "";
 				}
-				if($t == "Le mode de paiement" || $t == "Le moyen de communication") {
+				if($t == "Le moyen de communication") {
 					$erreurs .= (intval($valeur) == 0) ? $t . " est requis<br>" : "";
 				}
 			}
-
 			// verification par specificite de champ
 			if ($tabUsager['Le mot de passe'] !== $tabUsager['La validation du mot de passe']) {
 			  	$erreurs .= "Les mots de passe entrés doivent être identiques.<br>";
 			}
 			return $erreurs;
-		
 		}
+
+		/**
+		* @brief		Fonction d'attribution des differents roles d'un usager
+		* @details		L'usager peut choisir les roles client et/ou prestataire
+		* @param 		<string> 	$usager 		id de l'usager	
+		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
+		* @return    	<bool> 	
+		*/
+		public function attribution_role($usager, $tabRoles) {
+
+			$flag = true;
+			// chargement du modele usager
+			$modeleUsagers = $this->getDAO("Usagers");
+			// on boucle dans les differents roles pour les integrer dans la BD
+			foreach($tabRoles AS $r) {
+				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
+				if(!$resultat) {
+					$flag = false;
+				}
+/*@reflexion*/ 	// l'option flag a true par defaul n'est pas ideale... mais je ne trouve pas mieux comme solution 
+			}
+			return $flag;
+		}
+
 	}
 ?>
