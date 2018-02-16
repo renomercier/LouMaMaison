@@ -25,8 +25,6 @@
 
 	<!-- src script js -->
 	<script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="/images/general/blank1.gif" type="text/javascript"></script>
-	<script src="/images/general/blank1.gif" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"> </script>
 	<script src="https://use.fontawesome.com/e58c171d55.js"></script>
 	<script src="./javascript/script.js" ></script>
 	<script src="js/formEvt.js"></script>  

@@ -32,7 +32,7 @@
 
 			// si aucun controleur n'a été spécifié, mettre un controleur par défaut
 			if($controleur == "")
-				$controleur = "Accueil";
+				$controleur = "Appartement";
 			// chercher la classe avec le nom du controleur
 			$classe = "Controleur_" . $controleur;
 

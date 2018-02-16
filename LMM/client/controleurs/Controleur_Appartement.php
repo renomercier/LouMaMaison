@@ -1,6 +1,6 @@
 <?php
 /**
-* @file 		/controller/Controleur_Accueil.php
+* @file 		/controller/Controleur_Appartement.php
 * @brief 		Projet WEB 2
 * @details								
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -8,12 +8,12 @@
 */
 
 	/**
-    * @class    Controleur_Accueil - herite de la classe BaseController
+    * @class    Controleur_Appartement - herite de la classe BaseController
     * @details 	
     *
     *   1 methode  |   traite()
     */
-	class Controleur_Accueil extends BaseControleur
+	class Controleur_Appartement extends BaseControleur
 	{	
 		/**
 		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
@@ -53,5 +53,19 @@
             // affichage du footer
             $this->afficheVue("footer");
         }
+        
+        /**
+		* @brief 		Affichage de la liste de tous les appartement
+		* @param 		Aucun parametre envoye
+		* @return		charge la vue avec le tableau de donnees
+		*/	
+		private function afficheListeAppartements()
+		{
+            $message= $this->initialiseMessages();
+            $this->afficheVue("header",$message);
+			$modeleUsagers = $this->getDAO("Usagers");
+			$data["usagers"] = $modeleUsagers->obtenir_tous();
+			$this->afficheVue("AfficheListeUsagers", $data);
+		}
 	}
 ?>

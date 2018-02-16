@@ -25,12 +25,25 @@
 			return "Appartement";
 		}
 
+        /**  
+		* @brief     	Lecture d'un appartement de la BD
+		* @details   	Exécute la lecture d'un appartement de la BD à l'aide de son identifiant 
+		* @param   		<string> 	$idAppart 		Identifiant de l'appartement
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+        public function obtenir_par_id($idAppart) {
+			$resultat = $this->lire($idAppart);
+			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Appartement'); 
+			$lAppart = $resultat->fetch();
+			return $lAppart;
+		}
+        
 		/**
 		* @brief      Selectionne tous les Appartements
 		* @details    Fait appel a la fonction loadAll() de BaseDAO
 		* @return     <object>  	( tous les Appartements )
 		*/
-		public function getAllAppartement() {
+		public function obtenir_tous() {
 
 			$result = $this->lireTous();	
 			$result->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");

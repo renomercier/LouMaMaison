@@ -222,7 +222,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
-                               
+
 							}
 							else
 							{
@@ -249,7 +249,6 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
-                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -273,7 +272,6 @@
                                 
                                 // changement de l'état de role Admin dans la table role_usager
 								$modeleUsagers->definir_admin($params["idUsager"]);
-                                $this->afficheListeUsagers();
 							}
 							else
 							{
