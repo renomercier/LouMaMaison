@@ -17,7 +17,7 @@
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-6">
-                    <div id="photo"> <img src="./images/<?=$data["usager"]->getPhoto() ?>" style="width:80%"> </div>
+                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid"> </div>
                 </div>
                 <div class="col-md-6" id="info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>

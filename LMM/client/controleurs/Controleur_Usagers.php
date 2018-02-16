@@ -221,7 +221,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
-                                $this->afficheListeUsagers();
+                               
 							}
 							else
 							{
