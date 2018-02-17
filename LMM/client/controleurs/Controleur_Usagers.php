@@ -211,31 +211,18 @@
                                        $message_erreur = "la requete echoue";
                                         echo $message_erreur;
                                     }
-                                }
-                                else 
-                                {
-                                    $message_erreur = "Veuillez vous assurer de remplir tous les champs requis";	
-                                     echo $message_erreur;
-                                }
-                            }
-                            else
-                            {
-                                $message_erreur = "pas de request";
-                                echo $message_erreur;
-                            }
-				    
-
-									
-                					$this->afficheVue("header", $data);
-									$this->afficheVue("afficheUsager", $data);									
-								}
-								else {
-									// message à l'usager - s'il la requete echoue
-									
-								}
+							}
+							else 
+							{
+								$message_erreur = "Veuillez vous assurer de remplir tous les champs requis";	
+								 echo $message_erreur;
 							}
 						}
-
+						else
+						{
+							$message_erreur = "pas de request";
+							echo $message_erreur;
+						}
 					break;
 					
                     // case pour bannir | réahabiliter un usager
