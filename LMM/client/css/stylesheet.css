@@ -37,3 +37,8 @@
 	padding-left: 15px;
 	color: #682b28!important;
 }
+
+.thumbnail{
+    width: 100%;
+    overflow: hidden;
+}

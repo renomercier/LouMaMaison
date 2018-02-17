@@ -76,5 +76,13 @@
       		
             return $this->supprimer($id);
         }
+        
+        public function obtenir_avec_Limit($debut, $fin)
+        {
+            $query = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT " . $debut .", ".$fin."";
+			$resultat = $this->requete($query);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+            return $resultat->fetchAll();
+        }
 
     }

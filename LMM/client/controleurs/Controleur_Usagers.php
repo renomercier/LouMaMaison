@@ -45,8 +45,9 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
-						session_destroy();
+                         session_destroy();
                         $this->afficheAccueil();
+                       
 						break;
 
 					// case d'authetification d'un usager	
