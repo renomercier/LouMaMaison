@@ -28,8 +28,8 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $message= $this->initialiseMessages();
-     
+            $data= $this->initialiseMessages();
+
 			// si le paramètre action existe
 			if(isset($params["action"]))
 			{
@@ -39,15 +39,15 @@
 				{
 					// case de connexion d'un usager
 					case "login":
-                        $this->afficheVue("header", $message);
+                        $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
 						break;
 
 					// case de deconnexion d'un usager	
 					case "logout":
-						session_destroy();
-                        $this->afficheVue("header", $message);
-						$this->afficheVue("accueil");
+                         session_destroy();
+                        $this->afficheAccueil();
+                       
 						break;
 
 					// case d'authetification d'un usager	
@@ -61,33 +61,31 @@
                                 if (!isset($_SESSION["username"]))
                                 {
                                     $modeleUsagers = $this->getDAO("Usagers");
-                                    $data = $modeleUsagers->authentification($params["username"], $params["password"]);
+                                    $valide = $modeleUsagers->authentification($params["username"], $params["password"]);
                                     //si l'usager est authentifié
-                                    if($data)
+                                    if($valide)
                                     {
-                                        $data = $modeleUsagers->obtenir_par_id($params["username"]);
+                                        $data['user'] = $modeleUsagers->obtenir_par_id($params["username"]);
                                         // on crée la session
-                                        $_SESSION["username"] = $data->getUsername();
-                                        $_SESSION["nom"] = $data->getNom();
-                                        $_SESSION["prenom"] = $data->getPrenom();
-                                        $_SESSION["isBanned"] = $data->getBanni();
-                                        $_SESSION["isActiv"] = $data->getValideParAdmin();
+                                        $_SESSION["username"] = $data['user']->getUsername();
+                                        $_SESSION["nom"] = $data['user']->getNom();
+                                        $_SESSION["prenom"] = $data['user']->getPrenom();
+                                        $_SESSION["isBanned"] = $data['user']->getBanni();
+                                        $_SESSION["isActiv"] = $data['user']->getValideParAdmin();
 
-                                        foreach($data->roles as $role)
+                                        foreach($data['user']->roles as $role)
                                         {
                                            $_SESSION["role"][] = $role->id_nomRole;
                                         }
 
                                         // redirection temporaire
-                                        $message= $this->initialiseMessages();
-                                        $this->afficheVue("header", $message);
-                                        $this->afficheVue("accueil", $data); 
+                                        $this->afficheAccueil();
                                     }
                                     else
                                     {
                                         // si l'usager n'est pas authentifié
                                         $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
-                                        $this->afficheVue("header", $message);
+                                        $this->afficheVue("header", $data);
                                         $this->afficheVue("AfficheLogin", $data);
                                     }
                                 }
@@ -97,7 +95,7 @@
                                     $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
 
                                     // redirection temporaire
-                                    $this->afficheVue("header",$message);
+                                    $this->afficheVue("header",$data);
                                     $this->afficheVue("accueil", $data); 
                                 }
                             }
@@ -156,7 +154,7 @@
                                 }
                             }
 
-                            $this->afficheVue("header",$message);
+                            $this->afficheVue("header",$data);
                             $this->afficheVue("AfficheUsager", $data); 
                         }
                         else
@@ -197,7 +195,7 @@
 									if($resultat) {
 									// message à l'usager - success de l'insertion dans la BD
 									
-                					$this->afficheVue("header");
+                					$this->afficheVue("header", $data);
 									$this->afficheVue("afficheUsager", $data);									
 								}
 								else {
@@ -291,7 +289,7 @@
 						$data['paiement'] = $modeleUsagers->getModePaiement();
 						$data['communication'] = $modeleUsagers->getModeCommunication();
 						if($data) {
-                            $this->afficheVue("header", $message);
+                            $this->afficheVue("header", $data);
 							$this->afficheVue("afficheInscriptionUsager", $data);
 						}
 						break;
@@ -325,7 +323,7 @@
 /* verif si role avant success*/	$nouveauxRoles = $this->attribution_role($usager->getUsername(), $roles);
 									// message à l'usager - success de l'insertion dans la BD
 									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
-                					$this->afficheVue("header");
+                					$this->afficheVue("header", $data);
 /* affichage vue a changer */		$this->afficheVue("afficheInscriptionUsager", $data);									
 								}
 								else {
@@ -355,7 +353,7 @@
 			else
 			{
                 // redirection temporaire
-                $this->afficheVue("header",$message);
+                $this->afficheVue("header",$data);
                 $this->afficheVue("accueil", $data); 
 
 /*               
@@ -382,8 +380,8 @@
 		*/	
 		private function afficheListeUsagers()
 		{
-            $message= $this->initialiseMessages();
-            $this->afficheVue("header",$message);
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
 			$modeleUsagers = $this->getDAO("Usagers");
 			$data["usagers"] = $modeleUsagers->obtenir_tous();
 			$this->afficheVue("AfficheListeUsagers", $data);
@@ -406,8 +404,8 @@
 			$data['communication'] = $modeleUsagers->getModeCommunication();
 
 			if($data) {
-                $message= $this->initialiseMessages();
-                $this->afficheVue("header", $message);
+                $data= $this->initialiseMessages();
+                $this->afficheVue("header", $data);
 				$this->afficheVue("afficheInscriptionUsager", $data);
 			}
 		}
@@ -480,5 +478,13 @@
 			return $flag;
 		}
 
+        private function afficheAccueil()
+        {
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
+            $modeleAppartement= $this->getDAO("Appartements");
+            $data["appartements"] = $modeleAppartement->obtenir_tous();
+            $this->afficheVue("Accueil", $data); 
+        }
 	}
 ?>
