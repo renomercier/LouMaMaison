@@ -1,26 +1,7 @@
 <!--
 * @file         /accueil.php
 * @brief        Projet WEB 2
-* @details      Affichage du formulaire de connexion - vue partielle
-* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
-* @version      v.1 | fevrier 2018
--->
-
-<div class="row">
-    <div class="col-sm-4 offset-sm-4">
-        <h1>alalicorne</h1>
-        <p> La page d'accueil vient d'être codée !</p>
-    </div>
-</div> <!-- fin div row -->
-<div class="row">
-    <div class="col-sm-4 offset-sm-4">
-    </div>
-</div> <!-- fin div row -->
-
-<!--
-* @file         /AfficheListeUsagers.php
-* @brief        Projet WEB 2
-* @details      Affichage de tous les usagers - vue partielle
+* @details      Affichage du formulaire de recherche - resultats de la recherche
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
@@ -33,7 +14,7 @@
             {    
         ?>
         
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="thumbnail">
               <img src="./images/profil.jpg" alt="mon appart">
               <div class="caption">
@@ -53,25 +34,27 @@
     <div class="row mt-5">
             <ul class="pagination mx-auto">
                 <?php 
-                    if($_GET['page']-1 > 0)
-                {
-                ?>
-                    <li class="page-item"><a class="page-link" href="index.php?Appartements&page=<?=$_GET['page']-1?>">precedent</a></li>
-                <?php 
-                }
-                    for($i=1; $i<=$data['nbrPage']; $i++) //On fait notre boucle
-                {
-                       $active = ($i == $data['pageActuelle'])?  'active' : '';
-                ?>
-                    <li class="page-item <?=$active?>"><a class="page-link" href="index.php?Appartements&page=<?=$i?>"><?=$i?></a></li>
-                <?php
-                }
-                    if($_GET['page']+1 <= $data['nbrPage'])
-                {
-                ?>
-                    <li class="page-item"><a class="page-link" href="index.php?Appartements&page=<?=$_GET['page']+1?>">suivant</a></li>
-                <?php
-                }
+                   // $numPage = isset($params['page'])? $params['page'] : 1;
+                
+                        if($data['pageActuelle']-1 > 0)
+                        {
+                        ?>
+                            <li class="page-item"><a class="page-link" href="index.php?Appartements&page=<?=$data['pageActuelle']-1?>">precedent</a></li>
+                        <?php 
+                        }
+                            for($i=1; $i<=$data['nbrPage']; $i++) //On fait notre boucle
+                        {
+                               $active = ($i == $data['pageActuelle'])?  'active' : '';
+                        ?>
+                            <li class="page-item <?=$active?>"><a class="page-link" href="index.php?Appartements&page=<?=$i?>"><?=$i?></a></li>
+                        <?php
+                        }
+                            if($data['pageActuelle']+1 <= $data['nbrPage'])
+                        {
+                        ?>
+                            <li class="page-item"><a class="page-link" href="index.php?Appartements&page=<?=$data['pageActuelle']+1?>">suivant</a></li>
+                        <?php
+                        }
                 ?>
             </ul>
     </div>

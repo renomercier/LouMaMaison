@@ -45,8 +45,9 @@
 						trigger_error("Action invalide.");		
 				}				
 			}
-            else{            
-                $this->afficheListeAppartements($params['page']);
+            else{  
+                $numPage = isset($params['page'])? $params['page'] : 1;
+                     $this->afficheListeAppartements($numPage);
             }
             
             // affichage du footer
@@ -64,7 +65,7 @@
             $this->afficheVue("header",$data);
 			$modeleAppartement= $this->getDAO("Appartements");
 			$appart = $modeleAppartement->obtenir_tous();
-            $appartParPage = 1;
+            $appartParPage = 4;
             $nbrAppart = count($appart);
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             
