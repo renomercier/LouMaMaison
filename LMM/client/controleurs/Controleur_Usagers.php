@@ -168,6 +168,7 @@
                         break;
 						
 					case "modifierProfil":
+                        $message_erreur = "";
 						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
 						{
 							if(!empty($_REQUEST["prenom"]) && !empty($_REQUEST["nom"])&& !empty($_REQUEST["adresse"]) && !empty($_REQUEST["telephone"]) && !empty($_REQUEST["moyenComm"]) && !empty($_REQUEST["paiement"])) 
@@ -200,22 +201,28 @@
 									// message à l'usager - success de l'insertion dans la BD
 									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
                 				//	$this->afficheVue("header");
-								//	$this->afficheVue("afficheUsager", $data);									
+								//	$this->afficheVue("afficheUsager", $data);
+									$formModif=[];
+									$formModif = data;									
+									return $formModif;
                                     }
                                     else 
                                     {
                                         // message à l'usager - s'il la requete echoue
-                                        echo "la requete echoue";
+                                       $message_erreur = "la requete echoue";
+                                        echo $message_erreur;
                                     }
                                 }
                                 else 
                                 {
-                                    echo "Veuillez vous assurer de remplir tous les champs requis";	
+                                    $message_erreur = "Veuillez vous assurer de remplir tous les champs requis";	
+                                     echo $message_erreur;
                                 }
                             }
                             else
                             {
-                                echo "pas de request";
+                                $message_erreur = "pas de request";
+                                echo $message_erreur;
                             }
 				    
 					break;

@@ -61,22 +61,52 @@ $(document).ready(function() {
 	$(document).on('click', '.sauvegarder', function(e){
 	e.preventDefault();
 	var idUser = $(this).prev().val();
+	
+	var formulaire = $("#modifierProfil"+idUser).serialize();
+	
+
 	$.ajax({
-      url: 'index.php?Usagers&action=modifierProfil', //ajouter des parametres
-      dataType: 'html',
-	  data: $("#modifierProfil"+idUser).serialize(),
-      success: function(htmlText) {	
-		/*$('.modal-backdrop.fade.show').remove();
-		$('.listePresentations'+idCat).empty();
-		$('.listePresentations'+idCat).prepend(htmlText);
-		$('.listePresentations'+idCat).children().last().prev().children().first().removeClass("bg-info").addClass("bg-success"); //changer la couleur*/
+		url: 'index.php?Usagers&action=modifierProfil&'+formulaire,
+		method: "POST",		
+		data: {
+			jsonData: JSON.stringify({
+				prenom : $('input[name="prenom"]').val(),
+				nom : $('input[name="nom"]').val(),
+				adresse : $('input[name="adresse"]').val(),
+				telephone : $('input[name="telephone"]').val(),
+				contact : $('#moyenComm option:selected').text(),
+				paiement : $('#modePaiement option:selected').text()
+			}) 
+		},   
+		success: function (data) {
+			try {
+				var output = JSON.parse(data);
+				alert(output);
+			} catch (e) {
+				alert("Output is not valid JSON: " + data);
+			}
+		}, error: function (request, error) {
+			alert("AJAX Call Error: " + error);
+		}
+});
+			
+	/*
+	$.ajax({
+		url: 'index.php?Usagers&action=modifierProfil', //ajouter des parametres
+		// dataType: 'html',
+		data: $("#modifierProfil"+idUser).serialize(),
+		contentType: 'application/json',
+		cashe: false,
+		dataType: 'json',
+		success: function(reponse) {	
+		alert(reponse);
 		
       },
       error: function(xhr, ajaxOptions, thrownError) {
         alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
       }
     });
-	
+*/	
 });
         
     });
