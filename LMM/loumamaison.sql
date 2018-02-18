@@ -16,12 +16,28 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
+###########################################################
+#
+#       TABLE usager
+#       - id modePaiement modifié pour NULL
+#       - ajout du champ coor_moyenComm(ex: l'adresse e-mail si le moyen de comm est e-mail)
+#       TABLE Appartement
+#       - ajout du bool actif
+#       TABLE evaluation
+#       - ajout du champ commentaire 
+#       - modification du champ rating (int au lieu de float)
+#       TABLE type
+#       - changement du nom de la table pour type_apt
+#
+###########################################################
+
 --
 -- Structure de la table `appartement`
 --
 
 CREATE TABLE `appartement` (
   `id` int(11) NOT NULL,
+  `actif` tinyint(1) DEFAULT 1 NOT NULL ,
   `options` varchar(1000) NOT NULL,
   `titre` varchar(255) NOT NULL,
   `descriptif` varchar(2000) NOT NULL,
@@ -80,7 +96,8 @@ CREATE TABLE `disponibilite` (
 
 CREATE TABLE `evaluation` (
   `id` int(11) NOT NULL,
-  `rating` float NOT NULL,
+  `rating` int(11) NOT NULL,
+  `commentaire` Text,
   `dateNotif` date NOT NULL,
   `id_appartement` int(11) NOT NULL,
   `id_username` varchar(255) NOT NULL
@@ -214,7 +231,7 @@ INSERT INTO `role_user` (`id_username`, `id_nomRole`) VALUES
 -- Structure de la table `type`
 --
 
-CREATE TABLE `type` (
+CREATE TABLE `type_apt` (
   `id` int(11) NOT NULL,
   `typeApt` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -236,7 +253,8 @@ CREATE TABLE `usager` (
   `valideParAdmin` tinyint(1) NOT NULL DEFAULT '0',
   `banni` tinyint(1) NOT NULL DEFAULT '0',
   `id_moyenComm` int(11) NOT NULL,
-  `id_modePaiement` int(11) NULL,
+  `coor_moyenComm`  Varchar (255) NOT NULL,
+  `id_modePaiement` int(11),
   `id_adminBan` varchar(255) DEFAULT NULL,
   `id_adminValid` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -340,7 +358,7 @@ ALTER TABLE `role_user`
 --
 -- Index pour la table `type`
 --
-ALTER TABLE `type`
+ALTER TABLE `type_apt`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -408,7 +426,7 @@ ALTER TABLE `role`
 --
 -- AUTO_INCREMENT pour la table `type`
 --
-ALTER TABLE `type`
+ALTER TABLE `type_apt`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables déchargées
@@ -419,7 +437,7 @@ ALTER TABLE `type`
 --
 ALTER TABLE `appartement`
   ADD CONSTRAINT `FK_appartement_id_nomQuartier` FOREIGN KEY (`id_nomQuartier`) REFERENCES `quartier` (`id`),
-  ADD CONSTRAINT `FK_appartement_id_typeApt` FOREIGN KEY (`id_typeApt`) REFERENCES `type` (`id`),
+  ADD CONSTRAINT `FK_appartement_id_typeApt` FOREIGN KEY (`id_typeApt`) REFERENCES `type_apt` (`id`),
   ADD CONSTRAINT `FK_appartement_id_userProprio` FOREIGN KEY (`id_userProprio`) REFERENCES `usager` (`username`);
 
 --

@@ -46,7 +46,9 @@
 					// case de deconnexion d'un usager	
 					case "logout":
 						session_destroy();
-						header('location:index.php');
+						$message= $this->initialiseMessages();
+                        $this->afficheVue("header", $message);
+                        $this->afficheVue("accueil"); 
 						break;
 
 					// case d'authetification d'un usager	
@@ -238,6 +240,13 @@
 
 					// case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
 					case "afficherInscriptionUsager" :
+
+						$t = 1;
+						$tt = 0;
+						var_dump(is_bool($t));
+						var_dump(is_bool($tt));
+
+						die;
 
 						$modeleUsagers = $this->getDAO("Usagers");
 						$data['paiement'] = $modeleUsagers->getModePaiement();

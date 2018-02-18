@@ -17,6 +17,7 @@
         
         // Attributs de la classe Appartement
         private $id;
+        private $actif;
         private $ville;
         //
         private $options;
@@ -39,7 +40,8 @@
         /**
         *   constructeur de la classe Appartement
         *       
-        *   @param <string>        $options                options de l'appartement  
+        *   @param <string>        $options                options de l'appartement
+        *   @param <bool>          $actif                  si l'appartement est actif   
         *   @param <string>        $titre                  titre de l'annonce (mise en location)  
         *   @param <string>        $descriptif             description de l'appartement   
         *   @param <float>         $montantParJour         montant par jour    
@@ -55,8 +57,9 @@
         *   @param <string>        $id_userProprio         usager proprietaire de l'appartement    
         *   @param <string>        $id_nomQuartier         nom du quartier ou est situe l'appartement       
         */  
-        public function __construct($options = '', $title = '', $descriptif = '', $montantParJour = 0.00, $nbPersones = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = '', $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0) {   
+        public function __construct($options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersones = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = '', $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1) {   
  
+            $this->setActif($actif);
             $this->setOptions($options);
             $this->setTitre($titre);
             $this->setDescriptif($descriptif);
@@ -78,15 +81,18 @@
         public function getId() {
             return $this->id;
         }
+        public function getActif() {
+            return $this->actif;
+        }
         public function getVille() {
             return $this->ville;
         }
         //
         public function getOptions() {
-            return $this->summary;
+            return $this->options;
         }
-        public function getTitle() {
-            return $this->title;
+        public function getTitre() {
+            return $this->titre;
         } 
         public function getDescriptif() {
             return $this->descriptif;
@@ -130,14 +136,19 @@
         
 
         // setters
+        public function setActif($a) {
+            if ($a == 0 || $a == 1) {
+                $this->actif = $a;
+            }
+        }
         public function setOptions($o) {
             if (is_string($o) && trim($o)!="") {
                 $this->options = $o;
             }
         }
-        public function setTitle($t) {
+        public function setTitre($t) {
             if (is_string($t) && trim($t)!="") {
-                $this->title = $t;
+                $this->$titre = $t;
             }
         } 
         public function setDescriptif($d) {
@@ -189,7 +200,6 @@
                 $this->codePostal = $c;
             }     
         }
-
         public function setId_typeApt($t) {
             if (is_int($t) &&  $t != 0) {
                 $this->id_typeApt = $t;
