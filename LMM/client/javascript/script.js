@@ -1,7 +1,6 @@
 /**
-  fonction pour afficher la liste des présentations
-  par categorie.
-  defini les styles css des elements et leurs effets.
+  fonction pour faire les action d'administration sur un usager.
+  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
 */
     $(".actionAdmin").click(function(e) {
         $(this).each(function() {

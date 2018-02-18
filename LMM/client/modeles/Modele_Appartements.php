@@ -79,10 +79,23 @@
         
         public function obtenir_avec_Limit($debut, $fin)
         {
-            $query = "SELECT * FROM " . $this->getTableName() . " ORDER BY id LIMIT " . $debut .", ".$fin."";
+            $query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ".$fin."";
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();
         }
+        
+		/**
+		* @brief      Selectionner le nombre des notes attribuées a un appart
+                      et la somme de toutes les notes d'un appart
+		* @return     <entier>
+		*/
+		public function nombre_notes($id_appart)
+		{
+			$query = "SELECT SUM(rating) AS Total_des_notes, COUNT(rating) AS nombre_note FROM evaluation WHERE id_appartement = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();
+		}
 
     }

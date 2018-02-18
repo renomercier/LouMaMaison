@@ -28,7 +28,8 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $message= $this->initialiseMessages();
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
             //
 			//si le paramètre action existe
 			if(isset($params["action"]))
@@ -37,8 +38,9 @@
 				//ce switch détermine la vue et obtient le modèle
 				switch($params["action"])
 				{
-					case "machin":
-                        $this->afficheVue("header", $message);
+					case "page_suivante":
+                            $numPage = isset($params['page'])? $params['page'] : 1;
+                            $this->afficheListeAppartements($numPage);
 						break;
 
 					default:
@@ -47,7 +49,8 @@
 			}
             else{  
                 $numPage = isset($params['page'])? $params['page'] : 1;
-                     $this->afficheListeAppartements($numPage);
+                $this->afficheListeAppartements($numPage);
+                
             }
             
             // affichage du footer
@@ -61,10 +64,9 @@
 		*/	
 		private function afficheListeAppartements($page)
 		{
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
 			$modeleAppartement= $this->getDAO("Appartements");
 			$appart = $modeleAppartement->obtenir_tous();
+            
             $appartParPage = 4;
             $nbrAppart = count($appart);
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
@@ -89,6 +91,20 @@
             $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
             
             $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
+            
+            foreach($data["appartements"] as $appartement)
+            { 
+                $evaluation = $modeleAppartement->nombre_notes($appartement->getId());
+                if($evaluation[0][1] !=0)
+                {
+                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
+                    $appartement->moyenne = round($moyenne, 1);;
+                }
+                else
+                {
+                    $appartement->moyenne = "";
+                }                
+            }
             
 			$this->afficheVue("Accueil", $data);
 		}

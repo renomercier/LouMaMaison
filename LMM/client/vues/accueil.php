@@ -13,15 +13,33 @@
             foreach($data["appartements"] as $appartement)
             {    
         ?>
-        
           <div class="col-md-3">
             <div class="thumbnail">
               <img src="./images/profil.jpg" alt="mon appart">
               <div class="caption">
-                <p><?=$appartement->getId_typeApt();?> <?=$appartement->getNbPersones();?> personnes - <?=$appartement->getNbLits();?> lits</p>
+                <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersones();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                 <h5><?=$appartement->getTitre();?></h5>
                 <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
-                <p>note</p>
+                <p>Hôte: <?=$appartement->username;?></p>
+                <p>rate 
+                    <?php
+                        for($i=1; $i<=$appartement->moyenne/2; $i++)
+                        {
+                        ?>
+                            <i class="fas fa-star"></i>
+                    <?php
+                        }
+                        if($appartement->moyenne % 2 != 0)
+                        {
+                         ?>   
+                            <i class="fas fa-star-half"></i>
+                     <?php
+                        }
+                
+                    ?>
+                  
+                  
+                  </p> 
                 <p><a href="#" class="btn btn-primary" role="button">reserver</a> <a href="#" class="btn btn-default" role="button">noter</a></p>
               </div>
             </div>
