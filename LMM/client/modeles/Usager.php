@@ -13,7 +13,7 @@
     *
     *   1 constructeur  |   getters & setters
     */
-	class Usager 	{
+	class Usager implements JsonSerializable	{
 		
 		// Attributs de la classe Usager
 		private $username;
@@ -197,7 +197,25 @@
 				$this->$id_adminValid = $iAV;
 			}
 		}
+		
+		public function jsonSerialize() {
+			return [
+			'username' => $this->username,
+			'nom' => $this->nom,
+			'prenom' => $this->prenom,
+			'photo' => $this->photo,
+			'adresse' => $this->adresse,
+			'telephone' => $this->telephone,
+			'motdepasse' => $this->motDePasse,
+			'contact' => $this->id_moyenComm,
+			'paiement' => $this->id_modePaiement,
 
+			'valide' => $this->valideParAdmin,
+			'banni' => $this->banni,
+			'idAdminBan' => $this->id_adminBan,
+			'idAdminValid' => $this->id_adminValid
+			];
+		}
 	}
 
 ?>

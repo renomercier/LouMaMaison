@@ -63,30 +63,29 @@ $(document).ready(function() {
 	var idUser = $(this).prev().val();
 	
 	var formulaire = $("#modifierProfil"+idUser).serialize();
-	
 
 	$.ajax({
 		url: 'index.php?Usagers&action=modifierProfil&'+formulaire,
-		method: "POST",		
+		method: "POST",
+		//dataType : 'json',		
 		data: {
-			jsonData: JSON.stringify({
-				prenom : $('input[name="prenom"]').val(),
-				nom : $('input[name="nom"]').val(),
-				adresse : $('input[name="adresse"]').val(),
-				telephone : $('input[name="telephone"]').val(),
-				contact : $('#moyenComm option:selected').text(),
-				paiement : $('#modePaiement option:selected').text()
+		dataJson: JSON.stringify({
+			"prenom":$('input[name="prenom"]').val(),
+			"nom":$('input[name="nom"]').val(),
+			"adresse":$('input[name="adresse"]').val(),
+			"telephone":$('input[name="telephone"]').val(),
+			"moyenComm":$('#moyenComm').val(),
+			"paiement":$('#modePaiement').val()
 			}) 
-		},   
-		success: function (data) {
-			try {
-				var output = JSON.parse(data);
-				alert(output);
-			} catch (e) {
-				alert("Output is not valid JSON: " + data);
-			}
-		}, error: function (request, error) {
-			alert("AJAX Call Error: " + error);
+		}, 
+		success: function (reponse) {
+		
+		var rep = JSON.parse(reponse);
+		//$("#info_nom > h3").empty();	
+		//$("#info_nom > h3").text(rep.nom);
+		},  
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 		}
 });
 			

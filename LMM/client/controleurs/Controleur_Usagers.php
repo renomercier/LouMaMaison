@@ -167,6 +167,7 @@
 						
 					case "modifierProfil":
                         $message_erreur = "";
+						$obj = json_decode($_REQUEST['dataJson'],true); 
 						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
 						{
 							if(!empty($_REQUEST["prenom"]) && !empty($_REQUEST["nom"])&& !empty($_REQUEST["adresse"]) && !empty($_REQUEST["telephone"]) && !empty($_REQUEST["moyenComm"]) && !empty($_REQUEST["paiement"])) 
@@ -191,19 +192,17 @@
 								}
 
 								$modeleUsagers = $this->getDAO("Usagers");
-								$usager = new Usager($idUser, $_REQUEST["nom"], $_REQUEST["prenom"], $photo, $_REQUEST['adresse'], $_REQUEST['telephone'], $motdepasse, $_REQUEST['moyenComm'], $_REQUEST["paiement"]);
+								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $motdepasse, $obj['moyenComm'], $obj["paiement"]);
 
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {
 									// message à l'usager - success de l'insertion dans la BD
-
-									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
-                				//	$this->afficheVue("header");
-								//	$this->afficheVue("afficheUsager", $data);
-									$formModif=[];
-									$formModif = data;									
-									return $formModif;
+									/*	$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";*/
+									header('Content-type: application/json');
+									$user = $modeleUsagers->obtenir_par_id($_REQUEST['idUser']); 
+									$reponse = json_encode(array("userinfo"=>$user, JSON_PRETTY_PRINT));
+									echo $reponse; 
                                     }
                                     else 
                                     {
@@ -389,7 +388,8 @@
 */
 			}
 			// affichage du footer
-            $this->afficheVue("footer");
+            $this->afficheVue('footer');
+			
 		}
 
 		/**

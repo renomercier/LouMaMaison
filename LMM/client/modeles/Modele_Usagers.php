@@ -73,6 +73,7 @@
 				$query = "UPDATE " . $this->getTableName() . " SET nom=?, prenom=?, photo=?, adresse=?, telephone=?, motDePasse=?, id_moyenComm=?, id_modePaiement=? WHERE " . $this->getClePrimaire() . "=?";
 				$donnees = array($lUsager->getNom(), $lUsager->getPrenom(), $lUsager->getPhoto(), $lUsager->getAdresse(), $lUsager->getTelephone(), $lUsager->getMotDePasse(), $lUsager->getIdMoyenComm(), $lUsager->getIdModePaiement(), $lUsager->getUsername());
 				return $this->requete($query, $donnees);
+				
 			}
 			else
 			{
