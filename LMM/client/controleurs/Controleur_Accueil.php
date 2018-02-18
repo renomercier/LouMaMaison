@@ -49,6 +49,9 @@
                 $this->afficheVue("header", $message);
                 $this->afficheVue("accueil");
             }
+            
+            // affichage du footer
+            $this->afficheVue("footer");
         }
 	}
 ?>
