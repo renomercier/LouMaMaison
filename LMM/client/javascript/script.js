@@ -39,7 +39,6 @@ $(document).ready(function() {
     });
     
     
-    
     //Afficher profil d'usager
 		$("#div_info_plus").append($("#info_plus"));
 		
@@ -97,23 +96,10 @@ $(document).ready(function() {
 		}
 });
 			
-	/*
-	$.ajax({
-		url: 'index.php?Usagers&action=modifierProfil', //ajouter des parametres
-		// dataType: 'html',
-		data: $("#modifierProfil"+idUser).serialize(),
-		contentType: 'application/json',
-		cashe: false,
-		dataType: 'json',
-		success: function(reponse) {	
-		alert(reponse);
-		
-      },
-      error: function(xhr, ajaxOptions, thrownError) {
-        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-      }
-    });
-*/	
+
+        
+        
 });
         
     });
+

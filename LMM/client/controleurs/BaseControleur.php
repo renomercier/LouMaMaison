@@ -85,5 +85,73 @@
             
             return $data;
         }
+        
+        /**
+		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
+		* @param 		$page numero de la page sur laquelle on se trouve
+		* @return		charge la vue avec le tableau de donnees
+		*/	
+		public function afficheListeAppartements($page)
+		{
+			$modeleAppartement= $this->getDAO("Appartements");
+			$apparts = $modeleAppartement->obtenir_tous();
+            $data = $this->obtenir_liste_partielle($apparts, $page);
+            
+		}
+        
+        /**
+		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
+		* @param 		$page numero de la page sur laquelle on se trouve
+		* @return		charge la vue avec le tableau de donnees
+		*/
+        public function obtenir_liste_partielle($apparts, $page)
+        {
+            $appartParPage = 4;
+            $nbrAppart = count($apparts);
+            $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
+            
+            if(isset($page))
+            {
+                if($page<=0){ $page = 1;}
+                if($page>$data['nbrPage']){ $page = $data['nbrPage'];}
+                
+                 $data['pageActuelle']=intval($page);
+
+                 if($data['pageActuelle'] > $data['nbrPage']) 
+                 {
+                      $data['pageActuelle'] = $data['nbrPage'];
+                 }
+            }
+            else // Sinon
+            {
+                 $data['pageActuelle']=1; // La page actuelle est la n°1    
+            }
+            
+            $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
+            
+            $modeleAppartement= $this->getDAO("Appartements");
+            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
+            
+            foreach($data["appartements"] as $appartement)
+            { 
+                $adresse=[];
+                $evaluation = $modeleAppartement->nombre_notes($appartement->getId());
+                if($evaluation[0][1] !=0)
+                {
+                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
+                    $appartement->moyenne = floatval(round($moyenne, 1));
+                }
+                else
+                {
+                    $appartement->moyenne = 0;
+                }
+                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
+
+            }
+            
+			$this->afficheVue("listeAppartements", $data);
+            $this->afficheVue("carteGeographique", $data);
+            return $data;
+        }
 	}
 ?>
