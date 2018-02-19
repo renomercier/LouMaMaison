@@ -118,56 +118,18 @@
 
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
-                        
                         if(isset($params["idUsager"]))
-				        {
-                           
-                            $modeleUsagers = $this->getDAO("Usagers");
-                            $data["usager"] = $modeleUsagers->obtenir_par_id($params["idUsager"]);
-                            $data["isProprio"] = false;
-                            $data["isClient"] = false;
-                            $data["isAdmin"] = false;
-                            $data["isSuperAdmin"] = false;
-                            $data["modePaiement"] = $modeleUsagers->getModePaiement($params["idUsager"]);
-                            $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
-                            $data["modeCommunication"] = $modeleUsagers->getModeCommunication($params["idUsager"]);
-                            $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
-							$data['prenom'] = $data["usager"]->getPrenom();
-							$data['nom'] = $data["usager"]->getNom();
-							$data['adresse'] = $data["usager"]->getAdresse();
-							$data['telephone'] = $data["usager"]->getTelephone();
-                            $data['motdepasse'] = $data["usager"]-> getMotDePasse();	
-                            foreach($data["usager"]->roles as $role)
-                            {
-                                if($role->id_nomRole == 3)
-                                {
-                                    $data["isProprio"] = true;
-                                }
-                                if($role->id_nomRole == 4)
-                                {
-                                    $data["isClient"] = true;
-                                }
-                                if($role->id_nomRole == 2)
-                                {
-                                    $data["isAdmin"] = true;
-                                }
-                                if($role->id_nomRole == 1)
-                                {
-                                    $data["isSuperAdmin"] = true;
-                                }
-                            }
-
-                            $this->afficheVue("header",$data);
-                            $this->afficheVue("AfficheUsager", $data); 
+                        {       
+                            $this->afficheProfil($params["idUsager"], $data);
                         }
                         else
                         {
                             trigger_error("Pas d'id spécifié...");
                         }
-                        break;
+                    break;
 						
 					case "modifierProfil":
-                        $message_erreur = "";
+                       
 						$obj = json_decode($_REQUEST['dataJson'],true); 
 						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
 						{
@@ -199,8 +161,8 @@
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {
 									// message à l'usager - success de l'insertion dans la BD
-									/*	$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";*/
-									//header('Content-type: application/json');
+									/*	$data['succes'] = "<p class='alert alert-success'>Votre profil a été modifié avec succès.";*/
+									
 									header('Content-type: application/json');
 									$user = $modeleUsagers->obtenir_avec_paiement_communication($_REQUEST['idUser']); 
 									//$reponse = json_encode(array("userinfo"=>$user, JSON_PRETTY_PRINT));
@@ -210,20 +172,20 @@
                                     else 
                                     {
                                         // message à l'usager - s'il la requete echoue
-                                       $message_erreur = "la requete echoue";
-                                        echo $message_erreur;
+                                       $params['erreur'] = "la requete echoue";
+                                        $this->afficheProfil($_REQUEST['idUser'], $params);
                                     }
 							}
 							else 
 							{
-								$message_erreur = "Veuillez vous assurer de remplir tous les champs requis";	
-								 echo $message_erreur;
+								$params['erreur'] = "Veuillez vous assurer de remplir tous les champs requis";	
+								 $this->afficheProfil($_REQUEST['idUser'], $params);
 							}
 						}
 						else
 						{
-							$message_erreur = "pas de request";
-							echo $message_erreur;
+							$params['erreur'] =  "You are so bad!";
+							$this->afficheProfil($_REQUEST['idUser'], $params);
 						}
 					break;
 					
@@ -431,6 +393,56 @@
 				$this->afficheVue("afficheInscriptionUsager", $data);
 			}
 		}
+        
+        
+        private function afficheProfil($id, $data)
+        {
+            
+                // formatage du message d'erreurs à afficher
+			    $data['erreur'] = "";
+                $modeleUsagers = $this->getDAO("Usagers");
+                $data["usager"] = $modeleUsagers->obtenir_par_id($id);
+                $data["isProprio"] = false;
+                $data["isClient"] = false;
+                $data["isAdmin"] = false;
+                $data["isSuperAdmin"] = false;
+                $data["modePaiement"] = $modeleUsagers->getModePaiement($id);
+                $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
+                $data["modeCommunication"] = $modeleUsagers->getModeCommunication($id);
+                $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
+                $data['prenom'] = $data["usager"]->getPrenom();
+                $data['nom'] = $data["usager"]->getNom();
+                $data['adresse'] = $data["usager"]->getAdresse();
+                $data['telephone'] = $data["usager"]->getTelephone();
+                $data['motdepasse'] = $data["usager"]-> getMotDePasse();	
+                foreach($data["usager"]->roles as $role)
+                {
+                    if($role->id_nomRole == 3)
+                    {
+                        $data["isProprio"] = true;
+                    }
+                    if($role->id_nomRole == 4)
+                    {
+                        $data["isClient"] = true;
+                    }
+                    if($role->id_nomRole == 2)
+                    {
+                        $data["isAdmin"] = true;
+                    }
+                    if($role->id_nomRole == 1)
+                    {
+                        $data["isSuperAdmin"] = true;
+                    }
+                }
+
+                $this->afficheVue("header",$data);
+                $this->afficheVue("AfficheUsager", $data); 
+
+        }
+        
+        
+        
+        
 
 		/**
 		* @brief		Fonction de validation des parametres du formulaire d'inscription d'un usager
