@@ -34,3 +34,31 @@
         });
 
     });
+/**
+  fonction pour faire les action d'administration sur un usager.
+  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
+*/
+  /*  $(".pagination li").click(function(e) {
+        $(this).each(function() {
+        // envoi de la requete
+            e.preventDefault();
+            var page = $(this).val();
+           $.ajax({
+                method: "GET",
+                url: "index.php?Appartements&action=page_suivante&page="+page,
+                dataType:"html",
+        // comportement en cas de success ou d'echec
+              success:function(reponse) {
+                console.log(reponse);
+                  $('.resultat').html(reponse);
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+
+        });
+
+    });*/
+
+

@@ -39,21 +39,17 @@
 				switch($params["action"])
 				{
 					case "page_suivante":
-                            $numPage = isset($params['page'])? $params['page'] : 1;
-                            $this->afficheListeAppartements($numPage);
 						break;
 
 					default:
 						trigger_error("Action invalide.");		
 				}				
 			}
-            else{  
+            else{ 
                 $numPage = isset($params['page'])? $params['page'] : 1;
-                $this->afficheListeAppartements($numPage);
-                
+                $this->afficheListeAppartements($numPage);            
             }
             
-            // affichage du footer
             $this->afficheVue("footer");
         }
         
@@ -65,10 +61,20 @@
 		private function afficheListeAppartements($page)
 		{
 			$modeleAppartement= $this->getDAO("Appartements");
-			$appart = $modeleAppartement->obtenir_tous();
+			$apparts = $modeleAppartement->obtenir_tous();
+            $data = $this->obtenir_liste_partielle($apparts, $page);
             
+		}
+        
+        /**
+		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
+		* @param 		$page numero de la page sur laquelle on se trouve
+		* @return		charge la vue avec le tableau de donnees
+		*/
+        public function obtenir_liste_partielle($apparts, $page)
+        {
             $appartParPage = 4;
-            $nbrAppart = count($appart);
+            $nbrAppart = count($apparts);
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             
             if(isset($page))
@@ -90,10 +96,12 @@
             
             $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
             
+            $modeleAppartement= $this->getDAO("Appartements");
             $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
             
             foreach($data["appartements"] as $appartement)
             { 
+                $adresse=[];
                 $evaluation = $modeleAppartement->nombre_notes($appartement->getId());
                 if($evaluation[0][1] !=0)
                 {
@@ -103,10 +111,14 @@
                 else
                 {
                     $appartement->moyenne = "";
-                }                
+                }
+                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
+
             }
             
-			$this->afficheVue("Accueil", $data);
-		}
+			$this->afficheVue("listeAppartements", $data);
+            $this->afficheVue("carteGeographique", $data);
+            return $data;
+        }
 	}
 ?>
