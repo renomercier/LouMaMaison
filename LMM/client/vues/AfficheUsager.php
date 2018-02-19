@@ -25,7 +25,7 @@
                 <div class="col-md-6">
                     <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid"> </div>
                 </div>
-                <div class="col-md-6" id="info_nom">
+                <div class="col-md-6" id="div_info_nom">
                     <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
                 </div>
 				<div id="profilUser" class="col-md-12">
@@ -60,29 +60,7 @@
 								<tr>
 									<td>Téléphone</td><td><input type="text" name="telephone" value="<?= isset($data['telephone']) ? $data['telephone'] : '' ?>"></td>
 								</tr>
-								<tr>
-									<td>
-										<label for="moyenComm" class="form-control-label mr-sm-2">Moyen de contact</label>
-									</td>
-									<td>
-										<select name="moyenComm" class="" id="moyenComm">
-									   		<?php foreach($data['modeCommunicationGeneral'] AS $c) { 
-													if(isset($data['modeCommunication'][0]->id )) { 
-													  if($data['modeCommunication'][0]->id  == $c['id']) { ?>
-														<option selected value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
-											<?php     } 
-													  else { ?>
-													  <option value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
-											<?php     }
-													} 
-													else { ?>
-													  <option value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
-											<?php   }
-												  } ?>
-											</select>
-									</td>
-								</tr>
-								<tr>
+                                <tr>
 									<td>
 										<label for="paiement" class="form-control-label mr-sm-2">Type de paiement</label>
 									</td>
@@ -108,6 +86,34 @@
 										</select>
 									</td>
 								</tr>
+								<tr>
+									<td>
+										<label for="moyenComm" class="form-control-label mr-sm-2">Moyen de contact</label>
+									</td>
+									<td>
+										<select name="moyenComm" class="" id="moyenComm">
+									   		<?php foreach($data['modeCommunicationGeneral'] AS $c) { 
+													if(isset($data['modeCommunication'][0]->id )) { 
+													  if($data['modeCommunication'][0]->id  == $c['id']) { ?>
+														<option selected value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
+											<?php     } 
+													  else { ?>
+													  <option value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
+											<?php     }
+													} 
+													else { ?>
+													  <option value=<?= $c['id'] ?>><?= $c['moyenComm'] ?></option>
+											<?php   }
+												  } ?>
+											</select>
+									</td>
+                                </tr>
+                                <tr>
+                                    <td>Mot de passe</td><td><input type="text" name="pwd0" value="<?= isset($data['motdepasse']) ? $data['motdepasse'] : '' ?>"></td>
+                                </tr>
+                                <tr>
+                                    <td>Confirmer le mot de passe</td><td><input type="password" name="pwd1"></td>
+                                </tr> 
 							</tbody>
 						</table>
 						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
@@ -230,12 +236,4 @@
                         }    
                     }
                 }
-            ?>
-
-<script>
-   
-</script>
-
-
- 
-    
+            ?> 

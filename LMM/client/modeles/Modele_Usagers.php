@@ -227,5 +227,14 @@
                 return $this->requete($query);
             }
         }
+        
+        public function obtenir_avec_paiement_communication($idUsager) {
+            $query = "SELECT * FROM usager u JOIN communication c ON c.id = u.id_moyenComm JOIN paiement p ON p.id = u.id_modePaiement WHERE u.username = ?";
+            $donnees = array($idUsager);
+            $resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Usager'); 
+			$lUsager = $resultat->fetch();
+            return $lUsager;
+        }
 }   
 ?>

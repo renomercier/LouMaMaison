@@ -32,4 +32,3 @@
         <?= $data?>
     </div>
 </div> <!-- fin div row -->
-

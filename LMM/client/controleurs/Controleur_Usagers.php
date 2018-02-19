@@ -136,6 +136,7 @@
 							$data['nom'] = $data["usager"]->getNom();
 							$data['adresse'] = $data["usager"]->getAdresse();
 							$data['telephone'] = $data["usager"]->getTelephone();
+                            $data['motdepasse'] = $data["usager"]-> getMotDePasse();	
                             foreach($data["usager"]->roles as $role)
                             {
                                 if($role->id_nomRole == 3)
@@ -179,6 +180,7 @@
 								else
 								{
 									$idUser = $_REQUEST['idUser']; //sinon, on modifie l'existante
+                                    $motdepasse = $_REQUEST['pwd0'];
 									$modeleUsagers = $this->getDAO("Usagers");
 									$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
 									//a changer
@@ -188,20 +190,21 @@
 										$photo =$data["usager"]->getPhoto();
 									}
 									
-									$motdepasse =$data["usager"]-> getMotDePasse();	
+									
 								}
 
 								$modeleUsagers = $this->getDAO("Usagers");
 								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $motdepasse, $obj['moyenComm'], $obj["paiement"]);
-
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {
 									// message à l'usager - success de l'insertion dans la BD
 									/*	$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";*/
+									//header('Content-type: application/json');
 									header('Content-type: application/json');
-									$user = $modeleUsagers->obtenir_par_id($_REQUEST['idUser']); 
-									$reponse = json_encode(array("userinfo"=>$user, JSON_PRETTY_PRINT));
+									$user = $modeleUsagers->obtenir_avec_paiement_communication($_REQUEST['idUser']); 
+									//$reponse = json_encode(array("userinfo"=>$user, JSON_PRETTY_PRINT));
+									$reponse = json_encode($user, JSON_PRETTY_PRINT);
 									echo $reponse; 
                                     }
                                     else 
@@ -388,7 +391,7 @@
 */
 			}
 			// affichage du footer
-            $this->afficheVue('footer');
+            //$this->afficheVue('footer');
 			
 		}
 

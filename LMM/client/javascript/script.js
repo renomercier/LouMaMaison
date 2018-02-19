@@ -1,4 +1,6 @@
-/**
+$(document).ready(function() {
+    
+    /**
   fonction pour afficher la liste des présentations
   par categorie.
   defini les styles css des elements et leurs effets.
@@ -35,8 +37,8 @@
         });
 
     });
-
-$(document).ready(function() {
+    
+    
     
     //Afficher profil d'usager
 		$("#div_info_plus").append($("#info_plus"));
@@ -65,9 +67,10 @@ $(document).ready(function() {
 	var formulaire = $("#modifierProfil"+idUser).serialize();
 
 	$.ajax({
+        cache: false,
 		url: 'index.php?Usagers&action=modifierProfil&'+formulaire,
 		method: "POST",
-		//dataType : 'json',		
+		dataType : 'json',		
 		data: {
 		dataJson: JSON.stringify({
 			"prenom":$('input[name="prenom"]').val(),
@@ -78,11 +81,16 @@ $(document).ready(function() {
 			"paiement":$('#modePaiement').val()
 			}) 
 		}, 
-		success: function (reponse) {
+		success: function (response) {
 		
-		var rep = JSON.parse(reponse);
-		//$("#info_nom > h3").empty();	
-		//$("#info_nom > h3").text(rep.nom);
+        $("#myModal"+idUser).hide();
+        $('.modal-backdrop.fade.show').remove();
+		$("#div_info_nom").empty();
+        $("#div_info_plus").empty();
+        $("#div_info_contact").empty();
+		$("#div_info_nom").html("<h3>" + response.nom +" "+ response.prenom + "</h3>");                 
+        $("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response.adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response.telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response.modePaiement + "</div>");
+        $("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response.moyenContact + "</div>");   
 		},  
 		error: function(xhr, ajaxOptions, thrownError) {
 			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

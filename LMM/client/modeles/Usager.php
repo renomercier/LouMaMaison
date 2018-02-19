@@ -207,9 +207,10 @@
 			'adresse' => $this->adresse,
 			'telephone' => $this->telephone,
 			'motdepasse' => $this->motDePasse,
-			'contact' => $this->id_moyenComm,
-			'paiement' => $this->id_modePaiement,
-
+			'id_contact' => $this->id_moyenComm,
+			'moyenContact' => $this->moyenComm,
+			'id_paiement' => $this->id_modePaiement,
+            'modePaiement' => $this->modePaiement,
 			'valide' => $this->valideParAdmin,
 			'banni' => $this->banni,
 			'idAdminBan' => $this->id_adminBan,

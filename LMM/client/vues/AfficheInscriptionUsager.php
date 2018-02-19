@@ -149,7 +149,3 @@
       <input type="submit" class="btn btn-primary btn-block btn-lg" id="inputSubmit" value="Sauvegarde">						
     </form>
 </div>
-
-
-
-
