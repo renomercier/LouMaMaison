@@ -3,7 +3,6 @@
   par categorie.
   defini les styles css des elements et leurs effets.
 */
-
     $(".actionAdmin").click(function(e) {
         $(this).each(function() {
         // envoi de la requete
@@ -21,12 +20,8 @@
                  newText = (text == 'Déchoir')? "Promouvoir":"Déchoir";
             
            $.ajax({
-                method: "POST",
-                url: "index.php",
-                data:{
-                        action: action,
-                        idUsager: idUser
-                    },
+                method: "GET",
+                url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
                 dataType:"html",
         // comportement en cas de success ou d'echec
               success:function(reponse) {
