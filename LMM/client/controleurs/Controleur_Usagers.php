@@ -46,7 +46,10 @@
 					// case de deconnexion d'un usager	
 					case "logout":
                          session_destroy();
-                        $this->afficheAccueil();
+                        $data= $this->initialiseMessages();
+                        $this->afficheVue("header",$data);
+                        $numPage = isset($params['page'])? $params['page'] : 1;
+                        $this->afficheListeAppartements($numPage);
                        
 						break;
 
@@ -55,7 +58,7 @@
                         if(isset($params["login"]))
 						{
 
-                            if(isset($params["username"]) && isset($params["password"]))
+                            if(isset($params["username"]) && isset($params["password"]) && !empty($params["username"]) && !empty($params["password"]))
                             {
                                 //si la session n'existe pas, on authentifier l'usager
                                 if (!isset($_SESSION["username"]))
@@ -79,25 +82,32 @@
                                         }
 
                                         // redirection temporaire
-                                        $this->afficheAccueil();
+                                        $data= $this->initialiseMessages();
+                                        $this->afficheVue("header",$data);
+                                        $numPage = isset($params['page'])? $params['page'] : 1;
+                                        $this->afficheListeAppartements($numPage);
+                                       // header('location:index.php?Appartements');
                                     }
                                     else
                                     {
                                         // si l'usager n'est pas authentifié
-                                        $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
                                         $this->afficheVue("header", $data);
+                                        $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
                                         $this->afficheVue("AfficheLogin", $data);
                                     }
                                 }
                                 else
                                 {
                                     // si la session existe déjà
-                                    $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
-
-                                    // redirection temporaire
                                     $this->afficheVue("header",$data);
+                                    $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
+                                    // redirection temporaire
                                     $this->afficheVue("accueil", $data); 
                                 }
+                            }else{
+                                $this->afficheVue("header",$data);
+                                $data="<p class='alert alert-warning'>Username et password obligatoires!</p>";
+                                $this->afficheVue("AfficheLogin", $data);
                             }
                         }
 
@@ -484,7 +494,7 @@
             $this->afficheVue("header",$data);
             $modeleAppartement= $this->getDAO("Appartements");
             $data["appartements"] = $modeleAppartement->obtenir_tous();
-            $this->afficheVue("Accueil", $data); 
+            $this->afficheVue("listeAppartements", $data); 
         }
 	}
 ?>
