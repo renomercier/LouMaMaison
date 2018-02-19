@@ -38,7 +38,8 @@
 				//ce switch détermine la vue et obtient le modèle
 				switch($params["action"])
 				{
-					case "page_suivante":
+					case "filtrer":
+                        $this->afficheVue("RechercheAppartements", $data);
 						break;
 
 					default:
@@ -47,6 +48,8 @@
 			}
             else{ 
                 $numPage = isset($params['page'])? $params['page'] : 1;
+               
+                $this->afficheVue("RechercheAppartements", $data);
                 $this->afficheListeAppartements($numPage);            
             }
             
