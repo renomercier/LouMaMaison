@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-2 recherche">
 
-            <form id="formUsager" method="POST" action="index.php?Appartements&action=filtrer">
+            <form id="formFiltrer" method="POST" action="index.php?Appartements&action=filtrer">
 
               <!-- Date arrivée -->
               <div class="form-group">
@@ -56,13 +56,14 @@
                 <label for="quartier" class="form-control-label my-1 mr-sm-2">Quartier</label>
                 <div class="row">
                 <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="quartier" id="quartier">
-                    <option value="0">-- Choisir un moyen de communication --</option>
-                    <option selected value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-
+                    <option value="0">-- Choisir un quartier --</option>
+                    <?php 
+                        foreach($data['quartier'] as $quartier)
+                        {
+                            echo "<option value='".$quartier['id']."'>".$quartier['nomQuartier']."</option>";
+                        }
+                    ?>
                 </select>
-                <small class="form-text text-muted" id="aideMoyenComm"></small>
                 </div>
               </div>
 
@@ -94,7 +95,15 @@
                         <input type="radio" name="note" id="cinq" value="1" class="form-check-input"><i class="fas fa-star"></i>
                     </label>
                     </div>
-                      <input type="submit" class="btn btn-primary btn-block btn-lg" id="inputSubmit" value="Sauvegarde">
+                    
+                    <!-- nbre de personnes -->
+                      <div class="form-group">
+                          <label for="nbrPersonnes" class="form-control-label ">Nombre de resultat par page</label>
+                          <div class="row">
+                            <input type="number" min="0" name="nbrPages" class="col-sm-12 form-control" id="nbrPages">
+                        </div>
+                      </div>
+                      <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
                 </div>						
             </form>
         </div>

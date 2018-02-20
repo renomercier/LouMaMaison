@@ -39,7 +39,25 @@
 				switch($params["action"])
 				{
 					case "filtrer":
-                        $this->afficheVue("RechercheAppartements", $data);
+                            // numero de la page actuelle
+                            $numPage = isset($params['page']) && is_numeric($params['page'])? $params['page'] : 1;
+                        
+                            // nombre d'appartements à afficher par page
+                            $nbrPages = isset($params['nbrPages']) && is_numeric($params['nbrPages']) ? $params['nbrPages'] : 4;
+                        
+                            // nombre de personnes
+                            $nbrPersonnes = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
+                        
+                            // prix minimum
+                            $prixMin = isset($params['prixMin']) && is_numeric($params['prixMin']) ? $params['prixMin'] : 0;
+                        
+                            // prix maximum
+                            $prixMax = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 9000;
+                        
+                            // nombre d'etoiles
+                            $note = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+
+                            $this->afficheListeAppartements($numPage, $nbrPages); 
 						break;
 
 					default:
@@ -48,7 +66,7 @@
 			}
             else{ 
                 $numPage = isset($params['page'])? $params['page'] : 1;
-                $this->afficheListeAppartements($numPage);            
+                $this->afficheListeAppartements($numPage, 4);            
             }
             
             $this->afficheVue("footer");

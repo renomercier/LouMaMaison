@@ -97,5 +97,16 @@
 			$resultat = $this->requete($query, $donnees);
             return $resultat->fetchAll();
 		}
+        
+        /**
+		* @brief      Chercher tous les quartiers sauvegardés dans la bd
+		* @return     tableau de quartier
+		*/
+		public function obtenir_quartiers()
+		{
+			$query = "SELECT * FROM quartier";
+			$resultat = $this->requete($query);
+            return $resultat->fetchAll();
+		}
 
     }

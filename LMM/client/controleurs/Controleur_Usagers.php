@@ -49,7 +49,7 @@
                         $data= $this->initialiseMessages();
                         $this->afficheVue("header",$data);
                         $numPage = isset($params['page'])? $params['page'] : 1;
-                        $this->afficheListeAppartements($numPage);
+                        $this->afficheListeAppartements($numPage, 4);
                        
 						break;
 
@@ -85,7 +85,7 @@
                                         $data= $this->initialiseMessages();
                                         $this->afficheVue("header",$data);
                                         $numPage = isset($params['page'])? $params['page'] : 1;
-                                        $this->afficheListeAppartements($numPage);
+                                        $this->afficheListeAppartements($numPage, 4);
                                     }
                                     else
                                     {

@@ -91,11 +91,12 @@
 		* @param 		$page numero de la page sur laquelle on se trouve
 		* @return		charge la vue avec le tableau de donnees
 		*/	
-		public function afficheListeAppartements($page)
+		public function afficheListeAppartements($page, $appartParPage)
 		{
 			$modeleAppartement= $this->getDAO("Appartements");
 			$apparts = $modeleAppartement->obtenir_tous();
-            $data = $this->obtenir_liste_partielle($apparts, $page);
+            $data = $this->obtenir_liste_partielle($apparts, $page, $appartParPage);
+            $data['quartier'] = $modeleAppartement->obtenir_quartiers();
             $this->afficheVue("RechercheAppartements", $data);
             $this->afficheVue("listeAppartements", $data);
             $this->afficheVue("carteGeographique", $data);
@@ -107,9 +108,8 @@
 		* @param 		$page numero de la page sur laquelle on se trouve
 		* @return		charge la vue avec le tableau de donnees
 		*/
-        public function obtenir_liste_partielle($apparts, $page)
+        public function obtenir_liste_partielle($apparts, $page, $appartParPage)
         {
-            $appartParPage = 4;
             $nbrAppart = count($apparts);
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             
