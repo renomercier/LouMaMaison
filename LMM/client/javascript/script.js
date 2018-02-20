@@ -63,16 +63,16 @@ $(document).ready(function() {
 	* 	Fonction pour Modifier le profil d'usager
 	*/	
 		$(document).on('click', '.sauvegarderForm', function(e){
+            var idUser = $(this).prev().val();	
 			
 			// une fois les validations faites, on soumet le formulaire
-			if(valNom && valPrenom && valAdresse && valTelephone && valPwd0  && valMoyenComm  && valModePaiement) {  //&& valPwdConfirm()
-					
+		if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length && isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
 				// soumission du formulaire
-				//$("#modifierProfil"+idUser).submit();
-				var queryString = $("#modifierProfil"+idUser).serialize();
+				
+				var queryString1 = $("#modifierProfil"+idUser).serialize(); 
 				$.ajax({
 					cache: false,
-					url: 'index.php?Usagers&action=modifierProfil&'+queryString,
+					url: 'index.php?Usagers&action=modifierProfil&'+queryString1,
 					method: "POST",
 					dataType : 'json',		
 					data: {
@@ -82,20 +82,28 @@ $(document).ready(function() {
 						"adresse":$('input[name="adresse"]').val(),
 						"telephone":$('input[name="telephone"]').val(),
 						"moyenComm":$('#moyenComm').val(),
-						"paiement":$('#modePaiement').val()
+						"paiement":$('#modePaiement').val(),
+                        "motdepasse":$("#pwd0").val(),
+                        "idUser":$('input[name="idUser"]').val()
 						}) 
 					}, 
-					success: function (response) {						
-						$("#myModal"+idUser).hide();
-						$('.modal-backdrop.fade.show').remove();
-						$("#div_info_nom").empty();
-						$("#div_info_plus").empty();
-						$("#div_info_contact").empty();
-						$("#div_info_nom").html("<h3>" + response.nom +" "+ response.prenom + "</h3>");               
-						$("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response.adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response.telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response.modePaiement + "</div>");
-						$("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response.moyenContact + "</div>");  
-						//$(".succes_erreur").addClass("alert alert-success").html("<p>Votre profil a été modifié avec succes!</p>");
-						//$(".succes_erreur").addClass("alert alert-success").html(response[0]);
+					success: function (response) {                       
+						
+						if(response.messageErreur) {
+                            $(".erreurModif").empty().addClass("alert alert-warning").html("<p>"+response.messageErreur + "</p>");
+                        }
+                        else if(response[1].messageSucces){
+                            $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>");
+                            $("#myModal"+idUser).hide();
+                            $('.modal-backdrop.fade.show').remove();
+                            $("#div_info_nom").empty();
+                            $("#div_info_plus").empty();
+                            $("#div_info_contact").empty();
+                            $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3>");               
+                            $("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response[0][0].adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response[0][0].telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response[0][0].modePaiement + "</div>");
+                            $("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response[0][0].moyenContact + "</div>");  
+                        }
+                       
 					},  
 					error: function(xhr, ajaxOptions, thrownError) {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -104,9 +112,9 @@ $(document).ready(function() {
 				return;	
 			}
 			else {
-			e.preventDefault();
 			
-			var idUser = $(this).prev().val();			
+			e.preventDefault();
+					
 			//validation de modification du profil
 		
 			var formulaire = $("#modifierProfil"+idUser);
@@ -131,25 +139,9 @@ $(document).ready(function() {
 			var valPwd0 = isPassword($("#pwd0").val());
 			(!valPwd0) ? ($("#pwd0").addClass('alert-warning'), $('#aidePwd0').empty().append('Le mot de passe doit contenir au minimum une lettre majuscule ou un chiffre'))  : ($("#pwd0").removeClass('alert-warning'), $('#aidePwd0').empty());
 			
-			// verification si les mots de passe sont identiques
-			/*var valPwd1 = isPassword($("#pwd1").val());
-			(valPwd1 !== valPwd0) ? ($("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques'))  : ($("#pwd1").removeClass('alert-warning'), $('#aidePwd1').empty());*/
-			
-		/*	var valPwd1 = isPassword($("#pwd1").val());
-			
-			function valPwdConfirm() {
-				if(valPwd0 !== valPwd1) {
-					$("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques');
-					return false;					
-				}
-				else {
-					$("#pwd1").removeClass('alert-warning'), $('#aidePwd1').empty();	
-					return true;
-				}
-			};*/
-		
-			
-			// verification si l'id est un int
+			var valPwd1 = isPassword($("#pwd1").val());
+
+			// verification si l'option est choisi
 			var valMoyenComm = $("#moyenComm").length;
 			(valMoyenComm !=1) ? ($("#moyenComm").addClass('alert-warning'), $('#aideMoyenComm').empty().append('Vous devez choisir un moyen de communication'))  : ($("#moyenComm").removeClass('alert-warning'), $('#aideMoyenComm').empty());
 			
@@ -162,8 +154,26 @@ $(document).ready(function() {
 });
 		
 		
+/*--------*/
+
+ function valPwdConfirm(elm1, elm2) {
+    if(elm1 !== elm2) {
+        $("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques');
+        return false;					
+    }
+    else {
+        $("#pwd1").removeClass('alert-warning'), $('#aidePwd1').empty();	
+        return true;
+    }
+};
+
+
+
 /*  ------------------------------------------------    @fonctions de validation    */
-  
+
+                
+                
+                
 
     /**
     * @brief    Fonction qui verifie si un champ nom est valide - validation avec RegExp         

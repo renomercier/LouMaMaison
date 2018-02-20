@@ -48,21 +48,21 @@
 					   <table class="table table-hover">
 							<tbody>
 								<tr>
-									<td>Prénom</td><td><input type="text" name="prenom" id="prenom" value="<?= isset($data['prenom']) ? $data['prenom'] : '' ?>"></td>
+									<td>Prénom</td><td><input type="text" name="prenom" id="prenom" value="<?= isset($data['prenom']) ? $data['prenom'] : '' ?>"><small class="form-text text-muted" id="aidePrenom"></small></td>
 								</tr>
-								<tr><small class="form-text text-muted" id="aidePrenom"></small> </tr>
+								
 								<tr>
-									<td>Nom</td><td><input type="text" name="nom" id="nom" value="<?= isset($data['nom']) ? $data['nom'] : '' ?>"></td>							
+									<td>Nom</td><td><input type="text" name="nom" id="nom" value="<?= isset($data['nom']) ? $data['nom'] : '' ?>"><small class="form-text text-muted" id="aideNom"></small></td>			
 								</tr>
-								<tr><small class="form-text text-muted" id="aideNom"></small> </tr>
+								
 								<tr>
-									<td>Adresse</td><td><input type="text" name="adresse" id="adresse" value="<?= isset($data['adresse']) ? $data['adresse'] : '' ?>"></td>
+									<td>Adresse</td><td><input type="text" name="adresse" id="adresse" value="<?= isset($data['adresse']) ? $data['adresse'] : '' ?>"><small class="form-text text-muted" id="aideAdresse"></small></td>
 								</tr>
-								<tr><small class="form-text text-muted" id="aideAdresse"></small></tr>
+								
 								<tr>
-									<td>Téléphone</td><td><input type="text" name="telephone" id="telephone" value="<?= isset($data['telephone']) ? $data['telephone'] : '' ?>"></td>
+									<td>Téléphone</td><td><input type="text" name="telephone" id="telephone" value="<?= isset($data['telephone']) ? $data['telephone'] : '' ?>"><small class="form-text text-muted" id="aideTel"></small></td>
 								</tr>
-								<tr><small class="form-text text-muted" id="aideTel"></small></tr>
+								
                                 <tr>
 									<td>
 										<label for="paiement" class="form-control-label mr-sm-2">Type de paiement</label>
@@ -87,9 +87,10 @@
 										}
 											 ?>
 										</select>
+                                        <small class="form-text text-muted" id="aideModePaiement"></small>
 									</td>
 								</tr>
-								<tr> <small class="form-text text-muted" id="aideModePaiement"></small></tr>
+								
 								<tr>
 									<td>
 										<label for="moyenComm" class="form-control-label mr-sm-2">Moyen de contact</label>
@@ -110,27 +111,27 @@
 											<?php   }
 												  } ?>
 											</select>
+                                        <small class="form-text text-muted" id="aideMoyenComm"></small>
 									</td>
                                 </tr>
-								<tr><small class="form-text text-muted" id="aideMoyenComm"></small></tr>
+								
                                 <tr>
-                                    <td>Mot de passe</td><td><input type="password" name="pwd0" id="pwd0"></td>
+                                    <td>Mot de passe</td><td><input type="password" name="pwd0" id="pwd0"><small class="form-text text-muted" id="aidePwd0"></small></td>
                                 </tr>
-								<tr><small class="form-text text-muted" id="aidePwd0"></small></tr>
+								
                                 <tr>
-                                    <td>Confirmer le mot de passe</td><td><input type="password" name="pwd1" id="pwd1"></td>
+                                    <td>Confirmer le mot de passe</td><td><input type="password" name="pwd1" id="pwd1"><small class="form-text text-muted" id="aidePwd1"></small></td>
                                 </tr>
-								<tr><small class="form-text text-muted" id="aidePwd1"></small></tr>
+								
                                 <tr>								
 							</tbody>
 						</table>
 						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
-						<button type="submit" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Save changes</button>
+						<button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Save changes</button>
 					</form>
 				  </div>
 				  <div class="modal-footer bg-primary">
-                      <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
-                    
+                      <div class="erreurModif"></div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				  </div>
 				</div>

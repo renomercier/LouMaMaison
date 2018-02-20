@@ -214,7 +214,7 @@
 			'valide' => $this->valideParAdmin,
 			'banni' => $this->banni,
 			'idAdminBan' => $this->id_adminBan,
-			'idAdminValid' => $this->id_adminValid
+			'idAdminValid' => $this->id_adminValid  
 			];
 		}
 	}
