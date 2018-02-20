@@ -1,10 +1,9 @@
 $(document).ready(function() {
     
-	/**
-		fonction pour afficher la liste des présentations
-		par categorie.
-		defini les styles css des elements et leurs effets.
-	*/
+/**
+  fonction pour faire les action d'administration sur un usager.
+  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
+*/
     $(".actionAdmin").click(function(e) {
         $(this).each(function() {
         // envoi de la requete
@@ -38,6 +37,7 @@ $(document).ready(function() {
 
     });
     
+
     /**
 	* 	Fonction pour afficher un profil d'usager
 	*/
@@ -158,6 +158,7 @@ $(document).ready(function() {
     Fonction pour comparer les mots de pass saisis
 */
 
+
  function valPwdConfirm(elm1, elm2) {
     if(elm1 !== elm2) {
         $("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques');
@@ -175,3 +176,25 @@ $(document).ready(function() {
 
    
   
+
+  /*  $(".pagination li").click(function(e) {
+        $(this).each(function() {
+        // envoi de la requete
+            e.preventDefault();
+            var page = $(this).val();
+           $.ajax({
+                method: "GET",
+                url: "index.php?Appartements&action=page_suivante&page="+page,
+                dataType:"html",
+        // comportement en cas de success ou d'echec
+              success:function(reponse) {
+                console.log(reponse);
+                  $('.resultat').html(reponse);
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+        });
+    });*/
+
