@@ -12,18 +12,14 @@
         <p> La page d'accueil vient d'être codée !</p>
     </div>
 </div> <!-- fin div row -->
+
 <div class="row">
     <div class="col-sm-4 offset-sm-4">
     </div>
 </div> <!-- fin div row -->
 
-<!--
-* @file         /AfficheListeUsagers.php
-* @brief        Projet WEB 2
-* @details      Affichage de tous les usagers - vue partielle
-* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
-* @version      v.1 | fevrier 2018
--->
+<!-- affichage message succes d'inscription à l'usager - à ajouter quand tu seras prêt -->
+<!--  isset($data['succes']) ? $data['succes'] : ''  -->                  
 
 <h1>Liste des appartements</h1>
          

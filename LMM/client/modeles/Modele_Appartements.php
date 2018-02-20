@@ -58,9 +58,8 @@
 		public function sauvegarderAppartement(Appartement $a) {
 				
 			// insertion
-            $sql = "INSERT INTO " . $this->getTableName() . " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
-			$data = array($a->getOptions(), $a->getTitle(), $a->getDescriptif(), $s->getMontantParJour(), $s->getNbPersones(), $s->getNbLits(), $s->getNbChambres(), $s->getPhotoPrincipale(), $s->getNoApt(), $s->getNoCivique(), $s->getRue(), $s->getCodePostal());
-		
+            $sql = "INSERT INTO " . $this->getTableName() . " (options, titre, descriptif, montantParJour, nbPersonnes, nbLits, nbChambres, photoPrincipale, noApt, noCivique, rue, codePostal, id_typeApt, id_userProprio, id_nomQuartier) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+			$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersones(), $a->getNbLits(), $a->getNbChambres(), $a->getPhotoPrincipale(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_userProprio(), $a->getId_nomQuartier()); 
 			// modification a ajouter
 			
            	return $this->requete($sql, $data);
@@ -76,13 +75,50 @@
       		
             return $this->supprimer($id);
         }
-        
+
+        /**
+		* @brief      	Selectionne la liste d'appartements selon la page affichee et le nb d'appartements par page
+		* @details 		
+		* @param      	<int>  		$debut     	L'id du 1er appartement a afficher
+		* @param      	<int>  		$fin     	le nb d'appartements par page
+		* @return     	<boolean>  		( resultat de la requete ou false )
+		*/
         public function obtenir_avec_Limit($debut, $fin)
         {
             $query = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT " . $debut .", ".$fin."";
-			$resultat = $this->requete($query);
+        //  $query = "SELECT * FROM " . $this->getTableName() . " ORDER BY id DESC LIMIT ?, ?";
+		//	$data = array($debut, $fin);
+			$resultat = $this->requete($query/*, $data*/);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();
         }
+
+        /**
+		* @brief		Lecture des types d'appartements de la BD
+		* @details		Permet de recuperer tous les types d'appartements dans la table type_apt
+		* @param 		Aucun parametre envoyé
+		* @return    	<type> 		toutes les rangées de la table type_Apt ou false 
+		*/
+		public function getTypesApt() {
+
+			$query = "SELECT id, typeApt from type_apt";
+			$resultat = $this->requete($query);
+            return $this->requete($query);   
+        }
+
+        /**
+		* @brief		Lecture de tous les quartiers de Montreal de la BD
+		* @details		Permet de recuperer tous les quartiers dans la table quartier
+		* @param 		Aucun parametre envoyé
+		* @return    	<type> 		toutes les rangées de la table quartier ou false 
+		*/
+		public function getQuartier() {
+
+			$query = "SELECT id, nomQuartier from quartier";
+			$resultat = $this->requete($query);
+            return $this->requete($query);   
+        }
+
+        
 
     }
