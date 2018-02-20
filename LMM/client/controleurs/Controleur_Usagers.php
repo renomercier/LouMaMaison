@@ -86,7 +86,6 @@
                                         $this->afficheVue("header",$data);
                                         $numPage = isset($params['page'])? $params['page'] : 1;
                                         $this->afficheListeAppartements($numPage);
-                                       // header('location:index.php?Appartements');
                                     }
                                     else
                                     {

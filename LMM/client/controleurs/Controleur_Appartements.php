@@ -48,8 +48,6 @@
 			}
             else{ 
                 $numPage = isset($params['page'])? $params['page'] : 1;
-               
-                $this->afficheVue("RechercheAppartements", $data);
                 $this->afficheListeAppartements($numPage);            
             }
             

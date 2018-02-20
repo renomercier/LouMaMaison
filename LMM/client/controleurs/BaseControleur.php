@@ -96,6 +96,9 @@
 			$modeleAppartement= $this->getDAO("Appartements");
 			$apparts = $modeleAppartement->obtenir_tous();
             $data = $this->obtenir_liste_partielle($apparts, $page);
+            $this->afficheVue("RechercheAppartements", $data);
+            $this->afficheVue("listeAppartements", $data);
+            $this->afficheVue("carteGeographique", $data);
             
 		}
         
@@ -148,9 +151,6 @@
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 
             }
-            
-			$this->afficheVue("listeAppartements", $data);
-            $this->afficheVue("carteGeographique", $data);
             return $data;
         }
 
