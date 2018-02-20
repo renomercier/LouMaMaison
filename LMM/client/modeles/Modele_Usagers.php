@@ -73,6 +73,7 @@
 				$query = "UPDATE " . $this->getTableName() . " SET nom=?, prenom=?, photo=?, adresse=?, telephone=?, motDePasse=?, id_moyenComm=?, id_modePaiement=? WHERE " . $this->getClePrimaire() . "=?";
 				$donnees = array($lUsager->getNom(), $lUsager->getPrenom(), $lUsager->getPhoto(), $lUsager->getAdresse(), $lUsager->getTelephone(), $lUsager->getMotDePasse(), $lUsager->getIdMoyenComm(), $lUsager->getIdModePaiement(), $lUsager->getUsername());
 				return $this->requete($query, $donnees);
+				
 			}
 			else
 			{
@@ -227,6 +228,15 @@
             else {
                 return $this->requete($query);
             }
+        }
+        
+        public function obtenir_avec_paiement_communication($idUsager) {
+            $query = "SELECT * FROM usager u JOIN communication c ON c.id = u.id_moyenComm JOIN paiement p ON p.id = u.id_modePaiement WHERE u.username = ?";
+            $donnees = array($idUsager);
+            $resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Usager'); 
+			$lUsager = $resultat->fetch();
+            return $lUsager;
         }
 }   
 ?>

@@ -1,7 +1,4 @@
-
-
-
-    // on s'assure que le document soit pret 
+// on s'assure que le document soit pret 
 	$(document).ready(function() {
 
         // div modePaiement: visible ou invisible selon si la case est cochee  
@@ -118,8 +115,3 @@
         });
 
 	}); // fin du document.ready
-
-  
-
-
-
