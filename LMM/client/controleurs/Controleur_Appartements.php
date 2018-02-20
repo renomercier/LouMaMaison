@@ -1,55 +1,54 @@
 <?php
 /**
-* @file 		/controller/Controleur_Appartements.php
-* @brief 		Projet WEB 2
-* @details								
+* @file         /controller/Controleur_Appartement.php
+* @brief        Projet WEB 2
+* @details                              
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
-* @version      v.1 | fevrier 2018 	
+* @version      v.1 | fevrier 2018  
 */
-
-	/**
-    * @class    Controleur_Appartements - herite de la classe BaseController
-    * @details 	
+    /**
+    * @class    Controleur_Appartement - herite de la classe BaseController
+    * @details  
     *
-    *   ... methodes  |   traite(), afficheListeAppartements
+    *   1 methode  |   traite()
     */
-	class Controleur_Appartements extends BaseControleur
-	{	
-		/**
-		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
-		* @details    gere les actions (switch case) ainsi que les parametres envoyes
-		* @param      <array>  	$params 	les parametres envoyes
-		* @return     <...>  	( tout depend du case )
-		*/	
-		public function traite(array $params)
-		{
+    class Controleur_Appartements extends BaseControleur
+    {   
+        /**
+        * @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
+        * @details    gere les actions (switch case) ainsi que les parametres envoyes
+        * @param      <array>   $params     les parametres envoyes
+        * @return     <...>     ( tout depend du case )
+        */  
+        public function traite(array $params)
+        {
             /*
                 initialiser les messages à afficher à l'usager
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $message= $this->initialiseMessages();
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
             //
-			//si le paramètre action existe
-			if(isset($params["action"]))
-			{
-				//switch en fonction de l'action qui nous est envoyée
-				//ce switch détermine la vue et obtient le modèle
-				switch($params["action"])
-				{
-					case "machin":
-                        $this->afficheVue("header", $message);
-						break;
+            //si le paramètre action existe
+            if(isset($params["action"]))
+            {
+                //switch en fonction de l'action qui nous est envoyée
+                //ce switch détermine la vue et obtient le modèle
+                switch($params["action"])
+                {
+                    case "page_suivante":
+                        break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
 
                         if(isset($_SESSION['username'])) {
-                            $params['erreurs'] = $this->validerPermissionApt($_SESSION['username']);
+                            $params['erreursApt'] = $this->validerPermissionApt($_SESSION['username']);
                             $this->afficheFormAppartement($params);
                         }
                         else {
-                            $params['erreurs'] = "Vous devez être connecté pour ajouter un appartement<br>";
+                            $params['erreursApt'] = "Vous devez être connecté pour ajouter un appartement<br>";
                             $this->afficheFormAppartement($params);
                         }
                         
@@ -66,9 +65,9 @@
                             // ajout d'insertion d'une photo (src) à faire... + upload de l'image + images supp.
 
                             // validation des champs input du formulaire d'inscription d'un appartement
-                            $params['erreurs'] = $this->validerAppartement([ 'Le titre de l\'annonce'=>$params["titre"], 'Le descriptif de l\'appartement'=>$params["descriptif"], 'Le nom de rue'=>$params['rue'], 'Le numéro d\'appartement'=>$params['noApt'], 'Le code postal'=>$params['codePostal'] ], [ 'Le numéro civique'=>$params['noCivique'], 'Le montant du logement'=>$params['montantParJour'], 'Le nombre de personnes'=>$params['nbPersonnes'], 'Le nombre de chambres'=>$params['nbChambres'], 'Le nombre de lits'=>$params['nbLits'], 'Le type d\'appartement'=>$params['id_typeApt'], 'Le quartier'=>$params['id_nomQuartier'] ], [ 'Les options'=>isset($params['options']) ? $params['options'] : "" ] );                            
+                            $params['erreursApt'] = $this->validerAppartement([ 'Le titre de l\'annonce'=>$params["titre"], 'Le descriptif de l\'appartement'=>$params["descriptif"], 'Le nom de rue'=>$params['rue'], 'Le numéro d\'appartement'=>$params['noApt'], 'Le code postal'=>$params['codePostal'] ], [ 'Le numéro civique'=>$params['noCivique'], 'Le montant du logement'=>$params['montantParJour'], 'Le nombre de personnes'=>$params['nbPersonnes'], 'Le nombre de chambres'=>$params['nbChambres'], 'Le nombre de lits'=>$params['nbLits'], 'Le type d\'appartement'=>$params['id_typeApt'], 'Le quartier'=>$params['id_nomQuartier'] ], [ 'Les options'=>isset($params['options']) ? $params['options'] : "" ] );                            
                             // si pas d'erreurs, on instancie l'appartement et on l'insère dans la BD
-                            if(!$params['erreurs']) {
+                            if(!$params['erreursApt']) {
 /* @temp */                     $photo = "photo.jpg";
                                 // nouvel objet appartement
                                 $appartement = new Appartement($params['options'], $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $photo, $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
@@ -80,7 +79,7 @@
 /* affichage @temp */               $this->afficheFormAppartement($data);
                                 }
                                 else {
-                                    $params['erreurs'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
+                                    $params['erreursApt'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
                                     $this->afficheFormAppartement($params);
                                 }
                             }
@@ -92,7 +91,7 @@
                         }
                         // si on n'a pas tous les parametres requis
                        else {
-                            $params['erreurs'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
+                            $params['erreursApt'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
                             $this->afficheFormAppartement($params);
                         }   
                         break;
@@ -102,53 +101,14 @@
 				} // fin du switch 				
 			}
             // si aucune action, affichage de la page d'accueil par defaut
-            else{            
-                $this->afficheListeAppartements($params['page']);
-            }
-            
+            else{ 
+                $numPage = isset($params['page'])? $params['page'] : 1;
+                $this->afficheListeAppartements($numPage);            
+            }            
             // affichage du footer
             $this->afficheVue("footer");
         }
         
-        /**
-		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
-		* @param 		$page numero de la page sur laquelle on se trouve
-		* @return		charge la vue avec le tableau de donnees
-		*/	
-		private function afficheListeAppartements($page)
-		{
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
-			$modeleAppartement= $this->getDAO("Appartements");
-			$appart = $modeleAppartement->obtenir_tous();
-            $appartParPage = 1;
-            $nbrAppart = count($appart);
-            $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
-            
-            if(isset($page))
-            {
-                if($page<=0){ $page = 1;}
-                if($page>$data['nbrPage']){ $page = $data['nbrPage'];}
-                
-                 $data['pageActuelle']=intval($page);
-
-                 if($data['pageActuelle'] > $data['nbrPage']) 
-                 {
-                      $data['pageActuelle'] = $data['nbrPage'];
-                 }
-            }
-            else // Sinon
-            {
-                 $data['pageActuelle']=1; // La page actuelle est la n°1    
-            }
-            
-            $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
-            
-            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
-            
-			$this->afficheVue("Accueil", $data);
-		}
-
         /**
         * @brief        Affichage du formulaire d'inscription d'un appartement
         * @details      Recupere des donnees en parametre pour affichage des choix de l'usager et des erreurs à afficher
@@ -159,8 +119,8 @@
         private function afficheFormAppartement($data = "")
         {
             // formatage du message d'erreurs à afficher
-            if(isset($data['erreurs'])) {
-                $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
+            if(isset($data['erreursApt']) && !empty($data['erreursApt'])) {
+                $data['erreursApt'] = "<p class='alert alert-warning'>" . $data['erreursApt'] . "</p>";
             }
             // chargement du modele Appartement
             $modeleApts = $this->getDAO("Appartements");
@@ -170,7 +130,6 @@
             // si le tableau data est charge
             if($data) {
 
-                $this->afficheVue("header");
                 // affichage du formulaire d'inscription d'un appartement avec tableau de data rempli
                 $this->afficheVue("afficheInscriptionApt", $data);
             }
@@ -272,5 +231,7 @@
             }
             return $erreurs;
         }
-	}
+
+    }
+    
 ?>

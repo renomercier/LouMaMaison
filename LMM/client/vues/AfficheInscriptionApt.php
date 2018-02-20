@@ -13,7 +13,7 @@
     <!-- affichage des messages d'erreur a l'usager -->
     <div class="row">
       <div class="col-sm-12">
-         <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+         <?= isset($data['erreursApt']) ? $data['erreursApt'] : '' ?>
          <?= isset($data['succes']) ? $data['succes'] : '' ?>
       </div>
     </div> <!-- fin div row -->

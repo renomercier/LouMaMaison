@@ -42,3 +42,22 @@
     width: 100%;
     overflow: hidden;
 }
+.thumbnail img{
+    width: 100%;
+    height: auto;
+}
+.pagination li{
+    cursor: pointer;
+}
+.fa-star, .fa-star-half{
+    color: darkorange;
+}
+#carte {
+height: 50%;
+}
+
+html, body {
+height: 100%;
+margin: 0;
+padding: 0;
+}

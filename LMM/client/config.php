@@ -18,7 +18,9 @@
 		}
 	}
 	
+
 	// déclaration de la racine du projet
+
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/loumamaison-V2\LouMaMaison-1\LMM\client/");
 	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/originLocal/LouMaMaison/LMM/client/");
