@@ -19,9 +19,9 @@
 	}
 	
 	//déclaration de la racine du projet
-	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/client/");
+	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/originLocal/LouMaMaison/LMM/client/");
-	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison/LouMaMaison/LMM/client/");
+	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison/LouMaMaison/LMM/client/");
 
 	//déclaration des infos de connexion
 	define("HOST", "localhost");
@@ -29,8 +29,8 @@
 	define("DBNAME", "loumamaison");
 	define("USERNAME", "root");
 
-	define("PWD", "root");
-	//define("PWD", "");
+	//define("PWD", "root");
+	define("PWD", "");
 
 	define("DBTYPE", "mysql");
 

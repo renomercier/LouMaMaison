@@ -128,18 +128,18 @@
 
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
-                        if(isset($params["idUsager"]))
+                        if(isset($params["idUsager"]) && !empty($params["idUsager"]))
                         {       
                             $this->afficheProfil($params["idUsager"], $data);
                         }
                         else
                         {
-                            trigger_error("Pas d'id spécifié...");
+                            trigger_error("Pas d'id spécifié");
                         }
                     break;
 						
 					case "modifierProfil":
-                       
+						$message_profil="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
 						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
 						{
@@ -161,41 +161,43 @@
 									} else {
 										$photo =$data["usager"]->getPhoto();
 									}
-									
-									
 								}
-
 								$modeleUsagers = $this->getDAO("Usagers");
 								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $motdepasse, $obj['moyenComm'], $obj["paiement"]);
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {
-									// message à l'usager - success de l'insertion dans la BD
-									/*	$data['succes'] = "<p class='alert alert-success'>Votre profil a été modifié avec succès.";*/
-									
+																		
 									header('Content-type: application/json');
 									$user = $modeleUsagers->obtenir_avec_paiement_communication($_REQUEST['idUser']); 
 									//$reponse = json_encode(array("userinfo"=>$user, JSON_PRETTY_PRINT));
-									$reponse = json_encode($user, JSON_PRETTY_PRINT);
+									$reponse = json_encode($user,  JSON_PRETTY_PRINT);
 									echo $reponse; 
                                     }
                                     else 
                                     {
                                         // message à l'usager - s'il la requete echoue
-                                       $params['erreur'] = "la requete echoue";
-                                        $this->afficheProfil($_REQUEST['idUser'], $params);
+										$message_profil = json_encode(array("La requete echoue"));
+										echo $message_profil;
+                                       //$params['erreur'] = "la requete echoue";
+                                        //$this->afficheProfil($_REQUEST['idUser'], $params);
                                     }
 							}
 							else 
 							{
-								$params['erreur'] = "Veuillez vous assurer de remplir tous les champs requis";	
-								 $this->afficheProfil($_REQUEST['idUser'], $params);
+								
+								$message_profil = json_encode(array("Veuillez vous assurer de remplir tous les champs requis"));
+								echo $message_profil;							
+								//$params['erreur'] = "Veuillez vous assurer de remplir tous les champs requis";	
+								// $this->afficheProfil($_REQUEST['idUser'], $params);
 							}
 						}
 						else
 						{
-							$params['erreur'] =  "You are so bad!";
-							$this->afficheProfil($_REQUEST['idUser'], $params);
+							$message_profil = json_encode(array("You are so bad!"));
+							echo $message_profil;
+							//$params['erreur'] =  "You are so bad!";
+							//$this->afficheProfil($_REQUEST['idUser'], $params);
 						}
 					break;
 					

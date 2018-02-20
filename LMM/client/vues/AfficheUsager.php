@@ -14,11 +14,10 @@
 <div class="container detail">
     <!-- Tout le monde peut voir -->
     <div class="row">
-        <div class="row">
-          <div class="col-sm-12">            
-             <?= isset($data['succes']) ? $data['succes'] : '' ?>
+        
+          <div class="col-sm-12 succes_erreur">            
           </div>
-        </div> <!-- fin div row -->
+        
         
         <div class="col-md-4">
             <div class="row">
@@ -49,17 +48,21 @@
 					   <table class="table table-hover">
 							<tbody>
 								<tr>
-									<td>Prénom</td><td><input type="text" name="prenom" value="<?= isset($data['prenom']) ? $data['prenom'] : '' ?>"></td>
+									<td>Prénom</td><td><input type="text" name="prenom" id="prenom" value="<?= isset($data['prenom']) ? $data['prenom'] : '' ?>"></td>
 								</tr>
+								<tr><small class="form-text text-muted" id="aidePrenom"></small> </tr>
 								<tr>
-									<td>Nom</td><td><input type="text" name="nom" value="<?= isset($data['nom']) ? $data['nom'] : '' ?>"></td>
+									<td>Nom</td><td><input type="text" name="nom" id="nom" value="<?= isset($data['nom']) ? $data['nom'] : '' ?>"></td>							
 								</tr>
+								<tr><small class="form-text text-muted" id="aideNom"></small> </tr>
 								<tr>
-									<td>Adresse</td><td><input type="text" name="adresse" value="<?= isset($data['adresse']) ? $data['adresse'] : '' ?>"></td>
+									<td>Adresse</td><td><input type="text" name="adresse" id="adresse" value="<?= isset($data['adresse']) ? $data['adresse'] : '' ?>"></td>
 								</tr>
+								<tr><small class="form-text text-muted" id="aideAdresse"></small></tr>
 								<tr>
-									<td>Téléphone</td><td><input type="text" name="telephone" value="<?= isset($data['telephone']) ? $data['telephone'] : '' ?>"></td>
+									<td>Téléphone</td><td><input type="text" name="telephone" id="telephone" value="<?= isset($data['telephone']) ? $data['telephone'] : '' ?>"></td>
 								</tr>
+								<tr><small class="form-text text-muted" id="aideTel"></small></tr>
                                 <tr>
 									<td>
 										<label for="paiement" class="form-control-label mr-sm-2">Type de paiement</label>
@@ -86,6 +89,7 @@
 										</select>
 									</td>
 								</tr>
+								<tr> <small class="form-text text-muted" id="aideModePaiement"></small></tr>
 								<tr>
 									<td>
 										<label for="moyenComm" class="form-control-label mr-sm-2">Moyen de contact</label>
@@ -108,16 +112,20 @@
 											</select>
 									</td>
                                 </tr>
+								<tr><small class="form-text text-muted" id="aideMoyenComm"></small></tr>
                                 <tr>
-                                    <td>Mot de passe</td><td><input type="text" name="pwd0" value="<?= isset($data['motdepasse']) ? $data['motdepasse'] : '' ?>"></td>
+                                    <td>Mot de passe</td><td><input type="text" name="pwd0" id="pwd0" value="<?= isset($data['motdepasse']) ? $data['motdepasse'] : '' ?>"></td>
                                 </tr>
+								<tr><small class="form-text text-muted" id="aidePwd0"></small></tr>
                                 <tr>
-                                    <td>Confirmer le mot de passe</td><td><input type="password" name="pwd1"></td>
-                                </tr> 
+                                    <td>Confirmer le mot de passe</td><td><input type="password" name="pwd1" id="pwd1"></td>
+                                </tr>
+								<tr><small class="form-text text-muted" id="aidePwd1"></small></tr>
+                                <tr>								
 							</tbody>
 						</table>
 						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
-						<button type="button" class="btn btn-success sauvegarder">Save changes</button>
+						<button type="submit" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarder">Save changes</button>
 					</form>
 				  </div>
 				  <div class="modal-footer bg-primary">
@@ -181,7 +189,7 @@
                            <div class="form-group row">Username : <?=$data["usager"]->getUsername();?></div> 
                            <div class="form-group row">Adresse : <?=$data["usager"]->getAdresse();?></div> 
                            <div class="form-group row">Téléphone : <?=$data["usager"]->getTelephone();?></div> 
-                           <div class="form-group row mb-0">Mode de paiement : <?=$data["modePaiement"][0]->modePaiement;?></div> 
+                           <div class="form-group row mb-0">Mode de paiement : <?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></div> 
                         </span>
                         <?php 
                         if($data["isClient"]) 
