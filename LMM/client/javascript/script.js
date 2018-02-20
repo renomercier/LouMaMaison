@@ -39,7 +39,7 @@ $(document).ready(function() {
     });
     
     /**
-	* 	Fonction pour afficher profil d'usager
+	* 	Fonction pour afficher un profil d'usager
 	*/
 		$("#div_info_plus").append($("#info_plus"));
 		
@@ -60,16 +60,15 @@ $(document).ready(function() {
 		$("#div_mes_appts").append($("#mes_appts"));
 		
 	/**
-	* 	Fonction pour Modifier le profil d'usager
+	* 	Fonction pour Modifier un profil d'usager
 	*/	
 		$(document).on('click', '.sauvegarderForm', function(e){
             var idUser = $(this).prev().val();	
 			
-			// une fois les validations faites, on soumet le formulaire
-		if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length && isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
-				// soumission du formulaire
-				
-				var queryString1 = $("#modifierProfil"+idUser).serialize(); 
+            // une fois les validations js faites, on soumet le formulaire
+            if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length && isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
+				// envoie la requête par ajax			
+				var queryString1 = $("#modifierProfil"+idUser).serialize(); //recuperer l'info du formulaire
 				$.ajax({
 					cache: false,
 					url: 'index.php?Usagers&action=modifierProfil&'+queryString1,
@@ -88,11 +87,11 @@ $(document).ready(function() {
 						}) 
 					}, 
 					success: function (response) {                       
-						
+						//vérification côté php, s'il y des erreurs
 						if(response.messageErreur) {
-                            $(".erreurModif").empty().addClass("alert alert-warning").html("<p>"+response.messageErreur + "</p>");
-                        }
-                        else if(response[1].messageSucces){
+                            $(".erreurModif").empty().addClass("alert alert-warning col-sm-8").html("<p>"+response.messageErreur + "</p>");
+                        } 
+                        else if(response[1].messageSucces){ //s'on n'as pas des erreurs côté php
                             $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>");
                             $("#myModal"+idUser).hide();
                             $('.modal-backdrop.fade.show').remove();
@@ -112,11 +111,10 @@ $(document).ready(function() {
 				return;	
 			}
 			else {
-			
+			//empecher le comportement normal du bouton
 			e.preventDefault();
 					
-			//validation de modification du profil
-		
+			//validation de modification du profil js		
 			var formulaire = $("#modifierProfil"+idUser);
 			
 			// validation format nom
@@ -127,7 +125,7 @@ $(document).ready(function() {
 			var valPrenom = isName($("#prenom").val());
 			(!valPrenom) ? ($("#prenom").addClass('alert-warning'), $('#aidePrenom').empty().append('Le prénom est invalide'))  : ($("#prenom").removeClass('alert-warning'), $('#aidePrenom').empty());
 			
-			// validation formulaireat texte
+			// validation format texte
 			var valAdresse = isText($("#adresse").val());
 			(!valAdresse) ? ($("#adresse").addClass('alert-warning'), $('#aideAdresse').empty().append('L\'adresse est invalide'))  : ($("#adresse").removeClass('alert-warning'), $('#aideAdresse').empty());
 			
@@ -154,7 +152,11 @@ $(document).ready(function() {
 });
 		
 		
-/*--------*/
+/*----------------- A Ajouter dans le fichier functions!*/
+
+/**
+    Fonction pour comparer les mots de pass saisis
+*/
 
  function valPwdConfirm(elm1, elm2) {
     if(elm1 !== elm2) {
@@ -169,67 +171,7 @@ $(document).ready(function() {
 
 
 
-/*  ------------------------------------------------    @fonctions de validation    */
 
-                
-                
-                
-
-    /**
-    * @brief    Fonction qui verifie si un champ nom est valide - validation avec RegExp         
-    * @param    <string>    elm     valeur de l'input (nom, prenom)          
-    * @return   true (le resultat) si le nom est valide, sinon false
-    */
-    function isName(elm) {
-
-        //  ne tolere aucun espace avant le premier mot ni après le dernier mot
-        var regEx = /^\S[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\-'\s]*\S$/gi;     
-        var result = elm.match(regEx); 
-        return result ? result : false;
-    }    
-   
-   /**
-    * @brief    Fonction qui verifie si un champ texte est valide - validation avec RegExp            
-    * @param    <string>    inputValue   valeur du texte de l'input             
-    * @return   true (le resultat) si le nom est valide, sinon false
-    */
-    function isText(elm) {
-        
-        //  ne tolere aucun espace avant le premier mot ni après le dernier mot
-        var regEx = /^\S[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ@"$%#*&=+;:\/\)\(?!_.,\-'\s]*\S$/gi;     
-        var result = elm.match(regEx); 
-        return result ? result : false;       
-    } 
-
-    /**
-    * @brief    Fonction qui verifie si un champ mot de passe est au bon format
-    * @details  Fonction qui cible la valeur de l'input 'mot de passe' d'un formulaire et verifie son format avec une RegExp
-    * @param    <objet>    form      le formulaire             
-    * @return   true (le resultat) si le format est bon, sinon null
-    */
-    function isPassword(elm) {    
-        
-        //	var regEx =	/^(?!.*\s).*[a-z]+.*[\d]+.*$/g; 
-        // positive lookahead: au moins une lettre maj. ou un chiffre | negative lookahead: pas d'espaces permis                   
-        var regEx = /^(?=.*[A-Z\d])(?!.*\s).{8,20}$/g;              
-        var result = elm.match(regEx);
-        return result;
-    }
 
    
-
-    /**
-    * @brief    Fonction qui verifie si un champ telephone est valide
-    * @details  Fonction qui cible la valeur phone (telephone) de l'input d'un formulaire et verifie sa validite avec une RegExp         
-    * @param    <value>     elm     valeur l'input telephone             
-    * @return   true ou null (le resultat) 
-    */
-    function isPhoneNumber(elm) {
-
-        var regEx = /^1?[-\s.]?(\d{3})[-\s.]?(\d{3})[-\s.](\d{4})$/g;
-        var result = elm.match(regEx);
-        
-        return result ? result : false;
-    }
-
   

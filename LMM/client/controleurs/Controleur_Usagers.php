@@ -141,9 +141,9 @@
 					case "modifierProfil":
 						$message_profil="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
-						if(isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"]) && isset($params["pwd0"])) 
+						if(isset($params["idUser"]) && isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"]) && isset($params["pwd0"])) 
 						{
-							if(!empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"]) && !empty($params["pwd0"])) 
+							if(!empty($params["idUser"]) && !empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"]) && !empty($params["pwd0"])) 
 							{
 								if(!isset($params['idUser']) || $params['idUser'] == '')
 								{
@@ -152,8 +152,7 @@
 								else
 								{
 									$idUser = $params['idUser']; //sinon, on modifie l'existante
-                                    $motdepasse = $params['pwd0'];
-                                  
+                                               
 									$modeleUsagers = $this->getDAO("Usagers");
 									$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
 									//a changer
@@ -166,45 +165,37 @@
                                       //$coor_moyenComm = $data["usager"]->getCoorMoyenComm();
 								}
 								$modeleUsagers = $this->getDAO("Usagers");
-								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $motdepasse, $obj['moyenComm'], /*$coor_moyenComm, */ $obj["paiement"]);
+								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $obj['motdepasse'], $obj['moyenComm'], /*$coor_moyenComm, */ $obj["paiement"]);
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
-									if($resultat) {
-																		
-									header('Content-type: application/json');
-									$user = $modeleUsagers->obtenir_avec_paiement_communication($params['idUser']); 
-									//$reponse = json_encode(array("userinfo"=>$user, JSON_PRETTY_PRINT));
-									$reponse = array($user); 
-                                    $reponse1 = (array("messageSucces"=>"Votre profil a ete modifie avec succes!"));
-                                        
-                                    $tempData = [];
-                                    $tempData = ([$reponse, $reponse1]);                                                      
-									echo json_encode($tempData); 
+									if($resultat) {								
+                                        header('Content-type: application/json'); //absolument mettre ce header pour json
+                                        $user = $modeleUsagers->obtenir_avec_paiement_communication($params['idUser']); 
+                                        //convertir les objets en array pour les mettre dans un seul tableau pour les encoder ensuite en renvoyer vers client
+                                        $reponse = array($user); 
+                                        $reponse1 = (array("messageSucces"=>"Votre profil a ete modifie avec succes!"));//creer une message de success
+
+                                        $tempData = [];
+                                        $tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+                                        echo json_encode($tempData); 
                                     }
                                     else 
                                     {
                                         // message à l'usager - s'il la requete echoue
-										$message_profil = json_encode(array("La requete echoue"));
-										echo $message_profil;
-                                        //$params['erreur'] = "la requete echoue";
-                                        //$this->afficheProfil($_SESSION["username"], $data);
+										$message_profil = json_encode(array("messageErreur"=>"La requete echoue"));
+										echo $message_profil;                                        
                                     }
 							}
 							else 
 							{
-								
 								$message_profil = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis"));
-								echo $message_profil;							
-								//$params['erreur'] = "Veuillez vous assurer de remplir tous les champs requis";	
-								 //$this->afficheProfil($_SESSION["username"], $data);
+								echo $message_profil;				
 							}
 						}
 						else
 						{
-							$message_profil = json_encode(array("You are so bad!"));
+							$message_profil = json_encode(array("messageErreur"=>"Non-non-non...!"));
 							echo $message_profil;
-							//$params['erreur'] =  "You are so bad!";
-							//$this->afficheProfil($_SESSION["username"], $data);
 						}
 					break;
 					
