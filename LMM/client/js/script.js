@@ -34,6 +34,7 @@
         });
 
     });
+    
 /**
   fonction pour faire les action d'administration sur un usager.
   (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
@@ -56,9 +57,5 @@
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
               }
             });
-
         });
-
     });*/
-
-

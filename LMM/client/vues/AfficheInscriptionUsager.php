@@ -1,7 +1,7 @@
 <!--
 * @file         /AfficheInscriptionUsager.php
 * @brief        Projet WEB 2
-* @details      Affichage du formulaire de connexion - vue partielle
+* @details      Affichage du formulaire d'inscription d'un usager - vue partielle
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
@@ -119,6 +119,15 @@
               } ?>
         </select>
         <small class="form-text text-muted" id="aideMoyenComm"></small>
+        </div>
+      </div>
+
+      <!-- Coordonnées du moyen de communication -->
+      <div class="form-group">
+          <label for="coor_moyenComm" class="form-control-label ">Coordonnées du moyen de communication</label>
+          <div class="row">
+            <input type="text" name="coor_moyenComm" class="col-sm-12 form-control" id="coor_moyenComm" value="<?= isset($data['coor_moyenComm']) ? $data['coor_moyenComm'] : '' ?>" placeholder="Adresse e-mail, pseudo etc." aria-describedby="aideCoorMC">
+            <small class="form-text text-muted" id="aideCoorMC"></small> 
         </div>
       </div>
 
