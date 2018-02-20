@@ -110,6 +110,7 @@
 		*/
         public function obtenir_liste_partielle($apparts, $page, $appartParPage)
         {
+            $data['appartParPage']=$appartParPage;
             $nbrAppart = count($apparts);
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             

@@ -30,7 +30,7 @@
             */
             $data= $this->initialiseMessages();
             $this->afficheVue("header",$data);
-            //
+            
 			//si le paramètre action existe
 			if(isset($params["action"]))
 			{
@@ -39,12 +39,13 @@
 				switch($params["action"])
 				{
 					case "filtrer":
+                        
                             // numero de la page actuelle
                             $numPage = isset($params['page']) && is_numeric($params['page'])? $params['page'] : 1;
                         
                             // nombre d'appartements à afficher par page
-                            $nbrPages = isset($params['nbrPages']) && is_numeric($params['nbrPages']) ? $params['nbrPages'] : 4;
-                        
+                            $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
+                       
                             // nombre de personnes
                             $nbrPersonnes = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
                         
@@ -57,7 +58,7 @@
                             // nombre d'etoiles
                             $note = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
 
-                            $this->afficheListeAppartements($numPage, $nbrPages); 
+                            $this->afficheListeAppartements($numPage, $data['appartParPage']); 
 						break;
 
 					default:
@@ -66,7 +67,9 @@
 			}
             else{ 
                 $numPage = isset($params['page'])? $params['page'] : 1;
-                $this->afficheListeAppartements($numPage, 4);            
+                // nombre d'appartements à afficher par page
+                $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
+                $this->afficheListeAppartements($numPage, $data['appartParPage']);            
             }
             
             $this->afficheVue("footer");

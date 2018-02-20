@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
 * @file       	/header.php
 * @brief 		Projet WEB 2
@@ -5,8 +6,6 @@
 * @author     	Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version    	v.1 | fevrier 2018
 -->
-
-<!DOCTYPE html>
 <html lang="fr">
     
 <head>
@@ -42,7 +41,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="nav navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.php?Appartements&action=filtrer">Accueil</a>
             </li>
       		<?php
 
@@ -64,7 +63,7 @@
             <?php
             }
 			?>
-                <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
+                <li class="nav-item connextion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
 
 	    </ul>
           

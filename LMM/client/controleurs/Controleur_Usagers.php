@@ -45,12 +45,7 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
-                         session_destroy();
-                        $data= $this->initialiseMessages();
-                        $this->afficheVue("header",$data);
-                        $numPage = isset($params['page'])? $params['page'] : 1;
-                        $this->afficheListeAppartements($numPage, 4);
-                       
+                        session_destroy();                       
 						break;
 
 					// case d'authetification d'un usager	
@@ -361,22 +356,8 @@
 			}
 			else
 			{
-                // redirection temporaire
-                $this->afficheVue("header",$data);
-                $this->afficheVue("accueil", $data); 
-
-/*               
-               // action par défaut - afficher la liste des sujets/usagers
-				if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
-				{
-					$this->afficheListeUsagers();
-				}
-				else
-				{
-					// afficher la page d'erreur
-					$this->afficheVue("404");
-				}
-*/
+                // redirection vers la page de appartements
+                $this->afficheListeAppartements($numPage, 4); 
 			}
 			// affichage du footer
             $this->afficheVue("footer");
@@ -486,14 +467,5 @@
 			}
 			return $flag;
 		}
-
-        private function afficheAccueil()
-        {
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
-            $modeleAppartement= $this->getDAO("Appartements");
-            $data["appartements"] = $modeleAppartement->obtenir_tous();
-            $this->afficheVue("listeAppartements", $data); 
-        }
 	}
 ?>

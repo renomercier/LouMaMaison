@@ -77,9 +77,17 @@
             return $this->supprimer($id);
         }
         
-        public function obtenir_avec_Limit($debut, $fin)
+      /*  public function obtenir_avec_Limit($debut, $fin)
         {
-            $query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ".$fin."";
+            $query = "SELECT * FROM " . $this->getTableName() . " a JOIN type_apt ON a.id_typeApt = type_apt.id JOIN usager ON a.id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = a.id GROUP BY a.id LIMIT " . $debut .", ".$fin."";
+			$resultat = $this->requete($query);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+            return $resultat->fetchAll();
+        }*/
+        
+        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart=0, $nbrPers=0, $quartier=0, $note=0, $prixMax=0, $priMin=80)
+        {
+            $query = "SELECT * FROM " . $this->getTableName() . " a JOIN type_apt ON a.id_typeApt = type_apt.id JOIN usager ON a.id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = a.id  LEFT JOIN disponibilite d ON a.id = d.id_appartement WHERE d.disponibilite = 1 AND a.montantParJour > " . $priMin ." GROUP BY a.id LIMIT " . $debutTable .", ".$finTable."";
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();

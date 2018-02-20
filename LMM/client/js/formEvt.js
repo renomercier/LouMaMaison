@@ -1,4 +1,3 @@
-
 // (function() {
 
     // on s'assure que le document soit pret 
