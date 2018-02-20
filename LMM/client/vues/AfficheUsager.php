@@ -114,7 +114,7 @@
                                 </tr>
 								<tr><small class="form-text text-muted" id="aideMoyenComm"></small></tr>
                                 <tr>
-                                    <td>Mot de passe</td><td><input type="text" name="pwd0" id="pwd0" value="<?= isset($data['motdepasse']) ? $data['motdepasse'] : '' ?>"></td>
+                                    <td>Mot de passe</td><td><input type="password" name="pwd0" id="pwd0"></td>
                                 </tr>
 								<tr><small class="form-text text-muted" id="aidePwd0"></small></tr>
                                 <tr>
@@ -125,7 +125,7 @@
 							</tbody>
 						</table>
 						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
-						<button type="submit" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarder">Save changes</button>
+						<button type="submit" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Save changes</button>
 					</form>
 				  </div>
 				  <div class="modal-footer bg-primary">
