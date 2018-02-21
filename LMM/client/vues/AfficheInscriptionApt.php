@@ -6,7 +6,7 @@
 * @version      v.1 | fevrier 2018
 -->
 
-<p class='alert alert-warning'>Veuillez noter que ce site affiche exclusivement des logements situés à Montréal</p>
+<!--<p class='alert alert-warning'>Veuillez noter que ce site affiche exclusivement des logements situés à Montréal</p>-->
 
 <div class="container">
     
@@ -19,7 +19,7 @@
     </div> <!-- fin div row -->
 
 <!-- on verifie si l'usager est connecte et a les droits d'ajout d'un apartement -->
-<?php if(isset($_SESSION['username']) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
+<?php if(isset($_SESSION['username']) && (isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
 
     <form id="formApt" method="POST" action="index.php?Appartements&action=sauvegarderApt">
       

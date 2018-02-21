@@ -58,9 +58,8 @@
                     case "sauvegarderApt" :
                        
                             if( isset($_SESSION['username']) && !empty($_SESSION['username']) && isset($params['titre']) && !empty($params['titre']) && isset($params['descriptif']) && !empty($params['descriptif']) && isset($params['id_typeApt']) && !empty($params['id_typeApt']) && 
-                            isset($params['noCivique']) && !empty($params['noCivique']) && isset($params['rue']) && !empty($params['rue']) && isset($params['montantParJour']) && !empty($params['montantParJour']) && isset($params['noApt']) && !empty($params['noApt']) && 
-                            isset($params['codePostal']) && !empty($params['codePostal']) && isset($params['id_nomQuartier']) && !empty($params['id_nomQuartier']) && isset($params['nbPersonnes']) && !empty($params['nbPersonnes']) && isset($params['nbChambres']) && 
-                            !empty($params['nbChambres']) && isset($params['nbLits']) && !empty($params['nbLits'])) {
+                            isset($params['noCivique']) && !empty($params['noCivique']) && isset($params['rue']) && !empty($params['rue']) && isset($params['montantParJour']) && !empty($params['montantParJour']) && isset($params['codePostal']) && !empty($params['codePostal']) && 
+                            isset($params['id_nomQuartier']) && !empty($params['id_nomQuartier']) && isset($params['nbPersonnes']) && !empty($params['nbPersonnes']) && isset($params['nbChambres']) && !empty($params['nbChambres']) && isset($params['nbLits']) && !empty($params['nbLits'])) {
                         
                             // ajout d'insertion d'une photo (src) à faire... + upload de l'image + images supp.
 
@@ -155,6 +154,8 @@
                 $permission = $modeleUsagers->obtenir_par_id($usager);
                 // si l'usager est valide par un admin ET s'il n'est pas banni
                 if($permission->getValideParAdmin() == true && $permission->getBanni() == false) {
+                    // declaration du bool role valide a false par defaut
+                    $flag = false;
                     // Ensuite on verifie s'il a un des roles requis
                     foreach($permission->roles AS $role) {
                         // si on trouve un des roles requis, flag = true

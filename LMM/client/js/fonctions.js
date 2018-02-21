@@ -14,7 +14,6 @@
     function isChecked(tabCheckBox) {
 
         for(var i=0; i<tabCheckBox.length; i++) {
-            console.log(tabCheckBox[i]);
             if(tabCheckBox[i] == true) {
                 return true;
             }

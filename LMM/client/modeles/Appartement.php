@@ -24,7 +24,7 @@
         private $titre;
         private $descriptif;
         private $montantParJour;
-        private $nbPersones;
+        private $nbPersonnes;
         private $nbLits;
         private $nbChambres;
         private $photoPrincipale;
@@ -44,7 +44,7 @@
         *   @param <string>        $titre                  titre de l'annonce (mise en location)  
         *   @param <string>        $descriptif             description de l'appartement   
         *   @param <float>         $montantParJour         montant par jour    
-        *   @param <int>           $nbPersones             nombre de personnes admises
+        *   @param <int>           $nbPersonnes             nombre de personnes admises
         *   @param <int>           $nbLits                 nombre de lits
         *   @param <int>           $nbChambres             nombre de chambres 
         *   @param <string>        $photoPrincipale        photo principale de l'appartement     
@@ -57,13 +57,13 @@
         *   @param <string>        $id_nomQuartier         nom du quartier ou est situe l'appartement 
         *   @param <bool>          $actif                  si l'appartement est actif       
         */  
-        public function __construct($options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersones = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = "", $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1) {   
+        public function __construct($options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersonnes = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = "", $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1) {   
  
             $this->setOptions($options);
             $this->setTitre($titre);
             $this->setDescriptif($descriptif);
             $this->setMontantParJour($montantParJour);
-            $this->setNbPersones($nbPersones);
+            $this->setNbPersonnes($nbPersonnes);
             $this->setNbLits($nbLits);
             $this->setNbChambres($nbChambres);
             $this->setPhotoPrincipale($photoPrincipale);
@@ -100,8 +100,8 @@
         public function getMontantParJour() {
             return $this->montantParJour;
         }
-        public function getNbPersones() {
-            return $this->nbPersones;
+        public function getNbPersonnes() {
+            return $this->nbPersonnes;
         }
         public function getNbLits() {
             return $this->nbLits;
@@ -161,9 +161,9 @@
             if (is_float(floatval($m)) && floatval($m) != 0)
             $this->montantParJour = $m;
         }
-        public function setNbPersones($nb) {
+        public function setNbPersonnes($nb) {
             if (is_int(intval($nb)) && intval($nb) != 0) {
-                $this->nbPersones = $nb;
+                $this->nbPersonnes = $nb;
             }
         }
         public function setNbLits($l) {

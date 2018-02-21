@@ -6,7 +6,7 @@ $(document).ready(function() {
 */
     $(".actionAdmin").click(function(e) {
         $(this).each(function() {
-        // envoi de la requete
+        	// envoi de la requete
             e.preventDefault();
             idUser = $(this).attr('id');
             var action = $(this).attr('name');
@@ -157,9 +157,7 @@ $(document).ready(function() {
 /**
     Fonction pour comparer les mots de pass saisis
 */
-
-
- function valPwdConfirm(elm1, elm2) {
+function valPwdConfirm(elm1, elm2) {
     if(elm1 !== elm2) {
         $("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques');
         return false;					
