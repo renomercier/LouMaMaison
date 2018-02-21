@@ -107,14 +107,10 @@
             
         });
 
-        console.log($('#options input'));
         $('#options').on('click', function(e) {
 
-        //    console.log(e.target.value);
             var options = $("#formApt input[type='checkbox']" ).serialize();
             var r = $('#optionsSerialises').val(options);
-        //    console.log(r);
-        //    console.log(options);
         });
 
 	}); // fin du document.ready

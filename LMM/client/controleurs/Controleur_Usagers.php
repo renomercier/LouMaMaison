@@ -307,11 +307,11 @@
 
 					// case de sauvegarde d'un usager
 					case "sauvegarderUsager" :
-					
-							if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && !empty($params['username']) && isset($params['nom']) && !empty($params['nom']) && isset($params['prenom']) && !empty($params['prenom']) && isset($params['adresse']) && !empty($params['adresse']) && 
-							isset($params['telephone']) && !empty($params['telephone']) && isset($params['pwd0']) && !empty($params['pwd0']) && isset($params['pwd1']) && !empty($params['pwd1']) && isset($params['modePaiement']) && !empty($params['modePaiement']) && isset($params['moyenComm']) && !empty($params['moyenComm']) 
-							&& isset($params['coor_moyenComm']) && !empty($params['coor_moyenComm'])) {
-					
+
+						if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && !empty($params['username']) && isset($params['nom']) && !empty($params['nom']) && isset($params['prenom']) && !empty($params['prenom']) && isset($params['adresse']) && !empty($params['adresse']) && 
+						isset($params['telephone']) && !empty($params['telephone']) && isset($params['pwd0']) && !empty($params['pwd0']) && isset($params['pwd1']) && !empty($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm']) && !empty($params['moyenComm']) 
+						&& isset($params['coor_moyenComm']) && !empty($params['coor_moyenComm'])) {
+
 							if(isset($params['photo'])) {
 							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
 							} else {

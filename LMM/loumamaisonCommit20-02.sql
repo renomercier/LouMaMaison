@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `appartement` (
   `id` int(11) NOT NULL,
   `actif` tinyint(1) NOT NULL DEFAULT '1',
-  `options` varchar(1000) NOT NULL,
+  `options` varchar(1000),
   `titre` varchar(255) NOT NULL,
   `descriptif` varchar(2000) NOT NULL,
   `montantParJour` float NOT NULL,

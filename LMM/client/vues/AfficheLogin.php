@@ -29,7 +29,7 @@
 </div> <!-- fin div row -->
 <div class="row">
     <div class="col-sm-4 offset-sm-4">
-        <?= $data?>
+        <?= $data ?>
     </div>
 </div> <!-- fin div row -->
 
