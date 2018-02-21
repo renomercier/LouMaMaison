@@ -85,7 +85,7 @@
             return $resultat->fetchAll();
         }*/
         
-        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart=0, $nbrPers=0, $quartier=4, $note=7, $prixMax=0, $priMin=0)
+      /*  public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart=0, $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
         {
             
             $query = "SELECT * FROM " . $this->getTableName() . " a LEFT JOIN type_apt ON a.id_typeApt = type_apt.id JOIN usager ON a.id_userProprio = usager.username LEFT JOIN evaluation e ON e.id_appartement = a.id JOIN disponibilite d ON a.id = d.id_appartement JOIN quartier q ON q.id=a.id_nomQuartier WHERE d.disponibilite = 1"; 
@@ -102,11 +102,45 @@
             {
                 $query.= " AND q.id = " . $quartier ."";
             }
+            if(!empty($nbrPers))
+            {
+                $query.= " AND a.nbPersones = " . $nbrPers ."";
+            }
             $query.= " GROUP BY d.id_appartement LIMIT " . $debutTable .", ".$finTable."";
             
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();
+        }*/
+        
+        
+        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart=0, $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
+        {
+            
+            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id JOIN type_apt t ON a.id_typeApt = t.id JOIN usager u ON a.id_userProprio = u.username LEFT JOIN evaluation e ON e.id_appartement = a.id JOIN quartier q ON q.id=a.id_nomQuartier WHERE d.disponibilite = 1"; 
+            
+            if(!empty($priMin))
+            {
+                $query.= " AND a.montantParJour >= " . $priMin ."";
+            }
+            if(!empty($prixMax))
+            {
+                $query.= " AND a.montantParJour <= " . $prixMax ."";
+            }
+            if(!empty($quartier))
+            {
+                $query.= " AND q.id = " . $quartier ."";
+            }
+            if(!empty($nbrPers))
+            {
+                $query.= " AND a.nbPersones = " . $nbrPers ."";
+            }
+            $query.= " GROUP BY d.id_appartement LIMIT " . $debutTable .", ".$finTable."";
+            
+			$resultat = $this->requete($query);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+            return $resultat->fetchAll();
+            
         }
         
 		/**

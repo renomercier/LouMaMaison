@@ -149,7 +149,6 @@
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 
             }
-             var_dump($data);
             $this->afficheVue("RechercheAppartements", $data);
             $this->afficheVue("listeAppartements", $data);
             $this->afficheVue("carteGeographique", $data);
