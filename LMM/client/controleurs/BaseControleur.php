@@ -86,7 +86,7 @@
             return $data;
         }
         
-                /**
+        /**
 		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
 		* @param 		$page numero de la page sur laquelle on se trouve
 		* @return		charge la vue avec le tableau de donnees
@@ -153,6 +153,5 @@
             $this->afficheVue("carteGeographique", $data);
             return $data;
         }
-
 	}
 ?>

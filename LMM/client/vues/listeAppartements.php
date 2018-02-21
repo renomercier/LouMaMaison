@@ -16,7 +16,7 @@
             <div class="thumbnail">
               <img src="./images/profil.jpg" alt="mon appart">
               <div class="caption">
-                <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersones();?> personnes | <?=$appartement->getNbLits();?> lits</p>
+                <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                 <h5><?=$appartement->getTitre();?></h5>
                 <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
                 <p>Hôte: <?=$appartement->username;?></p>
