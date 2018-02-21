@@ -86,6 +86,20 @@
             return $data;
         }
         
+		        /**
+		* @brief 		Affichage d'un nombre d'appartements du PROPRIO selon une *					limite définie
+		* @param 		$page numero de la page sur laquelle on se trouve
+		* @return		charge la vue avec le tableau de donnees
+		*/	
+		public function afficheListeAppartementsProprio($page, $idProprio)
+		{
+			$modeleAppartement= $this->getDAO("Appartements");
+			$apparts = $modeleAppartement->obtenirAptProprio($idProprio);  
+            $data = $this->obtenir_liste_partielle($idProprio, $apparts, $page); 	
+		}
+		
+		
+		
         /**
 		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
 		* @param 		$page numero de la page sur laquelle on se trouve
@@ -95,8 +109,7 @@
 		{
 			$modeleAppartement= $this->getDAO("Appartements");
 			$apparts = $modeleAppartement->obtenir_tous();
-            $data = $this->obtenir_liste_partielle($apparts, $page);
-            
+            $data = $this->obtenir_liste_partielle($idProprio=null, $apparts, $page);
 		}
         
         /**
@@ -104,7 +117,7 @@
 		* @param 		$page numero de la page sur laquelle on se trouve
 		* @return		charge la vue avec le tableau de donnees
 		*/
-        public function obtenir_liste_partielle($apparts, $page)
+        public function obtenir_liste_partielle($idProprio=null, $apparts, $page)
         {
             $appartParPage = 4;
             $nbrAppart = count($apparts);
@@ -130,7 +143,7 @@
             $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
             
             $modeleAppartement= $this->getDAO("Appartements");
-            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
+            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($idProprio, $premiereEntree, $appartParPage);
             
             foreach($data["appartements"] as $appartement)
             { 

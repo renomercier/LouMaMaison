@@ -28,11 +28,13 @@
   <script src="https://use.fontawesome.com/e58c171d55.js"></script>  
   <script src="js/formEvt.js"></script>   
   <script src="js/fonctions.js"></script> 
+ 
   <!-- Tether, ensuite Bootstrap JS. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>
-  <script src="js/script.js" ></script> 
+  
+  <script src="js/script.js" ></script>
+ 
 
 </head>
 <header>

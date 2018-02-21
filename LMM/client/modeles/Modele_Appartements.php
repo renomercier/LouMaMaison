@@ -44,10 +44,9 @@
 		* @return     <object>  	( tous les Appartements )
 		*/
 		public function obtenir_tous() {
-
 			$result = $this->lireTous();	
 			$result->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
-			return $result->fetchAll();
+			return $result->fetchAll();	
     	}
 
     	/**
@@ -83,7 +82,7 @@
 		* @param      	<int>  		$fin     	le nb d'appartements par page
 		* @return     	<boolean>  		( resultat de la requete ou false )
 		*/
-        public function obtenir_avec_Limit($debut, $fin)
+      /*  public function obtenir_avec_Limit($debut, $fin)
         {
         	$query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ". $fin ."";
         //  $query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id GROUP BY " . $this->getTableName() . ".id LIMIT ?, ?";
@@ -91,7 +90,24 @@
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();
+        }*/
+		
+		    public function obtenir_avec_Limit($idProprio=null, $debut, $fin)
+        {
+        	$query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id"; 
+			if($idProprio) {
+				$query .= " WHERE " . $this->getTableName() . ".id_userProprio = ?";
+			}
+			$query .= " GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ". $fin ."";
+			
+		
+			$donnees = array($idProprio);
+			$resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement"); 
+            return $resultat->fetchAll();
         }
+        
+		
         
 		/**
 		* @brief      Selectionner le nombre des notes attribuées a un appart
@@ -132,6 +148,16 @@
             return $this->requete($query);   
         }
 
-        
-
+        /**
+		* @brief		Selectionner les appartements du proprio
+		* @details		Permet d'afficher les appartements qui appartiennent à proprio
+		* @param 		<int> 		$id_proprio id du proprio
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+		public function obtenirAptProprio($id_proprio) {
+			$query = "SELECT * FROM " . $this->getTableName() . " WHERE id_userProprio = ?";
+			$donnees = array($id_proprio);
+			$resultat = $this->requete($query, $donnees);
+			return $resultat->fetchAll();
+		}
     }

@@ -44,6 +44,8 @@ $(document).ready(function() {
 		$("#div_info_plus").append($("#info_plus"));
 		
 		$("#div_info_contact").append($("#info_contact"));
+		
+		$("#div_info_role").append($("#info_role"));
         
 		$("#div_modif_profil").append($(".btn-modifier"));
 		
@@ -148,6 +150,13 @@ $(document).ready(function() {
 			(valModePaiement !=1) ? ($("#modePaiement").addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($("#modePaiement").removeClass('alert-warning'), $('#aideModePaiement').empty());
 		}	
 	});
+	
+	/**
+		Fonction pour afficher des apts du proprio
+	*/
+		$(document).on('click', '#mes_appts', function(e){
+		
+		}
 		
 });
 		

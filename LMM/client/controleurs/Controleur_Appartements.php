@@ -39,6 +39,13 @@
                 {
                     case "page_suivante":
                         break;
+						
+					case "afficheAptsProprio" :
+						if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+							$numPage = isset($params['page'])? $params['page'] : 1;
+							$this->afficheListeAppartementsProprio($numPage, $_SESSION['username']);		
+						}
+					break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
@@ -232,6 +239,8 @@
             }
             return $erreurs;
         }
+		
+		
 
     }
     

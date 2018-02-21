@@ -31,6 +31,7 @@
 					<form class="form">
 						<div class="col-md-12 form-group row" id="div_info_plus"></div>
 						<div class="col-md-12 form-group row" id="div_info_contact"></div>
+						<div class="col-md-12 form-group row" id="div_info_role"></div>						
 						<div class="col-md-12 form-group row" id="div_modif_profil"></div>
 					</form>
 				</div>
@@ -141,7 +142,7 @@
             </div>
                              
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" id="afficheInfoProfil">
 			<div class="row  justify-content-end" >
                 
                 <ul class="nav menuProfil">
@@ -164,7 +165,7 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <span id="info_contact"><div  class="form-group row">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
+                <span id="info_contact"><div  class="form-group row mb-0">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
                 <a class="nav-link" href="#" id="historique">Voyages</a>
                 <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
@@ -172,7 +173,7 @@
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <a class="nav-link" href="#" id="mes_appts">Appartements</a>
+                       <a class="nav-link" href="index.php?Appartements&action=afficheAptsProprio&idProprio=<?=$_SESSION["username"]?>" id="mes_appts">Appartements</a>
                    <?php      
                     }
                     ?>
@@ -215,14 +216,19 @@
                         $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
                         $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
                         $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
+						?>
+					<span id="info_role" class="form-group row">Rôle : 
+						<?php
+						foreach($data["usager"]->roles as $role)
+						{
+						?> 
+						   <div class="mr-1"><?=$role->nomRole?></div>
 
-                    foreach($data["usager"]->roles as $role)
-                    {
-                    ?> 
-                       <span id="role">Role : <?=$role->nomRole?></span>
-
-                    <?php
-                    }
+						<?php
+						}
+						?>
+					</span>
+					<?php
                     if(!$data["isSuperAdmin"])
                     {
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
