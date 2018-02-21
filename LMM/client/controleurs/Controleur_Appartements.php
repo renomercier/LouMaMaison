@@ -58,7 +58,8 @@
                             // nombre d'etoiles
                             $note = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
 
-                            $this->afficheListeAppartements($numPage, $data['appartParPage']); 
+                            $this->afficheListeAppartements($numPage, $data['appartParPage']);
+                       
 						break;
 
 					default:

@@ -45,7 +45,10 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
-                        session_destroy();                       
+                        session_destroy();
+                        echo "<script>window.location='./index.php?Appartements'</script>";
+                        //header('location:index.php?Appartements');
+                        //$this->afficheVue("header", $data);
 						break;
 
 					// case d'authetification d'un usager	

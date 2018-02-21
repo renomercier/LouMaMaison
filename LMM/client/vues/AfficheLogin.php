@@ -20,7 +20,7 @@
             <div class="form-group row">
               <label for="inputPassword3" class="col-sm-2 form-control-label sr-only">Mot de passe</label>
               <div class="col-sm-12">
-                <input type="password" name="password"  class="form-control" id="inputPassword3" placeholder="Mot de passe">
+                <input type="password" name="password"  class="form-control" id="inputPassword3" placeholder="Mot de passe" value="12345">
               </div>
             </div>          	
                 <input type="submit" name="login" class="btn btn-primary btn-block btn-lg" value="Connexion">						

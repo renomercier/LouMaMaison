@@ -86,32 +86,26 @@
             return $data;
         }
         
-                /**
+        /**
 		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
 		* @param 		$page numero de la page sur laquelle on se trouve
+        * @param        $appartParPage le nombre d'appart à afficher par page
 		* @return		charge la vue avec le tableau de donnees
 		*/	
 		public function afficheListeAppartements($page, $appartParPage)
 		{
 			$modeleAppartement= $this->getDAO("Appartements");
-			$apparts = $modeleAppartement->obtenir_tous();
-            $data = $this->obtenir_liste_partielle($apparts, $page, $appartParPage);
+
             $data['quartier'] = $modeleAppartement->obtenir_quartiers();
-            $this->afficheVue("RechercheAppartements", $data);
-            $this->afficheVue("listeAppartements", $data);
-            $this->afficheVue("carteGeographique", $data);
-            
-		}
-        
-        /**
-		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
-		* @param 		$page numero de la page sur laquelle on se trouve
-		* @return		charge la vue avec le tableau de donnees
-		*/
-        public function obtenir_liste_partielle($apparts, $page, $appartParPage)
-        {
+
+            // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
-            $nbrAppart = count($apparts);
+            
+            //
+            // le nombre d'appart resultant de la requete
+            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit(0, PHP_INT_MAX));
+            
+            // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             
             if(isset($page))
@@ -133,9 +127,10 @@
             
             $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
             
-            $modeleAppartement= $this->getDAO("Appartements");
+            // chercher tous les appartements remplissant les criteres de recherche
             $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
             
+            // pour chaque apart, trouver le total des evaluation et calculer la moyenne
             foreach($data["appartements"] as $appartement)
             { 
                 $adresse=[];
@@ -149,10 +144,15 @@
                 {
                     $appartement->moyenne = 0;
                 }
+                
+                // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 
             }
-            return $data;
+             var_dump($data);
+            $this->afficheVue("RechercheAppartements", $data);
+            $this->afficheVue("listeAppartements", $data);
+            $this->afficheVue("carteGeographique", $data);
         }
 
 	}
