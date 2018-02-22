@@ -28,7 +28,8 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $message= $this->initialiseMessages();
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
             //
 			//si le paramètre action existe
 			if(isset($params["action"]))
@@ -37,59 +38,20 @@
 				//ce switch détermine la vue et obtient le modèle
 				switch($params["action"])
 				{
-					case "machin":
-                        $this->afficheVue("header", $message);
+					case "page_suivante":
 						break;
 
 					default:
 						trigger_error("Action invalide.");		
 				}				
 			}
-            else{            
-                $this->afficheListeAppartements($params['page']);
+            else{ 
+                $numPage = isset($params['page'])? $params['page'] : 1;
+                $this->afficheListeAppartements($numPage);            
             }
             
-            // affichage du footer
             $this->afficheVue("footer");
         }
         
-        /**
-		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
-		* @param 		$page numero de la page sur laquelle on se trouve
-		* @return		charge la vue avec le tableau de donnees
-		*/	
-		private function afficheListeAppartements($page)
-		{
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
-			$modeleAppartement= $this->getDAO("Appartements");
-			$appart = $modeleAppartement->obtenir_tous();
-            $appartParPage = 1;
-            $nbrAppart = count($appart);
-            $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
-            
-            if(isset($page))
-            {
-                if($page<=0){ $page = 1;}
-                if($page>$data['nbrPage']){ $page = $data['nbrPage'];}
-                
-                 $data['pageActuelle']=intval($page);
-
-                 if($data['pageActuelle'] > $data['nbrPage']) 
-                 {
-                      $data['pageActuelle'] = $data['nbrPage'];
-                 }
-            }
-            else // Sinon
-            {
-                 $data['pageActuelle']=1; // La page actuelle est la n°1    
-            }
-            
-            $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
-            
-            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
-            
-			$this->afficheVue("Accueil", $data);
-		}
 	}
 ?>
