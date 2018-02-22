@@ -97,12 +97,14 @@ $(document).ready(function() {
                            $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>").fadeOut( 5000, "linear");                     
                             $("#myModal"+idUser).hide();
                             $('.modal-backdrop.fade.show').remove();
+                            $('body').removeClass("modal-open");
                             $("#div_info_nom").empty();
                             $("#div_info_plus").empty();
                             $("#div_info_contact").empty();
                             $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3>");               
                             $("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response[0][0].adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response[0][0].telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response[0][0].modePaiement + "</div>");
                             $("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response[0][0].moyenContact + "</div>");  
+							
                         }
                        
 					},  
