@@ -5,17 +5,19 @@
 	Inscription d'un Usager:
 		PHP
 		- hash du mot de passe avant insertion BD
-@bug	- retour du controleur PHP, comment faire afficher la div modePaiement? requete ajax??
-		JS
+		- changer vue d'affichage pour message succès 
 		- photo insertion + src(nom de la photo)
+		JS
 		- regex à paufiner... username - pwd - tel (international)
 
+	Inscription d'un Appartement:	
+		- photo insertion + src(nom de la photo) + ajout de photos supp.
+		- changer vue d'affichage pour message succès  
+		- affichage du formulaire ou pas?.. Lien dans menu, le mettre par défaut ou pas?
 
-	Ajout ds la BD
-		- champ coordonnées de moyen de communication (ex: si c'est e-mail, l'adresse e-mail)
-		- bool appartement (actif) 
-		- ajout de commentaire ds la table evaluation
-		- changer float pour int (rating)
+	* 	- Dire aux autres de mettre options à NULL
+		- Remettre coor_moyenComm à NOT NULL
+
 
 	Vérifier si tout est compatible sur les différents navigateurs:
 

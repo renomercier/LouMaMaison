@@ -14,9 +14,27 @@
         ?>
           <div class="col-md-3">
             <div class="thumbnail">
-              <img src="./images/profil.jpg" alt="mon appart">
+			
+			  <?php
+			  
+				echo "ID:";
+				var_dump($appartement->getId());
+				echo " Photo:";
+				var_dump($appartement->getPhotoPrincipale());
+			  
+				if ($appartement->getPhotoPrincipale() != "") {
+					$photoApt = $appartement->getPhotoPrincipale();
+				} else {
+					$photoApt = "./images/profil.jpg";
+				}
+			  ?>
+			
+              <!--<img src="./images/profil.jpg" alt="mon appart">-->
+			  <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?= $appartement->getId(); ?>" >
+				<img src="<?= $photoApt ?>" class="img-fluid" alt="mon appart">
+			  </a>
               <div class="caption">
-                <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersones();?> personnes | <?=$appartement->getNbLits();?> lits</p>
+                <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                 <h5><?=$appartement->getTitre();?></h5>
                 <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
                 <p>Hôte: <?=$appartement->username;?></p>
