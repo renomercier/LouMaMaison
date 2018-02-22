@@ -41,6 +41,7 @@
 					case "login":
                         $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
+						$this->afficheVue('footer');
 						break;
 
 					// case de deconnexion d'un usager	
@@ -51,7 +52,7 @@
                         $this->afficheVue("header",$data);
                         $numPage = isset($params['page'])? $params['page'] : 1;
                         $this->afficheListeAppartements($numPage);
-                       
+						$this->afficheVue('footer');
 						break;
 
 					// case d'authetification d'un usager	
@@ -119,11 +120,13 @@
 						{
 							//affiche tous les usagers
 							$this->afficheListeUsagers();
+							$this->afficheVue('footer');
 						}
 						else
 						{
 							//affiche page d'erreur
 							$this->afficheVue("404");
+							$this->afficheVue('footer');
 						}
 						break;
 
@@ -132,6 +135,7 @@
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
                         {       
                             $this->afficheProfil($params["idUsager"], $data);
+							$this->afficheVue('footer');
                         }
                         else
                         {
@@ -285,6 +289,7 @@
 						if($data) {
                             $this->afficheVue("header", $data);
 							$this->afficheVue("afficheInscriptionUsager", $data);
+							$this->afficheVue('footer');
 						}
 						break;
 
@@ -318,24 +323,28 @@
 									// message à l'usager - success de l'insertion dans la BD
 									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
                 					$this->afficheVue("header", $data);
-/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);									
+/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);
+									$this->afficheVue('footer');									
 								}
 								else {
 									// message à l'usager - s'il la requete echoue
 									$params['erreurs'] = "Votre compte n'a pu être créé, veuillez contacter l'administration ou recommencer</p>";
 									$this->afficheFormInscription($params);
+									$this->afficheVue('footer');
 								}
 							}
 							// si on a des erreurs
 							else {
 								// message à l'usager - erreurs dans la validation des inputs du formulaire d'inscription
 								$this->afficheFormInscription($params);
+								$this->afficheVue('footer');
 							}
 						}
 						else {
 							// message à l'usager - s'il manque des params requis
 							$params['erreurs'] = "Veuillez vous assurer de remplir tous les champs requis";
-							$this->afficheFormInscription($params);						
+							$this->afficheFormInscription($params);	
+							$this->afficheVue('footer');							
 						}	
 						break;
 

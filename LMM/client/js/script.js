@@ -94,7 +94,7 @@ $(document).ready(function() {
                             $(".erreurModif").empty().addClass("alert alert-warning col-sm-8").html("<p>"+response.messageErreur + "</p>");
                         } 
                         else if(response[1].messageSucces){ //s'on n'as pas des erreurs côté php
-                            $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>");
+                           $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>").fadeOut( 5000, "linear");                     
                             $("#myModal"+idUser).hide();
                             $('.modal-backdrop.fade.show').remove();
                             $("#div_info_nom").empty();
@@ -153,10 +153,29 @@ $(document).ready(function() {
 	
 	/**
 		Fonction pour afficher des apts du proprio
-	*/
-		$(document).on('click', '#mes_appts', function(e){
+	*/	
 		
-		}
+		$(document).on('click', '#mes_appts', function(e){
+			var idUser = $("input[name='idUser']").val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUser,
+				dataType:"html",
+				success:function(reponse) {
+					$('#afficheInfoProfil').empty();
+					$('#afficheInfoProfil').html(reponse);
+					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");
+					$('#afficheInfoProfil nav').remove();
+					$('#afficheInfoProfil .alert').remove();
+					$('#afficheInfoProfil footer').remove();
+					$('#afficheInfoProfil script').remove();
+					$('#afficheInfoProfil #carte').remove();					
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
 		
 });
 		

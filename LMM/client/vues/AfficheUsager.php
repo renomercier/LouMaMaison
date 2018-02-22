@@ -15,7 +15,8 @@
     <!-- Tout le monde peut voir -->
     <div class="row">
         
-          <div class="col-sm-12 succes_erreur">            
+          <div class="col-sm-12 succes_erreur">
+			
           </div>
         
         
@@ -142,7 +143,7 @@
             </div>
                              
         </div>
-        <div class="col-md-8" id="afficheInfoProfil">
+        <div class="col-md-8" >
 			<div class="row  justify-content-end" >
                 
                 <ul class="nav menuProfil">
@@ -153,8 +154,8 @@
                 
                 </ul>
 			</div>
-			<div class="row">
-				<div></div>
+			<div class="row" id="afficheInfoProfil">
+				
 			</div>
 		</div>
     </div>
@@ -173,7 +174,7 @@
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <a class="nav-link" href="index.php?Appartements&action=afficheAptsProprio&idProprio=<?=$_SESSION["username"]?>" id="mes_appts">Appartements</a>
+                       <a class="nav-link" href="#" id="mes_appts">Appartements</a>
                    <?php      
                     }
                     ?>

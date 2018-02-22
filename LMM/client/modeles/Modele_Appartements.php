@@ -96,10 +96,11 @@
         {
         	$query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id"; 
 			if($idProprio) {
-				$query .= " WHERE " . $this->getTableName() . ".id_userProprio = ?";
+				$query .= " WHERE " . $this->getTableName() . ".id_userProprio = ? GROUP BY " . $this->getTableName() . ".id";
 			}
-			$query .= " GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ". $fin ."";
-			
+			else {
+				$query .= " GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ". $fin ."";
+			}
 		
 			$donnees = array($idProprio);
 			$resultat = $this->requete($query, $donnees);
