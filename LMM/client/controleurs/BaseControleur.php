@@ -107,7 +107,7 @@
             
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
-            
+
             if(isset($page))
             {
                 if($page<=0){ $page = 1;}
@@ -125,8 +125,8 @@
                  $data['pageActuelle']=1; // La page actuelle est la n°1    
             }
             
-            $premiereEntree=($data['pageActuelle']-1) * $appartParPage; // On calcul la première entrée à lire
-            
+            $premiereEntree = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
+
             // chercher tous les appartements remplissant les criteres de recherche
             $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
             
@@ -153,6 +153,5 @@
             $this->afficheVue("listeAppartements", $data);
             $this->afficheVue("carteGeographique", $data);
         }
-
 	}
 ?>

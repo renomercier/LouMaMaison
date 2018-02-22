@@ -58,9 +58,8 @@
 		public function sauvegarderAppartement(Appartement $a) {
 				
 			// insertion
-            $sql = "INSERT INTO " . $this->getTableName() . " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
-			$data = array($a->getOptions(), $a->getTitle(), $a->getDescriptif(), $s->getMontantParJour(), $s->getNbPersones(), $s->getNbLits(), $s->getNbChambres(), $s->getPhotoPrincipale(), $s->getNoApt(), $s->getNoCivique(), $s->getRue(), $s->getCodePostal());
-		
+            $sql = "INSERT INTO " . $this->getTableName() . " (options, titre, descriptif, montantParJour, nbPersonnes, nbLits, nbChambres, photoPrincipale, noApt, noCivique, rue, codePostal, id_typeApt, id_userProprio, id_nomQuartier) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+			$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersonnes(), $a->getNbLits(), $a->getNbChambres(), $a->getPhotoPrincipale(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_userProprio(), $a->getId_nomQuartier()); 
 			// modification a ajouter
 			
            	return $this->requete($sql, $data);
@@ -77,18 +76,21 @@
             return $this->supprimer($id);
         }
         
-     /*   public function obtenir_avec_Limit($debut, $fin)
+       /* public function obtenir_avec_Limit($debut, $fin)
         {
+            
             $query = "SELECT * FROM " . $this->getTableName() . " a JOIN type_apt ON a.id_typeApt = type_apt.id JOIN usager ON a.id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = a.id GROUP BY a.id LIMIT " . $debut .", ".$fin."";
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();
+            
         }*/
         
-      /*  public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart=0, $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
+        
+        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart= '2018/05/15', $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
         {
             
-            $query = "SELECT * FROM " . $this->getTableName() . " a LEFT JOIN type_apt ON a.id_typeApt = type_apt.id JOIN usager ON a.id_userProprio = usager.username LEFT JOIN evaluation e ON e.id_appartement = a.id JOIN disponibilite d ON a.id = d.id_appartement JOIN quartier q ON q.id=a.id_nomQuartier WHERE d.disponibilite = 1"; 
+            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id JOIN type_apt t ON a.id_typeApt = t.id JOIN usager u ON a.id_userProprio = u.username LEFT JOIN evaluation e ON e.id_appartement = a.id JOIN quartier q ON q.id=a.id_nomQuartier WHERE d.disponibilite = 1 AND d.dateFin > NOW()"; 
             
             if(!empty($priMin))
             {
@@ -104,42 +106,19 @@
             }
             if(!empty($nbrPers))
             {
-                $query.= " AND a.nbPersones = " . $nbrPers ."";
+                $query.= " AND a.nbPersonnes = " . $nbrPers ."";
+            }
+            if(!empty($dateDepart))
+            {
+                $query.= " AND d.dateFin >= '" . $dateDepart ."'";
             }
             $query.= " GROUP BY d.id_appartement LIMIT " . $debutTable .", ".$finTable."";
             
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();
-        }*/
-        
-        
-        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart=0, $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
-        {
+
             
-            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id JOIN type_apt t ON a.id_typeApt = t.id JOIN usager u ON a.id_userProprio = u.username LEFT JOIN evaluation e ON e.id_appartement = a.id JOIN quartier q ON q.id=a.id_nomQuartier WHERE d.disponibilite = 1"; 
-            
-            if(!empty($priMin))
-            {
-                $query.= " AND a.montantParJour >= " . $priMin ."";
-            }
-            if(!empty($prixMax))
-            {
-                $query.= " AND a.montantParJour <= " . $prixMax ."";
-            }
-            if(!empty($quartier))
-            {
-                $query.= " AND q.id = " . $quartier ."";
-            }
-            if(!empty($nbrPers))
-            {
-                $query.= " AND a.nbPersones = " . $nbrPers ."";
-            }
-            $query.= " GROUP BY d.id_appartement LIMIT " . $debutTable .", ".$finTable."";
-            
-			$resultat = $this->requete($query);
-            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
-            return $resultat->fetchAll();
             
         }
         
@@ -166,5 +145,33 @@
 			$resultat = $this->requete($query);
             return $resultat->fetchAll();
 		}
+
+        /**
+		* @brief		Lecture des types d'appartements de la BD
+		* @details		Permet de recuperer tous les types d'appartements dans la table type_apt
+		* @param 		Aucun parametre envoyé
+		* @return    	<type> 		toutes les rangées de la table type_Apt ou false 
+		*/
+		public function getTypesApt() {
+
+			$query = "SELECT id, typeApt from type_apt";
+			$resultat = $this->requete($query);
+            return $this->requete($query);   
+        }
+
+        /**
+		* @brief		Lecture de tous les quartiers de Montreal de la BD
+		* @details		Permet de recuperer tous les quartiers dans la table quartier
+		* @param 		Aucun parametre envoyé
+		* @return    	<type> 		toutes les rangées de la table quartier ou false 
+		*/
+		public function getQuartier() {
+
+			$query = "SELECT id, nomQuartier from quartier";
+			$resultat = $this->requete($query);
+            return $this->requete($query);   
+        }
+
+        
 
     }

@@ -73,12 +73,13 @@
 				$query = "UPDATE " . $this->getTableName() . " SET nom=?, prenom=?, photo=?, adresse=?, telephone=?, motDePasse=?, id_moyenComm=?, id_modePaiement=? WHERE " . $this->getClePrimaire() . "=?";
 				$donnees = array($lUsager->getNom(), $lUsager->getPrenom(), $lUsager->getPhoto(), $lUsager->getAdresse(), $lUsager->getTelephone(), $lUsager->getMotDePasse(), $lUsager->getIdMoyenComm(), $lUsager->getIdModePaiement(), $lUsager->getUsername());
 				return $this->requete($query, $donnees);
+				
 			}
 			else
 			{
 				// Sauvegarde de l'ajout de l'usager
-				$query = "INSERT INTO " . $this->getTableName() . "(username, nom, prenom, photo, adresse, telephone, motDePasse, id_moyenComm, id_modePaiement ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				$donnees = array($lUsager->getUsername(), $lUsager->getNom(), $lUsager->getPrenom(), $lUsager->getPhoto(), $lUsager->getAdresse(), $lUsager->getTelephone(), $lUsager->getMotDePasse(), $lUsager->getIdMoyenComm(), $lUsager->getIdModePaiement());
+				$query = "INSERT INTO " . $this->getTableName() . "(username, nom, prenom, photo, adresse, telephone, motDePasse, id_moyenComm, coor_moyenComm, id_modePaiement ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				$donnees = array($lUsager->getUsername(), $lUsager->getNom(), $lUsager->getPrenom(), $lUsager->getPhoto(), $lUsager->getAdresse(), $lUsager->getTelephone(), $lUsager->getMotDePasse(), $lUsager->getIdMoyenComm(), $lUsager->getCoorMoyenComm(), $lUsager->getIdModePaiement());
 				return $this->requete($query, $donnees);
 			}
 		}
@@ -189,14 +190,15 @@
 
         /**
 		* @brief		Lecture des modes de paiements de la BD
-		* @details		Permet de recuperer tous les modes de paiements dans la table paiement
-		* @param 		Aucun parametre envoyé	
-		* @return    	<type> 		toutes les rangées de la table paiement
+		* @details		Permet de recuperer tous les modes de paiement dans la table paiement, ou un seul associe a un usager
+		* @param 		<string> 	$idUsager 		L'id d'un usager - parametre facultatif	
+		* @return    	<type> 		si param: 	toutes les rangées de la table paiement ou false 
+		*							sinon: 		le mode de communication d'un usager
 		*/
-		public function getModePaiement($usager='')  {
+		public function getModePaiement($usager = '')  {
 			$query = "SELECT id, modePaiement from paiement p";
             if(isset($usager) && !empty($usager)) {
-                $query.= " JOIN usager u ON p.id = u.id_modePaiement WHERE username = ?";
+                $query .= " JOIN usager u ON p.id = u.id_modePaiement WHERE username = ?";
                 $donnees = array($usager);
                 $resultat = $this->requete($query, $donnees);
                 $paiement = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
@@ -209,14 +211,15 @@
 
 		/**
 		* @brief		Lecture des moyens de communication de la BD
-		* @details		Permet de recuperer tous les moyens de communication dans la table communication
-		* @param 		Aucun parametre envoyé	
-		* @return    	<type> 		toutes les rangées de la table communication
+		* @details		Permet de recuperer tous les moyens de communication dans la table communication, ou un seul associe a un usager
+		* @param 		<string> 	$idUsager 		L'id d'un usager - parametre facultatif	
+		* @return    	<type> 		si param: 	toutes les rangées de la table communication ou false 
+		*							sinon: 		le mode de communication d'un usager
 		*/
-		public function getModeCommunication($idUsager="") {
+		public function getModeCommunication($idUsager = "") {
 			$query = "SELECT id, moyenComm	from communication c";
             if(isset($idUsager) && !empty($idUsager)) {
-                $query.= " JOIN usager u ON c.id = u.id_moyenComm  WHERE username = ?";
+                $query .= " JOIN usager u ON c.id = u.id_moyenComm  WHERE username = ?";
                 $donnees = array($idUsager);
 				$resultat = $this->requete($query, $donnees);
                 $communication = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
@@ -225,6 +228,15 @@
             else {
                 return $this->requete($query);
             }
+        }
+        
+        public function obtenir_avec_paiement_communication($idUsager) {
+            $query = "SELECT * FROM usager u JOIN communication c ON c.id = u.id_moyenComm JOIN paiement p ON p.id = u.id_modePaiement WHERE u.username = ?";
+            $donnees = array($idUsager);
+            $resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Usager'); 
+			$lUsager = $resultat->fetch();
+            return $lUsager;
         }
 }   
 ?>

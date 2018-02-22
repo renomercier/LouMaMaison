@@ -45,10 +45,15 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
+                       
                         session_destroy();
                         echo "<script>window.location='./index.php?Appartements'</script>";
-                        //header('location:index.php?Appartements');
-                        //$this->afficheVue("header", $data);
+                        
+                     /*   session_destroy();
+                        $data= $this->initialiseMessages();
+                        $this->afficheVue("header",$data);
+                        $numPage = isset($params['page'])? $params['page'] : 1;
+                        $this->afficheListeAppartements($numPage,4);*/
 						break;
 
 					// case d'authetification d'un usager	
@@ -125,63 +130,31 @@
 
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
-                        if(isset($params["idUsager"]))
-				        {
-                            $modeleUsagers = $this->getDAO("Usagers");
-                            $data["usager"] = $modeleUsagers->obtenir_par_id($params["idUsager"]);
-                            $data["isProprio"] = false;
-                            $data["isClient"] = false;
-                            $data["isAdmin"] = false;
-                            $data["isSuperAdmin"] = false;
-                            $data["modePaiement"] = $modeleUsagers->getModePaiement($params["idUsager"]);
-                            $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
-                            $data["modeCommunication"] = $modeleUsagers->getModeCommunication($params["idUsager"]);
-                            $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
-							$data['prenom'] = $data["usager"]->getPrenom();
-							$data['nom'] = $data["usager"]->getNom();
-							$data['adresse'] = $data["usager"]->getAdresse();
-							$data['telephone'] = $data["usager"]->getTelephone();
-                            foreach($data["usager"]->roles as $role)
-                            {
-                                if($role->id_nomRole == 3)
-                                {
-                                    $data["isProprio"] = true;
-                                }
-                                if($role->id_nomRole == 4)
-                                {
-                                    $data["isClient"] = true;
-                                }
-                                if($role->id_nomRole == 2)
-                                {
-                                    $data["isAdmin"] = true;
-                                }
-                                if($role->id_nomRole == 1)
-                                {
-                                    $data["isSuperAdmin"] = true;
-                                }
-                            }
-
-                            $this->afficheVue("header",$data);
-                            $this->afficheVue("AfficheUsager", $data); 
+                        if(isset($params["idUsager"]) && !empty($params["idUsager"]))
+                        {       
+                            $this->afficheProfil($params["idUsager"], $data);
                         }
                         else
                         {
-                            trigger_error("Pas d'id spécifié...");
+                            trigger_error("Pas d'id spécifié");
                         }
-                        break;
+                    break;
 						
 					case "modifierProfil":
-						if(isset($_REQUEST["prenom"]) && isset($_REQUEST["nom"])&& isset($_REQUEST["adresse"]) && isset($_REQUEST["telephone"]) && isset($_REQUEST["moyenComm"]) &&  isset($_REQUEST["paiement"])) 
+						$message_profil="";
+						$obj = json_decode($_REQUEST['dataJson'],true); 
+						if(isset($params["idUser"]) && isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"]) && isset($params["pwd0"])) 
 						{
-							if(!empty($_REQUEST["prenom"]) && !empty($_REQUEST["nom"])&& !empty($_REQUEST["adresse"]) && !empty($_REQUEST["telephone"]) && !empty($_REQUEST["moyenComm"]) && !empty($_REQUEST["paiement"])) 
+							if(!empty($params["idUser"]) && !empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"]) && !empty($params["pwd0"])) 
 							{
-								if(!isset($_REQUEST['idUser']) || $_REQUEST['idUser'] == '')
+								if(!isset($params['idUser']) || $params['idUser'] == '')
 								{
 									$idUser = 0; //on cree usager
 								}
 								else
 								{
-									$idUser = $_REQUEST['idUser']; //sinon, on modifie l'existante
+									$idUser = $params['idUser']; //sinon, on modifie l'existante
+                                               
 									$modeleUsagers = $this->getDAO("Usagers");
 									$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
 									//a changer
@@ -190,26 +163,41 @@
 									} else {
 										$photo =$data["usager"]->getPhoto();
 									}
-									
-									$motdepasse =$data["usager"]-> getMotDePasse();	
+                                    
+                                      $coor_moyenComm = $data["usager"]->getCoorMoyenComm();
 								}
-								
 								$modeleUsagers = $this->getDAO("Usagers");
-								$usager = new Usager($idUser, $_REQUEST["nom"], $_REQUEST["prenom"], $photo, $_REQUEST['adresse'], $_REQUEST['telephone'], $motdepasse, $_REQUEST['moyenComm'], $_REQUEST["paiement"]);
-
+								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $obj['motdepasse'], $obj['moyenComm'], $coor_moyenComm,  $obj["paiement"]);
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
-									if($resultat) {
-									// message à l'usager - success de l'insertion dans la BD
-									
-                					$this->afficheVue("header", $data);
-									$this->afficheVue("afficheUsager", $data);									
-								}
-								else {
-									// message à l'usager - s'il la requete echoue
-									
-								}
+									if($resultat) {								
+                                        header('Content-type: application/json'); //absolument mettre ce header pour json
+                                        $user = $modeleUsagers->obtenir_avec_paiement_communication($params['idUser']); 
+                                        //convertir les objets en array pour les mettre dans un seul tableau pour les encoder ensuite en renvoyer vers client
+                                        $reponse = array($user); 
+                                        $reponse1 = (array("messageSucces"=>"Votre profil a ete modifie avec succes!"));//creer une message de success
+
+                                        $tempData = [];
+                                        $tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+                                        echo json_encode($tempData); 
+                                    }
+                                    else 
+                                    {
+                                        // message à l'usager - s'il la requete echoue
+										$message_profil = json_encode(array("messageErreur"=>"La requete echoue"));
+										echo $message_profil;                                        
+                                    }
 							}
+							else 
+							{
+								$message_profil = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis"));
+								echo $message_profil;				
+							}
+						}
+						else
+						{
+							$message_profil = json_encode(array("messageErreur"=>"Non-non-non...!"));
+							echo $message_profil;
 						}
 					break;
 					
@@ -291,7 +279,7 @@
 
 					// case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
 					case "afficherInscriptionUsager" :
-
+						// chargement du modele et recuperation du data
 						$modeleUsagers = $this->getDAO("Usagers");
 						$data['paiement'] = $modeleUsagers->getModePaiement();
 						$data['communication'] = $modeleUsagers->getModeCommunication();
@@ -303,11 +291,11 @@
 
 					// case de sauvegarde d'un usager
 					case "sauvegarderUsager" :
-					
-/* ajouter !empty */	if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && isset($params['nom']) && isset($params['prenom']) && isset($params['adresse']) && 
-							isset($params['telephone']) && isset($params['pwd0']) && isset($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm'])) {
 
-							
+						if((isset($params['client']) || isset($params['prestataire'])) && isset($params['username']) && !empty($params['username']) && isset($params['nom']) && !empty($params['nom']) && isset($params['prenom']) && !empty($params['prenom']) && isset($params['adresse']) && !empty($params['adresse']) && 
+						isset($params['telephone']) && !empty($params['telephone']) && isset($params['pwd0']) && !empty($params['pwd0']) && isset($params['pwd1']) && !empty($params['pwd1']) && isset($params['modePaiement']) && isset($params['moyenComm']) && !empty($params['moyenComm']) 
+						&& isset($params['coor_moyenComm']) && !empty($params['coor_moyenComm'])) {
+
 							if(isset($params['photo'])) {
 							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
 							} else {
@@ -315,11 +303,11 @@
 							}
 
 							// validation des champs input du formulaire d'inscription d'un usager
-							$params['erreurs'] = $this->validerUsager([ 'Le nom d\'utilisateur'=>$params['username'], 'Le nom'=>$params["nom"], 'Le prénom'=>$params["prenom"], 'L\'adresse'=>$params['adresse'], 'Le téléphone'=>$params['telephone'], 'Le mot de passe'=>$params['pwd0'], 'La validation du mot de passe'=>$params['pwd1'], 'Le mode de paiement'=>$params['modePaiement'], 'Le moyen de communication'=>$params['moyenComm'] ], [ 'client'=>isset($params['client']), 'prestataire'=>isset($params['prestataire']) ]);
+							$params['erreurs'] = $this->validerUsager([ 'Le nom d\'utilisateur'=>$params['username'], 'Le nom'=>$params["nom"], 'Le prénom'=>$params["prenom"], 'L\'adresse'=>$params['adresse'], 'Le téléphone'=>$params['telephone'], 'Le mot de passe'=>$params['pwd0'], 'La validation du mot de passe'=>$params['pwd1'], 'Le mode de paiement'=>$params['modePaiement'], 'Le moyen de communication'=>$params['moyenComm'], 'Les coordonnées du moyen de communication'=>$params['coor_moyenComm'] ], [ 'client'=>isset($params['client']), 'prestataire'=>isset($params['prestataire']) ]);
 							// si pas d'erreurs, on instancie l'usager et on l'insère dans la BD
 							if(!$params['erreurs']) {
 								// on instancie un nouvel Usager
-								$usager = new Usager($params['username'], $params["nom"], $params["prenom"], $photo, $params['adresse'], $params['telephone'], $params['pwd0'], $params['moyenComm'], (isset($params['modePaiement']) ? $params['modePaiement'] : 0));
+								$usager = new Usager($params['username'], $params["nom"], $params["prenom"], $photo, $params['adresse'], $params['telephone'], $params['pwd0'], $params['moyenComm'], $params['coor_moyenComm'], (isset($params['modePaiement']) ? $params['modePaiement'] : 0));
 								// appel du modele_Usagers et insertion dans la BD
 								$modeleUsagers = $this->getDAO("Usagers");
 								$resultat = $modeleUsagers->sauvegarder($usager);
@@ -331,7 +319,7 @@
 									// message à l'usager - success de l'insertion dans la BD
 									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
                 					$this->afficheVue("header", $data);
-/* affichage vue a changer */		$this->afficheVue("afficheInscriptionUsager", $data);									
+/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);									
 								}
 								else {
 									// message à l'usager - s'il la requete echoue
@@ -349,7 +337,7 @@
 							// message à l'usager - s'il manque des params requis
 							$params['erreurs'] = "Veuillez vous assurer de remplir tous les champs requis";
 							$this->afficheFormInscription($params);						
-						}
+						}	
 						break;
 
 					// case par defaut
@@ -363,8 +351,23 @@
                 $this->afficheListeAppartements($numPage, 4); 
 			}
 			// affichage du footer
-            $this->afficheVue("footer");
+            //$this->afficheVue('footer');
+			
 		}
+
+		/**
+		* @brief 		Affichage de la page d'accueil
+		* @param 		Aucun parametre envoye
+		* @return		charge la vue avec le tableau de donnees
+		*/
+        private function afficheAccueil()
+        {
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
+            $modeleAppartement= $this->getDAO("Appartements");
+            $data["appartements"] = $modeleAppartement->obtenir_tous();
+            $this->afficheVue("listeAppartements", $data); 
+        }
 
 		/**
 		* @brief 		Affichage de la liste de tous les usagers
@@ -391,25 +394,100 @@
 		{
 			// formatage du message d'erreurs à afficher
 			$data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
+
 			// recuperation des donnees pour populer les select
 			$modeleUsagers = $this->getDAO("Usagers");
 			$data['paiement'] = $modeleUsagers->getModePaiement();
 			$data['communication'] = $modeleUsagers->getModeCommunication();
 
 			if($data) {
-                $data= $this->initialiseMessages();
-                $this->afficheVue("header", $data);
-				$this->afficheVue("afficheInscriptionUsager", $data);
+				// affichage du formulaire d'inscription avec tout le data
+				$this->afficheVue("header", $data);	
+				$this->afficheVue("afficheInscriptionUsager", $data);		
 			}
 		}
+
+		/**
+		* @brief		Fonction d'attribution des differents roles d'un usager
+		* @details		L'usager peut choisir les roles client et/ou prestataire
+		* @param 		<string> 	$usager 		id de l'usager	
+		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
+		* @return    	<bool> 	
+		*/
+		public function attribution_role($usager, $tabRoles) {
+
+			$flag = true;
+			// chargement du modele usager
+			$modeleUsagers = $this->getDAO("Usagers");
+			// on boucle dans les differents roles pour les integrer dans la BD
+			foreach($tabRoles AS $r) {
+				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
+				if(!$resultat) {
+					$flag = false;
+					return $flag;
+				}
+			}
+			return $flag;
+		}
+        
+        
+        private function afficheProfil($id, $data)
+        {
+            
+                // formatage du message d'erreurs à afficher
+			    $data['erreur'] = "";
+                $modeleUsagers = $this->getDAO("Usagers");
+                $data["usager"] = $modeleUsagers->obtenir_par_id($id);
+                $data["isProprio"] = false;
+                $data["isClient"] = false;
+                $data["isAdmin"] = false;
+                $data["isSuperAdmin"] = false;
+                $data["modePaiement"] = $modeleUsagers->getModePaiement($id);
+                $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
+                $data["modeCommunication"] = $modeleUsagers->getModeCommunication($id);
+                $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
+                $data['prenom'] = $data["usager"]->getPrenom();
+                $data['nom'] = $data["usager"]->getNom();
+                $data['adresse'] = $data["usager"]->getAdresse();
+                $data['telephone'] = $data["usager"]->getTelephone();
+                $data['motdepasse'] = $data["usager"]-> getMotDePasse();	
+                foreach($data["usager"]->roles as $role)
+                {
+                    if($role->id_nomRole == 3)
+                    {
+                        $data["isProprio"] = true;
+                    }
+                    if($role->id_nomRole == 4)
+                    {
+                        $data["isClient"] = true;
+                    }
+                    if($role->id_nomRole == 2)
+                    {
+                        $data["isAdmin"] = true;
+                    }
+                    if($role->id_nomRole == 1)
+                    {
+                        $data["isSuperAdmin"] = true;
+                    }
+                }
+
+                $this->afficheVue("header",$data);
+                $this->afficheVue("AfficheUsager", $data); 
+
+        }
+        
+        
+        
+        
 
 		/**
 		* @brief		Fonction de validation des parametres du formulaire d'inscription d'un usager
 		* @details		Validation des différents inputs avant l'instanciation et l'insertion dans la BD
 		* @param 		<array> 	$tabUsager 		tableau des parametres de l'usager	
+		* @param 		<array> 	$tabRoles 		tableau des differents roles de l'usager	
 		* @return    	<string> 	Les messages d'erreur à afficher à l'usager 
 		*/
-        private function validerUsager(array $tabUsager, array $tabRoles) {
+        private function validerUsager(array $tabUsager, array $tabRoles=null) {
 
         	// declaration de la 'string' d'erreurs
 			$erreurs = "";
@@ -430,45 +508,28 @@
 				// 'nettoyage' des donnees et verification si le champ est vide
 				$resultat = htmlspecialchars(stripslashes(trim($valeur)));
 				$erreurs .= ($resultat == "") ? "Le champ " . $t . " est requis<br>" : "";
-
-				if($t == "Le nom d'utilisateur" || $t == "Le mot de passe" || $t == "La validation du mot de passe") {
-					$erreurs .= (strlen($valeur) < 8 || strlen($valeur) > 50) ? $t . " doit contenir entre 8 et 50 caractères.<br>" : "";
-				}
-				if($t == "Le téléphone") {
-					$erreurs .= (strlen($valeur) < 10 || strlen($valeur) > 20) ? $t . " doit contenir entre 10 et 20 caractères.<br>" : "";
-				}
-				if($t == "Le moyen de communication") {
-					$erreurs .= (intval($valeur) == 0) ? $t . " est requis<br>" : "";
-				}
+				// si le cahmp n'est pa vide, verifications supplementaires
+				if(!$erreurs) {
+					if($t == 'Les coordonnées du moyen de communication' || $t == 'Le nom' || $t == 'Le prénom' || $t == 'L\'adresse' || $t == 'Le nom d\'utilisateur') {
+					$erreurs .= (!is_string($valeur)) ? $t . " est invalide<br>" : "";
+					}
+					if($t == "Le nom d'utilisateur" || $t == "Le mot de passe" || $t == "La validation du mot de passe") {
+						$erreurs .= (strlen($valeur) < 8 || strlen($valeur) > 50) ? $t . " doit contenir entre 8 et 50 caractères.<br>" : "";
+					}
+					if($t == "Le téléphone") {
+						$erreurs .= (strlen($valeur) < 10 || strlen($valeur) > 20) ? $t . " doit contenir entre 10 et 20 caractères.<br>" : "";
+					}
+					if($t == "Le moyen de communication") {
+						$erreurs .= (intval($valeur) == 0) ? $t . " est requis<br>" : "";
+					}
+				}	
 			}
 			// verification par specificite de champ
 			if ($tabUsager['Le mot de passe'] !== $tabUsager['La validation du mot de passe']) {
 			  	$erreurs .= "Les mots de passe entrés doivent être identiques.<br>";
 			}
+
 			return $erreurs;
-		}
-
-		/**
-		* @brief		Fonction d'attribution des differents roles d'un usager
-		* @details		L'usager peut choisir les roles client et/ou prestataire
-		* @param 		<string> 	$usager 		id de l'usager	
-		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
-		* @return    	<bool> 	
-		*/
-		public function attribution_role($usager, $tabRoles) {
-
-			$flag = true;
-			// chargement du modele usager
-			$modeleUsagers = $this->getDAO("Usagers");
-			// on boucle dans les differents roles pour les integrer dans la BD
-			foreach($tabRoles AS $r) {
-				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
-				if(!$resultat) {
-					$flag = false;
-				}
-/*@reflexion*/ 	// l'option flag a true par defaul n'est pas ideale... mais je ne trouve pas mieux comme solution 
-			}
-			return $flag;
 		}
 	}
 ?>
