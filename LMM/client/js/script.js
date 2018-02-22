@@ -95,9 +95,10 @@ $(document).ready(function() {
                         } 
                         else if(response[1].messageSucces){ //s'on n'as pas des erreurs côté php
                            $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>").fadeOut( 5000, "linear");                     
-                            $("#myModal"+idUser).hide();
-                            $('.modal-backdrop.fade.show').remove();
-                            $('body').removeClass("modal-open");
+                            $("#myModal"+idUser).toggle();
+                           // $("#myModal"+idUser).hide();
+                           // $('.modal-backdrop.fade.show').remove();
+                           // $('body').removeClass("modal-open");
                             $("#div_info_nom").empty();
                             $("#div_info_plus").empty();
                             $("#div_info_contact").empty();
@@ -171,13 +172,71 @@ $(document).ready(function() {
 					$('#afficheInfoProfil .alert').remove();
 					$('#afficheInfoProfil footer').remove();
 					$('#afficheInfoProfil script').remove();
-					$('#afficheInfoProfil #carte').remove();					
+					$('#afficheInfoProfil #carte').remove();
+                   // var idApt = $('.btn-modal')[0].id;
+                    
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 				}
 			});
 		});
+    
+    /**
+        Fonction pour afficher disponibilite d'un apprtement
+    */    
+    $(document).on("click", ".btnAfficheDispo", function(e){
+        var idApt = $(this)[0].id;
+        $.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficheDisponibilite&id_apt="+idApt,
+				dataType:"html",
+				success:function(reponse) {
+					alert("affiche dispo!"+idApt); 
+                    //
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+    });
+    
+    /**
+        Fonction pour supprimer disponibilite d'un apprtement
+    */    
+    $(document).on("click", ".btnSupprimerDispo", function(e){
+        
+        var idDispo = $(this)[0].id;
+        $.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=supprimeDisponibilite&id_dispo="+idDispo,
+				dataType:"html",
+				success:function(reponse) {
+					//remove la rangee               
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+    });
+    
+    /**
+        Fonction pour ajouter disponibilite d'un apprtement
+    */    
+    $(document).on("click", ".btnAjouterDispo", function(e){
+        
+        $.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=ajouteDisponibilite",
+				dataType:"html",
+				success:function(reponse) {
+					//inserer une rangee en haut              
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+    });
 		
 });
 		

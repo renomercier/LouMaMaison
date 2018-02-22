@@ -41,11 +41,70 @@
                         break;
 						
 					case "afficheAptsProprio" :
-						if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-							$numPage = isset($params['page'])? $params['page'] : 1;
-							$this->afficheListeAppartementsProprio($numPage, $_SESSION['username']);		
+						if(isset($_SESSION["username"]) && isset($params["idProprio"]) && $_SESSION["username"] == $params["idProprio"]) {
+                            $modeleApt = $this->getDAO("Appartements");
+                            $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
+                            foreach($data["appartements"] as $appartement)
+                            { 
+                                $adresse=[];
+                                $evaluation = $modeleApt->nombre_notes($appartement->getId());                               
+                                if($evaluation[0][1] !=0)
+                                {
+                                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
+                                    $appartement->moyenne = floatval(round($moyenne, 1));
+                                }
+                                else
+                                {
+                                    $appartement->moyenne = 0;
+                                }
+                                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
+
+                            }
+							$this->afficheVue("AfficheAptsProprio", $data);  
 						}
 					break;
+                     // 
+                    case "afficheDisponibilite" :
+                        if(isset($params['id_apt']) && !empty($params['id_apt'])) {
+                            $modeleDispo = $this->getDAO("Disponibilites");
+                            $data['disponibilite'] = $modeleDispo->afficheDisponibilite($params['id_apt']);
+                            $modeleApt = $this->getDAO("Appartements");
+                            $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
+                            foreach($data["appartements"] as $appartement)
+                            { 
+                                $adresse=[];
+                                $evaluation = $modeleApt->nombre_notes($appartement->getId());
+                                if($evaluation[0][1] !=0)
+                                {
+                                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
+                                    $appartement->moyenne = floatval(round($moyenne, 1));
+                                }
+                                else
+                                {
+                                    $appartement->moyenne = 0;
+                                }
+                                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
+
+                            }
+                            $this->afficheVue("AfficheAptsProprio", $data);  
+                        }
+                    break;
+                        
+                    case "supprimeDisponibilite" :
+                        if(isset($params['id_dispo']) && !empty($params['id_dispo'])) {
+                            $modeleDispo = $this->getDAO("Disponibilites");
+                            $data= $modeleDispo->supprimeDisponibilite($params['id_dispo']); 
+                            $this->afficheVue("AfficheAptsProprio", $data);
+                        }
+                    break;
+                        
+                    case "ajouteDisponibilite" :
+                        if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
+                            $modeleDispo = $this->getDAO("Disponibilites");
+                            $data['disponibilite'] = $modeleDispo->ajouteDisponibilite($params['dateDebut'], $params['dateFin'], $params['id_dispo']); 
+                            $this->afficheVue("AfficheAptsProprio", $data);
+                        }
+                    break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
@@ -76,7 +135,7 @@
                             if(!$params['erreursApt']) {
 /* @temp */                     $photo = "photo.jpg";
                                 // nouvel objet appartement
-                                $appartement = new Appartement($params['options'], $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $photo, $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
+                                $appartement = new Appartement(0, $params['options'], $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $photo, $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
                                 // chargement du modele Appartement
                                 $modeleApts = $this->getDAO("Appartements");
                                 $resultat = $modeleApts->sauvegarderAppartement($appartement);
@@ -239,6 +298,19 @@
             }
             return $erreurs;
         }
+        
+        /**
+		* @brief 		Affichage d'un nombre d'appartements du PROPRIO selon une 
+        *				limite définie
+		* @param 		$page numero de la page sur laquelle on se trouve
+		* @return		charge la vue avec le tableau de donnees
+		*/	
+		public function afficheListeAppartementsProprio($page, $idProprio)
+		{
+			$modeleAppartement= $this->getDAO("Appartements");
+			$apparts = $modeleAppartement->obtenirAptProprio($idProprio);  
+            $data = $this->obtenir_liste_partielle($idProprio, $apparts, $page); 	
+		}
 		
 		
 

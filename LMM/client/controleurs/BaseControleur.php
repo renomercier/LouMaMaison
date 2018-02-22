@@ -86,19 +86,7 @@
             return $data;
         }
         
-		        /**
-		* @brief 		Affichage d'un nombre d'appartements du PROPRIO selon une *					limite définie
-		* @param 		$page numero de la page sur laquelle on se trouve
-		* @return		charge la vue avec le tableau de donnees
-		*/	
-		public function afficheListeAppartementsProprio($page, $idProprio)
-		{
-			$modeleAppartement= $this->getDAO("Appartements");
-			$apparts = $modeleAppartement->obtenirAptProprio($idProprio);  
-            $data = $this->obtenir_liste_partielle($idProprio, $apparts, $page); 	
-		}
-		
-		
+        	
 		
         /**
 		* @brief 		Affichage d'un nombre d'appartements selon une limite définie

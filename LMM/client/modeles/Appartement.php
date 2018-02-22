@@ -39,12 +39,13 @@
 
         /**
         *   constructeur de la classe Appartement
-        *       
+        *
+        *   @param <int>           $id                     id de l'appartement  
         *   @param <string>        $options                options de l'appartement  
         *   @param <string>        $titre                  titre de l'annonce (mise en location)  
         *   @param <string>        $descriptif             description de l'appartement   
         *   @param <float>         $montantParJour         montant par jour    
-        *   @param <int>           $nbPersonnes             nombre de personnes admises
+        *   @param <int>           $nbPersonnes            nombre de personnes admises
         *   @param <int>           $nbLits                 nombre de lits
         *   @param <int>           $nbChambres             nombre de chambres 
         *   @param <string>        $photoPrincipale        photo principale de l'appartement     
@@ -57,8 +58,9 @@
         *   @param <string>        $id_nomQuartier         nom du quartier ou est situe l'appartement 
         *   @param <bool>          $actif                  si l'appartement est actif       
         */  
-        public function __construct($options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersonnes = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = "", $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1) {   
+        public function __construct($id = 0, $options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersonnes = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = "", $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1) {   
  
+            $this->setId($id);
             $this->setOptions($options);
             $this->setTitre($titre);
             $this->setDescriptif($descriptif);
@@ -136,6 +138,11 @@
         
 
         // setters
+        public function setId($i) {
+            if (is_int(intval($i)) && intval($i) != 0) {
+                $this->id = $i;
+            }
+        }
         public function setActif($a) {
             if ($a == 0 || $a == 1) {
                 $this->actif = $a;

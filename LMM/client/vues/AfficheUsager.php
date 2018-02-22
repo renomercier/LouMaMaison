@@ -41,8 +41,8 @@
 			<div class="modal fade" id="myModal<?=$_SESSION["username"]?>" role="dialog">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				  <div class="modal-header bg-primary">
-					<h3 class="modal-title">Modifier votre profil</h3>
+				  <div class="modal-header bg-info">
+					<h3 class="modal-title text-white">Modifier votre profil</h3>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				  </div>
 				  <div class="modal-body">
@@ -132,7 +132,7 @@
 						<button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Save changes</button>
 					</form>
 				  </div>
-				  <div class="modal-footer bg-primary">
+				  <div class="modal-footer bg-info">
                       <div class="erreurModif"></div>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				  </div>
