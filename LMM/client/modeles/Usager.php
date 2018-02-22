@@ -13,7 +13,7 @@
     *
     *   1 constructeur  |   getters & setters
     */
-	class Usager 	{
+	class Usager implements JsonSerializable	{
 		
 		// Attributs de la classe Usager
 		private $username;
@@ -26,6 +26,7 @@
 		private $valideParAdmin;
 		private $banni;
 		private $id_moyenComm;
+		private $coor_moyenComm;
 		private $id_modePaiement;
 		private $id_adminBan;
         private $id_adminValid;
@@ -41,11 +42,12 @@
         *   @param <string>        $telephone              no de telephone de l'utilisateur
         *   @param <string>        $motDePasse             mot de passe de l'utilisateur
         *   @param <int>           $id_moyenComm           id du moyen de communication de l'utilisateur     
+        *   @param <string>        $coor_moyenComm         coordonnees du moyen de communication de l'utilisateur     
         *   @param <int>           $id_modePaiement        id du mode de paiement de l'utilisateur
         *   @param <string>        $id_adminBan            admin qui gere le bannissement de l'usager 
         *   @param <string>        $id_adminValid          admin qui valide un usager afin qu'il puisse utiliser les services du site       
         */
-		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $iMP = 0, $vA = false, $b = false, $iAB = "", $iAV = "") {			
+		public function __construct($u = "", $n = "", $p = "", $ph = "", $a = "", $t = "", $mP = "", $iMC = 0, $coorMC = "", $iMP = 0, $vA = false, $b = false, $iAB = "", $iAV = "") {			
 
 			$this->setUsername($u);
 			$this->setNom($n);
@@ -55,10 +57,11 @@
 			$this->setTelephone($t);
 			$this->setMotDePasse($mP);
 			$this->setIdMoyenComm($iMC);
+			$this->setCoorMoyenComm($coorMC);
 			$this->setIdModePaiement($iMP);
 
-			$this->setValideParAdmin ($vA);
-			$this->setBanni ($b);
+			$this->setValideParAdmin($vA);
+			$this->setBanni($b);
 			$this->setAdminBan($iAB);
 			$this->setAdminValid($iAV);
 		}
@@ -104,6 +107,10 @@
 		//
 		public function getIdMoyenComm() {
 			return $this->id_moyenComm;
+		}
+		//
+		public function getCoorMoyenComm() {
+			return $this->coor_moyenComm;
 		}	
 		//
 		public function getIdModePaiement() {
@@ -180,6 +187,12 @@
 			}
 		}
 		//
+		public function setCoorMoyenComm($c) {
+			if (is_string($c) && trim($c)!="") {
+				$this->coor_moyenComm = $c;
+			}
+		}
+		//
 		public function setIdModePaiement($iMP) {
 			if (is_int(intval($iMP)) &&  intval($iMP) != 0) {
 				$this->id_modePaiement = $iMP;
@@ -197,7 +210,26 @@
 				$this->$id_adminValid = $iAV;
 			}
 		}
-
+		
+		public function jsonSerialize() {
+			return [
+			'username' => $this->username,
+			'nom' => $this->nom,
+			'prenom' => $this->prenom,
+			'photo' => $this->photo,
+			'adresse' => $this->adresse,
+			'telephone' => $this->telephone,
+			'motdepasse' => $this->motDePasse,
+			'id_contact' => $this->id_moyenComm,
+			'moyenContact' => $this->moyenComm,
+			'id_paiement' => $this->id_modePaiement,
+            'modePaiement' => $this->modePaiement,
+			'valide' => $this->valideParAdmin,
+			'banni' => $this->banni,
+			'idAdminBan' => $this->id_adminBan,
+			'idAdminValid' => $this->id_adminValid  
+			];
+		}
 	}
 
 ?>
