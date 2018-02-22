@@ -22,7 +22,7 @@
 		<!-- Affichage des photos de l'appartement -->
         <div class="col-sm-12 photo_principale">
 		
-			<h1>Affiche Appartement!!!</h1>
+			<h1>Affichage d'un appartement</h1>
 		
 			<!-- Affichage de la photo principale -->
 			<div>
@@ -30,14 +30,14 @@
             </div>
 
 			<!-- Affichage des photos supplementaires -->
-			<div class = "container">
-				<div class = "row">
+			<div class = "d-inline">
+				<div style="width: 10%; height: 10%">
 				
 				<?php
 					foreach($data["tab_photos"] as $photo) {
 				?>
 						<div class="col-xs-2">
-						  <img style="width: 25%; height: 25%" src="<?= $photo['photoSupp'] ?>" class="thumbnail img-fluid" alt="Photo Supplementaire">
+						  <img src="<?= $photo['photoSupp'] ?>" class="img-thumbnail img-fluid" alt="Photo Supplementaire">
 						</div> 
 				<?php
 					}

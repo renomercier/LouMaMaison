@@ -32,8 +32,8 @@
 
 
 	//déclaration des infos de connexion
-	//define("HOST", "localhost");
-	define("HOST", "127.0.0.1");
+	define("HOST", "localhost");
+	//define("HOST", "127.0.0.1");
 	define("DBNAME", "loumamaison");
 	define("USERNAME", "root");
 	define("PWD", "root");

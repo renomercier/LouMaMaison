@@ -42,15 +42,18 @@
 						
 						
 					// Case d'affichage du detail d'un appartement
-					case "afficherAppartement":	
-						echo "Controleur Appartement!!!...";
-						echo "Id_Appart:", $params['id_appart'];
-						
-						// chargement du modele Appartement
+					case "afficherAppartement" :	
+                        
+                        // Correction temporaire permettant l'affichage du detail d'un appartement...
+                        $params['id_appart'] = 18;
+
+                        // chargement du modele Appartement
 						$modeleApts = $this->getDAO("Appartements");
 						// chargement du detail de l'appartement et de ses photos
-						$data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
+                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
 						$data['tab_photos'] = $modeleApts->getPhotos($params['id_appart']);
+                        $data['appartement'] = $modeleApts->obtenir_par_id(18);
+						$data['tab_photos'] = $modeleApts->getPhotos(18);
 						// affichage du detail d'un appartement et de ses photos
 						$this->afficheVue("AfficheAppartement", $data);
 						break;
@@ -85,7 +88,7 @@
                             if(!$params['erreursApt']) {
 /* @temp */                     $photo = "photo.jpg";
                                 // nouvel objet appartement
-                                $appartement = new Appartement($params['options'], $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $photo, $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
+                                $appartement = new Appartement(0, $params['options'], $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $photo, $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
                                 // chargement du modele Appartement
                                 $modeleApts = $this->getDAO("Appartements");
                                 $resultat = $modeleApts->sauvegarderAppartement($appartement);

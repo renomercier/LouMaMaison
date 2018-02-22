@@ -8,20 +8,22 @@
 <div class="resultat">
     <h1>Liste des appartements</h1>
     <div class="row">
+        <pre>
+            <?=var_dump($data["appartements"]);?>
+        </pre>
+        
         <?php
             foreach($data["appartements"] as $appartement)
             {    
         ?>
           <div class="col-md-3">
-            <div class="thumbnail">
+            <div class="">
 			
 			  <?php
 			  
 				echo "ID:";
-				var_dump($appartement->getId());
-				echo " Photo:";
-				var_dump($appartement->getPhotoPrincipale());
-			  
+				var_dump($appartement->id_appartement);
+
 				if ($appartement->getPhotoPrincipale() != "") {
 					$photoApt = $appartement->getPhotoPrincipale();
 				} else {
@@ -31,7 +33,7 @@
 			
               <!--<img src="./images/profil.jpg" alt="mon appart">-->
 			  <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?= $appartement->getId(); ?>" >
-				<img src="<?= $photoApt ?>" class="img-fluid" alt="mon appart">
+				<img src="<?= $photoApt ?>" class="img img-fluid thumbnail" alt="mon appart">
 			  </a>
               <div class="caption">
                 <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>

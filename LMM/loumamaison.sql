@@ -69,7 +69,7 @@ INSERT INTO `appartement` (`id`, `actif`, `options`, `titre`, `descriptif`, `mon
 (11, 1, 'wifi=checked&cintres=checked', 'maison en paille 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
 (12, 1, 'wifi=checked&cintres=checked', 'maison en carton 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
 (13, 1, 'wifi=checked&cintres=checked&fer+%C3%A0+repasser=checked', 'Le titre mmmmm', 'oooooo ooooo oo o ', 50, 2, 1, 1, './images/profil.jpg', NULL, 1025, 'DeBellechasse', 'Montréal', 'H2S1Y4', 1, 'salim', 14),
-(14, 1, NULL, 'TTTTTTTTTT', 'oooooo ooo oo o o ', 70, 2, 1, 1, 'photo.jpg', NULL, 32, 'Beaubien', 'Montréal', 'h2h2h2', 3, 'nat', 17),
+(14, 1, NULL, 'TTTTTTTTTT', 'oooooo ooo oo o o ', 70, 2, 1, 1, './images/profil.jpg', NULL, 32, 'Beaubien', 'Montréal', 'h2h2h2', 3, 'nat', 17),
 (15, 1, 'Options-Associées', 'Superbe Loft disponible', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 123, 4, 2, 1, './images/apt01-01.png', '501', 51, 'St-Paul', 'Montréal', 'G1Q 1Q9', 1, 'renaud', 7),
 (16, 1, 'Options-Associées', 'Merveilleux Condo', 'Nunc luctus enim ligula, a tincidunt nunc ultricies eget.', 98, 2, 1, 1, './images/apt02-01.png', '201', 781, 'Rue de la Commune', 'Montréal', 'H2G 3P5', 3, 'nat', 7),
 (17, 1, 'Options-Associées', 'Loft affordant', 'Nam tincidunt ex turpis, in molestie ipsum pretium sed.', 87, 4, 2, 2, './images/apt03-01.png', '32', 448, 'Place Jacques-Cartier', 'Montréal', 'H1G 4L8', 1, 'yul', 7),
