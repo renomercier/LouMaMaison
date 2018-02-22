@@ -45,8 +45,8 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
-                       
                         session_destroy();
+                        // redirection vers la page d'accueil
                         echo "<script>window.location='./index.php?Appartements'</script>";
                         
                      /*   session_destroy();
@@ -84,11 +84,8 @@
                                            $_SESSION["role"][] = $role->id_nomRole;
                                         }
 
-                                        // redirection temporaire
-                                        $data= $this->initialiseMessages();
-                                        $this->afficheVue("header",$data);
-                                        $numPage = isset($params['page'])? $params['page'] : 1;
-                                        $this->afficheListeAppartements($numPage, 4);
+                                        // redirection vers la page d'accueil
+                                        echo "<script>window.location='./index.php?Appartements'</script>";
                                     }
                                     else
                                     {

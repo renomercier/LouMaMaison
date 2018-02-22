@@ -87,10 +87,10 @@
         }*/
         
         
-        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart= '2018/05/15', $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
+        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart= 0, $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
         {
             
-            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id JOIN type_apt t ON a.id_typeApt = t.id JOIN usager u ON a.id_userProprio = u.username LEFT JOIN evaluation e ON e.id_appartement = a.id JOIN quartier q ON q.id=a.id_nomQuartier WHERE d.disponibilite = 1 AND d.dateFin > NOW()"; 
+            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id JOIN type_apt t ON a.id_typeApt = t.id JOIN usager u ON a.id_userProprio = u.username JOIN quartier q ON a.id_nomQuartier = q.id WHERE d.disponibilite = 1 AND d.dateFin > NOW()"; 
             
             if(!empty($priMin))
             {
