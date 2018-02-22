@@ -9,16 +9,13 @@
     <div class="resultat">
         <h1>Liste des appartements</h1>
         <div class="row">
-                        <pre>
-                <?=var_dump($data["appartements"]);?>
-            </pre>
                     <?php
                     if($data["appartements"]){
                         foreach($data["appartements"] as $appartement)
                         {    
                     ?>
                       <div class="col-md-3">
-                          <h5><?=$appartement->getId();?></h5>
+                          <h5><?=$appartement->id_appartement;?></h5>
                         <div class="thumbnail">
                           <img src="./images/profil.jpg" alt="mon appart">
                           <div class="caption">

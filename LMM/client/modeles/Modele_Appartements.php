@@ -87,33 +87,53 @@
         }*/
         
         
-        public function obtenir_avec_Limit($debutTable, $finTable, $dateArrive=0, $dateDepart= 0, $nbrPers=0, $quartier=0, $note=7, $prixMax=0, $priMin=0)
+        public function obtenir_avec_Limit($filtre = array())
         {
             
-            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id JOIN type_apt t ON a.id_typeApt = t.id JOIN usager u ON a.id_userProprio = u.username JOIN quartier q ON a.id_nomQuartier = q.id WHERE d.disponibilite = 1 AND d.dateFin > NOW()"; 
+            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id 
+                        JOIN type_apt t ON a.id_typeApt = t.id 
+                        JOIN usager u ON a.id_userProprio = u.username 
+                        JOIN quartier q ON a.id_nomQuartier = q.id 
+                        JOIN
+                            (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e 
+                                JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
+                                ON note.id_appartement = a.id
+                    WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
+
             
-            if(!empty($priMin))
+            if(!empty($filtre['priMin']))
             {
-                $query.= " AND a.montantParJour >= " . $priMin ."";
+                $query.= " AND a.montantParJour >= " . $filtre['priMin'] ."";
             }
-            if(!empty($prixMax))
+            if(!empty($filtre['prixMax']))
             {
-                $query.= " AND a.montantParJour <= " . $prixMax ."";
+                $query.= " AND a.montantParJour <= " . $filtre['prixMax'] ."";
             }
-            if(!empty($quartier))
+            if(!empty($filtre['quartier']))
             {
-                $query.= " AND q.id = " . $quartier ."";
+                $query.= " AND q.id = " . $filtre['quartier'] ."";
             }
-            if(!empty($nbrPers))
+            if(!empty($filtre['nbrPers']))
             {
-                $query.= " AND a.nbPersonnes = " . $nbrPers ."";
+                $query.= " AND a.nbPersonnes = " . $filtre['nbrPers'] ."";
             }
-            if(!empty($dateDepart))
+            if(!empty($filtre['dateDepart']))
             {
-                $query.= " AND d.dateFin >= '" . $dateDepart ."'";
+                $query.= " AND d.dateFin >= '" . $filtre['dateDepart'] ."'";
             }
-            $query.= " GROUP BY d.id_appartement LIMIT " . $debutTable .", ".$finTable."";
-            
+            if(!empty($filtre['dateArrive']))
+            {
+                $query.= " AND d.dateFin >= '" . $filtre['dateArrive'] ."'";
+            }
+            if(!empty($filtre['note']))
+            {
+                $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
+            }
+            $query.= " GROUP BY d.id_appartement LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
+           /* if(!empty( $filtre['premiereEntree']))
+            {
+                $query.= "LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
+            }*/
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
             return $resultat->fetchAll();

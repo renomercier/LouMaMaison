@@ -46,19 +46,28 @@
                             $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
                        
                             // nombre de personnes
-                            $nbrPersonnes = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
+                            $filtre['nbrPers'] = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
                         
                             // prix minimum
-                            $prixMin = isset($params['prixMin']) && is_numeric($params['prixMin']) ? $params['prixMin'] : 0;
+                            $filtre['priMin'] = isset($params['prixMin']) && is_numeric($params['prixMin']) ? $params['prixMin'] : 0;
                         
                             // prix maximum
-                            $prixMax = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 9000;
+                            $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
                         
                             // nombre d'etoiles
-                            $note = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                            $filtre['note'] = 3;
+                        
+                            // quartier
+                            $filtre['quartier'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                        
+                            // date d'arrivée
+                            $filtre['dateArrive'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                        
+                            // date de départ
+                            $filtre['dateDepart'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
 
-                            $this->afficheListeAppartements($numPage, $data['appartParPage']);
-                       
+                            $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
+
 						break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
@@ -262,7 +271,7 @@
         * @param        $appartParPage le nombre d'appart à afficher par page
 		* @return		charge la vue avec le tableau de donnees
 		*/	
-		private function afficheListeAppartements($page, $appartParPage)
+		private function afficheListeAppartements($page, $appartParPage, $filtre=[])
 		{
 			$modeleAppartement= $this->getDAO("Appartements");
 
@@ -271,9 +280,10 @@
             // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
             
-            //
+            $filtre['premiereEntree'] = 0;
+            $filtre['appartParPage'] = PHP_INT_MAX;
             // le nombre d'appart resultant de la requete
-            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit(0, PHP_INT_MAX));
+            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit($filtre));
             
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
@@ -295,10 +305,10 @@
                  $data['pageActuelle']=1; // La page actuelle est la n°1    
             }
             
-            $premiereEntree = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
+            $filtre['premiereEntree'] = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
 
             // chercher tous les appartements remplissant les criteres de recherche
-            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage);
+            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($filtre);
             
             // pour chaque apart, trouver le total des evaluation et calculer la moyenne
             foreach($data["appartements"] as $appartement)
