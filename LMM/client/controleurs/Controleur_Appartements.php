@@ -52,8 +52,6 @@
 						// chargement du detail de l'appartement et de ses photos
                         $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
 						$data['tab_photos'] = $modeleApts->getPhotos($params['id_appart']);
-                        $data['appartement'] = $modeleApts->obtenir_par_id(18);
-						$data['tab_photos'] = $modeleApts->getPhotos(18);
 						// affichage du detail d'un appartement et de ses photos
 						$this->afficheVue("AfficheAppartement", $data);
 						break;

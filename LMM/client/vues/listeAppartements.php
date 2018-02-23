@@ -8,10 +8,13 @@
 <div class="resultat">
     <h1>Liste des appartements</h1>
     <div class="row">
+        
+        <!--
         <pre>
             <?=var_dump($data["appartements"]);?>
         </pre>
-        
+        -->
+
         <?php
             foreach($data["appartements"] as $appartement)
             {    
@@ -32,7 +35,7 @@
 			  ?>
 			
               <!--<img src="./images/profil.jpg" alt="mon appart">-->
-			  <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?= $appartement->getId(); ?>" >
+			  <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->getId(); ?>" >
 				<img src="<?= $photoApt ?>" class="img img-fluid thumbnail" alt="mon appart">
 			  </a>
               <div class="caption">

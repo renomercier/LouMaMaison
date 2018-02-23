@@ -12,6 +12,82 @@
 
 
 <div class="container detailAppartement">
+    
+    <!-- Modal du carousel de photos -->
+    <div class="modal fade" id="modalGaleriePhoto" tabindex="-1" role="dialog" aria-labelledby="modalPhotoSupp" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <div class="pull-left">Galerie de photos</div>
+            <h4 class="modal-title" id="myModalLabel"<?= $data["appartement"]->getTitre() ?></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          
+          <div class="modal-body">
+             
+            <!--begin carousel-->
+            <div id="maGalerie" class="carousel slide" data-interval="false">
+              <div class="carousel-inner">
+                
+                <!--
+                <div class="item active img img-fluid"> 
+                  <img src="<?= $data["appartement"]->getPhotoPrincipale() ?>" class="img img-fluid" alt="photoGalerie0">
+                  <div class="carousel-caption">
+                    <h3>Heading 3</h3>
+                    <p>Photo principale</p>
+                  </div>
+                </div>
+                -->
+
+                <?php
+                    $nbrP = 0;
+					foreach($data["tab_photos"] as $photo) {
+                    $nbrP++;    
+				?>
+                  
+                        <div class="item"> 
+                            <img src="<?= $photo['photoSupp'] ?>" class="img img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <div class="carousel-caption">
+                                <h3>Heading 3</h3>
+                                <p>Photo numéro <?= $nbrP ?></p>
+                            </div>
+                        </div>
+
+				<?php
+                    }
+                    reset($data["tab_photos"]);
+				?>  
+                            
+                <!--end carousel-inner-->
+              </div>
+                
+            <!--Begin Previous and Next buttons-->
+            <a class="left carousel-control" href="#maGalerie" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#maGalerie" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span></a>
+            
+            <!--end carousel-->
+            </div>              
+
+          
+          <!-- end modal-body -->
+          </div>
+          
+          <div class="modal-footer">
+            <div class="pull-left">
+                <small>Photographies par le propriétaire</small>
+            </div>
+            <button type="button" class="btn-sm btn-default" data-dismiss="modal">Fermer</button>
+          </div>
+            
+        <!-- end modal-content -->
+        </div>
+    
+      <!-- end modal-dialog -->
+      </div>
+    
+    <!--end modal -->
+    </div>
+    
 
     <div class="row">
         
@@ -26,20 +102,26 @@
 		
 			<!-- Affichage de la photo principale -->
 			<div>
-                <div id="photoPrincipale"> <img src="<?= $data["appartement"]->getPhotoPrincipale() ?>" class="img img-fluid"> </div>
+                <div id="photoPrincipale">
+                    <img src="<?= $data["appartement"]->getPhotoPrincipale() ?>" class="img img-fluid">
+                </div>
             </div>
 
 			<!-- Affichage des photos supplementaires -->
-			<div class = "d-inline">
-				<div style="width: 10%; height: 10%">
+			<div class = "row">
+				<div class="text-center col-xs-2 col-md-12">
 				
 				<?php
+                    $nbrP = 0;
 					foreach($data["tab_photos"] as $photo) {
 				?>
-						<div class="col-xs-2">
-						  <img src="<?= $photo['photoSupp'] ?>" class="img-thumbnail img-fluid" alt="Photo Supplementaire">
-						</div> 
+						<div class="d-inline" data-toggle="modal" data-target="#modalGaleriePhoto">
+                            <a href="#maGalerie" data-slide-to="<?= $nbrP ?>">
+                                <img src="<?= $photo['photoSupp'] ?>" style="width: 100px; height: 75px" class="img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
+                            </a>
+						</div>
 				<?php
+                    $nbrP++;
 					}
 				?>
 				
@@ -186,7 +268,12 @@
 				<div></div>
 			</div>
 		</div>
+        
+        
+        <!-- Fin row -->    
     </div>
+    
+    <!-- Fin container -->
 </div>
 
  
