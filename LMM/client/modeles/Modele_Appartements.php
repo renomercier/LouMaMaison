@@ -156,11 +156,28 @@
 		* @return    	<objet> 	Résultat de la requête SQL
 		*/
 		public function obtenirAptProprio($id_proprio) {
-			//$query = "SELECT * FROM " . $this->getTableName() . " WHERE id_userProprio = ?";
-            $query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() .".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id WHERE " . $this->getTableName() . ".id_userProprio = ? GROUP BY " . $this->getTableName() . ".id";
-			$donnees = array($id_proprio);
+		   // $query = "SELECT * FROM appartement a JOIN usager ON a.id_userProprio = usager.username LEFT JOIN (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e JOIN appartement a2 ON e.id_appartement = a2.id GROUP BY a2.id) note ON a.id = note.id_appartement WHERE a.id_userProprio = 'nat' GROUP BY a.id";
+            
+            $query = "SELECT * FROM " . $this->getTableName() . " a
+                JOIN usager ON a.id_userProprio = usager.username 
+                LEFT JOIN (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e JOIN appartement a2 ON e.id_appartement = a2.id GROUP BY a2.id) note ON a.id = note.id_appartement
+                WHERE a.id_userProprio = ? 
+                GROUP BY a.id";
+            $donnees = array($id_proprio);
+            $resultat = $this->requete($query, $donnees);
+            $lesApts = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+            return $lesApts;
+			/*$donnees = array($id_proprio);
 			$resultat = $this->requete($query, $donnees);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement"); 
-            return $resultat->fetchAll();
+           $apts = $resultat->fetchAll();*/
 		}
+        
+        public function obtenir_apt_avec_type($id_apt) {
+            $query = "SELECT typeApt FROM type_apt t JOIN " . $this->getTableName() . " a 
+            ON t.id = a.id_typeApt WHERE a.id=?";
+            $donnees = array($id_apt);
+            $resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+        }
     }

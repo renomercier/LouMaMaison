@@ -6,17 +6,17 @@
 * @version      v.1 | fevrier 2018
 -->
 <div class="resultat">
-    
-    <div class="row">
-        <?php
-            foreach($data["appartements"] as $appartement)
-            {    
-        ?><pre><?=var_dump($data["appartements"])?></pre>
-         <div class="col-md-3">
+    <div class="row">        
+        <?php 
+        foreach($data["appartements"] as $appartement)
+        { 
+        ?>
+        <div class="col-md-6">
             <div class="thumbnail">
               <img src="./images/profil.jpg" alt="mon appart">
               <div class="caption">
-                <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
+
+                <p> <?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes |<?=$appartement->getNbLits();?> lits</p>
                 <h5><?=$appartement->getTitre();?></h5>
                 <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
                 <p>rate 
@@ -24,24 +24,24 @@
                         for($i=1; $i<=$appartement->moyenne/2; $i++)
                         {
                         ?>
-                            <i class="fas fa-star"></i>
+                            <i class="fa fa-star"></i>
                     <?php
                         }
                         if($appartement->moyenne % 2 != 0)
                         {
                          ?>   
-                            <i class="fas fa-star-half"></i>
+                            <i class="fa fa-star-half"></i>
                      <?php
                         }
-                
+
                     ?>
                   </p> 
-                                  
+                  <p> <?=$appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();?></p>                
                   <div>
-					<form>
-					<input type="hidden" value="<?=$appartement->getId_userProprio()?>">
-                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>" id="<?=$appartement->getId()?>" class="btn btn-info btnAfficheDispo" >Disponibilite</button>
-					 </form>
+                    <form>
+                    <input type="hidden" value="<?=$appartement->getId_userProprio()?>">
+                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>" id="<?=$appartement->getId()?>" class="btn btn-info " >Disponibilite</button>
+                     </form>
                   </div>
                         <!-- Modal -->
                         <div class="modal fade" id="modal<?=$appartement->getId()?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
@@ -59,20 +59,20 @@
                                     <label class="mr-sm-2">Date de fin</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" >
                                     <button type="button" id="ajouterDispo<?=$appartement->getId()?>" class="btn btn-success btnAjouterDispo">Ajouter</button>
                                      <table class="table table-hover">
-							             <tbody>
+                                         <tbody>
                                              <tr class="trDispo"><th>Date de debut</th><th>Date de fin</th></tr>
                                              <tr>
-                                                 <td>
+
                                                 <?php
-            }//fin de foreach appts
-                                                 foreach( $data['disponibilite'] as $dispo) 
-                                                 {var_dump($data['disponibilite']);
-                                                    $dispo->getDateDebut();?>
-                                                 </td>
-                                                 <td><?=$dispo->getDateFin();
-                                                 ?>
-                                                 </td>
-                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="dispo<?=$dispo->getDateFin();}?>">Supprimer</button></td>
+                                                 foreach( $appartement->disponibilite as $dispo) 
+                                                 {
+                                                  ?>   
+                                                <td><?=$dispo['dateDebut'];?></td>
+                                                 <td><?=$dispo['dateFin']?></td>
+                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="dispo<?=$dispo['id'];?>">Supprimer</button></td>
+                                                 <?php
+                                                 }
+                                                    ?>
                                              </tr>
                                          </tbody>
                                       </table>
@@ -80,23 +80,20 @@
                               </div>
                               <div class="modal-footer bg-info">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                
+
                               </div>
                             </div>
                           </div>
                         </div>
-                <?php
-                    //}//
-                ?>
-                 
-              </div>
+                   </div>
+                </div>
             </div>
-          </div>
+            <?php
+            }
+            ?> 
     </div>
 </div>
-<pre>
-       
-</pre>
+
 
 <!--
 <div class="row mt-5">

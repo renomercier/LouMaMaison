@@ -44,52 +44,18 @@
 						if(isset($_SESSION["username"]) && isset($params["idProprio"]) && $_SESSION["username"] == $params["idProprio"]) {
                             $modeleApt = $this->getDAO("Appartements");
                             $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
-                            foreach($data["appartements"] as $appartement)
-                            { 
-                                $adresse=[];
-                                $evaluation = $modeleApt->nombre_notes($appartement->getId());                               
-                                if($evaluation[0][1] !=0)
-                                {
-                                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
-                                    $appartement->moyenne = floatval(round($moyenne, 1));
-                                }
-                                else
-                                {
-                                    $appartement->moyenne = 0;
-                                }
-                                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
-
-                            }
-							$this->afficheVue("AfficheAptsProprio", $data);  
-						}
-					break;
-                     // 
-                    case "afficheDisponibilite" :
-                        if(isset($params['id_apt']) && !empty($params['id_apt'])) {
                             $modeleDispo = $this->getDAO("Disponibilites");
-                            $data['disponibilite'] = $modeleDispo->afficheDisponibilite($params['id_apt']);
-                            $modeleApt = $this->getDAO("Appartements");
-							$data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
-                            foreach($data["appartements"] as $appartement)
-                            { 
-                                $adresse=[];
-                                $evaluation = $modeleApt->nombre_notes($appartement->getId());
-                                if($evaluation[0][1] !=0)
+                            
+                                foreach($data['appartements'] as $apt)
                                 {
-                                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
-                                    $appartement->moyenne = floatval(round($moyenne, 1));
+                                    $apt->disponibilite = $modeleDispo->afficheDisponibilite($apt->getId());
+                                    $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
                                 }
-                                else
-                                {
-                                    $appartement->moyenne = 0;
-                                }
-                                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
-
-                            }
+                            
                             $this->afficheVue("AfficheAptsProprio", $data);  
-                        }
-                    break;
-                        
+                            }
+					break;
+                                            
                     case "supprimeDisponibilite" :
                         if(isset($params['id_dispo']) && !empty($params['id_dispo'])) {
                             $modeleDispo = $this->getDAO("Disponibilites");

@@ -95,10 +95,10 @@ $(document).ready(function() {
                         } 
                         else if(response[1].messageSucces){ //s'on n'as pas des erreurs côté php
                            $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>").fadeOut( 5000, "linear");                     
-                            $("#myModal"+idUser).toggle();
-                           // $("#myModal"+idUser).hide();
-                           // $('.modal-backdrop.fade.show').remove();
-                           // $('body').removeClass("modal-open");
+                            //$("#myModal"+idUser).toggle();
+                            $("#myModal"+idUser).hide();
+                            $('.modal-backdrop.fade.show').remove();
+                            $('body').removeClass("modal-open");
                             $("#div_info_nom").empty();
                             $("#div_info_plus").empty();
                             $("#div_info_contact").empty();
@@ -182,26 +182,7 @@ $(document).ready(function() {
 			});
 		});
     
-    /**
-        Fonction pour afficher disponibilite d'un apprtement
-    */    
-    $(document).on("click", ".btnAfficheDispo", function(e){
-        var idApt = $(this)[0].id;
-		var idProprio =$(this).prev().val(); 
-        $.ajax({
-				method: "GET",
-				url: "index.php?Appartements&action=afficheDisponibilite&id_apt="+idApt+"&idProprio="+idProprio,
-				dataType:"html",
-				success:function(reponse) {
-					alert("affiche dispo!"+idApt); 
-                    //
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-    });
-    
+        
     /**
         Fonction pour supprimer disponibilite d'un apprtement
     */    
