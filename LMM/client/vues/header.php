@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
 * @file       	/header.php
 * @brief 		    Projet WEB 2
@@ -5,8 +6,6 @@
 * @author     	Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version    	v.1 | fevrier 2018
 -->
-
-<!DOCTYPE html>
 <html lang="fr">
     
 <head>
@@ -28,19 +27,15 @@
   <script src="https://use.fontawesome.com/e58c171d55.js"></script>  
   <script src="js/formEvt.js"></script>   
   <script src="js/fonctions.js"></script> 
- 
   <!-- Tether, ensuite Bootstrap JS. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-  
-  <script src="js/script.js" ></script>
- 
+  <script src="js/script.js" ></script> 
 
 </head>
 <header>
 </header>
-
-<body class="container">
+<body class="container-fluid">
   <nav class="navbar sticky-top navbar-toggleable-md navbar-light bg-faded">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -49,7 +44,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="nav navbar-nav">
           <li class="nav-item active">
-              <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.php?Appartements&action=filtrer">Accueil</a>
           </li>
     		  <?php
 
@@ -72,8 +67,7 @@
           <?php
           }
 		      ?>
-              <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-
+              <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
 	    </ul>          
     </div>
   </nav>
