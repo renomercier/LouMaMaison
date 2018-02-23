@@ -91,7 +91,7 @@
                         JOIN type_apt t ON a.id_typeApt = t.id 
                         JOIN usager u ON a.id_userProprio = u.username 
                         JOIN quartier q ON a.id_nomQuartier = q.id 
-                        JOIN
+                        LEFT JOIN
                             (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e 
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
                                 ON note.id_appartement = a.id

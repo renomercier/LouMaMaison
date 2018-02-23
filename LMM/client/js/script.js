@@ -212,14 +212,15 @@ $(document).ready(function() {
         Fonction pour supprimer disponibilite d'un apprtement
     */    
     $(document).on("click", ".btnSupprimerDispo", function(e){
-        
+        var idUser = $("input[name='idUser']").val();
         var idDispo = $(this)[0].id;
+        $(this).parent().parent().remove(); 
         $.ajax({
 				method: "GET",
-				url: "index.php?Appartements&action=supprimeDisponibilite&id_dispo="+idDispo,
+				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUser+"&id_dispo="+idDispo,
 				dataType:"html",
 				success:function(reponse) {
-					//remove la rangee               
+                  //refresh le modal
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

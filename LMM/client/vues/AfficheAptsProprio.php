@@ -40,7 +40,7 @@
                   <div>
                     <form>
                     <input type="hidden" value="<?=$appartement->getId_userProprio()?>">
-                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>" id="<?=$appartement->getId()?>" class="btn btn-info " >Disponibilite</button>
+                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>"  class="btn btn-info " >Disponibilite</button>
                      </form>
                   </div>
                         <!-- Modal -->
@@ -61,19 +61,19 @@
                                      <table class="table table-hover">
                                          <tbody>
                                              <tr class="trDispo"><th>Date de debut</th><th>Date de fin</th></tr>
-                                             <tr>
+                                            
 
                                                 <?php
                                                  foreach( $appartement->disponibilite as $dispo) 
                                                  {
                                                   ?>   
-                                                <td><?=$dispo['dateDebut'];?></td>
+                                               <tr> <td><?=$dispo['dateDebut'];?></td>
                                                  <td><?=$dispo['dateFin']?></td>
-                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="dispo<?=$dispo['id'];?>">Supprimer</button></td>
+                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="<?=$dispo['id'];?>">Supprimer</button></td></tr>
                                                  <?php
                                                  }
                                                     ?>
-                                             </tr>
+                                            
                                          </tbody>
                                       </table>
                                   </form>
