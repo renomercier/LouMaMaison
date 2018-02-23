@@ -45,13 +45,15 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
-
                         session_destroy();
+                        // redirection vers la page d'accueil
+                        echo "<script>window.location='./index.php?Appartements'</script>";
+                        
+                     /*   session_destroy();
                         $data= $this->initialiseMessages();
                         $this->afficheVue("header",$data);
                         $numPage = isset($params['page'])? $params['page'] : 1;
-                        $this->afficheListeAppartements($numPage);
-                       
+                        $this->afficheListeAppartements($numPage,4);*/
 						break;
 
 					// case d'authetification d'un usager	
@@ -82,12 +84,8 @@
                                            $_SESSION["role"][] = $role->id_nomRole;
                                         }
 
-                                        // redirection temporaire
-                                        $data= $this->initialiseMessages();
-                                        $this->afficheVue("header",$data);
-                                        $numPage = isset($params['page'])? $params['page'] : 1;
-                                        $this->afficheListeAppartements($numPage);
-                                       // header('location:index.php?Appartements');
+                                        // redirection vers la page d'accueil
+                                        echo "<script>window.location='./index.php?Appartements'</script>";
                                     }
                                     else
                                     {
@@ -346,22 +344,8 @@
 			}
 			else
 			{
-                // redirection temporaire
-                $this->afficheVue("header",$data);
-                $this->afficheVue("accueil", $data); 
-
-/*               
-               // action par défaut - afficher la liste des sujets/usagers
-				if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
-				{
-					$this->afficheListeUsagers();
-				}
-				else
-				{
-					// afficher la page d'erreur
-					$this->afficheVue("404");
-				}
-*/
+                // redirection vers la page de appartements
+                echo "<script>window.location='./index.php?Appartements'</script>"; 
 			}
 			// affichage du footer
             //$this->afficheVue('footer');
@@ -544,6 +528,5 @@
 
 			return $erreurs;
 		}
-
 	}
 ?>

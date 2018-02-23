@@ -37,25 +37,54 @@
                 //ce switch détermine la vue et obtient le modèle
                 switch($params["action"])
                 {
-                    case "page_suivante":
-                        break;
-						
-						
-					// Case d'affichage du detail d'un appartement
-					case "afficherAppartement" :	
+                        case "filtrer":
+                        
+                            // numero de la page actuelle
+                            $numPage = isset($params['page']) && is_numeric($params['page'])? $params['page'] : 1;
+                        
+                            // nombre d'appartements à afficher par page
+                            $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
+                       
+                            // nombre de personnes
+                            $filtre['nbrPers'] = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
+                        
+                            // prix minimum
+                            $filtre['priMin'] = isset($params['prixMin']) && is_numeric($params['prixMin']) ? $params['prixMin'] : 0;
+                        
+                            // prix maximum
+                            $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
+                        
+                            // nombre d'etoiles
+                            $filtre['note'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                        
+                            // quartier
+                            $filtre['quartier'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                        
+                            // date d'arrivée
+                            $filtre['dateArrive'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                        
+                            // date de départ
+                            $filtre['dateDepart'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+
+                            $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
+
+						break;
+
+                    // Case d'affichage du detail d'un appartement
+                    case "afficherAppartement" :    
                         
                         // Correction temporaire permettant l'affichage du detail d'un appartement...
                         $params['id_appart'] = 18;
 
                         // chargement du modele Appartement
-						$modeleApts = $this->getDAO("Appartements");
-						// chargement du detail de l'appartement et de ses photos
+                        $modeleApts = $this->getDAO("Appartements");
+                        // chargement du detail de l'appartement et de ses photos
                         $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
-						$data['tab_photos'] = $modeleApts->getPhotos($params['id_appart']);
-						// affichage du detail d'un appartement et de ses photos
-						$this->afficheVue("AfficheAppartement", $data);
-						break;
-						
+                        $data['tab_photos'] = $modeleApts->getPhotos($params['id_appart']);
+                        // affichage du detail d'un appartement et de ses photos
+                        $this->afficheVue("AfficheAppartement", $data);
+                        break;
+                        
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
@@ -119,7 +148,9 @@
             // si aucune action, affichage de la page d'accueil par defaut
             else{ 
                 $numPage = isset($params['page'])? $params['page'] : 1;
-                $this->afficheListeAppartements($numPage);            
+                // nombre d'appartements à afficher par page
+                $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
+                $this->afficheListeAppartements($numPage, $data['appartParPage']);           
             }            
             // affichage du footer
             $this->afficheVue("footer");
@@ -249,7 +280,66 @@
             }
             return $erreurs;
         }
+        
+                /**
+		* @brief 		Affichage d'un nombre d'appartements selon une limite définie
+		* @param 		$page numero de la page sur laquelle on se trouve
+        * @param        $appartParPage le nombre d'appart à afficher par page
+		* @return		charge la vue avec le tableau de donnees
+		*/	
+		private function afficheListeAppartements($page, $appartParPage, $filtre=[])
+		{
+			$modeleAppartement= $this->getDAO("Appartements");
+            
+            // le nombre d'appart resultant de la requete
+            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit(0, PHP_INT_MAX));
+                        
+            // definir le nombre d'appart à afficher par page
+            $data['appartParPage']=$appartParPage;
+            
+            $data['quartier'] = $modeleAppartement->obtenir_quartiers();
+
+
+            // calculer le nombre de pages necessaires pour afficher tous les resultats
+            $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
+
+            if(isset($page))
+            {
+                if($page<=0){ $page = 1;}
+                if($page>$data['nbrPage']){ $page = $data['nbrPage'];}
+                
+                 $data['pageActuelle']=intval($page);
+
+                 if($data['pageActuelle'] > $data['nbrPage']) 
+                 {
+                      $data['pageActuelle'] = $data['nbrPage'];
+                 }
+            }
+            else // Sinon
+            {
+                 $data['pageActuelle']=1; // La page actuelle est la n°1    
+            }
+            
+            $premiereEntree = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
+
+            // chercher tous les appartements remplissant les criteres de recherche
+            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage, $filtre);
+            
+            // pour chaque apart, trouver le total des evaluation et calculer la moyenne
+            foreach($data["appartements"] as $appartement)
+            { 
+                $adresse=[];
+                $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
+                $appartement->moyenne = $moyenne['moyenne'];
+
+                // reconstituer l'adresse pour la localisation sur la carte google
+                $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
+
+            }
+            $this->afficheVue("RechercheAppartements", $data);
+            $this->afficheVue("listeAppartements", $data);
+            $this->afficheVue("carteGeographique", $data);
+        }
 
     }
-    
 ?>
