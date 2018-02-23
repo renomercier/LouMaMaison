@@ -72,27 +72,27 @@
                     <label class="form-control-label ">Note</label>
                     <div class="form-check">
                     <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="5" class="form-check-input"><?php for($i=0; $i<5; $i++){echo '<i class="fas fa-star"></i>';} ?>
+                        <input type="radio" name="note" id="cinq" value="10" class="form-check-input"><?php for($i=0; $i<5; $i++){echo '<i class="fas fa-star"></i>';} ?>
                     </label>
                     </div>
                     <div class="form-check">
                     <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="4" class="form-check-input"><?php for($i=0; $i<4; $i++){echo '<i class="fas fa-star"></i>';} ?>
+                        <input type="radio" name="note" id="cinq" value="8" class="form-check-input"><?php for($i=0; $i<4; $i++){echo '<i class="fas fa-star"></i>';} ?>
                     </label>
                     </div>
                     <div class="form-check">
                     <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="3" class="form-check-input"><?php for($i=0; $i<3; $i++){echo '<i class="fas fa-star"></i>';} ?>
+                        <input type="radio" name="note" id="cinq" value="6" class="form-check-input"><?php for($i=0; $i<3; $i++){echo '<i class="fas fa-star"></i>';} ?>
                     </label>
                     </div>
                     <div class="form-check">
                     <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="2" class="form-check-input"><?php for($i=0; $i<2; $i++){echo '<i class="fas fa-star"></i>';} ?>
+                        <input type="radio" name="note" id="cinq" value="4" class="form-check-input"><?php for($i=0; $i<2; $i++){echo '<i class="fas fa-star"></i>';} ?>
                     </label>
                     </div>
                     <div class="form-check">
                     <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="1" class="form-check-input"><i class="fas fa-star"></i>
+                        <input type="radio" name="note" id="cinq" value="2" class="form-check-input"><i class="fas fa-star"></i>
                     </label>
                     </div>
                     

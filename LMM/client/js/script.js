@@ -195,11 +195,6 @@ function valPwdConfirm(elm1, elm2) {
 
 
 
-
-
-   
-  
-
   /*  $(".pagination li").click(function(e) {
         $(this).each(function() {
         // envoi de la requete

@@ -76,18 +76,8 @@
             return $this->supprimer($id);
         }
         
-       /* public function obtenir_avec_Limit($debut, $fin)
-        {
-            
-            $query = "SELECT * FROM " . $this->getTableName() . " a JOIN type_apt ON a.id_typeApt = type_apt.id JOIN usager ON a.id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = a.id GROUP BY a.id LIMIT " . $debut .", ".$fin."";
-			$resultat = $this->requete($query);
-            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
-            return $resultat->fetchAll();
-            
-        }*/
         
-        
-        public function obtenir_avec_Limit($filtre = array())
+        public function obtenir_avec_Limit($premiereEntree, $appartParPage, $filtre = array())
         {
             
             $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id 
@@ -129,7 +119,7 @@
             {
                 $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
             }
-            $query.= " GROUP BY d.id_appartement LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
+            $query.= " GROUP BY d.id_appartement LIMIT " . $premiereEntree .", ".$appartParPage."";
            /* if(!empty( $filtre['premiereEntree']))
             {
                 $query.= "LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
@@ -147,12 +137,12 @@
                       et la somme de toutes les notes d'un appart
 		* @return     <entier>
 		*/
-		public function nombre_notes($id_appart)
+		public function obtenir_moyenne($id_appart)
 		{
-			$query = "SELECT SUM(rating) AS Total_des_notes, COUNT(rating) AS nombre_note FROM evaluation WHERE id_appartement = ?";
+			$query = "SELECT AVG(rating) AS moyenne FROM evaluation WHERE id_appartement = ? GROUP BY id_appartement";
             $donnees = array($id_appart);
 			$resultat = $this->requete($query, $donnees);
-            return $resultat->fetchAll();
+            return $resultat->fetch();
 		}
         
         /**

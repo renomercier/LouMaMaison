@@ -7,8 +7,10 @@
 -->
 
 
-<div id="carte"></div>
-    
+        <div class="col-md-4" id="carte"></div>
+     </div>
+</div> 
+
   <script>
   
     var carte;

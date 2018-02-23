@@ -55,7 +55,7 @@
                             $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
                         
                             // nombre d'etoiles
-                            $filtre['note'] = 3;
+                            $filtre['note'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
                         
                             // quartier
                             $filtre['quartier'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
@@ -274,17 +274,16 @@
 		private function afficheListeAppartements($page, $appartParPage, $filtre=[])
 		{
 			$modeleAppartement= $this->getDAO("Appartements");
-
-            $data['quartier'] = $modeleAppartement->obtenir_quartiers();
-
+            
+            // le nombre d'appart resultant de la requete
+            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit(0, PHP_INT_MAX));
+                        
             // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
             
-            $filtre['premiereEntree'] = 0;
-            $filtre['appartParPage'] = PHP_INT_MAX;
-            // le nombre d'appart resultant de la requete
-            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit($filtre));
-            
+            $data['quartier'] = $modeleAppartement->obtenir_quartiers();
+
+
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
 
@@ -305,26 +304,18 @@
                  $data['pageActuelle']=1; // La page actuelle est la n°1    
             }
             
-            $filtre['premiereEntree'] = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
+            $premiereEntree = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
 
             // chercher tous les appartements remplissant les criteres de recherche
-            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($filtre);
+            $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage, $filtre);
             
             // pour chaque apart, trouver le total des evaluation et calculer la moyenne
             foreach($data["appartements"] as $appartement)
             { 
                 $adresse=[];
-                $evaluation = $modeleAppartement->nombre_notes($appartement->getId());
-                if($evaluation[0][1] !=0)
-                {
-                    $moyenne = ($evaluation[0][0] / $evaluation[0][1]);
-                    $appartement->moyenne = floatval(round($moyenne, 1));
-                }
-                else
-                {
-                    $appartement->moyenne = 0;
-                }
-                
+                $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
+                $appartement->moyenne = $moyenne['moyenne'];
+
                 // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 

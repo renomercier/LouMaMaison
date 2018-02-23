@@ -345,7 +345,7 @@
 			else
 			{
                 // redirection vers la page de appartements
-                $this->afficheListeAppartements($numPage, 4); 
+                echo "<script>window.location='./index.php?Appartements'</script>"; 
 			}
 			// affichage du footer
             //$this->afficheVue('footer');

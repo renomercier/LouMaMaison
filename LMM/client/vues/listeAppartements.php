@@ -5,7 +5,7 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-<div class="col-md-10">
+<div class="col-md-6">
     <div class="resultat">
         <h1>Liste des appartements</h1>
         <div class="row">
@@ -14,7 +14,7 @@
                         foreach($data["appartements"] as $appartement)
                         {    
                     ?>
-                      <div class="col-md-3">
+                      <div class="col-md-6">
                           <h5><?=$appartement->id_appartement;?></h5>
                         <div class="thumbnail">
                           <img src="./images/profil.jpg" alt="mon appart">
@@ -96,5 +96,3 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
