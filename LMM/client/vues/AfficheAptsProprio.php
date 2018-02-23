@@ -11,7 +11,7 @@
         <?php
             foreach($data["appartements"] as $appartement)
             {    
-        ?>
+        ?><pre><?=var_dump($data["appartements"])?></pre>
          <div class="col-md-3">
             <div class="thumbnail">
               <img src="./images/profil.jpg" alt="mon appart">
@@ -38,7 +38,10 @@
                   </p> 
                                   
                   <div>
-                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->id_appartement;?>" id="<?=$appartement->id_appartement;?>" class="btn btn-info btnAfficheDispo" >Disponibilite</button>
+					<form>
+					<input type="hidden" value="<?=$appartement->getId_userProprio()?>">
+                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>" id="<?=$appartement->getId()?>" class="btn btn-info btnAfficheDispo" >Disponibilite</button>
+					 </form>
                   </div>
                         <!-- Modal -->
                         <div class="modal fade" id="modal<?=$appartement->getId()?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
@@ -67,9 +70,9 @@
                                                     $dispo->getDateDebut();?>
                                                  </td>
                                                  <td><?=$dispo->getDateFin();
-                                                 }?>
+                                                 ?>
                                                  </td>
-                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="dispo<?=$dispo->getDateFin();?>">Supprimer</button></td>
+                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="dispo<?=$dispo->getDateFin();}?>">Supprimer</button></td>
                                              </tr>
                                          </tbody>
                                       </table>

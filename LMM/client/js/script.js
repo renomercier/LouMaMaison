@@ -187,9 +187,10 @@ $(document).ready(function() {
     */    
     $(document).on("click", ".btnAfficheDispo", function(e){
         var idApt = $(this)[0].id;
+		var idProprio =$(this).prev().val(); 
         $.ajax({
 				method: "GET",
-				url: "index.php?Appartements&action=afficheDisponibilite&id_apt="+idApt,
+				url: "index.php?Appartements&action=afficheDisponibilite&id_apt="+idApt+"&idProprio="+idProprio,
 				dataType:"html",
 				success:function(reponse) {
 					alert("affiche dispo!"+idApt); 

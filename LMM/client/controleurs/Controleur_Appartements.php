@@ -69,7 +69,7 @@
                             $modeleDispo = $this->getDAO("Disponibilites");
                             $data['disponibilite'] = $modeleDispo->afficheDisponibilite($params['id_apt']);
                             $modeleApt = $this->getDAO("Appartements");
-                            $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
+							$data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
                             foreach($data["appartements"] as $appartement)
                             { 
                                 $adresse=[];
