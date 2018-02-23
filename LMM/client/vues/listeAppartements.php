@@ -29,13 +29,13 @@
                                     for($i=1; $i<=$appartement->moyenne/2; $i++)
                                     {
                                     ?>
-                                        <i class="fas fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                 <?php
                                     }
                                     if($appartement->moyenne % 2 != 0)
                                     {
                                      ?>   
-                                        <i class="fas fa-star-half"></i>
+                                        <i class="fa fa-star-half"></i>
                                  <?php
                                     }
 
