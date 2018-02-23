@@ -173,10 +173,12 @@ $(document).ready(function() {
 			(valModePaiement !=1) ? ($("#modePaiement").addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($("#modePaiement").removeClass('alert-warning'), $('#aideModePaiement').empty());
 		}	
 	});
-		
 });
-		
-		
+    
+    
+    
+    
+
 /*----------------- A Ajouter dans le fichier functions!*/
 
 /**
@@ -193,26 +195,4 @@ function valPwdConfirm(elm1, elm2) {
     }
 };
 
-
-
-  /*  $(".pagination li").click(function(e) {
-        $(this).each(function() {
-        // envoi de la requete
-            e.preventDefault();
-            var page = $(this).val();
-           $.ajax({
-                method: "GET",
-                url: "index.php?Appartements&action=page_suivante&page="+page,
-                dataType:"html",
-        // comportement en cas de success ou d'echec
-              success:function(reponse) {
-                console.log(reponse);
-                  $('.resultat').html(reponse);
-              },
-              error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-              }
-            });
-        });
-    });*/
 

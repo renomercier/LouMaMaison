@@ -24,7 +24,7 @@
 
   <!-- src script js -->
   <script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://use.fontawesome.com/e58c171d55.js"></script>  
+  <script src="https://use.fontawesome.com/e58c171d55.js"></script> 
   <script src="js/formEvt.js"></script>   
   <script src="js/fonctions.js"></script> 
   <!-- Tether, ensuite Bootstrap JS. -->
