@@ -15,9 +15,23 @@
                         {    
                     ?>
                       <div class="col-md-6">
-                          <h5><?=$appartement->id_appartement;?></h5>
-                        <div class="thumbnail">
-                          <img src="./images/profil.jpg" alt="mon appart">
+                          <!--<h5><?=$appartement->id_appartement;?></h5>-->
+                        <div class="">
+                    
+                          <?php
+                            
+                            if ($appartement->getPhotoPrincipale() != "") {
+                                $photoApt = $appartement->getPhotoPrincipale();
+                            } else {
+                                $photoApt = "./images/profil.jpg";
+                            }
+                          ?>    
+                            
+                          <!--<img src="./images/profil.jpg" alt="mon appart">-->
+                          <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->getId(); ?>" >
+                            <img src="<?= $photoApt ?>" class="photoAppartement img img-fluid thumbnail" alt="mon appart">
+                          </a>
+                            
                           <div class="caption">
                             <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                             <h5><?=$appartement->getTitre();?></h5>

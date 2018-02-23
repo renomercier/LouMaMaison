@@ -53,6 +53,21 @@
     color: darkorange;
 }
 
+/* Opacite des photos lorsque "hovered on" */
+.photoAppartement:hover, .photoSupplementaire:hover {
+    opacity: 0.5;
+}
+
+img {
+    width: 100%;
+}
+
+/* Modal-Carousel pour photos supplementaires */
+.modal-xl {
+    height: 100%;
+    width: auto;
+}
+
 html, body {
 height: 100%;
 margin: 0;

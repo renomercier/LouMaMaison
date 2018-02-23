@@ -20,7 +20,7 @@
           
           <div class="modal-header">
             <div class="pull-left">Galerie de photos</div>
-            <h4 class="modal-title" id="myModalLabel"<?= $data['appartement']->getPhotoPrincipale() ?></h4>
+            <h4 class="modal-title" id="myModalLabel"><?= $data['appartement']->getTitre() ?></h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           
@@ -65,7 +65,7 @@
 				?>
                   
                         <div class="carousel-item active"> 
-                            <img src="<?= $photo['photoSupp'] ?>" class="d-block thumbnail img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <img src="<?= $photo['photoSupp'] ?>" class="d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
                             <!--
                             <div class="carousel-caption">
                                 <h3>Heading 3</h3>
@@ -79,7 +79,7 @@
 				    ?>    
                   
                         <div class="carousel-item"> 
-                            <img src="<?= $photo['photoSupp'] ?>" class="d-block thumbnail img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <img src="<?= $photo['photoSupp'] ?>" class="d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
                             <!--
                             <div class="carousel-caption">
                                 <h3>Heading 3</h3>
@@ -142,7 +142,7 @@
 			<!-- Affichage de la photo principale -->
 			<div>
                 <div id="photoPrincipale">
-                    <img src="<?= $data['appartement']->getPhotoPrincipale() ?>" class="img img-fluid">
+                    <img src="<?= $data['appartement']->getPhotoPrincipale() ?>" class="photoPrincipale img img-fluid">
                 </div>
             </div>
 
@@ -156,7 +156,7 @@
 				?>
 						<div class="d-inline" data-toggle="modal" data-target="#modalGaleriePhoto">
                             <a href="#maGalerie" data-slide-to="<?= $nbrP ?>">
-                                <img src="<?= $photo['photoSupp'] ?>" style="width: 100px; height: 75px" class="img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
+                                <img src="<?= $photo['photoSupp'] ?>" style="width: 100px; height: 75px" class="photoSupplementaire img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
                             </a>
 						</div>
 				<?php
