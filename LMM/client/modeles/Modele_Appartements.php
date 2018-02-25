@@ -208,6 +208,12 @@
             return $lesApts;
 		}
         
+		/**
+		* @brief		Obtenir le type d'un appartement
+		* @details		
+		* @param 		<int> 		$id_apt id d'appartement
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
         public function obtenir_apt_avec_type($id_apt) {
             $query = "SELECT typeApt FROM type_apt t JOIN " . $this->getTableName() . " a 
             ON t.id = a.id_typeApt WHERE a.id=?";
@@ -215,4 +221,17 @@
             $resultat = $this->requete($query, $donnees);
             return $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
         }
+		
+		/**
+		* @brief		Obtenir le nombre de notes d'un appartement
+		* @details		
+		* @param 		<int> 		$id_apt id d'appartement
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+		public function obtenir_apt_avec_nb_notes($id_apt) {
+			$query = "SELECT COUNT(rating) as NbNotes FROM evaluation WHERE id_appartement = ?";
+			$donnees = array($id_apt);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetch();
+		}
     }

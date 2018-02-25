@@ -119,7 +119,7 @@ $(document).ready(function() {
                             $(".erreurModif").empty().addClass("alert alert-warning col-sm-8").html("<p>"+response.messageErreur + "</p>");
                         } 
                         else if(response[1].messageSucces){ //s'on n'as pas des erreurs côté php
-                           $(".succes_erreur").empty().addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>").fadeOut( 5000, "linear");                     
+                           $(".succes_erreur").empty().css("display", "block").addClass("alert alert-success").html("<p>"+response[1].messageSucces + "</p>").fadeOut( 5000, "linear");                     
                             //$("#myModal"+idUser).toggle();
                             $("#myModal"+idUser).hide();
                             $('.modal-backdrop.fade.show').remove();
@@ -182,7 +182,6 @@ $(document).ready(function() {
 	/**
 		Fonction pour afficher des apts du proprio
 	*/	
-		
 		$(document).on('click', '#mes_appts', function(e){
 			var idUser = $("input[name='idUser']").val();
 			$.ajax({
@@ -208,48 +207,18 @@ $(document).ready(function() {
 		});
     
         
-    /**
-        Fonction pour supprimer disponibilite d'un apprtement
-    */    
-    $(document).on("click", ".btnSupprimerDispo", function(e){
-        var idUser = $("input[name='idUser']").val();
-        var idDispo = $(this)[0].id;
-        $(this).parent().parent().remove(); 
-        $.ajax({
-				method: "GET",
-				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUser+"&id_dispo="+idDispo,
-				dataType:"html",
-				success:function(reponse) {
-                  //refresh le modal
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-    });
-    
-    /**
-        Fonction pour ajouter disponibilite d'un apprtement
-    */    
-    $(document).on("click", ".btnAjouterDispo", function(e){
-        
-        $.ajax({
-				method: "GET",
-				url: "index.php?Appartements&action=ajouteDisponibilite",
-				dataType:"html",
-				success:function(reponse) {
-					//inserer une rangee en haut              
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-    });
-		
-});
-		
-		
-/*----------------- A Ajouter dans le fichier functions!*/
+
+	/**
+		Action supprimer une disponibilite d'un apprtement
+	*/
+	$(".btnSupprimerDispo").one('click', clickHandler1);
+
+	/**
+		Action ajouter une disponibilite d'un apprtement
+	*/ 
+	$(".btnAjouterDispo").one('click', clickHandler);
+	
+});	
 
 /**
     Fonction pour comparer les mots de pass saisis
@@ -265,7 +234,83 @@ function valPwdConfirm(elm1, elm2) {
     }
 };
 
+/**
+	Fonction pour supprimer une disponibilite d'un apprtement
+*/
+var clickHandler1 = function(e){
+	var idDispo = $(this).val();
+	var tr = $(this).parent().parent(); 
+	var id_apt = $('input[name="id_apt"]').val()
+	$.ajax({
+			method: "GET",
+			url: "index.php?Appartements&action=supprimeDisponibilite&id_dispo="+idDispo,
+			dataType:"json",
+			success:function(reponse) {
+				$('.btnSupprimerDispo').one('click', clickHandler1);
+				if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
+					$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>").fadeOut( 1000, "linear");
+					tr.remove();
+				}
+				else if(reponse.messageErreur) {
+					$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+    e.stopImmediatePropagation();
+    return false;
+}
 
+/**
+       Fonction pour ajouter disponibilite d'un apprtement
+*/
+var clickHandler = function(e){
+	var id_apt =  $(this).val(); 
+	var dateDebut = $('#dateDebut'+id_apt).val();
+	var dateFin = $('#dateFin'+id_apt).val();
+	$.ajax({
+      url:  "index.php?Appartements&action=ajouteDisponibilite&id_apt="+id_apt+"&dateDebut="+dateDebut+"&dateFin="+dateFin,
+      method: 'GET',
+      async: true,
+      dataType: 'json',
+      enctype: 'multipart/form-data',
+      cache: false,
+	  data: {
+		dataJson: JSON.stringify({
+			"dateDebut":dateDebut,
+			"dateFin":dateFin,
+			"id_apt":id_apt
+			}) 
+		}, 
+      success: function(reponse){
+        $('.btnAjouterDispo').one('click', clickHandler);
+		if(reponse[1].messageSucces){ //s'on n'as pas des erreurs côté php
+			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse[1].messageSucces + "</p>").fadeOut( 1000, "linear");
+			var repPos = reponse[0][0].length-1;
+			for(i=0; i<=reponse[0][0].length; i++) 
+			{
+				var newDispo = reponse[0][0][repPos];
+				var oldDispo = reponse[0][0][repPos-1];
+			}
+			$("<tr id='ajoutDispoRes"+newDispo.id+"'><td id='dateDebut"+newDispo.id+"'>"+newDispo.dateDebut+"</td><td id='dateFin"+newDispo.id+"'>"+newDispo.dateFin+"</td><td><button type='button' class='btn btn-warning btnSupprimerDispo' id='btnSupprimerDispo"+newDispo.id+ "'value='"+newDispo.id+"'>Supprimer</button></td></tr>").insertAfter($('#dispoRes'+id_apt));
+			
+			$('#ajoutDispoRes'+oldDispo.id).removeClass("alert alert-success");
+			$('#ajoutDispoRes'+newDispo.id).addClass("alert alert-success");
+		}
+		else if(reponse.messageErreur) 
+		{ alert(reponse.messageErreur);
+			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
+		} 		
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+    });
+    e.stopImmediatePropagation();
+    return false;
+}
 
   /*  $(".pagination li").click(function(e) {
         $(this).each(function() {

@@ -53,6 +53,10 @@
     color: darkorange;
 }
 
+.fa_custom{
+	color: #999;
+}
+
 html, body {
 height: 100%;
 margin: 0;

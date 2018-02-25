@@ -28,7 +28,7 @@
                 et ses droits sur le site
             */
             $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
+           
             //
             //si le paramètre action existe
             if(isset($params["action"]))
@@ -38,7 +38,7 @@
                 switch($params["action"])
                 {
                         case "filtrer":
-                        
+							
                             // numero de la page actuelle
                             $numPage = isset($params['page']) && is_numeric($params['page'])? $params['page'] : 1;
                         
@@ -65,43 +65,75 @@
                         
                             // date de départ
                             $filtre['dateDepart'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+							$this->afficheVue("header",$data);
                             $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
+							$this->afficheVue("footer");
 						break;
-                        
-                    case "afficheAptsProprio" :
+					
+					case "afficheAptsProprio" :
+						
 						if(isset($_SESSION["username"]) && isset($params["idProprio"]) && $_SESSION["username"] == $params["idProprio"]) {
                             $modeleApt = $this->getDAO("Appartements");
                             $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
-                            $modeleDispo = $this->getDAO("Disponibilites");
+							$modeleDispo = $this->getDAO("Disponibilites");
                             
                                 foreach($data['appartements'] as $apt)
                                 {
                                     $apt->disponibilite = $modeleDispo->afficheDisponibilite($apt->getId());
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
-                                    
-                                    if(isset($params['id_dispo']) && !empty($params['id_dispo'])) {
-                                        $modeleDispo->supprimeDisponibilite($params['id_dispo']); 
-                                    }
+									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
+                                   /* if(isset($params['id_dispo']) && isset($params['idProprio']) && !empty($params['id_dispo']) && !empty($params['idProprio'])) 
+									{
+                                        $modeleDispo->supprimeDisponibilite($params['id_dispo']);
+									}*/
                                 }
-                     
-                            
-                            $this->afficheVue("AfficheAptsProprio", $data);  
+							$this->afficheVue("header",$data);
+                            $this->afficheVue("AfficheAptsProprio", $data); 
+							$this->afficheVue("footer");
                             }
 					break;
+					
+					case "supprimeDisponibilite":
+						if(isset($params['id_dispo']) && !empty($params['id_dispo'])) 
+						{
+							$modeleDispo = $this->getDAO("Disponibilites");
+							$modeleDispo->supprimeDisponibilite($params['id_dispo']);
+							$reponse = json_encode(array("messageSucces"=>"Vous avez supprimé une disponibilité!"));//creer une message de success
+							echo $reponse;					
+						}
+						else
+						{
+							$reponse = json_encode(array("messageErreur"=>"Choisissez une disponibilité!"));//creer une message d'échec
+							echo $reponse;		
+						}
+					break;
                                             
-                 /*   case "supprimeDisponibilite" :
-                        if(isset($params['id_dispo']) && !empty($params['id_dispo'])) {
-                            $modeleDispo = $this->getDAO("Disponibilites");
-                            $data= $modeleDispo->supprimeDisponibilite($params['id_dispo']); 
-                            //$this->afficheVue("AfficheAptsProprio", $data);
-                        }
-                    break;*/
-                        
                     case "ajouteDisponibilite" :
+						$message_dispo="";
+						$obj = json_decode($_REQUEST['dataJson'],true); 
                         if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
                             $modeleDispo = $this->getDAO("Disponibilites");
-                            $data['disponibilite'] = $modeleDispo->ajouteDisponibilite($params['dateDebut'], $params['dateFin'], $params['id_dispo']); 
-                            $this->afficheVue("AfficheAptsProprio", $data);
+                            $data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
+							if($data['disponibilite']) {								
+                                header('Content-type: application/json'); 
+								$dispoNew = $modeleDispo->afficheDisponibilite($obj['id_apt']); 
+								$reponse = array($dispoNew);
+								$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
+								$tempData = [];
+								$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+								echo json_encode($tempData);
+							}
+							else 
+							{
+								// message à l'usager - s'il la requete echoue
+								$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
+								echo $message_dispo;                                        
+							}
+						}
+						else
+						{
+							$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
+							echo $message_dispo;		
                         }
                     break;
                         
@@ -109,13 +141,16 @@
                     case "afficherInscriptionApt" :
                         if(isset($_SESSION['username'])) {
                             $params['erreursApt'] = $this->validerPermissionApt($_SESSION['username']);
+							$this->afficheVue("header",$data);
                             $this->afficheFormAppartement($params);
+							$this->afficheVue("footer");
                         }
                         else {
                             $params['erreursApt'] = "Vous devez être connecté pour ajouter un appartement<br>";
+							$this->afficheVue("header",$data);
                             $this->afficheFormAppartement($params);
+							$this->afficheVue("footer");
                         }
-                        
                         break;
                     // case de sauvegarde (creation ou modification) d'un appartement
                     case "sauvegarderApt" :
@@ -137,24 +172,32 @@
                                 $resultat = $modeleApts->sauvegarderAppartement($appartement);
                                 if($resultat) {
                                     $data['succes'] = "<p class='alert alert-success'>Votre appartement a été sauvegardé avec succès! Vous pouvez maintenant associer des disponibilités à cet appartement";
+									$this->afficheVue("header",$data);
 /* affichage @temp */               $this->afficheFormAppartement($data);
+									$this->afficheVue("footer");
                                 }
                                 else {
                                     $params['erreursApt'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
+									$this->afficheVue("header",$data);
                                     $this->afficheFormAppartement($params);
+									$this->afficheVue("footer");
                                 }
                             }
                             // si on a des erreurs
                             else {
                                 // affichage du formulaire avec data de l'usager et messages d'erreurs a afficher
+								$this->afficheVue("header",$data);
                                 $this->afficheFormAppartement($params);
+								$this->afficheVue("footer");
                             }
                         }
                         // si on n'a pas tous les parametres requis
                        else {
                             $params['erreursApt'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
+							$this->afficheVue("header",$data);
                             $this->afficheFormAppartement($params);
-                        }   
+							$this->afficheVue("footer");
+                        }						
                         break;
 					default :
 						trigger_error("Action invalide.");		
@@ -165,10 +208,12 @@
                 $numPage = isset($params['page'])? $params['page'] : 1;
                 // nombre d'appartements à afficher par page
                 $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
-                $this->afficheListeAppartements($numPage, $data['appartParPage']);           
+				$this->afficheVue("header",$data);
+                $this->afficheListeAppartements($numPage, $data['appartParPage']); 
+				$this->afficheVue("footer");
             }            
             // affichage du footer
-            $this->afficheVue("footer");
+           
         }
         
         /**

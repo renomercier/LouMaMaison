@@ -13,85 +13,101 @@
         ?>
         <div class="col-md-6">
             <div class="thumbnail">
-              <img src="./images/profil.jpg" alt="mon appart">
-              <div class="caption">
-
-                <p> <?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes |<?=$appartement->getNbLits();?> lits</p>
-                <h5><?=$appartement->getTitre();?></h5>
-                <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
-                <p>rate 
-                    <?php
-                        for($i=1; $i<=$appartement->moyenne/2; $i++)
-                        {
-                        ?>
-                            <i class="fa fa-star"></i>
-                    <?php
-                        }
-                        if($appartement->moyenne % 2 != 0)
-                        {
-                         ?>   
-                            <i class="fa fa-star-half"></i>
-                     <?php
-                        }
-
-                    ?>
-                  </p> 
-                  <p> <?=$appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();?></p>                
-                  <div>
-                    <form>
-                    <input type="hidden" value="<?=$appartement->getId_userProprio()?>">
-                      <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>"  class="btn btn-info " >Disponibilite</button>
-                     </form>
-                  </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="modal<?=$appartement->getId()?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-                          <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header bg-info">
-                                <h5 class="modal-title text-white" id="modal<?=$appartement->getId()?>">Disponibilite</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                  <form class="form-inline">
-                                    <label class="mr-sm-2">Date de debut</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" >
-                                    <label class="mr-sm-2">Date de fin</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" >
-                                    <button type="button" id="ajouterDispo<?=$appartement->getId()?>" class="btn btn-success btnAjouterDispo">Ajouter</button>
-                                     <table class="table table-hover">
-                                         <tbody>
-                                             <tr class="trDispo"><th>Date de debut</th><th>Date de fin</th></tr>
-                                            
-
-                                                <?php
-                                                 foreach( $appartement->disponibilite as $dispo) 
-                                                 {
-                                                  ?>   
-                                               <tr> <td><?=$dispo['dateDebut'];?></td>
-                                                 <td><?=$dispo['dateFin']?></td>
-                                                 <td><button type="button" class="btn btn-warning btnSupprimerDispo" id="<?=$dispo['id'];?>">Supprimer</button></td></tr>
-                                                 <?php
-                                                 }
-                                                    ?>
-                                            
-                                         </tbody>
-                                      </table>
-                                  </form>
-                              </div>
-                              <div class="modal-footer bg-info">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                   </div>
-                </div>
-            </div>
-            <?php
-            }
-            ?> 
-    </div>
+				<img src="./images/profil.jpg" alt="mon appart">
+				<div class="caption">
+					<p> <?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes |<?=$appartement->getNbLits();?> lits</p>
+					<h4><?=$appartement->getTitre();?></h4>
+					<p>$<?=$appartement->getMontantParJour();?> par nuit</p>
+					<h6>
+					<?php
+					for($i=1; $i<=$appartement->moyenne/2; $i++)
+					{
+					?>
+					<i class="fa fa-star"></i>
+					<?php
+					}
+					if($appartement->moyenne % 2 != 0)
+					{
+					?>   
+					<i class="fa fa-star-half"></i>
+					<?php
+					}
+					?>
+					<?php
+					if($appartement->moyenne == null) 
+					{ 
+					?>
+						<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
+					<?php
+					
+					}
+					?>
+					<?=$appartement->NbNotes;?>
+					</h6> 
+					<p> <?=$appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();?></p>                
+					<div>
+						<form>
+							<input type="hidden" value="<?=$appartement->getId_userProprio()?>">
+							<button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>"  class="btn btn-info " >Disponibilite</button>
+						</form>
+					</div>
+					<!-- Modal -->
+					<div class="modal fade" id="modal<?=$appartement->getId()?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-animation="false">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header bg-info">
+									<h5 class="modal-title text-white" id="modal<?=$appartement->getId()?>">Disponibilite</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form class="form-inline">
+										<label class="mr-sm-2">Date de debut</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="dateDebut<?=$appartement->getId()?>" >
+										<label class="mr-sm-2">Date de fin</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="dateFin<?=$appartement->getId()?>">
+										<button type="button" id="ajouterDispo<?=$appartement->getId()?>" value = "<?=$appartement->getId()?>" class="btn btn-success btnAjouterDispo">Ajouter</button>
+										<table class="table table-hover table_dispo">
+											<tbody>
+												<tr id="dispoRes<?=$appartement->getId()?>">
+													<th>Date de debut</th><th>Date de fin</th>
+												</tr>
+												<?php
+												foreach( $appartement->disponibilite as $dispo) 
+												{
+												?>
+												<tr id="ajoutDispoRes<?=$dispo['id'];?>"> 
+													<td id="dateDebut<?=$dispo['id'];?>">
+														<?=$dispo['dateDebut'];?>
+													</td>
+													<td id="dateFin<?=$dispo['id'];?>">
+														<?=$dispo['dateFin']?>
+													</td>
+													<input type="hidden" name="id_apt" value="<?=$appartement->getId()?>">
+													<td>
+														<button type="button" class="btn btn-warning btnSupprimerDispo" id="btnSupprimerDispo<?=$dispo['id'];?>" value="<?=$dispo['id'];?>">Supprimer</button>
+													</td>
+												</tr>
+												<?php
+												}
+												?>
+											</tbody>
+										</table>
+									</form>
+								</div>
+								<div class="modal-footer bg-info">
+									<div id="erreurDispo<?=$appartement->getId()?>"></div>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php
+		}
+		?> 
+	</div>
 </div>
 
 

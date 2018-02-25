@@ -38,7 +38,7 @@
 				</div>
 				
 			<!-- Modal -->
-			<div class="modal fade" id="myModal<?=$_SESSION["username"]?>" role="dialog">
+			<div class="modal fade" data-animation="false" id="myModal<?=$_SESSION["username"]?>" role="dialog">
 			  <div class="modal-dialog">
 				<div class="modal-content">
 				  <div class="modal-header bg-info">
@@ -129,12 +129,12 @@
 							</tbody>
 						</table>
 						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
-						<button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Save changes</button>
+						<button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Sauvegarder</button>
 					</form>
 				  </div>
 				  <div class="modal-footer bg-info">
                       <div class="erreurModif"></div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 				  </div>
 				</div>
 			  </div>
