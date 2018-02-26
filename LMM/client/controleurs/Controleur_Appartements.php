@@ -69,10 +69,35 @@
                             $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
 							$this->afficheVue("footer");
 						break;
+						
+					// Case d'affichage du detail d'un appartement
+                    case "afficherAppartement" :    
+                        // chargement du modele Appartement
+                        $modeleApts = $this->getDAO("Appartements");
+                        // Recuperer le detail de l'appartement               
+                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
+                        // Recuperer les photos de l'appartement
+                        $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
+                        // Recuperer le quartier de l'appartement
+                        $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
+                        // Recuperer le type de l'appartement
+                        $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                        // Recuperer les disponibilites de l'appartement
+                        $modeleDisponibilites = $this->getDAO("Disponibilites");
+                        $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
+                        // Recuperer le proprietaire de l'appartement
+                        $modeleUsagers = $this->getDAO("Usagers");
+                        $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
+                        
+                        // Affichage du detail d'un appartement
+						$this->afficheVue("header",$data);
+                        $this->afficheVue("AfficheAppartement", $data);
+						$this->afficheVue("footer");
+                        break;
 					
 					case "afficheAptsProprio" :
 						
-						if(isset($_SESSION["username"]) && isset($params["idProprio"]) && $_SESSION["username"] == $params["idProprio"]) {
+						if(isset($_SESSION["username"]) && isset($params["idProprio"])) {
                             $modeleApt = $this->getDAO("Appartements");
                             $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
 							$modeleDispo = $this->getDAO("Disponibilites");
@@ -82,10 +107,6 @@
                                     $apt->disponibilite = $modeleDispo->afficheDisponibilite($apt->getId());
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
 									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
-                                   /* if(isset($params['id_dispo']) && isset($params['idProprio']) && !empty($params['id_dispo']) && !empty($params['idProprio'])) 
-									{
-                                        $modeleDispo->supprimeDisponibilite($params['id_dispo']);
-									}*/
                                 }
 							$this->afficheVue("header",$data);
                             $this->afficheVue("AfficheAptsProprio", $data); 
@@ -113,22 +134,72 @@
 						$obj = json_decode($_REQUEST['dataJson'],true); 
                         if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
                             $modeleDispo = $this->getDAO("Disponibilites");
-                            $data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
-							if($data['disponibilite']) {								
-                                header('Content-type: application/json'); 
-								$dispoNew = $modeleDispo->afficheDisponibilite($obj['id_apt']); 
-								$reponse = array($dispoNew);
-								$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
-								$tempData = [];
-								$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
-								echo json_encode($tempData);
+							//verification de dates
+							$today = Date("Y-m-d");
+	
+							if($obj['dateDebut'] >= $today && $obj['dateFin']> $obj['dateDebut'])
+							{	
+								$datesAnciens = $modeleDispo->afficheDisponibilite($obj['id_apt']);
+								if($datesAnciens)
+								{
+									foreach($datesAnciens as $dateOld) {
+										$dateDebutOld = $dateOld['dateDebut'];
+										$dateFinOld = $dateOld['dateFin'];
+									}
+										if(($obj['dateDebut'] > $dateFinOld && $obj['dateFin']>$obj['dateDebut']) || ($obj['dateDebut'] < $dateDebutOld && $obj['dateFin'] < $dateDebutOld && $obj['dateFin'] > $obj['dateDebut']))
+										{
+											$data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
+											if($data['disponibilite']) 
+											{								
+												header('Content-type: application/json'); 
+												$dispoNew = $modeleDispo->afficheDisponibilite($obj['id_apt']); 
+												$reponse = array($dispoNew);
+												$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
+												$tempData = [];
+												$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+												echo json_encode($tempData);
+											}
+											else 
+											{
+												// message à l'usager - s'il la requete echoue
+												$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
+												echo $message_dispo;                                        
+											}
+										}
+									
+										else
+										{
+											$message_dispo = json_encode(array("messageErreur"=>"Vous avez deja cette disponibilite"));
+											echo $message_dispo; 
+										}
+									
+								}
+								else if (!$datesAnciens)
+								{
+									$data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
+									if($data['disponibilite']) 
+									{								
+										header('Content-type: application/json'); 
+										$dispoNew = $modeleDispo->afficheDisponibilite($obj['id_apt']); 
+										$reponse = array($dispoNew);
+										$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
+										$tempData = [];
+										$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+										echo json_encode($tempData);
+									}
+									else 
+									{
+										// message à l'usager - s'il la requete echoue
+										$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
+										echo $message_dispo;                                        
+									}
+								}
 							}
-							else 
+							else
 							{
-								// message à l'usager - s'il la requete echoue
-								$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
-								echo $message_dispo;                                        
-							}
+								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vérifier vos dates"));
+								echo $message_dispo;     
+							}   
 						}
 						else
 						{
@@ -382,6 +453,8 @@
                 $appartement->moyenne = $moyenne['moyenne'];
                 // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
+				//pour afficher nb notes
+				$appartement->NbNotes = $modeleAppartement->obtenir_apt_avec_nb_notes($appartement->getId())[0];
             }
             $this->afficheVue("RechercheAppartements", $data);
             $this->afficheVue("listeAppartements", $data);

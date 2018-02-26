@@ -34,6 +34,7 @@
 						<div class="col-md-12 form-group row" id="div_info_contact"></div>
 						<div class="col-md-12 form-group row" id="div_info_role"></div>						
 						<div class="col-md-12 form-group row" id="div_modif_profil"></div>
+						<input type="hidden" name="usernameProp" value="<?=$data["usager"]->getUsername();?>">
 					</form>
 				</div>
 				

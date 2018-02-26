@@ -15,14 +15,50 @@
                         {    
                     ?>
                       <div class="col-md-6">
-                          <h5><?=$appartement->id_appartement;?></h5>
-                        <div class="thumbnail">
-                          <img src="./images/profil.jpg" alt="mon appart">
+                          <!--<h5><?=$appartement->id_appartement;?></h5>-->
+                        <div class="">
+                    
+                          <?php
+                            
+                            if ($appartement->getPhotoPrincipale() != "") {
+                                $photoApt = $appartement->getPhotoPrincipale();
+                            } else {
+                                $photoApt = "./images/profil.jpg";
+                            }
+                          ?>    
+                            
+                          <!--<img src="./images/profil.jpg" alt="mon appart">-->
+                          <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->id_appartement; ?>" >
+                            <img src="<?= $photoApt ?>" class="photoAppartement img img-fluid thumbnail" alt="mon appart">
+                          </a>
+                            
                           <div class="caption">
                             <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                             <h5><?=$appartement->getTitre();?></h5>
                             <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
-                            <p>Hôte: <?=$appartement->username;?></p>
+                            <p>Hôte: 
+							<?php 
+								if(isset($_SESSION['username']))
+								{ 
+									if($appartement->username != $_SESSION['username'])
+									{
+								?>
+									<a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->username;?>"> <?=$appartement->username;?></a>
+								<?php
+									}
+									else if($appartement->username == $_SESSION['username'])
+									{
+										echo $appartement->username; 
+									}
+								}
+								else
+								{
+								?>
+									<a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->username;?>"> <?=$appartement->username;?></a>
+								<?php
+								}
+							?>
+							</p>
                               <p>debut: <?=$appartement->dateDebut;?></p><p>fin: <?=$appartement->dateFin;?></p>
                             <p>rate 
                                 <?php
@@ -31,14 +67,18 @@
                                     ?>
                                         <i class="fa fa-star"></i>
                                 <?php
-                                    }
-                                    if($appartement->moyenne % 2 != 0)
-                                    {
-                                     ?>   
-                                        <i class="fa fa-star-half"></i>
-                                 <?php
-                                    }
-                                ?>
+									}
+									?>
+								<?php
+								if($appartement->moyenne == null) 
+								{ 
+								?>
+									<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
+								<?php
+								
+								}
+								?>
+								<?=$appartement->NbNotes;?>
                               </p> 
                             <p><a href="#" class="btn btn-primary" role="button">reserver</a> <a href="#" class="btn btn-default" role="button">noter</a></p>
                               <p class="adresse" hidden="hidden"><?=$appartement->adresse;?></p>
@@ -53,7 +93,7 @@
         <div class="col-md-6 mx-auto">
             <div class="error-template text-center">
                 <h2>Oops!</h2>
-                <h3>Aucun résultat our votre recherche</h3>
+                <h3>Aucun résultat pour votre recherche</h3>
                 <div class="error-details">
                     Éssaiyez avec d'autres critères!
                 </div>
@@ -69,6 +109,7 @@
                             if($data['nbrPage']>1)
                             {
                                // $numPage = isset($params['page'])? $params['page'] : 1;
+							   
                                     if($data['pageActuelle']-1 > 0)
                                     {
                                     ?>

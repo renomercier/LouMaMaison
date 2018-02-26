@@ -183,10 +183,10 @@ $(document).ready(function() {
 		Fonction pour afficher des apts du proprio
 	*/	
 		$(document).on('click', '#mes_appts', function(e){
-			var idUser = $("input[name='idUser']").val();
+			var idUserProprio = $("input[name='usernameProp']").val(); 
 			$.ajax({
 				method: "GET",
-				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUser,
+				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
 				dataType:"html",
 				success:function(reponse) {
 					$('#afficheInfoProfil').empty();
@@ -211,13 +211,17 @@ $(document).ready(function() {
 	/**
 		Action supprimer une disponibilite d'un apprtement
 	*/
-	$(".btnSupprimerDispo").one('click', clickHandler1);
+    $(document).on('click', $(".btnSupprimerDispo"), function(){
+		$(".btnSupprimerDispo").one('click', clickHandler1);
+	});
 
 	/**
 		Action ajouter une disponibilite d'un apprtement
 	*/ 
-	$(".btnAjouterDispo").one('click', clickHandler);
-	
+	//$(".btnAjouterDispo").one('click', clickHandler);
+	$(document).on('click', $(".btnAjouterDispo"), function(){
+		$(".btnAjouterDispo").one('click', clickHandler);
+	});
 });	
 
 /**
@@ -286,7 +290,11 @@ var clickHandler = function(e){
 		}, 
       success: function(reponse){
         $('.btnAjouterDispo').one('click', clickHandler);
-		if(reponse[1].messageSucces){ //s'on n'as pas des erreurs côté php
+		if(reponse.messageErreur) 
+		{ 
+			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
+		} 
+		else if(reponse[1].messageSucces){ //s'on n'as pas des erreurs côté php
 			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse[1].messageSucces + "</p>").fadeOut( 1000, "linear");
 			var repPos = reponse[0][0].length-1;
 			for(i=0; i<=reponse[0][0].length; i++) 
@@ -299,10 +307,7 @@ var clickHandler = function(e){
 			$('#ajoutDispoRes'+oldDispo.id).removeClass("alert alert-success");
 			$('#ajoutDispoRes'+newDispo.id).addClass("alert alert-success");
 		}
-		else if(reponse.messageErreur) 
-		{ alert(reponse.messageErreur);
-			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
-		} 		
+				
       },
       error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
