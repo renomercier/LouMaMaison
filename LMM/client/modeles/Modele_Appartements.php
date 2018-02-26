@@ -33,8 +33,8 @@
 		* @param   		<string> 	$idAppart 		Identifiant de l'appartement
 		* @return    	<objet> 	Résultat de la requête SQL
 		*/
-        public function obtenir_par_id($idAppart) {
-			$resultat = $this->lire($idAppart);
+        public function obtenir_par_id($id_appart) {
+			$resultat = $this->lire($id_appart);
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Appartement'); 
 			$lAppart = $resultat->fetch();
 			return $lAppart;
@@ -61,7 +61,7 @@
 			
 			// si on a un id d'appartement, modification
 			if($a->getId() && $this->lire($a->getId())->fetch()) {
-				
+
 				$query = "UPDATE " . $this->getTableName() . " SET options=?, titre=?, descriptif=?, montantParJour=?, nbPersonnes=?, nbLits=?, nbChambres=?, noApt=?, noCivique=?, rue=?, codePostal=?, id_typeApt=?, id_nomQuartier=? WHERE " . $this->getClePrimaire() . "=?";
 				$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersonnes(), $a->getNbLits(), $a->getNbChambres(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_nomQuartier(), $a->getId()); 
 				return $this->requete($query, $data);
@@ -117,7 +117,7 @@
                         JOIN type_apt t ON a.id_typeApt = t.id 
                         JOIN usager u ON a.id_userProprio = u.username 
                         JOIN quartier q ON a.id_nomQuartier = q.id 
-                        JOIN
+                        LEFT JOIN
                             (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e 
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
                                 ON note.id_appartement = a.id
@@ -200,6 +200,20 @@
 			$resultat = $this->requete($query);
             return $this->requete($query);   
         }
+        
+        /**
+		* @brief		Lecture du nom d'un quartier de la BD
+		* @details		Permet de recuperer le nom d'un quartier dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant du type d'appartement
+		* @return    	<type> 		le type d'appartement concerne de la table type_apt ou false 
+		*/
+		public function getTypeApt_par_id($id_appart) {
+
+			$query = "SELECT * FROM type_apt WHERE id = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
 
         /**
 		* @brief		Lecture de tous les quartiers de Montreal de la BD
@@ -215,6 +229,35 @@
         }
 
         /**
+
+		* @brief		Lecture du nom d'un quartier de la BD
+		* @details		Permet de recuperer le nom d'un quartier dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant du quartier
+		* @return    	<type> 		le nom du quartier concerne de la table quartier ou false 
+		*/
+		public function getQuartier_par_id($id_appart) {
+
+			$query = "SELECT * FROM quartier WHERE id = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
+		
+        /**
+		* @brief		Lecture de toutes les photos d'un appartement de la BD
+		* @details		Permet de recuperer toutes les photos d'un appartement dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant de l'appartement
+		* @return    	<type> 		toutes les rangées concernees de la table photo ou false 
+		*/
+		public function getPhotos_par_id($id_appart) {
+
+			$query = "SELECT * FROM photo WHERE id_appartement = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
+		
+        /**
 		* @brief		Insertion de photos supplementaires pour un appartement dans la table photo
 		* @details		Permet de recuperer tous les quartiers dans la table quartier
 		* @param 		<string> 	$urlPhoto  		adresse photo
@@ -229,4 +272,7 @@
             return $resultat;   
         }
 
+
     }
+
+?>
