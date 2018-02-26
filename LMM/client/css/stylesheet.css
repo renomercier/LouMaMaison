@@ -55,21 +55,92 @@
 
 /* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .photoSupplementaire:hover {
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
-img {
-    width: 100%;
-}
-
-/* Modal-Carousel pour photos supplementaires */
-.modal-xl {
-    height: 100%;
-    width: auto;
-}
 
 html, body {
 height: 100%;
 margin: 0;
 padding: 0;
+}
+
+
+/*----- modalGaleriePhoto  -----*/
+
+/* Modal-Carousel pour photos supplementaires */
+
+.modal-header, .modal-footer {  
+    color: #ffffff;
+    background-color: #014B88;
+}
+
+.modal-xl {
+    max-height: auto;
+    max-width: 70%;
+}
+
+/*----- page AfficheAppartement -----*/
+
+.sectionAptDetail {
+    
+}
+
+.sectionAptDetail-g, .sectionAptDetail-d {
+    padding=0;
+    /*border: 1px solid #000000; */ 
+}
+
+.aptReservation, .aptDisponibilites {
+    padding: 20px;
+    border: 1px solid #585759;
+}
+
+.aptDisponibilites {
+    padding: 10px;
+    height: 165px;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid #585759;
+}
+
+.iconeAptDescription {
+    margin-right: 20px;
+}
+
+/*----- footer -----*/
+
+footer {
+    color: #ffffff;
+    background-color: #585759;
+}
+
+footer hr {
+    border: 0.5px solid #ffffff;; 
+}
+
+.footer-list ul {
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.footer-list ul a {
+    color: #ffffff;
+ }
+
+.footer-list ul li:hover {
+    text-decoration: underline;
+}
+
+.footer-media-item, .footer-list-xtra {
+    margin-left: 15px;
+}
+
+.footer-media-item a {
+    color: #ffffff;
+}
+
+.footer-media-item a:hover {
+    color: #014B88;
 }

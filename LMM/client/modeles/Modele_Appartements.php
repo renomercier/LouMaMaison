@@ -168,6 +168,20 @@
 			$resultat = $this->requete($query);
             return $this->requete($query);   
         }
+        
+        /**
+		* @brief		Lecture du nom d'un quartier de la BD
+		* @details		Permet de recuperer le nom d'un quartier dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant du type d'appartement
+		* @return    	<type> 		le type d'appartement concerne de la table type_apt ou false 
+		*/
+		public function getTypeApt_par_id($id_appart) {
+
+			$query = "SELECT * FROM type_apt WHERE id = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
 
         /**
 		* @brief		Lecture de tous les quartiers de Montreal de la BD
@@ -182,13 +196,27 @@
             return $this->requete($query);   
         }
 
-		/**
+        /**
+		* @brief		Lecture du nom d'un quartier de la BD
+		* @details		Permet de recuperer le nom d'un quartier dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant du quartier
+		* @return    	<type> 		le nom du quartier concerne de la table quartier ou false 
+		*/
+		public function getQuartier_par_id($id_appart) {
+
+			$query = "SELECT * FROM quartier WHERE id = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
+		
+        /**
 		* @brief		Lecture de toutes les photos d'un appartement de la BD
 		* @details		Permet de recuperer toutes les photos d'un appartement dans la table photo
 		* @param      	<varchar>  		$id     	L'identifiant de l'appartement
 		* @return    	<type> 		toutes les rangées concernees de la table photo ou false 
 		*/
-		public function getPhotos($id_appart) {
+		public function getPhotos_par_id($id_appart) {
 
 			$query = "SELECT * FROM photo WHERE id_appartement = ?";
             $donnees = array($id_appart);
@@ -196,6 +224,6 @@
             return $resultat->fetchAll();  
         }
 		
-        
+
 
     }

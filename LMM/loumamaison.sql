@@ -114,6 +114,15 @@ CREATE TABLE IF NOT EXISTS `disponibilite` (
   KEY `FK_disponibilite_id_appartement` (`id_appartement`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+INSERT INTO `disponibilite` (`id`, `dateDebut`, `dateFin`, `disponibilite`, `id_appartement`) VALUES
+(1, '2018-02-23', '2018-03-04', 1, '18'),
+(2, '2018-02-23', '2018-03-31', 1, '17'),
+(3, '2018-02-23', '2018-03-31', 1, '16'),
+(4, '2018-02-23', '2018-03-31', 1, '15'),
+(5, '2018-03-09', '2018-03-11', 1, '18'),
+(6, '2018-03-16', '2018-03-18', 1, '18'),
+(7, '2018-03-23', '2018-03-25', 1, '18');
+
 -- --------------------------------------------------------
 
 --
@@ -138,13 +147,15 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
 
 INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appartement`, `id_username`) VALUES
 (1, 10, NULL, '2018-02-28', 1, 'nat'),
-(2, 5, NULL, '2018-02-27', 1, 'renaud'),
+(2, 10, NULL, '2018-02-27', 18, 'renaud'),
 (3, 7, NULL, '2018-02-25', 2, 'salim'),
 (4, 1, NULL, '2018-02-28', 3, 'salim'),
-(5, 5, NULL, '2018-02-18', 3, 'renaud'),
+(5, 8, NULL, '2018-02-18', 17, 'renaud'),
 (6, 5, NULL, '2018-02-24', 4, 'yul'),
 (9, 4, NULL, '2018-02-23', 5, 'salim'),
-(10, 3, NULL, '2018-02-22', 6, 'nat');
+(10, 3, NULL, '2018-02-22', 6, 'nat'),
+(10, 9, NULL, '2018-02-23', 16, 'renaud'),
+(10, 7, NULL, '2018-02-24', 15, 'renaud');
 
 -- --------------------------------------------------------
 

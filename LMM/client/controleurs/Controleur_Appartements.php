@@ -72,16 +72,24 @@
 
                     // Case d'affichage du detail d'un appartement
                     case "afficherAppartement" :    
-                        
-                        // Correction temporaire permettant l'affichage du detail d'un appartement...
-                        $params['id_appart'] = 18;
-
                         // chargement du modele Appartement
                         $modeleApts = $this->getDAO("Appartements");
-                        // chargement du detail de l'appartement et de ses photos
+                        // Recuperer le detail de l'appartement               
                         $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
-                        $data['tab_photos'] = $modeleApts->getPhotos($params['id_appart']);
-                        // affichage du detail d'un appartement et de ses photos
+                        // Recuperer les photos de l'appartement
+                        $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
+                        // Recuperer le quartier de l'appartement
+                        $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
+                        // Recuperer le type de l'appartement
+                        $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                        // Recuperer les disponibilites de l'appartement
+                        $modeleDisponibilites = $this->getDAO("Disponibilites");
+                        $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
+                        // Recuperer le proprietaire de l'appartement
+                        $modeleUsagers = $this->getDAO("Usagers");
+                        $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
+                        
+                        // Affichage du detail d'un appartement
                         $this->afficheVue("AfficheAppartement", $data);
                         break;
                         

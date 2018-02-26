@@ -28,7 +28,7 @@
                           ?>    
                             
                           <!--<img src="./images/profil.jpg" alt="mon appart">-->
-                          <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->getId(); ?>" >
+                          <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->id_appartement; ?>" >
                             <img src="<?= $photoApt ?>" class="photoAppartement img img-fluid thumbnail" alt="mon appart">
                           </a>
                             
