@@ -26,7 +26,9 @@
                                 $photoApt = "./images/profil.jpg";
                             }
                           ?>    
-                            
+                            <p>getId: <?= $appartement->getId();?></p>	
+                            <p>id_apt: <?=  $appartement->id_appartement; ?></p>	
+                   
                           <!--<img src="./images/profil.jpg" alt="mon appart">-->
                           <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->id_appartement; ?>" >
                             <img src="<?= $photoApt ?>" class="photoAppartement img img-fluid thumbnail" alt="mon appart">

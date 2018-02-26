@@ -272,6 +272,7 @@ var clickHandler1 = function(e){
 */
 var clickHandler = function(e){
 	var id_apt =  $(this).val(); 
+    console.log(id_apt);
 	var dateDebut = $('#dateDebut'+id_apt).val();
 	var dateFin = $('#dateFin'+id_apt).val();
 	$.ajax({
@@ -304,7 +305,10 @@ var clickHandler = function(e){
 			}
 			$("<tr id='ajoutDispoRes"+newDispo.id+"'><td id='dateDebut"+newDispo.id+"'>"+newDispo.dateDebut+"</td><td id='dateFin"+newDispo.id+"'>"+newDispo.dateFin+"</td><td><button type='button' class='btn btn-warning btnSupprimerDispo' id='btnSupprimerDispo"+newDispo.id+ "'value='"+newDispo.id+"'>Supprimer</button></td></tr>").insertAfter($('#dispoRes'+id_apt));
 			
-			$('#ajoutDispoRes'+oldDispo.id).removeClass("alert alert-success");
+			if($('#ajoutDispoRes'+oldDispo.id))
+            {
+                $('#ajoutDispoRes'+oldDispo.id).removeClass("alert alert-success");
+            }
 			$('#ajoutDispoRes'+newDispo.id).addClass("alert alert-success");
 		}
 				

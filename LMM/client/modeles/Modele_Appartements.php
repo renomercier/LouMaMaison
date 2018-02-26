@@ -92,9 +92,9 @@
                         JOIN usager u ON a.id_userProprio = u.username 
                         JOIN quartier q ON a.id_nomQuartier = q.id 
                         LEFT JOIN
-                            (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e 
+                            (SELECT (id_appartement) as Apparteval, AVG(rating) AS moyenne FROM evaluation e 
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
-                                ON note.id_appartement = a.id
+                                ON note.Apparteval = a.id
                     WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
 
             

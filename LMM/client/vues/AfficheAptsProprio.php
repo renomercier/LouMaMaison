@@ -21,7 +21,8 @@
 							$photoApt = "./images/profil.jpg";
 						}
 					 ?>    
-						
+                    <p>getId: <?= $appartement->getId();?></p>	
+                    <p>id_apt: <?=  $appartement->id_appartement; ?></p>	
 					<!--<img src="./images/profil.jpg" alt="mon appart">-->
 					<div class="col-md-12">
 						<a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getId() ?>" >
@@ -96,6 +97,7 @@
 								<div class="modal-content">
 									<div class="modal-header bg-primary">
 										<h5 class="modal-title text-white" id="modal<?=$appartement->getId()?>">Disponibilite</h5>
+                                        <?=var_dump($appartement->getId())?>
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
