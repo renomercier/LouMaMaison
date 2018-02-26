@@ -59,7 +59,7 @@
 				?>
                   
                         <div class="carousel-item active"> 
-                            <img src="<?= $photo['photoSupp'] ?>" class="d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <img src="<?= $photo['photoSupp'] ?>" class="aptPhotoModal d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
                             <!--
                             <div class="carousel-caption">
                                 <h3>Heading 3</h3>
@@ -73,7 +73,7 @@
 				    ?>    
                   
                         <div class="carousel-item"> 
-                            <img src="<?= $photo['photoSupp'] ?>" class="d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <img src="<?= $photo['photoSupp'] ?>" class="aptPhotoModal d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
                             <!--
                             <div class="carousel-caption">
                                 <h3>Heading 3</h3>
@@ -136,7 +136,7 @@
 			<!-- Affichage de la photo principale -->
 			<div>
                 <div id="photoPrincipale">
-                    <img src="<?= $data['appartement']->getPhotoPrincipale() ?>" class="photoPrincipale img img-fluid">
+                    <img src="<?= $data['appartement']->getPhotoPrincipale() ?>" class="aptPhotoPrincipale img img-fluid">
                 </div>
             </div>
 
@@ -150,7 +150,7 @@
 				?>
 						<div class="d-inline" data-toggle="modal" data-target="#modalGaleriePhoto">
                             <a href="#maGalerie" data-slide-to="<?= $nbrP ?>">
-                                <img src="<?= $photo['photoSupp'] ?>" style="width: 100px; height: 75px" class="photoSupplementaire img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
+                                <img src="<?= $photo['photoSupp'] ?>" class="aptPhotoSupp img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
                             </a>
 						</div>
 				<?php
@@ -180,9 +180,9 @@
                 </div>
                 <div class="">
                     <div class="text-center align-middle">
-                        <!--<img src="<?= $data['proprietaire']->getPhoto(); ?>" style="width: 100px; height: 100px" class="photoProprio rounded-circle img-fluid" alt="PhotoProprio">-->
+                        <img src="<?= $data['proprietaire']->getPhoto(); ?>" class="aptPhotoProprio rounded-circle img-fluid" alt="PhotoProprio">
 
-                        <img src="./images/profil.jpg" style="width: 100px; height: 100px" class="photoProprio rounded-circle img-fluid" alt="PhotoProprio">
+                        <!--<img src="/images/profil.jpg" class="aptProprio rounded-circle img-fluid" alt="PhotoProprio">-->
 
                         <p><?= $data['appartement']->getId_userProprio() ?></p>
                     </div>
@@ -222,27 +222,27 @@
                 <h5 class="row">Équipements / fonctionnalités</h5>
                 <div class="row">
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">blablablablabla...</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">blablablablabla...</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">blablablablabla...</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">blablablablabla...</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">blablablablabla...</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">blablablablabla...</p>
                     </div>
                 </div>
@@ -254,11 +254,11 @@
                 <h5 class="row">Règlement intérieur</h5>
                 <div class="row">
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/no-smoking.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/no-smoking.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">Non fumeur</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/043-dog.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/043-dog.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">Animaux permis</p>
                     </div>
                 </div>
@@ -284,11 +284,11 @@
                 <h5  class="row">Accèssibilité</h5>
                 <div class="row">
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/elevator.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/elevator.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">Ascenseur</p>
                     </div>
                     <div class="d-inline col-sm-6">
-                        <img src="./icones/013-sign-1.svg" style="width: 30px; height: 30px" class="photoProprio img-fluid" alt="PhotoProprio">
+                        <img src="./icones/013-sign-1.svg" class="aptIcones img-fluid" alt="Icone">
                         <p class="d-inline">Handicap</p>
                     </div>
                 </div>

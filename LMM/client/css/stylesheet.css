@@ -77,7 +77,7 @@ padding: 0;
 
 .modal-xl {
     max-height: auto;
-    max-width: 70%;
+    max-width: 66%;
 }
 
 /*----- page AfficheAppartement -----*/
@@ -106,6 +106,31 @@ padding: 0;
 
 .iconeAptDescription {
     margin-right: 20px;
+}
+
+
+.aptPhotoPrincipale {
+    
+}
+
+.aptPhotoSupp {
+    height: 5em;
+    width: 6.5em; 
+}
+
+.aptPhotoModal {
+    height: 45em;
+    width: 60em; 
+}
+
+.aptPhotoProprio {
+    height: 5em;
+    width: 5em; 
+}
+
+.aptIcones {
+    height: 2em;
+    width: 2em;
 }
 
 /*----- footer -----*/
