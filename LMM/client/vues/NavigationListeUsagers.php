@@ -19,7 +19,7 @@
                 <a class="nav-link" onclick="filtrerUsagers('role', 'proprio')" name="role" value="proprio">Propriétaires</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" onclick="filtrerUsagers('valid', 1)" name="valid" value="1">Actifs</a>
+                <a class="nav-link" onclick="filtrerUsagers('valide', 1)" name="valide" value="1">Actifs</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" onclick="filtrerUsagers('attente', 1)" name="attente" value="1">En attente</a>

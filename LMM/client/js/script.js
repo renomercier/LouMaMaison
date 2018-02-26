@@ -165,7 +165,8 @@ function valPwdConfirm(elm1, elm2) {
               clearMarkers();
               //placer les nouveaux marqueurs
                 $("div.appart").each(function(){
-                    placerSureCarte($(this).attr('name'));
+                    var miniature = $('<div class="miniature">').append($(this).html());
+                    placerSureCarte($(this).attr('name'), miniature.html());
                 });
           },
           error: function(xhr, ajaxOptions, thrownError) {
@@ -265,6 +266,7 @@ $(document).ready(function() {
             var miniature = $('<div class="miniature">').append($(this).html());
             placerSureCarte($(this).attr('name'), miniature.html());
         });
+     
      }
      
      
@@ -282,7 +284,6 @@ function filtrerUsagers(colonne, valeur){
               success:function(reponse) {
                     $('.content .usagers').html('');
                     $('.content .usagers').html(reponse);
-                  console.log(reponse);
               },
               error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
