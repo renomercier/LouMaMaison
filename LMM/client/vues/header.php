@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
 * @file       	/header.php
 * @brief 		    Projet WEB 2
@@ -5,9 +6,7 @@
 * @author     	Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version    	v.1 | fevrier 2018
 -->
-<!DOCTYPE html>
-<html lang="fr">
-    
+<html lang="fr">  
 <head>
 
   <!-- meta tags requis -->
@@ -36,8 +35,7 @@
 
 <header>
 </header>
-
-<body class="container">
+<body class="container-fluid">
   <nav class="navbar sticky-top navbar-toggleable-md navbar-light bg-faded">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -46,7 +44,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="nav navbar-nav">
           <li class="nav-item active">
-              <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.php?Appartements&action=filtrer">Accueil</a>
           </li>
     		  <?php
 
@@ -64,9 +62,9 @@
          
           <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
           <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
-          <!--  <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#myModalApt" id="aModalApt" href="#">Inscrire un appartement</a></li>  -->
                 <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>  
-                <li class="nav-item"><a class="nav-link" href="index.php?Appartements&action=afficherFormulaireImage">Image upload</a></li>
+                <!-- lientemporaire pour modifier un appartement -->
+<!-- @temp -->  <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=1" role="button">Modifier ce logis</a></p> 
           <?php } 
           }
           else{
@@ -76,8 +74,7 @@
           <?php
           }
 		      ?>
-              <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-              
+              <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
 	    </ul>          
     </div>
   </nav>

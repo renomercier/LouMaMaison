@@ -45,13 +45,15 @@
 
 					// case de deconnexion d'un usager	
 					case "logout":
-
                         session_destroy();
+                        // redirection vers la page d'accueil
+                        echo "<script>window.location='./index.php?Appartements'</script>";
+                        
+                     /*   session_destroy();
                         $data= $this->initialiseMessages();
                         $this->afficheVue("header",$data);
                         $numPage = isset($params['page'])? $params['page'] : 1;
-                        $this->afficheListeAppartements($numPage);
-                       
+                        $this->afficheListeAppartements($numPage,4);*/
 						break;
 
 					// case d'authetification d'un usager	
@@ -82,12 +84,8 @@
                                            $_SESSION["role"][] = $role->id_nomRole;
                                         }
 
-                                        // redirection temporaire
-                                        $data= $this->initialiseMessages();
-                                        $this->afficheVue("header",$data);
-                                        $numPage = isset($params['page'])? $params['page'] : 1;
-                                        $this->afficheListeAppartements($numPage);
-                                       // header('location:index.php?Appartements');
+                                        // redirection vers la page d'accueil
+                                        echo "<script>window.location='./index.php?Appartements'</script>";
                                     }
                                     else
                                     {
@@ -137,8 +135,9 @@
                         {
                             trigger_error("Pas d'id spécifié");
                         }
-                    break;
-						
+                    	break;
+					
+					// case de modification d'un profil usager	
 					case "modifierProfil":
 						$message_profil="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
@@ -346,22 +345,8 @@
 			}
 			else
 			{
-                // redirection temporaire
-                $this->afficheVue("header",$data);
-                $this->afficheVue("accueil", $data); 
-
-/*               
-               // action par défaut - afficher la liste des sujets/usagers
-				if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
-				{
-					$this->afficheListeUsagers();
-				}
-				else
-				{
-					// afficher la page d'erreur
-					$this->afficheVue("404");
-				}
-*/
+                // redirection vers la page de appartements
+                echo "<script>window.location='./index.php?Appartements'</script>"; 
 			}
 			// affichage du footer
             //$this->afficheVue('footer');
@@ -443,50 +428,54 @@
 			return $flag;
 		}
         
-        
+        /**
+		* @brief		Fonction d'affichage d'un profil usager 
+		* @details		Preparation des donnees propres a un usager
+		* @param 		<string> 	$id 		id de l'usager	
+		* @param 		<array> 	$data 		tableau de parametres associes a l'usager	
+		* @return    	<vue> 		
+		*/
         private function afficheProfil($id, $data)
-        {
-            
-                // formatage du message d'erreurs à afficher
-			    $data['erreur'] = "";
-                $modeleUsagers = $this->getDAO("Usagers");
-                $data["usager"] = $modeleUsagers->obtenir_par_id($id);
-                $data["isProprio"] = false;
-                $data["isClient"] = false;
-                $data["isAdmin"] = false;
-                $data["isSuperAdmin"] = false;
-                $data["modePaiement"] = $modeleUsagers->getModePaiement($id);
-                $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
-                $data["modeCommunication"] = $modeleUsagers->getModeCommunication($id);
-                $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
-                $data['prenom'] = $data["usager"]->getPrenom();
-                $data['nom'] = $data["usager"]->getNom();
-                $data['adresse'] = $data["usager"]->getAdresse();
-                $data['telephone'] = $data["usager"]->getTelephone();
-                $data['motdepasse'] = $data["usager"]-> getMotDePasse();	
-                foreach($data["usager"]->roles as $role)
+        { 
+            // formatage du message d'erreurs à afficher
+		    $data['erreur'] = "";
+            $modeleUsagers = $this->getDAO("Usagers");
+            $data["usager"] = $modeleUsagers->obtenir_par_id($id);
+            $data["isProprio"] = false;
+            $data["isClient"] = false;
+            $data["isAdmin"] = false;
+            $data["isSuperAdmin"] = false;
+            $data["modePaiement"] = $modeleUsagers->getModePaiement($id);
+            $data["modePaiementGeneral"] = $modeleUsagers->getModePaiement();
+            $data["modeCommunication"] = $modeleUsagers->getModeCommunication($id);
+            $data["modeCommunicationGeneral"] = $modeleUsagers->getModeCommunication();
+            $data['prenom'] = $data["usager"]->getPrenom();
+            $data['nom'] = $data["usager"]->getNom();
+            $data['adresse'] = $data["usager"]->getAdresse();
+            $data['telephone'] = $data["usager"]->getTelephone();
+            $data['motdepasse'] = $data["usager"]-> getMotDePasse();	
+            foreach($data["usager"]->roles as $role)
+            {
+                if($role->id_nomRole == 3)
                 {
-                    if($role->id_nomRole == 3)
-                    {
-                        $data["isProprio"] = true;
-                    }
-                    if($role->id_nomRole == 4)
-                    {
-                        $data["isClient"] = true;
-                    }
-                    if($role->id_nomRole == 2)
-                    {
-                        $data["isAdmin"] = true;
-                    }
-                    if($role->id_nomRole == 1)
-                    {
-                        $data["isSuperAdmin"] = true;
-                    }
+                    $data["isProprio"] = true;
                 }
+                if($role->id_nomRole == 4)
+                {
+                    $data["isClient"] = true;
+                }
+                if($role->id_nomRole == 2)
+                {
+                    $data["isAdmin"] = true;
+                }
+                if($role->id_nomRole == 1)
+                {
+                    $data["isSuperAdmin"] = true;
+                }
+            }
 
-                $this->afficheVue("header",$data);
-                $this->afficheVue("AfficheUsager", $data); 
-
+            $this->afficheVue("header",$data);
+            $this->afficheVue("AfficheUsager", $data); 
         }
         
 		/**
@@ -540,6 +529,5 @@
 
 			return $erreurs;
 		}
-
 	}
 ?>

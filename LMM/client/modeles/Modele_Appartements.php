@@ -13,8 +13,9 @@
     * @details  lie les requetes d'objets Appartement a la BD
     *                   - definit les requetes specifiques a la classe
     *
-*** *   ...9 methodes  |   	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), supprimerAppartement(),
-	*						obtenir_avec_Limit(), nombre_notes(), getTypesApt(), getQuartier()
+*** *   ...11 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
+	* 						supprimerAppartement(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), getQuartier(),
+	* 						sauvegarderPhoto()
     */
     class Modele_Appartements extends BaseDAO {
 
@@ -89,7 +90,6 @@
 			return $this->miseAjourChamp($champ, $val, $id);
 		}
 		
-       
        	/**
 		* @brief      	Supprime un Appartement
 		* @details 		Fait appel a la fonction delete de BaseDAO
@@ -100,34 +100,89 @@
       		
             return $this->supprimer($id);
         }
-
+        
         /**
 		* @brief      	Selectionne la liste d'appartements selon la page affichee et le nb d'appartements par page
 		* @details 		
-		* @param      	<int>  		$debut     	L'id du 1er appartement a afficher
-		* @param      	<int>  		$fin     	le nb d'appartements par page
-		* @return     	<boolean>  		( resultat de la requete ou false )
+		* @param      	<int>  		$premiereEntree     	L'id du 1er appartement a afficher
+		* @param      	<int>  		$appartParPage     		le nb d'appartements par page
+		* @param      	<array>  	$filtre     			...
+		* @return     	<boolean>  		( resultat de la requete ou false ) ...
 		*/
-        public function obtenir_avec_Limit($debut, $fin)
-        {
-        	$query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id GROUP BY " . $this->getTableName() . ".id LIMIT " . $debut .", ". $fin ."";
-        //  $query = "SELECT * FROM " . $this->getTableName() . " JOIN type_apt ON " . $this->getTableName() . ".id_typeApt = type_apt.id JOIN usager ON " . $this->getTableName() . ".id_userProprio = usager.username LEFT JOIN evaluation ON evaluation.id_appartement = " . $this->getTableName() . ".id GROUP BY " . $this->getTableName() . ".id LIMIT ?, ?";
-		//	$donnees = array($debut, $fin);
+        public function obtenir_avec_Limit($premiereEntree, $appartParPage, $filtre = array())
+        {  
+            $query = "SELECT * FROM disponibilite d JOIN appartement a ON d.id_appartement = a.id 
+                        JOIN type_apt t ON a.id_typeApt = t.id 
+                        JOIN usager u ON a.id_userProprio = u.username 
+                        JOIN quartier q ON a.id_nomQuartier = q.id 
+                        JOIN
+                            (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e 
+                                JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
+                                ON note.id_appartement = a.id
+                    WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
+
+            
+            if(!empty($filtre['priMin']))
+            {
+                $query.= " AND a.montantParJour >= " . $filtre['priMin'] ."";
+            }
+            if(!empty($filtre['prixMax']))
+            {
+                $query.= " AND a.montantParJour <= " . $filtre['prixMax'] ."";
+            }
+            if(!empty($filtre['quartier']))
+            {
+                $query.= " AND q.id = " . $filtre['quartier'] ."";
+            }
+            if(!empty($filtre['nbrPers']))
+            {
+                $query.= " AND a.nbPersonnes = " . $filtre['nbrPers'] ."";
+            }
+            if(!empty($filtre['dateDepart']))
+            {
+                $query.= " AND d.dateFin >= '" . $filtre['dateDepart'] ."'";
+            }
+            if(!empty($filtre['dateArrive']))
+            {
+                $query.= " AND d.dateFin >= '" . $filtre['dateArrive'] ."'";
+            }
+            if(!empty($filtre['note']))
+            {
+                $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
+            }
+            $query.= " GROUP BY d.id_appartement LIMIT " . $premiereEntree .", ".$appartParPage."";
+           /* if(!empty( $filtre['premiereEntree']))
+            {
+                $query.= "LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
+            }*/
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+            
             return $resultat->fetchAll();
         }
         
 		/**
 		* @brief      Selectionner le nombre des notes attribuées a un appart
         *             ainsi que la somme de toutes les notes d'un appart
-		* @return     <entier>
+        * @param 	  <int> 		$id_appart 		l'id de l'appartement
+		* @return     <entier> 		resultat de la requete
 		*/
-		public function nombre_notes($id_appart)
+		public function obtenir_moyenne($id_appart)
 		{
-			$query = "SELECT SUM(rating) AS Total_des_notes, COUNT(rating) AS nombre_note FROM evaluation WHERE id_appartement = ?";
+			$query = "SELECT AVG(rating) AS moyenne FROM evaluation WHERE id_appartement = ? GROUP BY id_appartement";
             $donnees = array($id_appart);
 			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetch();
+		}
+        
+        /**
+		* @brief      Chercher tous les quartiers sauvegardés dans la bd
+		* @return     tableau de quartier
+		*/
+		public function obtenir_quartiers()
+		{
+			$query = "SELECT * FROM quartier";
+			$resultat = $this->requete($query);
             return $resultat->fetchAll();
 		}
 

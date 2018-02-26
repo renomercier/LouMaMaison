@@ -1,4 +1,4 @@
-  <!--<p class='alert alert-warning'>Veuillez noter que ce site affiche exclusivement des logements situés à Montréal</p>-->
+<!--<p class='alert alert-warning'>Veuillez noter que ce site affiche exclusivement des logements situés à Montréal</p>-->
 
   <!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
   <div class="row">

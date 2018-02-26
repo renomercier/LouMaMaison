@@ -1,3 +1,4 @@
+
 // on s'assure que le document soit pret 
 $(document).ready(function() {
 
@@ -103,13 +104,14 @@ $(document).ready(function() {
                 url: 'index.php?Appartements&action=getOptionsApt&id='+idApt, 
                 type: 'POST', 
                 dataType : 'json',
-                success : function(result, statut){
+                success : function(result, statut) {
                     // on boucle dans le tableau d'options de l'appartement
                     result.o.forEach( function(r) {
                         var input = $("#formApt input[type^='checkbox']");
                         // on boucle dans chq option pour voir si elle est a cocher
                         for(var i=0; i<input.length; i++) {
                             if(input[i].name == r) {
+
                                 input[i].setAttribute('checked', 'checked')
                             }
                         }
