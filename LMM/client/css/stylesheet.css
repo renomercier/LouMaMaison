@@ -1,5 +1,29 @@
+/* --------------------------------------------------- Reset */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* --------------------------------------------------- H1-h6, li, a, p etc. */
+.pagination li{
+    cursor: pointer;
+}
 
 
+/* --------------------------------------------------- Icones   */
+.fa-star, .fa-star-half{
+    color: darkorange;
+}
+
+/* --------------------------------------------------- Forms   */
+#formUsager select, #formApt small {
+    font-size: 0.9em !important;
+}
+#formUsager small, #formApt small {
+    padding-left: 15px;
+    color: #682b28!important;
+}
 
 /* --------------------------------------------------- Inputs	*/
 /* ref: https://stackoverflow.com/questions/2610497 */
@@ -30,14 +54,7 @@
    font-size: 0.8em !important;
 }
 
-#formUsager select {
-	font-size: 0.9em !important;
-}
-#formUsager small {
-	padding-left: 15px;
-	color: #682b28!important;
-}
-
+/* --------------------------------------------------- Images   */
 .thumbnail{
     width: 100%;
     overflow: hidden;
@@ -46,15 +63,8 @@
     width: 100%;
     height: auto;
 }
-.pagination li{
-    cursor: pointer;
-}
-.fa-star, .fa-star-half{
-    color: darkorange;
-}
 
-html, body {
-height: 100%;
-margin: 0;
-padding: 0;
+/* --------------------------------------------------- Carte   */
+#carte {
+    height: 50%;
 }

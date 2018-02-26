@@ -12,8 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Usagers a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-	* 	11 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
-	*					misAjourChampUnique(), definir_role_usager(), obtenir_avec_role(), definir_admin(), getModePaiement(), getModeCommunication()
+	* 	13 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
+	*					misAjourChampUnique(), definir_role_usager(), obtenir_avec_role(), definir_admin(), getModePaiement(), 
+	* 					getModeCommunication(), obtenir_avec_paiement_communication()
 	*/
 	class Modele_Usagers extends BaseDAO
 	{	
@@ -230,6 +231,12 @@
             }
         }
         
+        /**
+		* @brief		Lecture du moyen de communication et de paiement d'un usager
+		* @details		Permet de recuperer le moyen de communication et de paiement associe a un usager
+		* @param 		<string> 	$idUsager 		L'id d'un usager - parametre facultatif	
+		* @return    	<boolean> 	resultat de la requete ou false	
+		*/
         public function obtenir_avec_paiement_communication($idUsager) {
             $query = "SELECT * FROM usager u JOIN communication c ON c.id = u.id_moyenComm JOIN paiement p ON p.id = u.id_modePaiement WHERE u.username = ?";
             $donnees = array($idUsager);
@@ -238,5 +245,5 @@
 			$lUsager = $resultat->fetch();
             return $lUsager;
         }
-}   
+	}   
 ?>

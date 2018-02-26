@@ -6,15 +6,14 @@
 * @author     	Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version    	v.1 | fevrier 2018
 -->
-<html lang="fr">
-    
+<html lang="fr">  
 <head>
 
-	<!-- meta tags requis -->
-	<meta charset="UTF-8">
+  <!-- meta tags requis -->
+  <meta charset="UTF-8">
   <meta name="description" content="ProjetWEB2">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
   <!-- Bootstrap - CSS -->
   <link rel="stylesheet" target=_blank href="http://code.jquery.com/ui/1.8.21/themes/base/jquery-ui.css" type="text/css" media="all" />
   <link rel="stylesheet" target=_blank href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
@@ -33,6 +32,7 @@
   <script src="js/script.js" ></script> 
 
 </head>
+
 <header>
 </header>
 <body class="container-fluid">
@@ -50,6 +50,7 @@
 
 	        if(isset($_SESSION["username"])) 
           {
+              // actions disponibles pour usager de type admin et valide par superadmin
               if((in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)
               {
           ?>
@@ -58,12 +59,18 @@
               }
           ?>
                 <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.php?Appartements&action=afficherInscriptionApt&idUsager=<?=$_SESSION['username']?>">Inscrire un appartement</a></li>
-		      <?php
+         
+          <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
+          <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
+                <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>  
+                <!-- lientemporaire pour modifier un appartement -->
+<!-- @temp -->  <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=1" role="button">Modifier ce logis</a></p> 
+          <?php } 
           }
           else{
           ?>
               <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
+
           <?php
           }
 		      ?>
@@ -71,5 +78,6 @@
 	    </ul>          
     </div>
   </nav>
+  <!-- Messages a l'usager concernant son statut -->
 	<?=$data['message']?>
 	<?=$data['banni']?>

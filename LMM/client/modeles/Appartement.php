@@ -40,11 +40,12 @@
         /**
         *   constructeur de la classe Appartement
         *       
-        *   @param <string>        $options                options de l'appartement  
+        *   @param <int>           $id                     l'id de l'appartement  
+        *   @param <string>        $options                options de l'appartement   
         *   @param <string>        $titre                  titre de l'annonce (mise en location)  
         *   @param <string>        $descriptif             description de l'appartement   
         *   @param <float>         $montantParJour         montant par jour    
-        *   @param <int>           $nbPersonnes             nombre de personnes admises
+        *   @param <int>           $nbPersonnes            nombre de personnes admises
         *   @param <int>           $nbLits                 nombre de lits
         *   @param <int>           $nbChambres             nombre de chambres 
         *   @param <string>        $photoPrincipale        photo principale de l'appartement     
@@ -55,10 +56,12 @@
         *   @param <string>        $id_typeApt             type d'appartement
         *   @param <string>        $id_userProprio         usager proprietaire de l'appartement    
         *   @param <string>        $id_nomQuartier         nom du quartier ou est situe l'appartement 
-        *   @param <bool>          $actif                  si l'appartement est actif       
+        *   @param <bool>          $actif                  si l'appartement est actif 
+        *   @param <string>        $ville                  la ville de l'appartement       
         */  
-        public function __construct($options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersonnes = 0, $nbLits = 0, $nbChambres = 0 , $photoPrincipale = "", $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1) {   
- 
+        public function __construct($id = 0, $options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersonnes = 0, $nbLits = 0, $nbChambres = 0 , $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1, $photoPrincipale = "", $ville = "") {   
+            
+            $this->setId($id);
             $this->setOptions($options);
             $this->setTitre($titre);
             $this->setDescriptif($descriptif);
@@ -75,6 +78,7 @@
             $this->setId_userProprio($id_userProprio);
             $this->setId_nomQuartier($id_nomQuartier);
             $this->setActif($actif);
+            $this->setVille($ville);
         }
 
         // getters
@@ -134,11 +138,20 @@
             return $this->id_nomQuartier;
         }
         
-
         // setters
+        public function setId($id) {
+            if (is_int(intval($id)) && intval($id) != 0) {
+                $this->id = $id;
+            }
+        }
         public function setActif($a) {
             if ($a == 0 || $a == 1) {
                 $this->actif = $a;
+            }
+        }
+        public function setVille($v) {
+            if (is_string($v) && trim($v)!="") {
+                $this->ville = $v;
             }
         }
         public function setOptions($o) {
@@ -147,7 +160,6 @@
             }
         }
         public function setTitre($t) {
-
             if (is_string($t) && trim($t)!="") {
                 $this->titre = $t;
             }
