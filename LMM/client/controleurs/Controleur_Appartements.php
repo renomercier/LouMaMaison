@@ -266,7 +266,9 @@
                 $numPage = isset($params['page'])? $params['page'] : 1;
                 // nombre d'appartements à afficher par page
                 $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
-                $this->afficheListeAppartements($numPage, $data['appartParPage']);           
+                $this->afficheVue("header",$data);
+                $this->afficheListeAppartements($numPage, $data['appartParPage']); 
+                $this->afficheVue("footer");          
             }            
             // affichage du footer
             // $this->afficheVue("footer");

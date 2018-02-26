@@ -29,13 +29,13 @@
                                     for($i=1; $i<=$appartement->moyenne/2; $i++)
                                     {
                                     ?>
-                                        <i class="fas fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                 <?php
                                     }
                                     if($appartement->moyenne % 2 != 0)
                                     {
                                      ?>   
-                                        <i class="fas fa-star-half"></i>
+                                        <i class="fa fa-star-half"></i>
                                  <?php
                                     }
                                 ?>
@@ -43,7 +43,7 @@
                             <p><a href="#" class="btn btn-primary" role="button">reserver</a> <a href="#" class="btn btn-default" role="button">noter</a></p>
                             <p class="adresse" hidden="hidden"><?=$appartement->adresse;?></p>
                             <!-- lientemporaire pour modifier un appartement -->
-<!-- @temp -->              <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $appartement->getId(); ?>" role="button">Modifier ce logis</a></p> 
+<!-- @temp -->              <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $appartement->id_appartement; ?>" role="button">Modifier ce logis</a></p> 
                           </div>
                         </div>
                       </div>

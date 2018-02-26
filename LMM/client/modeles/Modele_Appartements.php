@@ -87,7 +87,9 @@
 		*/
 		public function editerChampUnique($champ, $val, $id) {
 			
-			return $this->miseAjourChamp($champ, $val, $id);
+			$query = "UPDATE " . $this->getTableName() . " SET " . $champ . " = ? WHERE " . $this->getClePrimaire() . " = ?";			
+			$donnees = array($val, $id);
+			return $this->requete($query, $donnees);
 		}
 		
        	/**
@@ -106,7 +108,7 @@
 		* @details 		
 		* @param      	<int>  		$premiereEntree     	L'id du 1er appartement a afficher
 		* @param      	<int>  		$appartParPage     		le nb d'appartements par page
-		* @param      	<array>  	$filtre     			...
+		* @param      	<array>  	$filtre     			filtres de recherche
 		* @return     	<boolean>  		( resultat de la requete ou false ) ...
 		*/
         public function obtenir_avec_Limit($premiereEntree, $appartParPage, $filtre = array())
