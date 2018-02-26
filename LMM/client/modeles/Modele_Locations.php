@@ -12,7 +12,7 @@
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-	* 	... methodes	|	getTableName(), 
+***	* 	... 2 methodes	|	getTableName(), creerLocation()
 	*/
 	class Modele_Location extends BaseDAO
 	{

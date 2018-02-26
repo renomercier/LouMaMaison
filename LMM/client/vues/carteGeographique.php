@@ -6,17 +6,16 @@
 * @version      v.1 | fevrier 2018
 -->
 
-
         <div class="col-md-4" id="carte"></div>
      </div>
 </div> 
 
-  <script>
+<script>
   
     var carte;
     // initialiser la catrte google
     function initMap() {
-      carte = new google.maps.Map(document.getElementById('carte'), {
+        carte = new google.maps.Map(document.getElementById('carte'), {
         zoom: 11.5,
         center: new google.maps.LatLng(45.51,-73.72) 
       });
