@@ -28,7 +28,7 @@
                 et ses droits sur le site
             */
             $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
+//          $this->afficheVue("header",$data);
             //
             //si le paramètre action existe
             if(isset($params["action"]))
@@ -41,48 +41,82 @@
                         break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
-                    case "afficherInscriptionApt" :
-
-                        if(isset($_SESSION['username'])) {
-                            $params['erreursApt'] = $this->validerPermissionApt($_SESSION['username']);
-                            $this->afficheFormAppartement($params);
-                        }
-                        else {
-                            $params['erreursApt'] = "Vous devez être connecté pour ajouter un appartement<br>";
-                            $this->afficheFormAppartement($params);
-                        }
+/* case a enlever*/     case "afficherInscriptionApt" :
                         
+                        // si l'usager est connete, on valide ses droits et acces
+                        if(isset($_SESSION['username'])) {
+                            $params['erreurs'] = "";
+                            $params['erreurs'] .= $this->validerPermissionApt($_SESSION['username']);
+                            // si on a un id d'appartement (ds le cas d'une modification)
+                            if(isset($params['id'])) {
+                                // validation du params['id']
+                                $id = filter_var($params['id'], FILTER_VALIDATE_INT);
+                                // si l'id est invalide, message d'erreur a l'usager
+                                if(!$id) {
+                                    $params['id'] = false;
+                                    $params['erreurs'] .= "L'id de l'appartement n'est pas spécifié";
+                                }  
+                            }
+                            // affichage des vues header et formAppartement
+                            $this->afficheVue("header",$data);
+                            $this->afficheFormAppartement($params);
+                        }
+                        // sinon, message d'erreur a l'usager
+                        else {
+                            $params['erreurs'] = "Vous devez être connecté pour ajouter un appartement<br>";
+                            $this->afficheVue("header", $data);
+                            $this->afficheFormAppartement($params);
+                        }
                         break;
 
                     // case de sauvegarde (creation ou modification) d'un appartement
                     case "sauvegarderApt" :
-                       
+
+/* valider les permissions d'abord */ 
+
                             if( isset($_SESSION['username']) && !empty($_SESSION['username']) && isset($params['titre']) && !empty($params['titre']) && isset($params['descriptif']) && !empty($params['descriptif']) && isset($params['id_typeApt']) && !empty($params['id_typeApt']) && 
                             isset($params['noCivique']) && !empty($params['noCivique']) && isset($params['rue']) && !empty($params['rue']) && isset($params['montantParJour']) && !empty($params['montantParJour']) && isset($params['codePostal']) && !empty($params['codePostal']) && 
                             isset($params['id_nomQuartier']) && !empty($params['id_nomQuartier']) && isset($params['nbPersonnes']) && !empty($params['nbPersonnes']) && isset($params['nbChambres']) && !empty($params['nbChambres']) && isset($params['nbLits']) && !empty($params['nbLits'])) {
                         
-                            // ajout d'insertion d'une photo (src) à faire... + upload de l'image + images supp.
-
                             // validation des champs input du formulaire d'inscription d'un appartement
-                            $params['erreursApt'] = $this->validerAppartement([ 'Le titre de l\'annonce'=>$params["titre"], 'Le descriptif de l\'appartement'=>$params["descriptif"], 'Le nom de rue'=>$params['rue'], 'Le numéro d\'appartement'=>$params['noApt'], 'Le code postal'=>$params['codePostal'] ], [ 'Le numéro civique'=>$params['noCivique'], 'Le montant du logement'=>$params['montantParJour'], 'Le nombre de personnes'=>$params['nbPersonnes'], 'Le nombre de chambres'=>$params['nbChambres'], 'Le nombre de lits'=>$params['nbLits'], 'Le type d\'appartement'=>$params['id_typeApt'], 'Le quartier'=>$params['id_nomQuartier'] ], [ 'Les options'=>isset($params['options']) ? $params['options'] : "" ] );                            
+                            $params['erreurs'] = $this->validerAppartement([ 'Le titre de l\'annonce'=>$params["titre"], 'Le descriptif de l\'appartement'=>$params["descriptif"], 'Le nom de rue'=>$params['rue'], 'Le numéro d\'appartement'=>$params['noApt'], 'Le code postal'=>$params['codePostal'] ], [ 'Le numéro civique'=>$params['noCivique'], 'Le montant du logement'=>$params['montantParJour'], 'Le nombre de personnes'=>$params['nbPersonnes'], 'Le nombre de chambres'=>$params['nbChambres'], 'Le nombre de lits'=>$params['nbLits'], 'Le type d\'appartement'=>$params['id_typeApt'], 'Le quartier'=>$params['id_nomQuartier'] ], [ 'Les options'=>isset($params['options']) ? $params['options'] : "" ] );                            
                             // si pas d'erreurs, on instancie l'appartement et on l'insère dans la BD
-                            if(!$params['erreursApt']) {
-/* @temp */                     $photo = "photo.jpg";
-                                // nouvel objet appartement
-                                $appartement = new Appartement($params['options'], $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $photo, $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
+                            if(!$params['erreurs']) {
+                                
+/* @temp */                     // nouvel objet appartement
+                                $appartement = new Appartement((isset($params['idApt']) ? $params['idApt'] : 0), (isset($params['options']) ? $params['options'] : ""), $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
+
                                 // chargement du modele Appartement
                                 $modeleApts = $this->getDAO("Appartements");
-                                $resultat = $modeleApts->sauvegarderAppartement($appartement);
-                                if($resultat) {
-                                    $data['succes'] = "<p class='alert alert-success'>Votre appartement a été sauvegardé avec succès! Vous pouvez maintenant associer des disponibilités à cet appartement";
-/* affichage @temp */               $this->afficheFormAppartement($data);
+                                // si idApt et si valide, on modifie
+                                if(isset($params['idApt']) && filter_var($params['idApt'], FILTER_VALIDATE_INT)) {
+                                    $modifApt = $modeleApts->sauvegarderAppartement($appartement);
                                 }
+                                // sinon on insere un nouvel appartement
                                 else {
-                                    $params['erreursApt'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
+                                    $dernier_idApt = $modeleApts->sauvegarderAppartement($appartement);
+                                }
+
+                                // si insertion reussie, affichage du formulaire d'ajout d'images
+                                if(isset($dernier_idApt)) {
+                                    $data['succes'] = "<p class='alert alert-success'>Votre appartement a été sauvegardé avec succès! Vous pouvez maintenant ajouter des photos à cet appartement";
+                                    $data['idApt'] = $dernier_idApt;
+                                    $this->afficheVue("header");
+                                    $this->afficheVue("AjoutImage", $data);
+                                }
+                                // si modification reussie
+/**/                            else if(isset($modifApt)) {
+                                    $data['succes'] = "<p class='alert alert-success'>Votre appartement a été modifié avec succès!";
+                                    $this->afficheVue("header");
+/* redir @temp */                   $this->afficheFormAppartement($data);
+                                }
+                                // si la sauvegarde a echoue
+                                else {
+                                    $params['erreurs'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
                                     $this->afficheFormAppartement($params);
                                 }
                             }
-                            // si on a des erreurs
+                            // si on a des erreurs de validation de params
                             else {
                                 // affichage du formulaire avec data de l'usager et messages d'erreurs a afficher
                                 $this->afficheFormAppartement($params);
@@ -90,9 +124,107 @@
                         }
                         // si on n'a pas tous les parametres requis
                        else {
-                            $params['erreursApt'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
+                            $params['erreurs'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
                             $this->afficheFormAppartement($params);
                         }   
+                        break;
+
+                    // case pour remplir les options selectionnees d'un appartement (en vue de modification)
+                    case "getOptionsApt" :
+                        // entetes importantes pour envoi json
+                        header('Content-type: application/json');
+                        // chargement du modele Appartement
+                        $modeleApts = $this->getDAO("Appartements");
+                        $data['apt'] = $modeleApts->obtenir_par_id($params['id']);
+                        // appel de la fonction qui prepare le tableau d'options a afficher
+                        $data['options'] = $this->prepareTabOptions($data['apt']->getOptions());
+                        // preparation du tableau d'options, avec ajout d'une cle pour manipulation js
+                        $tabOptions = (['o'=>$data['options']]);
+                        echo json_encode($tabOptions);
+
+                        break;
+                    // affichage du  formulaire d'ajout d'images pour un appartement
+                    case "afficherFormulaireImage" :
+
+                        $this->afficheVue("header");
+                        $this->afficheVue("AjoutImage");
+                        break;
+
+                    // case de sauvegarde d'une ou plusieurs photos pour un appartement
+                    case "ajouterPhoto" :
+
+                    //    var_dump($_FILES);
+                    //    var_dump($_SESSION);
+                    //    var_dump($params);
+                       
+                        // ref: https://www.formget.com/ajax-image-upload-php/
+                        if(isset($_FILES["file"]["type"]))
+                        {
+                            // declaration des 'strings' d'erreurs et de succes
+                            $data['erreurs'] = "";
+                            $data['succes'] = "";
+                            // on boucle dans le tableau de fichiers
+                            for($i=0; $i<count($_FILES["file"]['name']); $i++) {
+                           
+                                // validation si l'image est d'un type valide
+                                $validextensions = array("jpeg", "jpg", "png");
+                                $temporary = explode(".", $_FILES["file"]["name"][$i]);
+                                $file_extension = end($temporary);
+                                // Approx. 100kb peuvent etre telecharges
+                                if ((($_FILES["file"]["type"][$i] == "image/png") || ($_FILES["file"]["type"][$i] == "image/jpg") || ($_FILES["file"]["type"][$i] == "image/jpeg")) && ($_FILES["file"]["size"][$i] < 100000) && in_array($file_extension, $validextensions)) {
+                                    // si l'image estde type invalide
+                                    if ($_FILES["file"]["error"][$i] > 0) {
+                                        $data['erreurs'] .= "Code de l'erreur: " . $_FILES["file"]["error"][$i] . " pour l'image " . $_FILES["file"]["name"][$i] . "<br/>";
+                                    } 
+                                    else {
+                                        if (file_exists("images/" . $_SESSION['username'] . "_" . $_FILES["file"]["name"][$i])) {
+                                            $data['erreurs'] .= "La photo nommée " . $_FILES["file"]["name"][$i] . " existe déjà<br/>";
+                                        }
+                                        else {   
+                                            $fileName = $i . "_" . $_SESSION['username'] . "_" . $_FILES['file']['name'][$i];
+                                            // chargement de la src dans une variable temporaire
+                                            $sourcePath = $_FILES['file']['tmp_name'][$i]; 
+                                            // adresse de l'image
+                                            $targetPath = "images/" . $fileName; 
+                                            // on charge la photo dans le dossier images
+                                            move_uploaded_file($sourcePath, $targetPath) ; 
+
+                                            // chargement du modele Appartement
+                                            $modeleApts = $this->getDAO("Appartements");
+                                            if($i == 0) {
+                                                // misa a jour du champ photo principale
+                                                $resultat = $modeleApts->editerChampUnique("photoPrincipale", "./images/" . $fileName, $params['idApt']);
+                                            } 
+                                            else {
+                                                // ensuite, insertion des differents photos supplementaires ds la table photo
+                                                $resultat = $modeleApts->sauvegarderPhoto($fileName, $params['idApt']);
+                                            }
+                                            // si l'insertion de la photo ne fonctionne pas, message a l'usager 
+                                            if(!$resultat) {
+                                                $data['erreurs'] .= "L'image " . $_FILES['file']['name'][$i] . " n'a pu être sauvegardée<br/>";
+                                            } 
+                                            // sinon, message success a l'usager
+                                            else {
+                                                $data['succes'] .= "L'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                                // si le type ou la taille du fichier genere une erreur, message a l'usager
+                                else {
+                                    $data['erreurs'] .= "Format ou taille de l'image invalide<br/>"; 
+                                }
+                            } // fin de la boucle 'for' sur toutes les images a inserer
+                            // si on a des erreurs, affichage des messages a l'usager
+                            if($data['erreurs']) {
+                                $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
+                                echo $data['erreurs'];
+                            }
+                            // sinon, affichage du message succes
+                            else {
+/* redir page dispo */          echo "<p class='alert alert-success'>" . $data['succes'] . "</p>";
+                            }
+                        }
                         break;
 
 					default :
@@ -105,7 +237,7 @@
                 $this->afficheListeAppartements($numPage);            
             }            
             // affichage du footer
-            $this->afficheVue("footer");
+//          $this->afficheVue("footer");
         }
         
         /**
@@ -117,21 +249,26 @@
         */  
         private function afficheFormAppartement($data = "")
         {
-            // formatage du message d'erreurs à afficher
-            if(isset($data['erreursApt']) && !empty($data['erreursApt'])) {
-                $data['erreursApt'] = "<p class='alert alert-warning'>" . $data['erreursApt'] . "</p>";
-            }
             // chargement du modele Appartement
             $modeleApts = $this->getDAO("Appartements");
-            // chargement des differents types d'appartement et quartiers de Mtl
-            $data['tab_typeApt'] = $modeleApts->getTypesApt();
-            $data['tab_quartier'] = $modeleApts->getQuartier();
-            // si le tableau data est charge
-            if($data) {
 
-                // affichage du formulaire d'inscription d'un appartement avec tableau de data rempli
-                $this->afficheVue("afficheInscriptionApt", $data);
+            // formatage du message d'erreurs à afficher
+            if(isset($data['erreurs']) && !empty($data['erreurs'])) {
+                $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
             }
+            // verification si on a un id d'appartement (pour modification)
+            if(isset($data['id']) && !empty($data['id'])) {
+                // si oui, on recupere les donnees de l'appartement
+                $data['apt'] = $modeleApts->obtenir_par_id($data['id']);
+//              $data['apt'] = $modeleApts->obtenir_par_id(2);
+                // appel de la fonction qui prepare le tableau d'options a afficher
+//              $data['options'] = $this->prepareTabOptions($data['apt']->getOptions());
+            }
+            // chargement des differents quartiers de Mtl
+            $data['tab_quartier'] = $modeleApts->getQuartier();
+            $data['tab_typeApt'] = $modeleApts->getTypesApt();
+            // affichage du formulaire d'inscription d'un appartement avec tableau de data rempli
+            $this->afficheVue("afficheInscriptionApt", $data);
         }
 
         /**
@@ -231,6 +368,28 @@
                 }
             }
             return $erreurs;
+        }
+
+        /**
+         * @brief      fonction de preparation des options a l'affichage
+         * @details    separe la chaine par option et soustrait le nom de chaque option
+         * @params     <string>     $optionsSerialisees     les options serialisees en js
+         * @return     <array>      $tabOptions             tableau des differents options associees a un appartement
+         */
+        public function prepareTabOptions($optionsSerialisees) {
+
+            // declaration du tableau d'options
+            $tabOptions = array();
+            // separation de la 'string' d'options
+            $tabTemp = explode('&', $optionsSerialisees);
+            for($i=0; $i<count($tabTemp); $i++) {
+                // pour chaque option, on soustrait le nom
+                $delimiter = strpos($tabTemp[$i], "=");
+                $option = substr($tabTemp[$i], 0, $delimiter);
+                // ajout de l'option preparee dans le tableau pour affichage
+                $tabOptions[] .= $option;
+            }
+            return $tabOptions;
         }
 
     }

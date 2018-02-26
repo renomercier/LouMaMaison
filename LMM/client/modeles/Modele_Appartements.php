@@ -9,11 +9,12 @@
 */
 
 	/**
-    * @class    Appartement 
-    * @details  lie les requetes d'objects Appartement a la BD
+    * @class    Modele_Appartements 
+    * @details  lie les requetes d'objets Appartement a la BD
     *                   - definit les requetes specifiques a la classe
     *
-*** *   ... methodes  |   getTableName(), getAllAuditorium(), saveAuditorium(), deleteAuditorium()
+*** *   ...9 methodes  |   	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), supprimerAppartement(),
+	*						obtenir_avec_Limit(), nombre_notes(), getTypesApt(), getQuartier()
     */
     class Modele_Appartements extends BaseDAO {
 
@@ -56,14 +57,38 @@
 		* @return     <boolean>  		( resultat de la requete )
 		*/
 		public function sauvegarderAppartement(Appartement $a) {
-				
-			// insertion
-            $sql = "INSERT INTO " . $this->getTableName() . " (options, titre, descriptif, montantParJour, nbPersonnes, nbLits, nbChambres, photoPrincipale, noApt, noCivique, rue, codePostal, id_typeApt, id_userProprio, id_nomQuartier) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
-			$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersonnes(), $a->getNbLits(), $a->getNbChambres(), $a->getPhotoPrincipale(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_userProprio(), $a->getId_nomQuartier()); 
-			// modification a ajouter
 			
-           	return $this->requete($sql, $data);
+			// si on a un id d'appartement, modification
+			if($a->getId() && $this->lire($a->getId())->fetch()) {
+				
+				$query = "UPDATE " . $this->getTableName() . " SET options=?, titre=?, descriptif=?, montantParJour=?, nbPersonnes=?, nbLits=?, nbChambres=?, noApt=?, noCivique=?, rue=?, codePostal=?, id_typeApt=?, id_nomQuartier=? WHERE " . $this->getClePrimaire() . "=?";
+				$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersonnes(), $a->getNbLits(), $a->getNbChambres(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_nomQuartier(), $a->getId()); 
+				return $this->requete($query, $data);
+			}
+			// sinon insertion
+			else {
+	            $sql = "INSERT INTO " . $this->getTableName() . " (options, titre, descriptif, montantParJour, nbPersonnes, nbLits, nbChambres, noApt, noCivique, rue, codePostal, id_typeApt, id_userProprio, id_nomQuartier) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+				$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersonnes(), $a->getNbLits(), $a->getNbChambres(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_userProprio(), $a->getId_nomQuartier()); 
+				$resultat = $this->requete($sql, $data);
+				$lastId = $this->db->lastInsertId();
+		        return ($resultat) ? $lastId : false;	
+	        }
 		}
+
+		/**
+		* @brief      	Met a jour la valeur d'une colonne specifique dans une table 
+		* @details 		Fait appel a la fonction miseAjourChamp() de BaseDAO qui met a jour 
+		*				la valeur d'une colonne specifique dans une table 
+		* @param      	<varchar>  		$champ     	Titre du champ
+		* @param      	<varchar>  		$val     	Valeur du champ 
+		* @param      	<varchar>  		$id     	L'id de l'Appartement
+		* @return     	<boolean>  		( resultat de la requete ou false )
+		*/
+		public function editerChampUnique($champ, $val, $id) {
+			
+			return $this->miseAjourChamp($champ, $val, $id);
+		}
+		
        
        	/**
 		* @brief      	Supprime un Appartement
@@ -95,7 +120,7 @@
         
 		/**
 		* @brief      Selectionner le nombre des notes attribuées a un appart
-                      et la somme de toutes les notes d'un appart
+        *             ainsi que la somme de toutes les notes d'un appart
 		* @return     <entier>
 		*/
 		public function nombre_notes($id_appart)
@@ -132,6 +157,19 @@
             return $this->requete($query);   
         }
 
-        
+        /**
+		* @brief		Insertion de photos supplementaires pour un appartement dans la table photo
+		* @details		Permet de recuperer tous les quartiers dans la table quartier
+		* @param 		<string> 	$urlPhoto  		adresse photo
+		* @param 		<int> 		$id_appart  	l'id de l'appartement
+		* @return     	<boolean>  		( resultat de la requete ou false )
+		*/
+		public function sauvegarderPhoto($urlPhoto, $id_appart) {
+
+			$query = "INSERT INTO photo (photoSupp, id_appartement) VALUES (?, ?)";
+			$donnees = array($urlPhoto, $id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat;   
+        }
 
     }

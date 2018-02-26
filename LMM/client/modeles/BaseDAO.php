@@ -77,8 +77,8 @@
 		*/	 
 		protected function miseAjourChamp($leChamp, $laValeur, $id)
 		{
-			$query = "UPDATE " . $this->getTableName() . " SET ".$leChamp." = ".$laValeur." WHERE " . $this->getClePrimaire() ."=?";
-			$donnees = array($id);
+			$query = "UPDATE " . $this->getTableName() . " SET " . $leChamp . " = ? WHERE " . $this->getClePrimaire() . " = ?";			
+			$donnees = array($laValeur, $id);
 			return $this->requete($query, $donnees);
 		}
 

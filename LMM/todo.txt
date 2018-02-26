@@ -6,18 +6,26 @@
 		PHP
 		- hash du mot de passe avant insertion BD
 		- changer vue d'affichage pour message succès 
-		- photo insertion + src(nom de la photo)
 		JS
-		- regex à paufiner... username - pwd - tel (international)
+		- regex à paufiner... username - pwd - tel (international) 
 
 	Inscription d'un Appartement:	
-		- photo insertion + src(nom de la photo) + ajout de photos supp.
-		- changer vue d'affichage pour message succès  
-		- affichage du formulaire ou pas?.. Lien dans menu, le mettre par défaut ou pas?
+		- redirections des messages d'erreur
 
-	* 	- Dire aux autres de mettre options à NULL
-		- Remettre coor_moyenComm à NOT NULL
+	Modif d'un appart:
+ 
 
+	Photos:
+		- nom des photos dans les tables
+		- gérer le nb max (10 en tout)
+		- modifier une photo... 
+
+Notes:	
+	- fonction champ unique *Salim*
+	- photo a null dans la table, ou idee pour sauvegarde appart...
+	- footer a enlever... a cause des vues partielles
+	- a temp sur la page des listes d'appart
+	- modif Appartement (options enlevees de l'insert de base)
 
 	Vérifier si tout est compatible sur les différents navigateurs:
 

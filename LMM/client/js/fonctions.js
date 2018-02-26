@@ -44,7 +44,7 @@
     function isName(elm) {
 
         //  ne tolere aucun espace avant le premier mot ni après le dernier mot
-        var regEx = /^\S[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\-'\s]*\S$/gi;     
+        var regEx = /^\S[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ.\-'\s]*\S$/gi;     
         var result = elm.match(regEx); 
         return result ? result : false;
     }    
@@ -56,8 +56,8 @@
     */
     function isText(elm) {
         
-        //  ne tolere aucun espace avant le premier mot ni après le dernier mot
-        var regEx = /^\S[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ@"$%#*&=+;:\/\)\(?!_.,\-'\s]*\S$/gi;     
+        //  ne tolere aucun espace avant le premier mot 
+        var regEx = /^\S[0-9a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ@"$%#*&=+;:\/\)\(?!_.,\-'\s]*$/gi;     
         var result = elm.match(regEx); 
         return result ? result : false;       
     } 
@@ -93,6 +93,18 @@
         } else {
             return false;
         }  
+    }
+
+     /**
+    * @brief    Fonction qui verifie si un champ code postal est au bon format
+    * @details  Fonction qui cible la valeur zipCode (code postal) de l'input d'un formulaire et verifie son format avec une RegExp
+    * @param    <valeur>    elm      la valeur de l'input codePostal             
+    * @return   true (le resultat) si le format est bon, sinon null
+    */
+    function isZipCode(elm) {                        
+        var regEx = /^[a-z][\d][a-z]\s?[\d][a-z][\d]$/gi;
+        var result = elm.match(regEx);
+        return result;
     }
 
     /**
@@ -170,4 +182,50 @@
     function isInt(elm) {
 
         return (elm == parseInt(elm, 10) && elm != 0) ? true : false;
+    }
+
+    /**
+    * @brief    Cree un element 
+    * @details  Fonction appelee pour creer des elements a inserer dans le DOM            
+    * @param    <string>    elmName     nom de l'element a creer (localName)  
+    * @param    <array>     classData   tableau contenant toutes les classes a ajouter a l'element
+    * @param    <string>    text        texte a ajouter a l'element via la @f addText | ce param peut etre omis
+    * @return   <object>    l'element cree
+    */
+    function addElement(elmName, classData, text) {
+        var elm = document.createElement(elmName);
+        for(var i = 0; i < classData.length; i++) {
+            elm.classList.add(classData[i]);
+        }
+        if(text) {
+            addText(elm, text);
+        }
+        return elm;
+    }
+
+    /**
+    * @brief    Applique un ou plusieurs attribut(s) a un element
+    * @details  Fonction appelee pour appliquer divers attributs a un element
+    * @param    <object>    elm         nom de l'element auquel appliquer un attribut   
+    * @param    <array>     attributes  tableau contenant touts les attributs a ajouter a l'element
+    * @return   <object>    l'element avec attributs ajoutes
+    */
+    function setAttributes(elm, attributes) {
+        for(var a in attributes) {
+            elm.setAttribute(a, attributes[a]);
+        }
+        return elm;
+    }
+
+    /**
+    * @brief    Ajoute du texte a un element 
+    * @details  Fonction appelee pour ajouter un noeud texte a un element
+    * @param    <object>    elm         nom de l'element auquel ajouter du texte   
+    * @param    <string>    text        texte a ajouter a l'element (param facultatif)
+    * @return   <object>    l'element avec texte ajoute
+    */
+    function addText(elm, textNode) {
+        var text = document.createTextNode(textNode);
+        elm.appendChild(text); 
+        return elm;
     }

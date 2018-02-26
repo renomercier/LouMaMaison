@@ -489,10 +489,6 @@
 
         }
         
-        
-        
-        
-
 		/**
 		* @brief		Fonction de validation des parametres du formulaire d'inscription d'un usager
 		* @details		Validation des différents inputs avant l'instanciation et l'insertion dans la BD

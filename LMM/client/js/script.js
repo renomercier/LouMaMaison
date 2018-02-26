@@ -12,7 +12,7 @@ $(document).ready(function() {
             var action = $(this).attr('name');
             var text = $(this).html();
             var newText ='';
-
+            console.log(idUser);
             if(action=='inversBan')
                  newText = (text == 'Bannir')? "Réhabiliter":"Bannir";
             if(action=='inversActiv')
@@ -24,13 +24,13 @@ $(document).ready(function() {
                 method: "GET",
                 url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
                 dataType:"html",
-        // comportement en cas de success ou d'echec
-              success:function(reponse) {
-                $('#'+idUser+'[name='+action+']').html(newText);
-              },
-              error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-              }
+        		// comportement en cas de success ou d'echec
+	            success:function(reponse) {
+	                $('#'+idUser+'[name='+action+']').html(newText);
+	            },
+	            error: function(xhr, ajaxOptions, thrownError) {
+	                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	            }
             });
 
         });

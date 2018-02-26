@@ -29,6 +29,9 @@
         */
 		protected function afficheVue($nomVue, $data = null)
 		{  
+            // Inclure le header pour chaque vue
+            // require_once(RACINE . "vues/head.php");
+
 			$cheminVue = RACINE . "vues/" . $nomVue . ".php";
 
 			if(file_exists($cheminVue))
@@ -39,6 +42,9 @@
 			{
 				trigger_error("Erreur 404! La vue $cheminVue n'existe pas.");
 			}
+
+            // Inclure le footer pour chaque vue
+            // require_once(RACINE . "vues/footer.php");
 		}
 
 		/**
@@ -93,6 +99,9 @@
 		*/	
 		public function afficheListeAppartements($page)
 		{
+            $data= $this->initialiseMessages();
+            $this->afficheVue("header",$data);
+            
 			$modeleAppartement= $this->getDAO("Appartements");
 			$apparts = $modeleAppartement->obtenir_tous();
             $data = $this->obtenir_liste_partielle($apparts, $page);
@@ -148,7 +157,6 @@
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 
             }
-            
 			$this->afficheVue("listeAppartements", $data);
             $this->afficheVue("carteGeographique", $data);
             return $data;
