@@ -238,5 +238,39 @@
 			$lUsager = $resultat->fetch();
             return $lUsager;
         }
+        
+        public function filtrer_les_usagers($filtre){
+            $query = "SELECT * FROM " . $this->getTableName() . " u 
+                        JOIN role_user ru ON u.username = id_username 
+                        JOIN role r ON ru.id_nomRole = r.id";
+            
+            if(isset($filtre['role'])&& !empty($filtre['role']))
+            {
+                $query .= " WHERE r.nomRole ='".$filtre['role']."'";
+            }
+            if(isset($filtre['valide'])&& !empty($filtre['valide']))
+            {
+                $query .= " AND u.valideParAdmin	 = 1";
+            }
+            if(isset($filtre['attente'])&& !empty($filtre['attente']))
+            {
+                $query .= " AND u.valideParAdmin	 = 0";
+            }
+            if(isset($filtre['banni'])&& !empty($filtre['banni']))
+            {
+                $query .= " AND u.banni	 = 1";
+            }
+            $query .= " GROUP BY u.username";
+            
+            $resultat = $this->requete($query);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
+            $lesUsagers = $resultat->fetchAll();
+            foreach($lesUsagers as $usager)
+            {
+                $this->obtenir_avec_role($usager);
+            }
+
+			return $lesUsagers;
+        }
 }   
 ?>

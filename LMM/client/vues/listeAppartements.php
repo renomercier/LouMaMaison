@@ -5,26 +5,24 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-<div class="col-md-6">
     <div class="resultat">
-        <h1>Liste des appartements</h1>
-        <div class="row">
+        <div class="row">       
                     <?php
                     if($data["appartements"]){
                         foreach($data["appartements"] as $appartement)
                         {    
                     ?>
-                      <div class="col-md-6">
-                          <h5><?=$appartement->id_appartement;?></h5>
+                      <div class="col-md-4 appart" id="appart<?=$appartement->id_appartement;?>" name="<?=$appartement->adresse;?>">
+
                         <div class="thumbnail">
-                          <img src="./images/profil.jpg" alt="mon appart">
-                          <div class="caption">
-                            <p><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
-                            <h5><?=$appartement->getTitre();?></h5>
-                            <p>$<?=$appartement->getMontantParJour();?> par nuit</p>
-                            <p>Hôte: <?=$appartement->username;?></p>
-                              <p>debut: <?=$appartement->dateDebut;?></p><p>fin: <?=$appartement->dateFin;?></p>
-                            <p>rate 
+                          <img class="card-img-top" src="./images/profil.jpg" alt="mon appart">
+                          <div class="card-block">
+                            <p class="card-text"><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
+                            <h5 class="card-title"><?=$appartement->getTitre();?></h5>
+                            <p class="card-text">$<?=$appartement->getMontantParJour();?> par nuit</p>
+                            <p class="card-text">Hôte: <?=$appartement->username;?></p>
+                              <p class="card-text">debut: <?=$appartement->dateDebut;?></p><p>fin: <?=$appartement->dateFin;?></p>
+                            <p class="card-text">rate 
                                 <?php
                                     for($i=1; $i<=$appartement->moyenne/2; $i++)
                                     {
@@ -38,15 +36,12 @@
                                         <i class="fa fa-star-half"></i>
                                  <?php
                                     }
-
                                 ?>
-                              </p> 
-                            <p><a href="#" class="btn btn-primary" role="button">reserver</a> <a href="#" class="btn btn-default" role="button">noter</a></p>
-                              <p class="adresse" hidden="hidden"><?=$appartement->adresse;?></p>
+                              <small class="text-muted">(<?=$appartement->nbrVotant;?>)</small></p> 
                           </div>
                         </div>
                       </div>
-                   <?php  
+                   <?php 
                         }
                     }else
                     {
@@ -70,24 +65,23 @@
                             if($data['nbrPage']>1)
                             {
                                // $numPage = isset($params['page'])? $params['page'] : 1;
-
                                     if($data['pageActuelle']-1 > 0)
                                     {
                                     ?>
-                                        <li class="page-item"><a class="page-link" href="index.php?Appartements&action=filtrer&appartParPage=<?=$data['appartParPage']?>&page=<?=$data['pageActuelle']-1?>">precedent</a></li>
+                                        <li class="page-item" value=""><a class="page-link" onclick="naviguer(<?=$data['appartParPage']?>,<?=$data['pageActuelle']-1?>)">precedent</a></li>
                                     <?php 
                                     }
                                         for($i=1; $i<=$data['nbrPage']; $i++) //On fait notre boucle
                                     {
                                            $active = ($i == $data['pageActuelle'])?  'active' : '';
                                     ?>
-                                        <li class="page-item <?=$active?>"><a class="page-link" href="index.php?Appartements&action=filtrer&appartParPage=<?=$data['appartParPage']?>&page=<?=$i?>"><?=$i?></a></li>
+                                        <li class="page-item <?=$active?>"><a class="page-link" onclick="naviguer(<?=$data['appartParPage']?>,<?=$i?>)"><?=$i?></a></li>
                                     <?php
                                     }
                                         if($data['pageActuelle']+1 <= $data['nbrPage'])
                                     {
                                     ?>
-                                        <li class="page-item"><a class="page-link" href="index.php?Appartements&action=filtrer&appartParPage=<?=$data['appartParPage']?>&page=<?=$data['pageActuelle']+1?>">suivant</a></li>
+                                        <li class="page-item"><a class="page-link" onclick="naviguer(<?=$data['appartParPage']?>,<?=$data['pageActuelle']+1?>)">suivant</a></li>
                                     <?php
                                     }
                             }
@@ -95,4 +89,4 @@
                         </ul>
                 </div>
             </div>
-        </div>
+       

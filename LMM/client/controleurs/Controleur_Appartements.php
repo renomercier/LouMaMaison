@@ -27,8 +27,8 @@
                 par rapport à son statut, son état de connexion
                 et ses droits sur le site
             */
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
+            
+            
             //
             //si le paramètre action existe
             if(isset($params["action"]))
@@ -55,24 +55,25 @@
                             $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
                         
                             // nombre d'etoiles
-                            $filtre['note'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                            $filtre['note'] = isset($params['note'])? $params['note'] : 0;
                         
                             // quartier
-                            $filtre['quartier'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                            $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
                         
                             // date d'arrivée
-                            $filtre['dateArrive'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                            $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0;
                         
                             // date de départ
-                            $filtre['dateDepart'] = isset($params['note']) && is_numeric($params['note']) ? $params['note'] : 0;
+                            $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
 
-                            $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
-
+                            $data = $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
+                            $this->afficheVue("listeAppartements", $data);
 						break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
-
+                        $data= $this->initialiseMessages();
+                        $this->afficheVue("header",$data);
                         if(isset($_SESSION['username'])) {
                             $params['erreursApt'] = $this->validerPermissionApt($_SESSION['username']);
                             $this->afficheFormAppartement($params);
@@ -81,12 +82,13 @@
                             $params['erreursApt'] = "Vous devez être connecté pour ajouter un appartement<br>";
                             $this->afficheFormAppartement($params);
                         }
-                        
+                        $this->afficheVue("footer");
                         break;
 
                     // case de sauvegarde (creation ou modification) d'un appartement
                     case "sauvegarderApt" :
-                       
+                            $data= $this->initialiseMessages();
+                            $this->afficheVue("header",$data);
                             if( isset($_SESSION['username']) && !empty($_SESSION['username']) && isset($params['titre']) && !empty($params['titre']) && isset($params['descriptif']) && !empty($params['descriptif']) && isset($params['id_typeApt']) && !empty($params['id_typeApt']) && 
                             isset($params['noCivique']) && !empty($params['noCivique']) && isset($params['rue']) && !empty($params['rue']) && isset($params['montantParJour']) && !empty($params['montantParJour']) && isset($params['codePostal']) && !empty($params['codePostal']) && 
                             isset($params['id_nomQuartier']) && !empty($params['id_nomQuartier']) && isset($params['nbPersonnes']) && !empty($params['nbPersonnes']) && isset($params['nbChambres']) && !empty($params['nbChambres']) && isset($params['nbLits']) && !empty($params['nbLits'])) {
@@ -122,7 +124,8 @@
                        else {
                             $params['erreursApt'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
                             $this->afficheFormAppartement($params);
-                        }   
+                        }
+                        $this->afficheVue("footer");
                         break;
 
 					default :
@@ -131,13 +134,19 @@
 			}
             // si aucune action, affichage de la page d'accueil par defaut
             else{ 
+                $data= $this->initialiseMessages();
+                $this->afficheVue("header",$data);
                 $numPage = isset($params['page'])? $params['page'] : 1;
                 // nombre d'appartements à afficher par page
                 $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
-                $this->afficheListeAppartements($numPage, $data['appartParPage']);           
+                $data = $this->afficheListeAppartements($numPage, $data['appartParPage']);
+                $this->afficheVue("RechercheAppartements", $data);
+                $this->afficheVue("listeAppartements", $data);
+                $this->afficheVue("carteGeographique", $data);
+                // affichage du footer
+                $this->afficheVue("footer");
             }            
-            // affichage du footer
-            $this->afficheVue("footer");
+
         }
         
         /**
@@ -276,7 +285,7 @@
 			$modeleAppartement= $this->getDAO("Appartements");
             
             // le nombre d'appart resultant de la requete
-            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit(0, PHP_INT_MAX));
+            $nbrAppart = count($modeleAppartement->obtenir_avec_Limit(0, PHP_INT_MAX, $filtre));
                         
             // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
@@ -315,15 +324,13 @@
                 $adresse=[];
                 $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
                 $appartement->moyenne = $moyenne['moyenne'];
+                $appartement->nbrVotant = $moyenne['nbr_votant'];
 
                 // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 
             }
-            $this->afficheVue("RechercheAppartements", $data);
-            $this->afficheVue("listeAppartements", $data);
-            $this->afficheVue("carteGeographique", $data);
+            return $data;
         }
-
     }
 ?>
