@@ -6,13 +6,10 @@
 * @version    	v.1 | fevrier 2018
 -->
     </div>
-</div>
-    </div>
         <footer>
             <div>
                 <p>footer</p>
             </div>
         </footer>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>
     </body>
 </html>

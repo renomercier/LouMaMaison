@@ -41,19 +41,14 @@
 					case "login":
                         $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
+                        $this->afficheVue('footer');
 						break;
 
 					// case de deconnexion d'un usager	
 					case "logout":
                         session_destroy();
-                        // redirection vers la page d'accueil
-                        echo "<script>window.location='./index.php?Appartements'</script>";
-                        
-                     /*   session_destroy();
-                        $data= $this->initialiseMessages();
-                        $this->afficheVue("header",$data);
-                        $numPage = isset($params['page'])? $params['page'] : 1;
-                        $this->afficheListeAppartements($numPage,4);*/
+                            // redirection vers la page d'accueil
+                            echo "<script>window.location='./index.php?Appartements'</script>";
 						break;
 
 					// case d'authetification d'un usager	
@@ -93,6 +88,7 @@
                                         $this->afficheVue("header", $data);
                                         $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
                                         $this->afficheVue("AfficheLogin", $data);
+                                        $this->afficheVue('footer');
                                     }
                                 }
                                 else
@@ -100,13 +96,14 @@
                                     // si la session existe déjà
                                     $this->afficheVue("header",$data);
                                     $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
-                                    // redirection temporaire
-                                    $this->afficheVue("accueil", $data); 
+                                    $this->afficheVue("AfficheLogin", $data);
+                                    $this->afficheVue('footer'); 
                                 }
                             }else{
                                 $this->afficheVue("header",$data);
                                 $data="<p class='alert alert-warning'>Username et password obligatoires!</p>";
                                 $this->afficheVue("AfficheLogin", $data);
+                                $this->afficheVue('footer');
                             }
                         }
 
@@ -120,11 +117,13 @@
                             $this->afficheVue("NavigationListeUsagers");
 							//affiche tous les usagers
 							$this->afficheListeUsagers();
+                            $this->afficheVue('footer');
 						}
 						else
 						{
 							//affiche page d'erreur
 							$this->afficheVue("404");
+                            $this->afficheVue('footer');
 						}
 						break;
                         
@@ -151,6 +150,7 @@
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
                         {       
                             $this->afficheProfil($params["idUsager"], $data);
+                            $this->afficheVue('footer');
                         }
                         else
                         {
@@ -307,6 +307,7 @@
 						if($data) {
                             $this->afficheVue("header", $data);
 							$this->afficheVue("afficheInscriptionUsager", $data);
+                            $this->afficheVue('footer');
 						}
 						break;
 

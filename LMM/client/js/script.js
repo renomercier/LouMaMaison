@@ -130,31 +130,6 @@ $( "#filtrer" ).on( "click", function( e ) {
 });
    
 
-/**
-  fonction pour faire les action d'administration sur un usager.
-  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
-*/
-
-    function actionAdmin(idUser, action) {
-        
-           $.ajax({
-                method: "POST",
-                url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
-                dataType:"html",
-        // comportement en cas de success ou d'echec
-              success:function(reponse) {
-                  //  $('.content .usagers').html('');
-                  //  $('.content .usagers').html(reponse);
-                      var filtreColonne = $('.filtre_usager .nav-link.active').attr('name');
-                      var filtreValeur = $('.filtre_usager .nav-link.active').attr('value');
-                      filtrerUsagers(filtreColonne, filtreValeur);
-              },
-              error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-              }
-            });
-    }
-
 /* filtrer le resultat de la recherche selon des critéres donnés*/
 
     function filtrerAppart(url){
@@ -191,7 +166,19 @@ function naviguer(appartParPage, page) {
         filtrerAppart(url);
 }
 
-    /* ============================  function pour initialiser la google map ============================================== */
+
+/* ============================  function pour initialiser la google map ============================================== */
+
+/* sila div #carte estchargée, inclure le script de la carte google */
+
+$(document).ready(function() {
+       if($('#carte').length)
+        {
+            var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
+            $('body').append(scriptGoogle);
+        } 
+});
+
 
     // initialiser la catrte google
     var carte;
@@ -280,6 +267,9 @@ function valPwdConfirm(elm1, elm2) {
     }
 };
 
+
+/*//////////////////// fonctions pour gerer les usagers ///////////////////////////*/
+
 /* fonction pour filtrer les usagers selon des criteres d'affichage*/
 
 function filtrerUsagers(colonne, valeur){
@@ -292,9 +282,35 @@ function filtrerUsagers(colonne, valeur){
               success:function(reponse) {
                     $('.content .usagers').html('');
                     $('.content .usagers').html(reponse);
+                  console.log(reponse);
               },
               error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
               }
             });
+}
+
+/**
+  fonction pour faire les action d'administration sur un usager.
+  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
+*/
+
+function actionAdmin(idUser, action) {
+
+       $.ajax({
+            method: "POST",
+            url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
+            dataType:"html",
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+              //  $('.content .usagers').html('');
+              //  $('.content .usagers').html(reponse);
+                  var filtreColonne = $('.filtre_usager .nav-link.active').attr('name');
+                  var filtreValeur = $('.filtre_usager .nav-link.active').attr('value');
+                  filtrerUsagers(filtreColonne, filtreValeur);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
 }
