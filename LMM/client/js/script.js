@@ -1,13 +1,13 @@
 $(document).ready(function() {
-    
-/*chercher les apparts avec les filtres remplis*/
-    
-$( "#filtrer" ).on( "click", function( e ) {
-    event.preventDefault();
-    var url = $('#formFiltrer').serialize();
-    filtrerAppart(url);
-});  
+ 
+    /*chercher les apparts avec les filtres remplis*/
 
+    $( "#filtrer" ).on( "click", function( e ) {
+        event.preventDefault();
+        var url = $('#formFiltrer').serialize();
+        filtrerAppart(url);
+    });
+    
     /**
 	* 	Fonction pour afficher un profil d'usager
 	*/
@@ -118,7 +118,7 @@ $( "#filtrer" ).on( "click", function( e ) {
 			(valModePaiement !=1) ? ($("#modePaiement").addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($("#modePaiement").removeClass('alert-warning'), $('#aideModePaiement').empty());
 		}	
 	});
-    
+	
     /* definir la class active a la categorie d'usagers visitée */
     $('.filtre_usager .nav-link').on( "click", function( e ) {
         event.preventDefault();
@@ -128,8 +128,25 @@ $( "#filtrer" ).on( "click", function( e ) {
         $(this).addClass('active');
     });
 });
-   
+		
+		
+/*----------------- A Ajouter dans le fichier functions!*/
 
+/**
+    Fonction pour comparer les mots de pass saisis
+*/
+function valPwdConfirm(elm1, elm2) {
+    if(elm1 !== elm2) {
+        $("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques');
+        return false;					
+    }
+    else {
+        $("#pwd1").removeClass('alert-warning'), $('#aidePwd1').empty();	
+        return true;
+    }
+};
+
+/*////////////////////////////////////////////////////////////////*/
 /* filtrer le resultat de la recherche selon des critéres donnés*/
 
     function filtrerAppart(url){
@@ -165,7 +182,6 @@ function naviguer(appartParPage, page) {
         url+="&appartParPage="+appartParPage+"&page="+page+"";
         filtrerAppart(url);
 }
-
 
 /* ============================  function pour initialiser la google map ============================================== */
 
@@ -251,23 +267,7 @@ $(document).ready(function() {
         });
      }
      
-/*----------------- A Ajouter dans le fichier functions!*/
-
-/**
-    Fonction pour comparer les mots de pass saisis
-*/
-function valPwdConfirm(elm1, elm2) {
-    if(elm1 !== elm2) {
-        $("#pwd1").addClass('alert-warning'), $('#aidePwd1').empty().append('Les mots de passe entrés doivent être identiques');
-        return false;					
-    }
-    else {
-        $("#pwd1").removeClass('alert-warning'), $('#aidePwd1').empty();	
-        return true;
-    }
-};
-
-
+     
 /*//////////////////// fonctions pour gerer les usagers ///////////////////////////*/
 
 /* fonction pour filtrer les usagers selon des criteres d'affichage*/

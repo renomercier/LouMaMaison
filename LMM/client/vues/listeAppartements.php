@@ -10,19 +10,26 @@
                     <?php
                     if($data["appartements"]){
                         foreach($data["appartements"] as $appartement)
-                        {    
+                        { 
+                            
+                            if ($appartement->getPhotoPrincipale() != "") {
+                                $photoApt = $appartement->getPhotoPrincipale();
+                            } else {
+                                $photoApt = "./images/profil.jpg";
+                            }
+                      
                     ?>
                       <div class="col-md-4 appart" id="appart<?=$appartement->id_appartement;?>" name="<?=$appartement->adresse;?>">
 
                         <div class="thumbnail">
-                          <img class="card-img-top" src="./images/profil.jpg" alt="mon appart">
+                          <img class="card-img-top photoAppartement img img-fluid thumbnail" src="<?= $photoApt ?>" alt="mon appart">
                           <div class="card-block">
                             <p class="card-text"><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                             <h5 class="card-title"><?=$appartement->getTitre();?></h5>
                             <p class="card-text">$<?=$appartement->getMontantParJour();?> par nuit</p>
                             <p class="card-text">Hôte: <?=$appartement->username;?></p>
                               <p class="card-text">debut: <?=$appartement->dateDebut;?></p><p>fin: <?=$appartement->dateFin;?></p>
-                            <p class="card-text">rate 
+                            <p class="card-text">rate                                
                                 <?php
                                     for($i=1; $i<=$appartement->moyenne/2; $i++)
                                     {
@@ -38,26 +45,30 @@
                                     }
                                 ?>
                               <small class="text-muted">(<?=$appartement->nbrVotant;?>)</small></p> 
-                          </div>
-                        </div>
+
+                            <!-- lientemporaire pour modifier un appartement -->
+<!-- @temp -->              <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $appartement->id_appartement; ?>" role="button">Modifier ce logis</a></p> 
+
+                            </div>
                       </div>
+                </div>
                    <?php 
                         }
                     }else
                     {
                     ?>
-        <div class="col-md-6 mx-auto">
-            <div class="error-template text-center">
-                <h2>Oops!</h2>
-                <h3>Aucun résultat our votre recherche</h3>
-                <div class="error-details">
-                    Éssaiyez avec d'autres critères!
+                <div class="col-md-6 mx-auto">
+                    <div class="error-template text-center">
+                        <h2>Oops!</h2>
+                        <h3>Aucun résultat our votre recherche</h3>
+                        <div class="error-details">
+                            Éssaiyez avec d'autres critères!
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-                       <?php  
+                <?php  
                     }
-                        ?>
+                ?>
                 </div>
                 <div class="row mt-5">
                         <ul class="pagination mx-auto">
@@ -89,4 +100,3 @@
                         </ul>
                 </div>
             </div>
-       

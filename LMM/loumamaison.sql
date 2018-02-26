@@ -56,20 +56,25 @@ CREATE TABLE IF NOT EXISTS `appartement` (
 --
 
 INSERT INTO `appartement` (`id`, `actif`, `options`, `titre`, `descriptif`, `montantParJour`, `nbPersonnes`, `nbLits`, `nbChambres`, `photoPrincipale`, `noApt`, `noCivique`, `rue`, `ville`, `codePostal`, `id_typeApt`, `id_userProprio`, `id_nomQuartier`) VALUES
-(1, 1, 'wifi=checked&cintres=checked', 'maison de bois', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, 'profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
-(2, 1, 'wifi=checked&cintres=checked', 'maison en brique', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, 'profil.jpg', '300', 2030, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
-(3, 1, 'wifi=checked&cintres=checked', 'maison en paille', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, 'profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
-(4, 1, 'wifi=checked&cintres=checked', 'maison en carton', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, 'profil.jpg', '302', 2030, 'bélanger', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
-(5, 1, 'wifi=checked&cintres=checked', 'maison de bois 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, 'profil.jpg', '4', 2030, 'bellechasse', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
-(6, 1, 'wifi=checked&cintres=checked', 'maison en brique 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, 'profil.jpg', '300', 4218, 'rudy', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
-(7, 1, 'wifi=checked&cintres=checked', 'maison en paille 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, 'profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
-(8, 1, 'wifi=checked&cintres=checked', 'maison en carton 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, 'profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
-(9, 1, 'wifi=checked&cintres=checked', 'maison de bois 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, 'profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
-(10, 1, 'wifi=checked&cintres=checked', 'maison en brique 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, 'profil.jpg', '300', 11970, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
-(11, 1, 'wifi=checked&cintres=checked', 'maison en paille 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, 'profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
-(12, 1, 'wifi=checked&cintres=checked', 'maison en carton 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, 'profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
-(13, 1, 'wifi=checked&cintres=checked&fer+%C3%A0+repasser=checked', 'Le titre mmmmm', 'oooooo ooooo oo o ', 50, 2, 1, 1, 'photo.jpg', NULL, 1025, 'DeBellechasse', 'Montréal', 'H2S1Y4', 1, 'salim', 14),
-(14, 1, NULL, 'TTTTTTTTTT', 'oooooo ooo oo o o ', 70, 2, 1, 1, 'photo.jpg', NULL, 32, 'Beaubien', 'Montréal', 'h2h2h2', 3, 'nat', 17);
+(1, 1, 'wifi=checked&cintres=checked', 'maison de bois', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
+(2, 1, 'wifi=checked&cintres=checked', 'maison en brique', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 2030, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
+(3, 1, 'wifi=checked&cintres=checked', 'maison en paille', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
+(4, 1, 'wifi=checked&cintres=checked', 'maison en carton', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 2030, 'bélanger', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
+(5, 1, 'wifi=checked&cintres=checked', 'maison de bois 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 2030, 'bellechasse', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
+(6, 1, 'wifi=checked&cintres=checked', 'maison en brique 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 4218, 'rudy', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
+(7, 1, 'wifi=checked&cintres=checked', 'maison en paille 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
+(8, 1, 'wifi=checked&cintres=checked', 'maison en carton 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
+(9, 1, 'wifi=checked&cintres=checked', 'maison de bois 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
+(10, 1, 'wifi=checked&cintres=checked', 'maison en brique 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 11970, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
+(11, 1, 'wifi=checked&cintres=checked', 'maison en paille 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
+(12, 1, 'wifi=checked&cintres=checked', 'maison en carton 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
+(13, 1, 'wifi=checked&cintres=checked&fer+%C3%A0+repasser=checked', 'Le titre mmmmm', 'oooooo ooooo oo o ', 50, 2, 1, 1, './images/profil.jpg', NULL, 1025, 'DeBellechasse', 'Montréal', 'H2S1Y4', 1, 'salim', 14),
+(14, 1, NULL, 'TTTTTTTTTT', 'oooooo ooo oo o o ', 70, 2, 1, 1, './images/profil.jpg', NULL, 32, 'Beaubien', 'Montréal', 'h2h2h2', 3, 'nat', 17),
+(15, 1, 'Options-Associées', 'Superbe Loft disponible', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 123, 4, 2, 1, './images/apt01-01.png', '501', 51, 'St-Paul', 'Montréal', 'G1Q 1Q9', 1, 'renaud', 7),
+(16, 1, 'Options-Associées', 'Merveilleux Condo', 'Nunc luctus enim ligula, a tincidunt nunc ultricies eget.', 98, 2, 1, 1, './images/apt02-01.png', '201', 781, 'Rue de la Commune', 'Montréal', 'H2G 3P5', 3, 'nat', 7),
+(17, 1, 'Options-Associées', 'Loft affordant', 'Nam tincidunt ex turpis, in molestie ipsum pretium sed.', 87, 4, 2, 2, './images/apt03-01.png', '32', 448, 'Place Jacques-Cartier', 'Montréal', 'H1G 4L8', 1, 'yul', 7),
+(18, 1, 'Options-Associées', 'Magnifique Condo', 'Quisque finibus, odio ac congue malesuada, mi lectus tempus mi, in condimentum sem justo feugiat lorem.', 63, 4, 2, 2, './images/apt04-01.png', '107', 3745, 'Rue Masson', 'Montréal', 'H1G 4L8', 1, 'salim', 14);
+
 
 -- --------------------------------------------------------
 
@@ -109,6 +114,15 @@ CREATE TABLE IF NOT EXISTS `disponibilite` (
   KEY `FK_disponibilite_id_appartement` (`id_appartement`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+INSERT INTO `disponibilite` (`id`, `dateDebut`, `dateFin`, `disponibilite`, `id_appartement`) VALUES
+(1, '2018-02-23', '2018-03-04', 1, '18'),
+(2, '2018-02-23', '2018-03-31', 1, '17'),
+(3, '2018-02-23', '2018-03-31', 1, '16'),
+(4, '2018-02-23', '2018-03-31', 1, '15'),
+(5, '2018-03-09', '2018-03-11', 1, '18'),
+(6, '2018-03-16', '2018-03-18', 1, '18'),
+(7, '2018-03-23', '2018-03-25', 1, '18');
+
 -- --------------------------------------------------------
 
 --
@@ -133,13 +147,15 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
 
 INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appartement`, `id_username`) VALUES
 (1, 10, NULL, '2018-02-28', 1, 'nat'),
-(2, 5, NULL, '2018-02-27', 1, 'renaud'),
+(2, 10, NULL, '2018-02-27', 18, 'renaud'),
 (3, 7, NULL, '2018-02-25', 2, 'salim'),
 (4, 1, NULL, '2018-02-28', 3, 'salim'),
-(5, 5, NULL, '2018-02-18', 3, 'renaud'),
+(5, 8, NULL, '2018-02-18', 17, 'renaud'),
 (6, 5, NULL, '2018-02-24', 4, 'yul'),
 (9, 4, NULL, '2018-02-23', 5, 'salim'),
-(10, 3, NULL, '2018-02-22', 6, 'nat');
+(10, 3, NULL, '2018-02-22', 6, 'nat'),
+(11, 9, NULL, '2018-02-23', 16, 'renaud'),
+(12, 7, NULL, '2018-02-24', 15, 'renaud');
 
 -- --------------------------------------------------------
 
@@ -223,6 +239,48 @@ CREATE TABLE IF NOT EXISTS `photo` (
   PRIMARY KEY (`id`),
   KEY `FK_photo_id_appartement` (`id_appartement`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `photo` (`id`, `photoSupp`, `id_appartement`) VALUES
+(1, './images/apt01-01.png', 15),
+(2, './images/apt01-02.png', 15),
+(3, './images/apt01-03.png', 15),
+(4, './images/apt01-04.png', 15),
+(5, './images/apt01-05.png', 15),
+(6, './images/apt01-06.png', 15),
+(7, './images/apt01-07.png', 15),
+(8, './images/apt01-08.png', 15),
+(9, './images/apt01-09.png', 15),
+(10, './images/apt01-10.png', 15),
+(11, './images/apt02-01.png', 16),
+(12, './images/apt02-02.png', 16),
+(13, './images/apt02-03.png', 16),
+(14, './images/apt02-04.png', 16),
+(15, './images/apt02-05.png', 16),
+(16, './images/apt02-06.png', 16),
+(17, './images/apt02-07.png', 16),
+(18, './images/apt02-08.png', 16),
+(19, './images/apt02-09.png', 16),
+(20, './images/apt02-10.png', 16),
+(21, './images/apt03-01.png', 17),
+(22, './images/apt03-02.png', 17),
+(23, './images/apt03-03.png', 17),
+(24, './images/apt03-04.png', 17),
+(25, './images/apt03-05.png', 17),
+(26, './images/apt03-06.png', 17),
+(27, './images/apt03-07.png', 17),
+(28, './images/apt03-08.png', 17),
+(29, './images/apt03-09.png', 17),
+(30, './images/apt03-10.png', 17),
+(31, './images/apt04-01.png', 18),
+(32, './images/apt04-02.png', 18),
+(33, './images/apt04-03.png', 18),
+(34, './images/apt04-04.png', 18),
+(35, './images/apt04-05.png', 18),
+(36, './images/apt04-06.png', 18),
+(37, './images/apt04-07.png', 18),
+(38, './images/apt04-08.png', 18),
+(39, './images/apt04-09.png', 18),
+(40, './images/apt04-10.png', 18);
 
 -- --------------------------------------------------------
 
