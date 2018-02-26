@@ -15,9 +15,9 @@
                         {    
                     ?>
                       <div class="col-md-6">
-                          <!--<h5><?=$appartement->id_appartement;?></h5>-->
+                          <h5><?=$appartement->id_appartement;?></h5>
                         <div class="">
-                    
+                            
                           <?php
                             
                             if ($appartement->getPhotoPrincipale() != "") {
@@ -26,9 +26,7 @@
                                 $photoApt = "./images/profil.jpg";
                             }
                           ?>    
-                            <p>getId: <?= $appartement->getId();?></p>	
-                            <p>id_apt: <?=  $appartement->id_appartement; ?></p>	
-                   
+
                           <!--<img src="./images/profil.jpg" alt="mon appart">-->
                           <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=  $appartement->id_appartement; ?>" >
                             <img src="<?= $photoApt ?>" class="photoAppartement img img-fluid thumbnail" alt="mon appart">
@@ -69,41 +67,51 @@
                                     ?>
                                         <i class="fa fa-star"></i>
                                 <?php
+
 									}
-									?>
-								<?php
+								
+                                    if($appartement->moyenne % 2 != 0)
+                                    {
+                                     ?>   
+                                        <i class="fa fa-star-half"></i>
+                                 <?php
+                                    }
+
 								if($appartement->moyenne == null) 
 								{ 
 								?>
 									<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
 								<?php
-								
 								}
 								?>
 								<?=$appartement->NbNotes;?>
+
                               </p> 
                             <p><a href="#" class="btn btn-primary" role="button">reserver</a> <a href="#" class="btn btn-default" role="button">noter</a></p>
-                              <p class="adresse" hidden="hidden"><?=$appartement->adresse;?></p>
+                            <p class="adresse" hidden="hidden"><?=$appartement->adresse;?></p>
+                            <!-- lientemporaire pour modifier un appartement -->
+<!-- @temp -->              <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?=$appartement->id_appartement;?>" role="button">Modifier ce logis</a></p> 
                           </div>
                         </div>
                       </div>
                    <?php  
                         }
-                    }else
-                    {
-                    ?>
+                    }
+            
+            else
+            {
+            ?>
         <div class="col-md-6 mx-auto">
             <div class="error-template text-center">
                 <h2>Oops!</h2>
                 <h3>Aucun résultat pour votre recherche</h3>
                 <div class="error-details">
-                    Éssaiyez avec d'autres critères!
+                    Essayez avec d'autres critères!
+
                 </div>
-            </div>
-        </div>
-                       <?php  
+                <?php  
                     }
-                        ?>
+                ?>
                 </div>
                 <div class="row mt-5">
                         <ul class="pagination mx-auto">
@@ -137,3 +145,5 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>

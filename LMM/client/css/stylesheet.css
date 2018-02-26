@@ -1,3 +1,30 @@
+/* --------------------------------------------------- Reset */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* --------------------------------------------------- H1-h6, li, a, p etc. */
+.pagination li{
+    cursor: pointer;
+}
+
+
+/* --------------------------------------------------- Icones   */
+.fa-star, .fa-star-half{
+    color: darkorange;
+}
+
+/* --------------------------------------------------- Forms   */
+#formUsager select, #formApt small {
+    font-size: 0.9em !important;
+}
+#formUsager small, #formApt small {
+    padding-left: 15px;
+    color: #682b28!important;
+}
+
 /* --------------------------------------------------- Inputs	*/
 /* ref: https://stackoverflow.com/questions/2610497 */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
@@ -27,14 +54,7 @@
    font-size: 0.8em !important;
 }
 
-#formUsager select {
-	font-size: 0.9em !important;
-}
-#formUsager small {
-	padding-left: 15px;
-	color: #682b28!important;
-}
-
+/* --------------------------------------------------- Images   */
 .thumbnail{
     width: 100%;
     overflow: hidden;
@@ -43,11 +63,20 @@
     width: 100%;
     height: auto;
 }
-.pagination li{
-    cursor: pointer;
+
+
+/* Opacite des photos lorsque "hovered on" */
+.photoAppartement:hover, .photoSupplementaire:hover {
+    opacity: 0.7;
 }
-.fa-star, .fa-star-half{
-    color: darkorange;
+
+/*----- modalGaleriePhoto  -----*/
+
+/* Modal-Carousel pour photos supplementaires */
+
+.modal-header, .modal-footer {  
+    color: #ffffff;
+    background-color: #014B88;
 }
 
 .fa_custom{
@@ -58,14 +87,6 @@
 .photoAppartement:hover, .photoSupplementaire:hover {
     opacity: 0.7;
 }
-
-
-html, body {
-height: 100%;
-margin: 0;
-padding: 0;
-}
-
 
 /*----- modalGaleriePhoto  -----*/
 
@@ -116,6 +137,71 @@ footer {
     background-color: #585759;
 }
 
+.modal-xl {
+    max-height: auto;
+    max-width: 66%;
+}
+
+/*----- page AfficheAppartement -----*/
+
+.sectionAptDetail {
+    
+}
+
+.sectionAptDetail-g, .sectionAptDetail-d {
+    padding=0;
+    /*border: 1px solid #000000; */ 
+}
+
+.aptReservation, .aptDisponibilites {
+    padding: 20px;
+    border: 1px solid #585759;
+}
+
+.aptDisponibilites {
+    padding: 10px;
+    height: 165px;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid #585759;
+}
+
+.iconeAptDescription {
+    margin-right: 20px;
+}
+
+
+.aptPhotoPrincipale {
+    
+}
+
+.aptPhotoSupp {
+    height: 5em;
+    width: 6.5em; 
+}
+
+.aptPhotoModal {
+    height: 45em;
+    width: 60em; 
+}
+
+.aptPhotoProprio {
+    height: 5em;
+    width: 5em; 
+}
+
+.aptIcones {
+    height: 2em;
+    width: 2em;
+}
+
+/*----- footer -----*/
+
+footer {
+    color: #ffffff;
+    background-color: #585759;
+}
+
 footer hr {
     border: 0.5px solid #ffffff;; 
 }
@@ -144,4 +230,9 @@ footer hr {
 
 .footer-media-item a:hover {
     color: #014B88;
+}
+
+/* --------------------------------------------------- Carte   */
+#carte {
+    height: 50%;
 }

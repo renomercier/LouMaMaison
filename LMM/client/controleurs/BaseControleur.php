@@ -29,6 +29,9 @@
         */
 		protected function afficheVue($nomVue, $data = null)
 		{  
+            // Inclure le header pour chaque vue
+            // require_once(RACINE . "vues/head.php");
+
 			$cheminVue = RACINE . "vues/" . $nomVue . ".php";
 
 			if(file_exists($cheminVue))
@@ -39,6 +42,9 @@
 			{
 				trigger_error("Erreur 404! La vue $cheminVue n'existe pas.");
 			}
+
+            // Inclure le footer pour chaque vue
+            // require_once(RACINE . "vues/footer.php");
 		}
 
 		/**
@@ -75,7 +81,7 @@
         * @brief       la méthode qui initialise les messages a retourner à l'utilisateur
         * @return      <array>       $data       Tableau de messages à l'usager          
         */
-        protected function initialiseMessages()
+         protected function initialiseMessages()
         {
             $data['message'] = (isset($_SESSION["username"])) ? "<p class='alert alert-success'>Bienvenue ".$_SESSION['prenom']. " " .$_SESSION['nom'] ."</p>" : "<p class='alert alert-warning'>Vous n'êtes pas connecté. Vos privilèges seront limités!</p>";
             //

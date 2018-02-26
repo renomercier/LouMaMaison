@@ -59,7 +59,7 @@
 				?>
                   
                         <div class="carousel-item active"> 
-                            <img src="<?= $photo['photoSupp'] ?>" class="d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <img src="<?= $photo['photoSupp'] ?>" class="aptPhotoModal d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
                             <!--
                             <div class="carousel-caption">
                                 <h3>Heading 3</h3>
@@ -73,7 +73,7 @@
 				    ?>    
                   
                         <div class="carousel-item"> 
-                            <img src="<?= $photo['photoSupp'] ?>" class="d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
+                            <img src="<?= $photo['photoSupp'] ?>" class="aptPhotoModal d-block img img-fluid" alt="photoGalerie<?= $nbrP ?>">
                             <!--
                             <div class="carousel-caption">
                                 <h3>Heading 3</h3>
@@ -136,7 +136,7 @@
 			<!-- Affichage de la photo principale -->
 			<div>
                 <div id="photoPrincipale">
-                    <img src="<?= $data['appartement']->getPhotoPrincipale() ?>" class="photoPrincipale img img-fluid">
+                    <img src="<?= $data['appartement']->getPhotoPrincipale() ?>" class="aptPhotoPrincipale img img-fluid">
                 </div>
             </div>
 
@@ -150,7 +150,7 @@
 				?>
 						<div class="d-inline" data-toggle="modal" data-target="#modalGaleriePhoto">
                             <a href="#maGalerie" data-slide-to="<?= $nbrP ?>">
-                                <img src="<?= $photo['photoSupp'] ?>" style="width: 100px; height: 75px" class="photoSupplementaire img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
+                                <img src="<?= $photo['photoSupp'] ?>" class="aptPhotoSupp img-thumbnail img-fluid" alt="Photo-<?= $nbrP ?>">
                             </a>
 						</div>
 				<?php
@@ -180,9 +180,9 @@
                 </div>
                 <div class="">
                     <div class="text-center align-middle">
-                        <!--<img src="<?= $data['proprietaire']->getPhoto(); ?>" style="width: 100px; height: 100px" class="photoProprio rounded-circle img-fluid" alt="PhotoProprio">-->
+                        <img src="<?= $data['proprietaire']->getPhoto(); ?>" class="aptPhotoProprio rounded-circle img-fluid" alt="PhotoProprio">
 
-                        <img src="./images/profil.jpg" style="width: 100px; height: 100px" class="photoProprio rounded-circle img-fluid" alt="PhotoProprio">
+                        <!--<img src="/images/profil.jpg" class="aptProprio rounded-circle img-fluid" alt="PhotoProprio">-->
 
                         <p><?= $data['appartement']->getId_userProprio() ?></p>
                     </div>
@@ -190,54 +190,108 @@
             </div>
             
             <div class="row">
-                <div class="iconeDescription">
+                <div class="iconeAptDescription">
                     <p><i class="fa fa-male fa-lg"></i>&nbsp<?= $data['appartement']->getNbPersonnes(); ?> personnes</p>
                 </div>
-                <div class="iconeDescription">
+                <div class="iconeAptDescription">
                     <p><i class="fa fa-square-o fa-lg"></i>&nbsp<?= $data['appartement']->getNbChambres(); ?> chambres</p>
                 </div>
-                <div class="iconeDescription">
+                <div class="iconeAptDescription">
                     <p><i class="fa fa-bed fa-lg"></i>&nbsp<?= $data['appartement']->getNbLits(); ?> lits</p>
                 </div>
-                <div class="iconeDescription">
+                <div class="iconeAptDescription">
                     <p><i class="fa fa-bath fa-lg"></i>&nbsp1 salle de bain</p>
                 </div>
             </div>
             
             <hr>
             
-            <div class="row">
-                <p><?= $data['appartement']->getDescriptif(); ?></p>
+            <div class="d-block">
+                <div class="d-inline">
+                    <p><?= $data['appartement']->getDescriptif(); ?></p>
+                </div>
             </div>
             
-            <div class="row">
+            <div class="d-block">
                 <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
             </div>
             
             <hr>
             
-            <div class="row">
-                <h5>Équipement</h5>
+            <div class="aptEquipements d-block">
+                <h5 class="row">Équipements / fonctionnalités</h5>
+                <div class="row">
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">blablablablabla...</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">blablablablabla...</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">blablablablabla...</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">blablablablabla...</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">blablablablabla...</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">blablablablabla...</p>
+                    </div>
+                </div>
             </div>
             
             <hr>
             
-            <div class="row">
-                <h5>Règlement intérieur</h5>
+            <div class="aptReglement d-block">
+                <h5 class="row">Règlement intérieur</h5>
+                <div class="row">
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/no-smoking.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">Non fumeur</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/043-dog.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">Animaux permis</p>
+                    </div>
+                </div>
+                <div class="">
+                    <p>C'est selon...</p>
+                    <p>Bacon ipsum dolor amet spare ribs pork loin ribeye shank kevin beef chicken strip steak burgdoggen leberkas. Venison t-bone short ribs buffalo spare ribs, pork chop brisket boudin chicken jerky shankle drumstick hamburger ground round turkey. Beef ribeye rump doner fatback. Cow filet mignon tongue, capicola ball tip cupim shankle meatball bacon pancetta andouille pork loin swine jowl bresaola.</p>
+                </div>
             </div>
             
             <hr>
             
-            <div class="">
-                <h5>Annulations</h5>
-                <p>Strictes</p>
-                <p>...</p>
+            <div class="aptAnnulation d-block">
+                <h5 class="row">Annulation</h5>
+                <div class="">
+                    <p>Strictes.</p>
+                    <p>Vestibulum nec dignissim sem, quis cursus sapien. Nam ac orci a nulla finibus laoreet hendrerit id ligula. Nunc at augue vel ligula tristique scelerisque a id urna. Nulla eget nunc et orci vehicula tempor at non augue. Quisque leo erat, semper ac vehicula sed, vulputate vitae quam. Curabitur sed mauris id tellus ultrices euismod. Cras pharetra eros a massa faucibus malesuada. Proin hendrerit ultricies enim, et vulputate ligula sodales luctus. Nunc a urna accumsan, tempus felis at, efficitur magna.</p>
+                </div>
             </div>
             
             <hr>
             
-            <div class="row">
-                <h5>Accèssibilité</h5>
+            <div class="d-block">
+                <h5  class="row">Accèssibilité</h5>
+                <div class="row">
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/elevator.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">Ascenseur</p>
+                    </div>
+                    <div class="d-inline col-sm-6">
+                        <img src="./icones/013-sign-1.svg" class="aptIcones img-fluid" alt="Icone">
+                        <p class="d-inline">Handicap</p>
+                    </div>
+                </div>
             </div>
             
             <hr>
@@ -258,13 +312,13 @@
             </pre>
             -->
             
-            <div class="reservation col-sm-12">
+            <div class="aptReservation col-sm-12">
                 <h4>$<?= $data['appartement']->getMontantParJour(); ?> CAD <small>par jour</small></h4>
                 <h6>Ratings</h6>
                 <hr>
                 
                 <!--
-                <div class="afficheDisponibilites">
+                <div class="aptDisponibilites">
                     <h4 class="text-center">Disponibilités</h4>
                     
                     <?php
@@ -333,6 +387,4 @@
     </section>
     
     <!-- Fin container -->
-</div>
-
- 
+</div> 

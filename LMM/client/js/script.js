@@ -1,31 +1,6 @@
 $(document).ready(function() {
 
 /**
-  fonction pour se connecter ou se deconnecter du site.
-*/
-/*if($(".connexion a").text() == "logout")
-{    
-    $(".connexion a").click(function(e) {
-        $(this).each(function() {
-        // envoi de la requete
-            e.preventDefault();
-           $.ajax({
-                method: "GET",
-                url: "index.php?Usagers&action=logout",
-                dataType:"html",
-        // comportement en cas de success ou d'echec
-              success:function(reponse) {
-                window.location.assign(window.location.pathname+"?Appartements");
-              },
-              error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-              }
-            });
-        });
-    });
-}
-  */  
-/**
   fonction pour faire les action d'administration sur un usager.
   (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
 */
@@ -37,7 +12,7 @@ $(document).ready(function() {
             var action = $(this).attr('name');
             var text = $(this).html();
             var newText ='';
-
+            console.log(idUser);
             if(action=='inversBan')
                  newText = (text == 'Bannir')? "Réhabiliter":"Bannir";
             if(action=='inversActiv')
@@ -49,13 +24,13 @@ $(document).ready(function() {
                 method: "GET",
                 url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
                 dataType:"html",
-        // comportement en cas de success ou d'echec
-              success:function(reponse) {
-                $('#'+idUser+'[name='+action+']').html(newText);
-              },
-              error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-              }
+        		// comportement en cas de success ou d'echec
+	            success:function(reponse) {
+	                $('#'+idUser+'[name='+action+']').html(newText);
+	            },
+	            error: function(xhr, ajaxOptions, thrownError) {
+	                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	            }
             });
 
         });
@@ -63,7 +38,7 @@ $(document).ready(function() {
     });
     
 
-    /**
+   /**
 	* 	Fonction pour afficher un profil d'usager
 	*/
 		$("#div_info_plus").append($("#info_plus"));
@@ -320,25 +295,3 @@ var clickHandler = function(e){
     e.stopImmediatePropagation();
     return false;
 }
-
-  /*  $(".pagination li").click(function(e) {
-        $(this).each(function() {
-        // envoi de la requete
-            e.preventDefault();
-            var page = $(this).val();
-           $.ajax({
-                method: "GET",
-                url: "index.php?Appartements&action=page_suivante&page="+page,
-                dataType:"html",
-        // comportement en cas de success ou d'echec
-              success:function(reponse) {
-                console.log(reponse);
-                  $('.resultat').html(reponse);
-              },
-              error: function(xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-              }
-            });
-        });
-    });*/
-
