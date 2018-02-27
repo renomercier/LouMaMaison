@@ -1,42 +1,12 @@
 $(document).ready(function() {
+ 
+    /*chercher les apparts avec les filtres remplis*/
 
-/**
-  fonction pour faire les action d'administration sur un usager.
-  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
-*/
-    $(".actionAdmin").click(function(e) {
-        $(this).each(function() {
-        	// envoi de la requete
-            e.preventDefault();
-            idUser = $(this).attr('id');
-            var action = $(this).attr('name');
-            var text = $(this).html();
-            var newText ='';
-            console.log(idUser);
-            if(action=='inversBan')
-                 newText = (text == 'Bannir')? "Réhabiliter":"Bannir";
-            if(action=='inversActiv')
-                 newText = (text == 'Activer')? "Désactiver":"Activer";
-            if(action=='inversAdmin')
-                 newText = (text == 'Déchoir')? "Promouvoir":"Déchoir";
-            
-           $.ajax({
-                method: "GET",
-                url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
-                dataType:"html",
-        		// comportement en cas de success ou d'echec
-	            success:function(reponse) {
-	                $('#'+idUser+'[name='+action+']').html(newText);
-	            },
-	            error: function(xhr, ajaxOptions, thrownError) {
-	                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-	            }
-            });
-
-        });
-
+    $( "#filtrer" ).on( "click", function( e ) {
+        event.preventDefault();
+        var url = $('#formFiltrer').serialize();
+        filtrerAppart(url);
     });
-    
 
    /**
 	* 	Fonction pour afficher un profil d'usager
@@ -44,7 +14,7 @@ $(document).ready(function() {
 		$("#div_info_plus").append($("#info_plus"));
 		
 		$("#div_info_contact").append($("#info_contact"));
-		
+
 		$("#div_info_role").append($("#info_role"));
         
 		$("#div_modif_profil").append($(".btn-modifier"));
@@ -105,7 +75,6 @@ $(document).ready(function() {
                             $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3>");               
                             $("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response[0][0].adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response[0][0].telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response[0][0].modePaiement + "</div>");
                             $("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response[0][0].moyenContact + "</div>");  
-							
                         }
                        
 					},  
@@ -154,6 +123,18 @@ $(document).ready(function() {
 		}	
 	});
 	
+
+    /* definir la class active a la categorie d'usagers visitée */
+    $('.filtre_usager .nav-link').on( "click", function( e ) {
+        event.preventDefault();
+        $('.filtre_usager .nav-link').each(function(){
+            $(this).removeClass('active');
+        })
+        $(this).addClass('active');
+    });	
+		
+/*----------------- A Ajouter dans le fichier functions!*/
+
 	/**
 		Fonction pour afficher des apts du proprio
 	*/	
@@ -199,6 +180,7 @@ $(document).ready(function() {
 	});
 });	
 
+
 /**
     Fonction pour comparer les mots de pass saisis
 */
@@ -212,6 +194,7 @@ function valPwdConfirm(elm1, elm2) {
         return true;
     }
 };
+
 
 /**
 	Fonction pour supprimer une disponibilite d'un apprtement
@@ -294,4 +277,175 @@ var clickHandler = function(e){
     });
     e.stopImmediatePropagation();
     return false;
+}
+
+
+/*////////////////////////////////////////////////////////////////*/
+/* filtrer le resultat de la recherche selon des critéres donnés*/
+
+    function filtrerAppart(url){
+        
+           $.ajax({
+            method: "POST",
+            url: "index.php?Appartements&action=filtrer",
+           data: url,
+            dataType:"html",
+           // comportement en cas de success ou d'echec
+          success:function(reponse) {
+              $('.accueil .col-md-6').html('');
+              $('.accueil .col-md-6').append(reponse);
+              
+              //effacer les marqueurs existant
+              clearMarkers();
+              //placer les nouveaux marqueurs
+                $("div.appart").each(function(){
+                    var miniature = $('<div class="miniature">').append($(this).html());
+                    placerSureCarte($(this).attr('name'), miniature.html());
+                });
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+    }
+
+/* naviguer vers la page suivante ou precedente des resultats */
+
+function naviguer(appartParPage, page) {
+    event.preventDefault();
+    var url = $('#formFiltrer').serialize();
+        url+="&appartParPage="+appartParPage+"&page="+page+"";
+        filtrerAppart(url);
+}
+
+/* ============================  function pour initialiser la google map ============================================== */
+
+/* sila div #carte estchargée, inclure le script de la carte google */
+
+$(document).ready(function() {
+       if($('#carte').length)
+        {
+            var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
+            $('body').append(scriptGoogle);
+        } 
+});
+
+
+    // initialiser la catrte google
+    var carte;
+    var marqueurs = [];
+    function initMap() {
+      carte = new google.maps.Map(document.getElementById('carte'), {
+        zoom: 11.5,
+        center: new google.maps.LatLng(45.51,-73.72) 
+      });
+    }
+
+// fonction pour placer un marqueur sur la carte.
+
+    function placerSureCarte(adrAppart, miniature) {
+        Geocoder = new google.maps.Geocoder(); 
+        Geocoder.geocode( { 'address': adrAppart}, function(results, status) {
+            
+        /* Si l'adresse a pu être géolocalisée */
+            if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                var latLng = new google.maps.LatLng(latitude,longitude);
+                
+                // initialisation d'un setTimeOut pour animer les marqueur
+                window.setTimeout(function() {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: carte,
+                    animation: google.maps.Animation.DROP
+                  });
+                    
+                     // creation de l'info bulle
+                  var infowindow = new google.maps.InfoWindow({
+                            content: miniature,
+                            maxWidth: 200
+                              
+                          });
+                    
+                    // ouvrir l'info bulle
+                    google.maps.event.addListener(marker,'mouseover',function() {
+                          infowindow.open(carte,marker);
+                    });
+                    
+                     // fermer l'info bulle
+                    google.maps.event.addListener(carte,'click',function() {
+                          setTimeout(function () { infowindow.close(); }, 200);
+                    });
+                    
+                    // ajout du marqueur au tableau
+                    marqueurs.push(marker);
+                }, 300);
+                
+            }
+        });
+    }
+
+// fonction pour supprimer les marqueurs de la carte
+    function clearMarkers() {
+        for(var i=0; i< marqueurs.length; i++)
+        {
+            marqueurs[i].setMap(null);
+        }
+    }
+
+// boucler dans le tableau des adresses et les placer sur la carte.
+     window.onload=function() {    
+        $("div.appart").each(function(){
+            var miniature = $('<div class="miniature">').append($(this).html());
+            placerSureCarte($(this).attr('name'), miniature.html());
+        });
+     
+     }
+     
+     
+/*//////////////////// fonctions pour gerer les usagers ///////////////////////////*/
+
+/* fonction pour filtrer les usagers selon des criteres d'affichage*/
+
+function filtrerUsagers(colonne, valeur){
+    
+               $.ajax({
+                method: "POST",
+                url: "index.php?Usagers&action=filtrerUsagers&"+colonne+"="+valeur,
+                dataType:"html",
+        // comportement en cas de success ou d'echec
+              success:function(reponse) {
+                    $('.content .usagers').html('');
+                    $('.content .usagers').html(reponse);
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+}
+
+/**
+  fonction pour faire les action d'administration sur un usager.
+  (bannir/réhabiliter, promouvoir/déchoire, activer/désactiver).
+*/
+
+function actionAdmin(idUser, action) {
+
+       $.ajax({
+            method: "POST",
+            url: "index.php?Usagers&action="+action+"&idUsager="+idUser,
+            dataType:"html",
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+              //  $('.content .usagers').html('');
+              //  $('.content .usagers').html(reponse);
+                  var filtreColonne = $('.filtre_usager .nav-link.active').attr('name');
+                  var filtreValeur = $('.filtre_usager .nav-link.active').attr('value');
+                  filtrerUsagers(filtreColonne, filtreValeur);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
 }

@@ -41,7 +41,7 @@
 					case "login":
                         $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
-						$this->afficheVue('footer');
+                        $this->afficheVue('footer');
 						break;
 
 					// case de deconnexion d'un usager	
@@ -88,6 +88,7 @@
                                         $this->afficheVue("header", $data);
                                         $data="<p class='alert alert-warning'>Username ou password invalide!</p>";
                                         $this->afficheVue("AfficheLogin", $data);
+                                        $this->afficheVue('footer');
                                     }
                                 }
                                 else
@@ -95,13 +96,14 @@
                                     // si la session existe déjà
                                     $this->afficheVue("header",$data);
                                     $data="<p class='alert alert-warning'>Session déjà ouverte!</p>";
-                                    // redirection temporaire
-                                    $this->afficheVue("accueil", $data); 
+                                    $this->afficheVue("AfficheLogin", $data);
+                                    $this->afficheVue('footer'); 
                                 }
                             }else{
                                 $this->afficheVue("header",$data);
                                 $data="<p class='alert alert-warning'>Username et password obligatoires!</p>";
                                 $this->afficheVue("AfficheLogin", $data);
+                                $this->afficheVue('footer');
                             }
                         }
 
@@ -110,24 +112,45 @@
 					case "afficheListeUsagers":
 						if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
 						{
+                            $data= $this->initialiseMessages();
+                            $this->afficheVue("header",$data);
+                            $this->afficheVue("NavigationListeUsagers");
 							//affiche tous les usagers
 							$this->afficheListeUsagers();
-							$this->afficheVue('footer');
+                            $this->afficheVue('footer');
 						}
 						else
 						{
 							//affiche page d'erreur
 							$this->afficheVue("404");
-							$this->afficheVue('footer');
+                            $this->afficheVue('footer');
 						}
 						break;
-
+                        
+                        // case filtrer les usagers
+                        case "filtrerUsagers":
+                            if(isset($_SESSION["username"]) && (in_array(1,$_SESSION["role"]) || in_array(2,$_SESSION["role"])) && $_SESSION["isBanned"] ==0)
+                            {                                
+                                $filtre['role'] = isset($params['role']) && !empty($params['role'])? $params['role'] : '';
+                                $filtre['valide'] = isset($params['valide']) && !empty($params['valide'])? $params['valide'] : '';
+                                $filtre['attente'] = isset($params['attente']) && !empty($params['attente'])? $params['attente'] : '';
+                                $filtre['banni'] = isset($params['banni']) && !empty($params['banni'])? $params['banni'] : '';
+                                //affiche tous les usagers
+                                $this->afficheListeUsagers($filtre);
+                            }
+                            else
+                            {
+                                //affiche page d'erreur
+                                $this->afficheVue("404");
+                            }
+                            break;
+                        
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
                         {       
                             $this->afficheProfil($params["idUsager"], $data);
-							$this->afficheVue('footer');
+                            $this->afficheVue('footer');
                         }
                         else
                         {
@@ -211,6 +234,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminBan', "'".$_SESSION["username"]."'", $params["idUsager"]);
+                                $this->afficheListeUsagers();
 
 							}
 							else
@@ -238,6 +262,7 @@
                                 
                                 // insertion du nom de l'administrateur qui à exécuté l'action
                                 $modeleUsagers->misAjourChampUnique('id_adminValid', "'".$_SESSION["username"]."'", $params["idUsager"]);
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -261,6 +286,7 @@
                                 
                                 // changement de l'état de role Admin dans la table role_usager
 								$modeleUsagers->definir_admin($params["idUsager"]);
+                                $this->afficheListeUsagers();
 							}
 							else
 							{
@@ -282,7 +308,7 @@
 						if($data) {
                             $this->afficheVue("header", $data);
 							$this->afficheVue("afficheInscriptionUsager", $data);
-							$this->afficheVue('footer');
+                            $this->afficheVue('footer');
 						}
 						break;
 
@@ -372,15 +398,35 @@
 		* @param 		Aucun parametre envoye
 		* @return		charge la vue avec le tableau de donnees
 		*/	
-		private function afficheListeUsagers()
+		private function afficheListeUsagers($filtre=[])
 		{
-            $data= $this->initialiseMessages();
-            $this->afficheVue("header",$data);
 			$modeleUsagers = $this->getDAO("Usagers");
-			$data["usagers"] = $modeleUsagers->obtenir_tous();
+			$data["usagers"] = $modeleUsagers->filtrer_les_usagers($filtre);
+            foreach($data["usagers"] as $usager)
+            {
+                $usager->isSuperAdmin=false;
+                $usager->isAdmin=false;
+                
+                foreach($usager->roles as $role)
+                    {
+                        if($role->id_nomRole == 1)
+                        {
+                            $usager->isSuperAdmin = true;
+                        }
+                        if($role->id_nomRole == 2)
+                        {
+                            $usager->isAdmin = true;
+                        }
+                    }
+                
+                $usager->etatBann = ($usager->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
+                $usager->etatActiv = ($usager->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
+                $usager->etatAdmin = ($usager->isAdmin) ? 'Déchoir' : 'Promouvoir';
+            }
 			$this->afficheVue("AfficheListeUsagers", $data);
 		}
 
+                
 		/**
 		* @brief 		Affichage du formulaire d'inscription d'un usager
 		* @details 		Recupere des donnees en parametre pour affichage des choix de l'usager et des erreurs à afficher

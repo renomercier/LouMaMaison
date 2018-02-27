@@ -133,7 +133,7 @@
             }
             if(!empty($filtre['quartier']))
             {
-                $query.= " AND q.id = " . $filtre['quartier'] ."";
+                $query.= " AND a.id_nomQuartier = " . $filtre['quartier'] ."";
             }
             if(!empty($filtre['nbrPers']))
             {
@@ -145,17 +145,14 @@
             }
             if(!empty($filtre['dateArrive']))
             {
-                $query.= " AND d.dateFin >= '" . $filtre['dateArrive'] ."'";
+                $query.= " AND '" . $filtre['dateArrive'] ."' BETWEEN  NOW() AND d.dateFin";
             }
             if(!empty($filtre['note']))
             {
                 $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
             }
             $query.= " GROUP BY d.id_appartement LIMIT " . $premiereEntree .", ".$appartParPage."";
-           /* if(!empty( $filtre['premiereEntree']))
-            {
-                $query.= "LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
-            }*/
+
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
    
@@ -171,7 +168,7 @@
 		*/
 		public function obtenir_moyenne($id_appart)
 		{
-			$query = "SELECT AVG(rating) AS moyenne FROM evaluation WHERE id_appartement = ? GROUP BY id_appartement";
+			$query = "SELECT AVG(rating) AS moyenne, COUNT(rating) AS nbr_votant FROM evaluation WHERE id_appartement = ? GROUP BY id_appartement";
             $donnees = array($id_appart);
 			$resultat = $this->requete($query, $donnees);
             return $resultat->fetch();

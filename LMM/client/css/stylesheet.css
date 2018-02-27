@@ -53,6 +53,9 @@ html, body {
    color:    #999 !important;
    font-size: 0.8em !important;
 }
+a, a:hover{
+    text-decoration: none;
+}
 
 /* --------------------------------------------------- Images   */
 .thumbnail{
@@ -202,6 +205,41 @@ footer {
     background-color: #585759;
 }
 
+#carte{
+    height: 100vh;
+    position: fixed !important;
+    overflow: hidden;
+    right: 1em;
+    top: 3em;
+}
+
+.appart, .gm-style-iw{
+    line-height: 1em;
+}
+
+.appart p, .gm-style-iw p{
+    margin: .3em auto;
+}
+
+.card-block{
+    padding: .1em;
+}
+
+.gm-style-iw{
+    left: 25px !important;
+}
+
+h6, .filtre_usager a.nav-link{
+    color: #0275d8 !important;
+    cursor: pointer;
+}
+@media only screen and (max-width: 768px) {
+    #carte{
+        position: relative!important;
+        right: 0em;
+    }
+}
+
 footer hr {
     border: 0.5px solid #ffffff;; 
 }
@@ -230,9 +268,4 @@ footer hr {
 
 .footer-media-item a:hover {
     color: #014B88;
-}
-
-/* --------------------------------------------------- Carte   */
-#carte {
-    height: 50%;
 }
