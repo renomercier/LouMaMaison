@@ -53,6 +53,9 @@
                             // prix maximum
                             $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
                         
+                            // type de logis
+                            $filtre['id_typeApt'] = isset($params['id_typeApt']) && is_numeric($params['id_typeApt']) ? $params['id_typeApt'] : 0;
+                        
                             // nombre d'etoiles
                             $filtre['note'] = isset($params['note'])? $params['note'] : 0;
                         
@@ -593,6 +596,7 @@
             $data['appartParPage']=$appartParPage;
             
             $data['quartier'] = $modeleAppartement->obtenir_quartiers();
+            $data['tab_typeApt'] = $modeleAppartement->getTypesApt();
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             if(isset($page))

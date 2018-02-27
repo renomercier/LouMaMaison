@@ -151,6 +151,10 @@
             {
                 $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
             }
+            if(!empty($filtre['id_typeApt']))
+            {
+                $query.= " AND a.id_typeApt = '" . $filtre['id_typeApt'] ."'";
+            }
             $query.= " GROUP BY d.id_appartement LIMIT " . $premiereEntree .", ".$appartParPage."";
 
 			$resultat = $this->requete($query);

@@ -169,7 +169,7 @@
             ?>
                 <span id="info_contact"><div  class="form-group row mb-0">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
                 <a class="nav-link" href="#" id="historique">Voyages</a>
-                <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
+                <a class="nav-link" href="#" name="<?=$messagerie?>" id="<?=$messagerie?>" ><?=$messagerie?></a>
 
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
