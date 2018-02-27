@@ -6,7 +6,7 @@
 * @version      v.1 | fevrier 2018
 -->
 <div class="container-fluid">
-    <div class="row">
+    <div class="row accueil">
         <div class="col-md-2 recherche">
 
             <form id="formFiltrer" method="POST" action="index.php?Appartements&action=filtrer">
@@ -31,7 +31,7 @@
               <div class="form-group">
                   <label for="nbrPersonnes" class="form-control-label ">Nombre de personnes</label>
                   <div class="row">
-                    <input type="number" min="0" name="nbrPersonnes" class="col-sm-12 form-control" id="nbrPersonnes">
+                    <input type="number" min="0" name="nbrPersonnes" class="col-sm-12 form-control" id="nbrPersonnes" value="<?= isset($filtre['nbrPers']) ? $filtre['nbrPers'] : '' ?>">
                 </div>
               </div>
 
@@ -107,8 +107,4 @@
                 </div>						
             </form>
         </div>
-
-
-
-
-
+<div class="col-md-6">

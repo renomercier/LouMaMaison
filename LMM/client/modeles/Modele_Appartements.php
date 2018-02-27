@@ -33,8 +33,8 @@
 		* @param   		<string> 	$idAppart 		Identifiant de l'appartement
 		* @return    	<objet> 	Résultat de la requête SQL
 		*/
-        public function obtenir_par_id($idAppart) {
-			$resultat = $this->lire($idAppart);
+        public function obtenir_par_id($id_appart) {
+			$resultat = $this->lire($id_appart);
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Appartement'); 
 			$lAppart = $resultat->fetch();
 			return $lAppart;
@@ -46,10 +46,9 @@
 		* @return     <object>  	( tous les Appartements )
 		*/
 		public function obtenir_tous() {
-
 			$result = $this->lireTous();	
 			$result->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
-			return $result->fetchAll();
+			return $result->fetchAll();	
     	}
 
     	/**
@@ -58,10 +57,10 @@
 		* @return     <boolean>  		( resultat de la requete )
 		*/
 		public function sauvegarderAppartement(Appartement $a) {
-			
+	
 			// si on a un id d'appartement, modification
 			if($a->getId() && $this->lire($a->getId())->fetch()) {
-				
+
 				$query = "UPDATE " . $this->getTableName() . " SET options=?, titre=?, descriptif=?, montantParJour=?, nbPersonnes=?, nbLits=?, nbChambres=?, noApt=?, noCivique=?, rue=?, codePostal=?, id_typeApt=?, id_nomQuartier=? WHERE " . $this->getClePrimaire() . "=?";
 				$data = array($a->getOptions(), $a->getTitre(), $a->getDescriptif(), $a->getMontantParJour(), $a->getNbPersonnes(), $a->getNbLits(), $a->getNbChambres(), $a->getNoApt(), $a->getNoCivique(), $a->getRue(), $a->getCodePostal(), $a->getId_typeApt(), $a->getId_nomQuartier(), $a->getId()); 
 				return $this->requete($query, $data);
@@ -117,10 +116,10 @@
                         JOIN type_apt t ON a.id_typeApt = t.id 
                         JOIN usager u ON a.id_userProprio = u.username 
                         JOIN quartier q ON a.id_nomQuartier = q.id 
-                        JOIN
-                            (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e 
+                        LEFT JOIN
+                            (SELECT (id_appartement) as Apparteval, AVG(rating) AS moyenne FROM evaluation e 
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
-                                ON note.id_appartement = a.id
+                                ON note.Apparteval = a.id
                     WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
 
             
@@ -134,7 +133,7 @@
             }
             if(!empty($filtre['quartier']))
             {
-                $query.= " AND q.id = " . $filtre['quartier'] ."";
+                $query.= " AND a.id_nomQuartier = " . $filtre['quartier'] ."";
             }
             if(!empty($filtre['nbrPers']))
             {
@@ -146,23 +145,21 @@
             }
             if(!empty($filtre['dateArrive']))
             {
-                $query.= " AND d.dateFin >= '" . $filtre['dateArrive'] ."'";
+                $query.= " AND '" . $filtre['dateArrive'] ."' BETWEEN  NOW() AND d.dateFin";
             }
             if(!empty($filtre['note']))
             {
                 $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
             }
             $query.= " GROUP BY d.id_appartement LIMIT " . $premiereEntree .", ".$appartParPage."";
-           /* if(!empty( $filtre['premiereEntree']))
-            {
-                $query.= "LIMIT " . $filtre['premiereEntree'] .", ".$filtre['appartParPage']."";
-            }*/
+
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
-            
+   
             return $resultat->fetchAll();
         }
-        
+		
+
 		/**
 		* @brief      Selectionner le nombre des notes attribuées a un appart
         *             ainsi que la somme de toutes les notes d'un appart
@@ -171,7 +168,7 @@
 		*/
 		public function obtenir_moyenne($id_appart)
 		{
-			$query = "SELECT AVG(rating) AS moyenne FROM evaluation WHERE id_appartement = ? GROUP BY id_appartement";
+			$query = "SELECT AVG(rating) AS moyenne, COUNT(rating) AS nbr_votant FROM evaluation WHERE id_appartement = ? GROUP BY id_appartement";
             $donnees = array($id_appart);
 			$resultat = $this->requete($query, $donnees);
             return $resultat->fetch();
@@ -202,6 +199,20 @@
         }
 
         /**
+		* @brief		Lecture du nom d'un quartier de la BD
+		* @details		Permet de recuperer le nom d'un quartier dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant du type d'appartement
+		* @return    	<type> 		le type d'appartement concerne de la table type_apt ou false 
+		*/
+		public function getTypeApt_par_id($id_appart) {
+
+			$query = "SELECT * FROM type_apt WHERE id = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
+
+        /**
 		* @brief		Lecture de tous les quartiers de Montreal de la BD
 		* @details		Permet de recuperer tous les quartiers dans la table quartier
 		* @param 		Aucun parametre envoyé
@@ -213,7 +224,82 @@
 			$resultat = $this->requete($query);
             return $this->requete($query);   
         }
+		
+        /**
+		* @brief		Lecture du nom d'un quartier de la BD
+		* @details		Permet de recuperer le nom d'un quartier dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant du quartier
+		* @return    	<type> 		le nom du quartier concerne de la table quartier ou false 
+		*/
+		public function getQuartier_par_id($id_appart) {
+			$query = "SELECT * FROM quartier WHERE id = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
+		
+        /**
+		* @brief		Lecture de toutes les photos d'un appartement de la BD
+		* @details		Permet de recuperer toutes les photos d'un appartement dans la table photo
+		* @param      	<varchar>  		$id     	L'identifiant de l'appartement
+		* @return    	<type> 		toutes les rangées concernees de la table photo ou false 
+		*/
+		public function getPhotos_par_id($id_appart) {
 
+			$query = "SELECT * FROM photo WHERE id_appartement = ?";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();  
+        }
+
+        /**
+		* @brief		Selectionner les appartements du proprio
+		* @details		Permet d'afficher les appartements qui appartiennent à proprio
+		* @param 		<int> 		$id_proprio id du proprio
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+		public function obtenirAptProprio($id_proprio) {
+		   // $query = "SELECT * FROM appartement a JOIN usager ON a.id_userProprio = usager.username LEFT JOIN (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e JOIN appartement a2 ON e.id_appartement = a2.id GROUP BY a2.id) note ON a.id = note.id_appartement WHERE a.id_userProprio = 'nat' GROUP BY a.id";
+            
+            $query = "SELECT * FROM " . $this->getTableName() . " a
+                JOIN usager ON a.id_userProprio = usager.username 
+                LEFT JOIN (SELECT id_appartement, AVG(rating) AS moyenne FROM evaluation e JOIN appartement a2 ON e.id_appartement = a2.id GROUP BY a2.id) note ON a.id = note.id_appartement
+                WHERE a.id_userProprio = ? 
+                GROUP BY a.id";
+            $donnees = array($id_proprio);
+            $resultat = $this->requete($query, $donnees);
+            $lesApts = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+            return $lesApts;
+		}
+        
+		/**
+		* @brief		Obtenir le type d'un appartement
+		* @details		
+		* @param 		<int> 		$id_apt id d'appartement
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+        public function obtenir_apt_avec_type($id_apt) {
+            $query = "SELECT typeApt FROM type_apt t JOIN " . $this->getTableName() . " a 
+            ON t.id = a.id_typeApt WHERE a.id=?";
+            $donnees = array($id_apt);
+            $resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
+        }
+		
+		/**
+		* @brief		Obtenir le nombre de notes d'un appartement
+		* @details		
+		* @param 		<int> 		$id_apt id d'appartement
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+		public function obtenir_apt_avec_nb_notes($id_apt) {
+			$query = "SELECT COUNT(rating) as NbNotes FROM evaluation WHERE id_appartement = ?";
+			$donnees = array($id_apt);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetch();
+		}
+    
+		
         /**
 		* @brief		Insertion de photos supplementaires pour un appartement dans la table photo
 		* @details		Permet de recuperer tous les quartiers dans la table quartier
@@ -228,5 +314,5 @@
 			$resultat = $this->requete($query, $donnees);
             return $resultat;   
         }
-
     }
+?>
