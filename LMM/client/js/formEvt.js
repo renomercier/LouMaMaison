@@ -96,22 +96,25 @@ $(document).ready(function() {
     */
     if($('#idApt')[0]) {
         if($('#idApt')[0].value != "") {
-
+            console.log("allo");
             var idApt = $('#idApt')[0].value;
-            console.log("ici");
             // requete afin de populer le select des quartiers de Mtl
             $.ajax({
                 url: 'index.php?Appartements&action=getOptionsApt&id='+idApt, 
                 type: 'POST', 
                 dataType : 'json',
                 success : function(result, statut) {
+                    console.log(result.o);
                     // on boucle dans le tableau d'options de l'appartement
                     result.o.forEach( function(r) {
+                        console.log("allooo");
                         var input = $("#formApt input[type^='checkbox']");
                         // on boucle dans chq option pour voir si elle est a cocher
+                        console.log(input);
                         for(var i=0; i<input.length; i++) {
-                            if(input[i].name == r) {
-
+                            if(input[i].id == r) {
+                                console.log(r);
+                                console.log(input[i].id);
                                 input[i].setAttribute('checked', 'checked')
                             }
                         }
@@ -134,7 +137,7 @@ $(document).ready(function() {
 
         $('#option').empty();
         o.options.forEach( function(op) {
-            $('#option').append('<div class="form-check option"><label class="form-check-label"><input type="checkbox" name="' + op.option + '" id="' + op.option + '" value="checked" class="form-check-input">&nbsp;' + op.option + '</label></div>');
+            $('#option').append('<div class="form-check option"><label class="form-check-label"><input type="checkbox" name="' + op.id + '" id="' + op.id + '" value="checked" class="form-check-input">&nbsp;' + op.option + '</label></div>');
         }) 
     }); 
 
@@ -147,7 +150,6 @@ $(document).ready(function() {
         // serialisation de tous les inputs et ajout de la 'string' serialisee au formulaire (input hidden) 
         var options = $("#formApt input[type='checkbox']" ).serialize();
         var valeurOptions = $('#optionsSerialises').val(options);
-        console.log(valeurOptions);
         console.log(options);
     });
 
@@ -183,7 +185,6 @@ $(document).ready(function() {
         var valRue = isName(form.rue.value);
         (!valRue) ? ($('#' + form.rue.id).addClass('alert-warning'), $('#aideNomRue').empty().append('Le nom de rue est invalide'))  : ($('#' + form.rue.id).removeClass('alert-warning'), $('#aideNomRue').empty());
         // s'il y a une valeur dans le champ no d'appartement (il est facultatif)
-        console.log(form.noApt.value);
         if(form.noApt.value != "") {
             // validation format texte
             var valNoApt = isText(form.noApt.value);
@@ -207,35 +208,19 @@ $(document).ready(function() {
         var valNbLits = isInt(form.nbLits.value);
         (!valNbLits) ? ($('#' + form.nbLits.id).addClass('alert-warning'), $('#aideNbLits').empty().append('Veuillez entrer le nombre de lits en chiffre seulement'))  : ($('#' + form.nbLits.id).removeClass('alert-warning'), $('#aideNbLits').empty());
         // validation format float ou int
-/**/        var valMontantParJour = isInt(form.montantParJour.value);
+        var valMontantParJour = isInt(form.montantParJour.value);
         (!valMontantParJour) ? ($('#' + form.montantParJour.id).addClass('alert-warning'), $('#aideMontant').empty().append('Le montant est invalide'))  : ($('#' + form.montantParJour.id).removeClass('alert-warning'), $('#aideMontant').empty());
         // verification si l'usager a selectionne des options (facultatives)
-/**/    if(form.options) {
-            console.log("alloooo");
+        if(form.optionsSerialises.value != "") {
             // validation format texte (string serialisee)
             var valOptions = isText(form.options.value);
-            (!valOptions) ? ($('#' + form.options.id).addClass('alert-warning'), $('#checkbox').empty().append('L\'adresse est invalide'))  : ($('#' + form.options.id).removeClass('alert-warning'), $('#checkbox').empty());
+            (!valOptions) ? ($('#option').addClass('alert-warning'), $('#checkbox').empty().append('Les options sont invalides'))  : ($('#option').removeClass('alert-warning'), $('#checkbox').empty());
         } else {
             $('#checkbox').empty()
         }
-        
-        console.log(valTitre);
-        console.log(valDescriptif);
-        console.log(valTypeApt);
-        console.log(valNoCivique);
-        console.log(valRue);
-        console.log(valNoApt);
-        console.log(valCodePostal);
-        console.log(valNomQuartier);
-        console.log(valNbPersonnes);
-        console.log(valNbChambres);
-        console.log(valNbLits);
-        console.log(valMontantParJour);
-        console.log(valOptions);    
-        console.log(form.options);    
 
         if(valTitre  && valDescriptif && valTypeApt && valNoCivique && valRue && ((valNoApt != undefined) ? valNoApt : (valNoApt == undefined)) && valCodePostal 
-            && valNomQuartier && valNbPersonnes && valNbChambres && valNbLits && valMontantParJour && ((valOptions) ? valOptions : (valOptions == undefined)) ) {
+            && valNomQuartier && valNbPersonnes && valNbChambres && valNbLits && valMontantParJour && ((valOptions) ? valOptions : (!valOptions)) ) {
 
             // soumission du formulaire
             $(this).unbind('submit').submit();
