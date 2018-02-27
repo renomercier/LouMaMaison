@@ -108,7 +108,3 @@
             </form>
         </div>
 <div class="col-md-6">
-
-
-
-

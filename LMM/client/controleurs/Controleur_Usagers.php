@@ -342,24 +342,28 @@
 									// message à l'usager - success de l'insertion dans la BD
 									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
                 					$this->afficheVue("header", $data);
-/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);									
+/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);
+									$this->afficheVue('footer');									
 								}
 								else {
 									// message à l'usager - s'il la requete echoue
 									$params['erreurs'] = "Votre compte n'a pu être créé, veuillez contacter l'administration ou recommencer</p>";
 									$this->afficheFormInscription($params);
+									$this->afficheVue('footer');
 								}
 							}
 							// si on a des erreurs
 							else {
 								// message à l'usager - erreurs dans la validation des inputs du formulaire d'inscription
 								$this->afficheFormInscription($params);
+								$this->afficheVue('footer');
 							}
 						}
 						else {
 							// message à l'usager - s'il manque des params requis
 							$params['erreurs'] = "Veuillez vous assurer de remplir tous les champs requis";
-							$this->afficheFormInscription($params);						
+							$this->afficheFormInscription($params);	
+							$this->afficheVue('footer');							
 						}	
 						break;
 
@@ -373,9 +377,6 @@
                 // redirection vers la page de appartements
                 echo "<script>window.location='./index.php?Appartements'</script>"; 
 			}
-			// affichage du footer
-            //$this->afficheVue('footer');
-			
 		}
 
 		/**

@@ -22,12 +22,36 @@
                       <div class="col-md-4 appart" id="appart<?=$appartement->id_appartement;?>" name="<?=$appartement->adresse;?>">
 
                         <div class="thumbnail">
-                          <img class="card-img-top photoAppartement img img-fluid thumbnail" src="<?= $photoApt ?>" alt="mon appart">
+                            <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->id_appartement;?>">
+                                <img class="card-img-top photoAppartement img img-fluid thumbnail" src="<?= $photoApt ?>" alt="mon appart">
+                            </a>
                           <div class="card-block">
                             <p class="card-text"><?=$appartement->typeApt;?> | <?=$appartement->getNbPersonnes();?> personnes | <?=$appartement->getNbLits();?> lits</p>
                             <h5 class="card-title"><?=$appartement->getTitre();?></h5>
                             <p class="card-text">$<?=$appartement->getMontantParJour();?> par nuit</p>
-                            <p class="card-text">Hôte: <?=$appartement->username;?></p>
+                            <p class="card-text">Hôte: 
+                                <?php 
+                                    if(isset($_SESSION['username']))
+                                    { 
+                                        if($appartement->username != $_SESSION['username'])
+                                        {
+                                    ?>
+                                        <a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->username;?>"> <?=$appartement->username;?></a>
+                                    <?php
+                                        }
+                                        else if($appartement->username == $_SESSION['username'])
+                                        {
+                                            echo $appartement->username; 
+                                        }
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->username;?>"> <?=$appartement->username;?></a>
+                                    <?php
+                                    }
+                                ?>
+							</p>
                               <p class="card-text">debut: <?=$appartement->dateDebut;?></p><p>fin: <?=$appartement->dateFin;?></p>
                             <p class="card-text">rate                                
                                 <?php
@@ -43,7 +67,14 @@
                                         <i class="fa fa-star-half"></i>
                                  <?php
                                     }
-                                ?>
+                            
+                                if($appartement->moyenne == null) 
+								{ 
+								?>
+									<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
+								<?php
+								}
+								?>
                               <small class="text-muted">(<?=$appartement->nbrVotant;?>)</small></p> 
 
                             <!-- lientemporaire pour modifier un appartement -->
@@ -60,9 +91,9 @@
                 <div class="col-md-6 mx-auto">
                     <div class="error-template text-center">
                         <h2>Oops!</h2>
-                        <h3>Aucun résultat our votre recherche</h3>
+                        <h3>Aucun résultat pour votre recherche</h3>
                         <div class="error-details">
-                            Éssaiyez avec d'autres critères!
+                            Essayez avec d'autres critères!
                         </div>
                     </div>
                 </div>

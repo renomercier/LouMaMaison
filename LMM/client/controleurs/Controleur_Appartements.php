@@ -68,7 +68,7 @@
                             $data = $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
                             $this->afficheVue("listeAppartements", $data);
 						break;
-                        
+
                             
                     // Case d'affichage du detail d'un appartement
                     case "afficherAppartement" :    
@@ -92,11 +92,123 @@
                         $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
                         
                         // Affichage du detail d'un appartement
-                        $this->afficheVue("header",$data);
+						$this->afficheVue("header",$data);
                         $this->afficheVue("AfficheAppartement", $data);
-                        $this->afficheVue("footer");
+						$this->afficheVue("footer");
                         break;
-                                
+					
+					case "afficheAptsProprio" :
+						
+						if(isset($_SESSION["username"]) && isset($params["idProprio"])) {
+                            $modeleApt = $this->getDAO("Appartements");
+                            $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
+							$modeleDispo = $this->getDAO("Disponibilites");
+                            
+                                foreach($data['appartements'] as $apt)
+                                {
+                                    $apt->disponibilite = $modeleDispo->afficheDisponibilite($apt->getId());
+                                    $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
+									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
+                                }
+							$this->afficheVue("header",$data);
+                            $this->afficheVue("AfficheAptsProprio", $data); 
+							$this->afficheVue("footer");
+                            }
+					break;
+					
+					case "supprimeDisponibilite":
+						if(isset($params['id_dispo']) && !empty($params['id_dispo'])) 
+						{
+							$modeleDispo = $this->getDAO("Disponibilites");
+							$modeleDispo->supprimeDisponibilite($params['id_dispo']);
+							$reponse = json_encode(array("messageSucces"=>"Vous avez supprimé une disponibilité!"));//creer une message de success
+							echo $reponse;					
+						}
+						else
+						{
+							$reponse = json_encode(array("messageErreur"=>"Choisissez une disponibilité!"));//creer une message d'échec
+							echo $reponse;		
+						}
+					break;
+                                            
+                    case "ajouteDisponibilite" :
+						$message_dispo="";
+						$obj = json_decode($_REQUEST['dataJson'],true); 
+                        if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
+                            $modeleDispo = $this->getDAO("Disponibilites");
+							//verification de dates
+							$today = Date("Y-m-d");
+	
+							if($obj['dateDebut'] >= $today && $obj['dateFin']> $obj['dateDebut'])
+							{	
+								$datesAnciens = $modeleDispo->afficheDisponibilite($obj['id_apt']);
+								if($datesAnciens)
+								{
+									foreach($datesAnciens as $dateOld) {
+										$dateDebutOld = $dateOld['dateDebut'];
+										$dateFinOld = $dateOld['dateFin'];
+									}
+										if(($obj['dateDebut'] > $dateFinOld && $obj['dateFin']>$obj['dateDebut']) || ($obj['dateDebut'] < $dateDebutOld && $obj['dateFin'] < $dateDebutOld && $obj['dateFin'] > $obj['dateDebut']))
+										{
+											$data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
+											if($data['disponibilite']) 
+											{								
+												header('Content-type: application/json'); 
+												$dispoNew = $modeleDispo->afficheDisponibilite($obj['id_apt']); 
+												$reponse = array($dispoNew);
+												$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
+												$tempData = [];
+												$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+												echo json_encode($tempData);
+											}
+											else 
+											{
+												// message à l'usager - s'il la requete echoue
+												$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
+												echo $message_dispo;                                        
+											}
+										}
+									
+										else
+										{
+											$message_dispo = json_encode(array("messageErreur"=>"Vous avez deja cette disponibilite"));
+											echo $message_dispo; 
+										}
+									
+								}
+								else if (!$datesAnciens)
+								{
+									$data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
+									if($data['disponibilite']) 
+									{								
+										header('Content-type: application/json'); 
+										$dispoNew = $modeleDispo->afficheDisponibilite($obj['id_apt']); 
+										$reponse = array($dispoNew);
+										$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
+										$tempData = [];
+										$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+										echo json_encode($tempData);
+									}
+									else 
+									{
+										// message à l'usager - s'il la requete echoue
+										$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
+										echo $message_dispo;                                        
+									}
+								}
+							}
+							else
+							{
+								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vérifier vos dates"));
+								echo $message_dispo;     
+							}   
+						}
+						else
+						{
+							$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
+							echo $message_dispo;		
+                        }
+                    break;                
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
@@ -129,7 +241,6 @@
                         }
 
                         break;
-
                     // case de sauvegarde (creation ou modification) d'un appartement
                     case "sauvegarderApt" :
 
@@ -142,6 +253,7 @@
                             // validation des champs input du formulaire d'inscription d'un appartement
                             $params['erreurs'] = $this->validerAppartement([ 'Le titre de l\'annonce'=>$params["titre"], 'Le descriptif de l\'appartement'=>$params["descriptif"], 'Le nom de rue'=>$params['rue'], 'Le numéro d\'appartement'=>$params['noApt'], 'Le code postal'=>$params['codePostal'] ], [ 'Le numéro civique'=>$params['noCivique'], 'Le montant du logement'=>$params['montantParJour'], 'Le nombre de personnes'=>$params['nbPersonnes'], 'Le nombre de chambres'=>$params['nbChambres'], 'Le nombre de lits'=>$params['nbLits'], 'Le type d\'appartement'=>$params['id_typeApt'], 'Le quartier'=>$params['id_nomQuartier'] ], [ 'Les options'=>isset($params['options']) ? $params['options'] : "" ] );                            
                             // si pas d'erreurs, on instancie l'appartement et on l'insère dans la BD
+
                             if(!$params['erreurs']) {
                                 
 /* @temp */                     // nouvel objet appartement
@@ -175,20 +287,25 @@
                                 else {
                                     $params['erreurs'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
                                     $this->afficheFormAppartement($params);
+									$this->afficheVue("footer");
                                 }
                             }
                             // si on a des erreurs de validation de params
                             else {
                                 // affichage du formulaire avec data de l'usager et messages d'erreurs a afficher
+								$this->afficheVue("header",$data);
                                 $this->afficheFormAppartement($params);
+								$this->afficheVue("footer");
                             }
                         }
                         // si on n'a pas tous les parametres requis
                        else {
+							$this->afficheVue("header",$data);
                             $params['erreurs'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
                             $this->afficheFormAppartement($params);
-                        }
-                        $this->afficheVue("footer");
+                            $this->afficheVue("footer");
+                            }
+                            	
                         break;
 
                     // case pour remplir les options selectionnees d'un appartement (en vue de modification)
@@ -341,7 +458,6 @@
             // affichage du formulaire d'inscription d'un appartement avec tableau de data rempli
             $this->afficheVue("afficheInscriptionApt", $data);
         }
-
         /**
         * @brief        Fonction de validation si l'usager est connecte et a les permissions nécessaires pour ajouter un appartement
         * @details      Validation de la variable avant affichage du formulaire
@@ -349,7 +465,6 @@
         * @return       <string>    Les messages d'erreur à afficher à l'usager, si tel est le cas
         */
         private function validerPermissionApt($usager) {
-
             // declaration de la 'string' d'erreurs
             $erreurs = "";
             // 'nettoyage' de la variable et verification si le champ est vide
@@ -380,7 +495,6 @@
             }      
             return $erreurs;
         }
-
         /**
         * @brief        Fonction de validation des parametres du formulaire d'inscription d'un appartement
         * @details      Validation des différents inputs avant l'instanciation et l'insertion dans la BD
@@ -388,10 +502,8 @@
         * @return       <string>    Les messages d'erreur à afficher à l'usager 
         */
         private function validerAppartement(array $tabString, array $tabNumber, array $options = null) {
-
             // declaration de la 'string' d'erreurs
             $erreurs = "";
-
             // verification si un champ de type string est rempli et valide
             foreach($tabString AS $s => $valeur) {
                 // 'nettoyage' des donnees et verification si le champ est vide
@@ -481,18 +593,14 @@
             $data['appartParPage']=$appartParPage;
             
             $data['quartier'] = $modeleAppartement->obtenir_quartiers();
-
-
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
-
             if(isset($page))
             {
                 if($page<=0){ $page = 1;}
                 if($page>$data['nbrPage']){ $page = $data['nbrPage'];}
                 
                  $data['pageActuelle']=intval($page);
-
                  if($data['pageActuelle'] > $data['nbrPage']) 
                  {
                       $data['pageActuelle'] = $data['nbrPage'];
@@ -504,7 +612,6 @@
             }
             
             $premiereEntree = ($data['pageActuelle']-1) * $appartParPage >=0 ?($data['pageActuelle']-1) * $appartParPage : 0; // On calcul la première entrée à lire
-
             // chercher tous les appartements remplissant les criteres de recherche
             $data["appartements"] = $modeleAppartement->obtenir_avec_Limit($premiereEntree, $appartParPage, $filtre);
             
@@ -515,10 +622,10 @@
                 $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
                 $appartement->moyenne = $moyenne['moyenne'];
                 $appartement->nbrVotant = $moyenne['nbr_votant'];
-
                 // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
-
+				//pour afficher nb notes
+				//$appartement->NbNotes = $modeleAppartement->obtenir_apt_avec_nb_notes($appartement->getId())[0];
             }
             return $data;
         }

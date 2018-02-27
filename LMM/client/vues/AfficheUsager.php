@@ -15,7 +15,8 @@
     <!-- Tout le monde peut voir -->
     <div class="row">
         
-          <div class="col-sm-12 succes_erreur">            
+          <div class="col-sm-12 succes_erreur">
+			
           </div>
         
         
@@ -31,16 +32,18 @@
 					<form class="form">
 						<div class="col-md-12 form-group row" id="div_info_plus"></div>
 						<div class="col-md-12 form-group row" id="div_info_contact"></div>
+						<div class="col-md-12 form-group row" id="div_info_role"></div>						
 						<div class="col-md-12 form-group row" id="div_modif_profil"></div>
+						<input type="hidden" name="usernameProp" value="<?=$data["usager"]->getUsername();?>">
 					</form>
 				</div>
 				
 			<!-- Modal -->
-			<div class="modal fade" id="myModal<?=$_SESSION["username"]?>" role="dialog">
+			<div class="modal fade" data-animation="false" id="myModal<?=$_SESSION["username"]?>" role="dialog">
 			  <div class="modal-dialog">
 				<div class="modal-content">
-				  <div class="modal-header bg-primary">
-					<h3 class="modal-title">Modifier votre profil</h3>
+				  <div class="modal-header bg-info">
+					<h3 class="modal-title text-white">Modifier votre profil</h3>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				  </div>
 				  <div class="modal-body">
@@ -127,12 +130,12 @@
 							</tbody>
 						</table>
 						<input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
-						<button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Save changes</button>
+						<button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Sauvegarder</button>
 					</form>
 				  </div>
-				  <div class="modal-footer bg-primary">
+				  <div class="modal-footer bg-info">
                       <div class="erreurModif"></div>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 				  </div>
 				</div>
 			  </div>
@@ -141,7 +144,7 @@
             </div>
                              
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" >
 			<div class="row  justify-content-end" >
                 
                 <ul class="nav menuProfil">
@@ -152,8 +155,8 @@
                 
                 </ul>
 			</div>
-			<div class="row">
-				<div></div>
+			<div class="row" id="afficheInfoProfil">
+				
 			</div>
 		</div>
     </div>
@@ -164,7 +167,7 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <span id="info_contact"><div  class="form-group row">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
+                <span id="info_contact"><div  class="form-group row mb-0">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
                 <a class="nav-link" href="#" id="historique">Voyages</a>
                 <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
@@ -215,14 +218,19 @@
                         $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
                         $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
                         $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
+						?>
+					<span id="info_role" class="form-group row">Rôle : 
+						<?php
+						foreach($data["usager"]->roles as $role)
+						{
+						?> 
+						   <div class="mr-1"><?=$role->nomRole?></div>
 
-                    foreach($data["usager"]->roles as $role)
-                    {
-                    ?> 
-                       <span id="role">Role : <?=$role->nomRole?></span>
-
-                    <?php
-                    }
+						<?php
+						}
+						?>
+					</span>
+					<?php
                     if(!$data["isSuperAdmin"])
                     {
                         if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
