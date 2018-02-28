@@ -38,7 +38,7 @@ $(document).ready(function() {
             var idUser = $(this).prev().val();	
 			
             // une fois les validations js faites, on soumet le formulaire
-            if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length && isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
+            if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length ) {  
 				// envoie la requête par ajax			
 				var queryString1 = $("#modifierProfil"+idUser).serialize(); //recuperer l'info du formulaire
 				$.ajax({
@@ -54,7 +54,6 @@ $(document).ready(function() {
 						"telephone":$('input[name="telephone"]').val(),
 						"moyenComm":$('#moyenComm').val(),
 						"paiement":$('#modePaiement').val(),
-                        "motdepasse":$("#pwd0").val(),
                         "idUser":$('input[name="idUser"]').val()
 						}) 
 					}, 
@@ -122,6 +121,57 @@ $(document).ready(function() {
 			(valModePaiement !=1) ? ($("#modePaiement").addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($("#modePaiement").removeClass('alert-warning'), $('#aideModePaiement').empty());
 		}	
 	});
+    
+    /************/
+    /**
+    * Fonction pour modifier le mot de passe
+    */
+    	$(document).on('click', '.sauvegarderMotDePasse', function(e){
+            var idUserPass = $(this).prev().val();	
+			
+            // une fois les validations js faites, on soumet le formulaire
+            if(isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
+				// envoie la requête par ajax			
+				$.ajax({
+					cache: false,
+					url: 'index.php?Usagers&action=modifierMotDePasse',
+					method: "POST",
+					dataType : 'html',		
+					data: {
+                        pwd0:$("#pwd0").val(),
+                        idUser:idUserPass
+						
+					}, 
+					success: function (response) {                       
+						//vérification côté php, s'il y des erreurs
+						if(response[0].messageErreur) {
+                            $("#erreur_pass").empty().addClass("alert alert-warning").text("<p>"+response[0].messageErreur + "</p>");
+                        } 
+                        else if(response[0].messageSucces){ //s'on n'as pas des erreurs côté php
+                           $("#erreur_pass").empty().css("display", "block").addClass("alert alert-success").text("<p>"+response[0].messageSucces + "</p>").fadeOut( 5000, "linear"); 
+ 
+                        }
+                       
+					},  
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+				return;	
+			}
+			else {
+			//empecher le comportement normal du bouton
+			e.preventDefault();
+					
+			// validation du mot de passe
+			var valPwd0 = isPassword($("#pwd0").val());
+			(!valPwd0) ? ($("#pwd0").addClass('alert-warning'), $('#aidePwd0').empty().append('Le mot de passe doit contenir au minimum une lettre majuscule ou un chiffre'))  : ($("#pwd0").removeClass('alert-warning'), $('#aidePwd0').empty());
+			
+			var valPwd1 = isPassword($("#pwd1").val());
+			
+		}	
+	});
+
 	
 
     /* definir la class active a la categorie d'usagers visitée */
@@ -168,15 +218,15 @@ $(document).ready(function() {
 		Action supprimer une disponibilite d'un apprtement
 	*/
     $(document).on('click', $(".btnSupprimerDispo"), function(){
-		$(".btnSupprimerDispo").one('click', clickHandler1);
+		$(".btnSupprimerDispo").one('click', funcSupprimeDispo);
 	});
 
 	/**
 		Action ajouter une disponibilite d'un apprtement
 	*/ 
-	//$(".btnAjouterDispo").one('click', clickHandler);
+	//$(".btnAjouterDispo").one('click', funcAjouteDispo);
 	$(document).on('click', $(".btnAjouterDispo"), function(){
-		$(".btnAjouterDispo").one('click', clickHandler);
+		$(".btnAjouterDispo").one('click', funcAjouteDispo);
 	});
 });	
 
@@ -199,7 +249,7 @@ function valPwdConfirm(elm1, elm2) {
 /**
 	Fonction pour supprimer une disponibilite d'un apprtement
 */
-var clickHandler1 = function(e){
+var funcSupprimeDispo = function(e){
 	var idDispo = $(this).val();
 	var tr = $(this).parent().parent(); 
 	var id_apt = $('input[name="id_apt"]').val()
@@ -208,7 +258,7 @@ var clickHandler1 = function(e){
 			url: "index.php?Appartements&action=supprimeDisponibilite&id_dispo="+idDispo,
 			dataType:"json",
 			success:function(reponse) {
-				$('.btnSupprimerDispo').one('click', clickHandler1);
+				//$('.btnSupprimerDispo').one('click', funcSupprimeDispo);
 				if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
 					$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>").fadeOut( 1000, "linear");
 					tr.remove();
@@ -222,13 +272,13 @@ var clickHandler1 = function(e){
 			}
 		});
     e.stopImmediatePropagation();
-    return false;
+    //return false;
 }
 
 /**
        Fonction pour ajouter disponibilite d'un apprtement
 */
-var clickHandler = function(e){
+var funcAjouteDispo = function(e){
 	var id_apt =  $(this).val(); 
     console.log(id_apt);
 	var dateDebut = $('#dateDebut'+id_apt).val();
@@ -248,7 +298,7 @@ var clickHandler = function(e){
 			}) 
 		}, 
       success: function(reponse){
-        $('.btnAjouterDispo').one('click', clickHandler);
+       // $('.btnAjouterDispo').one('click', funcAjouteDispo);
 		if(reponse.messageErreur) 
 		{ 
 			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
@@ -276,7 +326,7 @@ var clickHandler = function(e){
 				}
     });
     e.stopImmediatePropagation();
-    return false;
+   // return false;
 }
 
 

@@ -110,9 +110,7 @@
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
 									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
                                 }
-							$this->afficheVue("header",$data);
                             $this->afficheVue("AfficheAptsProprio", $data); 
-							$this->afficheVue("footer");
                             }
 					break;
 					

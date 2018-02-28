@@ -162,9 +162,9 @@
 					case "modifierProfil":
 						$message_profil="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
-						if(isset($params["idUser"]) && isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"]) && isset($params["pwd0"])) 
+						if(isset($params["idUser"]) && isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"])) 
 						{
-							if(!empty($params["idUser"]) && !empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"]) && !empty($params["pwd0"])) 
+							if(!empty($params["idUser"]) && !empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"])) 
 							{
 								if(!isset($params['idUser']) || $params['idUser'] == '')
 								{
@@ -182,11 +182,11 @@
 									} else {
 										$photo =$data["usager"]->getPhoto();
 									}
-                                    
-                                      $coor_moyenComm = $data["usager"]->getCoorMoyenComm();
+                                    $coor_moyenComm = $data["usager"]->getCoorMoyenComm();
+                                    $motdepasse = $data["usager"]->getMotDePasse();
 								}
 								$modeleUsagers = $this->getDAO("Usagers");
-								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $obj['motdepasse'], $obj['moyenComm'], $coor_moyenComm,  $obj["paiement"]);
+								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $motdepasse, $obj['moyenComm'], $coor_moyenComm,  $obj["paiement"]);
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {								
@@ -219,6 +219,53 @@
 							echo $message_profil;
 						}
 					break;
+                        
+                    //case modifier mot de passe
+                    case "modifierMotDePasse" :
+                     $message_profil="";
+						
+						if(isset($params["idUser"]) && isset($params["pwd0"]))
+                        {
+                            if(!empty($params["idUser"]) && !empty($params["pwd0"]))
+                            {
+                                $idUser = $params['idUser']; //sinon, on modifie l'existante
+                                               
+								$modeleUsagers = $this->getDAO("Usagers");
+								$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
+                                $usager = new Usager($idUser, $data["usager"]->getNom(), $data["usager"]->getPrenom(), $data["usager"]->getPhoto(), $data["usager"]->getAdresse(), $data["usager"]->getTelephone(), $params['pwd0'], $data["usager"]->getIdMoyenComm(), $data["usager"]->getCoorMoyenComm(),  $data["usager"]->getIdModePaiement());
+                                // appel du modele_Usagers et insertion dans la BD
+								$resultat = $modeleUsagers->sauvegarder($usager);
+                                if($resultat) {								
+                                        header('Content-type: application/json'); //absolument mettre ce header pour json
+                                        //$user = $modeleUsagers->obtenir_par_id($params['idUser']); 
+                                        //convertir les objets en array pour les mettre dans un seul tableau pour les encoder ensuite en renvoyer vers client
+                                        
+                                        $reponse = (array("messageSucces"=>"Votre mot de passe a ete modifie avec succes!"));//creer une message de success
+
+                                        $tempData = [];
+                                        $tempData = ([$reponse]);                 
+                                        echo json_encode($tempData); 
+                                    }
+                                    else 
+                                    {
+                                        // message à l'usager - s'il la requete echoue
+										$message_profil = json_encode(array("messageErreur"=>"La requete echoue"));
+										echo $message_profil;                                        
+                                    }
+							}
+							else 
+							{
+								$message_profil = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis"));
+								echo $message_profil;				
+							}
+						}
+						else
+						{
+							$message_profil = json_encode(array("messageErreur"=>"Non-non-non...!"));
+							echo $message_profil;
+						}
+					break;
+                           
 					
                     // case pour bannir | réahabiliter un usager
 					case "inversBan":

@@ -269,3 +269,50 @@ footer hr {
 .footer-media-item a:hover {
     color: #014B88;
 }
+
+/************/
+#btn-profil{
+    border-color: transparent;
+    outline: none;
+    color: #767676;
+}
+
+#btn-profil:hover{
+    border-bottom: 1px solid #efefef;
+    color: #484848;
+}
+
+#btn-profil[aria-expanded="true"]{
+    color: #151515;
+    font-weight: 700;
+    border-bottom: 1px solid #efefef;
+}
+
+.panel {
+    border: 1px solid #dce0e0;
+    background-color: #fff;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.panel-header {
+    color: #484848;
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce0e0;
+    background-color: #edefed;
+    padding: 20px;
+}
+
+.panel-footer {
+    position: relative;
+    margin: 0;
+    padding: 20px;
+    border-top: 1px solid #dce0e0;
+}
+
+.panel-body {
+    padding: 20px;
+}

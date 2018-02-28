@@ -30,11 +30,9 @@
                          
                             <p class="card-text">Hôte: <?=$appartement->username;?></p>                        
                             <p class="card-text">                            
-                                  <small>  <i class="fa fa-male fa-lg"></i>&nbsp<?= $appartement->getNbPersonnes(); ?> personnes                          
-
-                                    <i class="fa fa-square-o fa-lg"></i>&nbsp<?= $appartement->getNbChambres(); ?> chambres                         
-
-                                    <i class="fa fa-bed fa-lg"></i>&nbsp<?= $appartement->getNbLits(); ?> lits </small>    
+                                  <small><?= $appartement->getNbPersonnes(); ?>&nbsp<i class="fa fa-male fa-lg"></i>                        
+                                    <?= $appartement->getNbChambres(); ?>&nbsp<i class="fa fa-square-o fa-lg"></i>            
+                                    <?= $appartement->getNbLits(); ?>&nbsp<i class="fa fa-bed fa-lg"></i> </small>    
                             </p>
                             <h5 class="card-title"> <?=$appartement->getTitre();?></h5>
                             <p class="card-text">$<?=$appartement->getMontantParJour();?> par nuit</p>
