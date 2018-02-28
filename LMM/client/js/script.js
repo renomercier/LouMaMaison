@@ -148,13 +148,7 @@ $(document).ready(function() {
 					$('#afficheInfoProfil').empty();
 					$('#afficheInfoProfil').html(reponse);
 					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");
-					$('#afficheInfoProfil nav').remove();
-					$('#afficheInfoProfil .alert').remove();
-					$('#afficheInfoProfil footer').remove();
-					$('#afficheInfoProfil script').remove();
-					$('#afficheInfoProfil #carte').remove();
-                   // var idApt = $('.btn-modal')[0].id;
-                    
+				    $('#afficheInfoProfil .alert').remove();
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -178,6 +172,7 @@ $(document).ready(function() {
 	$(document).on('click', $(".btnAjouterDispo"), function(){
 		$(".btnAjouterDispo").one('click', clickHandler);
 	});
+    
 });	
 
 
@@ -281,6 +276,7 @@ var clickHandler = function(e){
 
 
 /*////////////////////////////////////////////////////////////////*/
+
 /* filtrer le resultat de la recherche selon des critéres donnés*/
 
     function filtrerAppart(url){
@@ -443,6 +439,94 @@ function actionAdmin(idUser, action) {
                   var filtreColonne = $('.filtre_usager .nav-link.active').attr('name');
                   var filtreValeur = $('.filtre_usager .nav-link.active').attr('value');
                   filtrerUsagers(filtreColonne, filtreValeur);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* //////////////////////////////  ACTIONS SUR LES MESSAGES ////////////////////////////////////*/
+
+$(document).ready(function() {
+    
+    // appel de la fonction d'affichage de tous les messages
+    var idUsager = $('input[name="idUser"]').val();
+    $('h7[name="Messagerie"]').on('click', function(e){
+        
+        // afficher la liste des messages
+        afficheListeMessages(idUsager);
+        
+        // attendre la fin du chargement pour permettre l'affichage des details du message
+            setTimeout(function(){
+
+                    // appel de la fonction d'affichage des details du message
+                $('h7[name="detailMessage"]').on('click', function(e){
+                    var idMessage = $(this).attr('value');
+                    afficheDetailsMessage(idMessage);
+                    });
+                
+                    // appel de la fonction de suppression de message
+               /* $('h6[name="supprimeMessage"]').on('click', function(e){
+                    var idMessage = $(this).attr('value');
+                    supprimeMessage(idMessage);
+                    });*/
+                
+            }, 100);
+        
+        e.stopImmediatePropagation();
+        });
+});
+
+/* fonction pour afficher tout les messages reçus par un usagers */
+function afficheListeMessages(idUser){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages&action=afficherListeMessages&idUsager="+idUser,
+            dataType:"html",
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+                $('#afficheInfoProfil').html(reponse);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+/* fonction pour afficher tout les details d'un message */
+function afficheDetailsMessage(idMessage){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages&action=detailsMessage&idMessage="+idMessage,
+            dataType:"html",
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+                $.each($('tr[name="contenuMessage"]'), function(){$(this).html('')});
+                $('#contenuMessage'+idMessage).html(reponse);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+/* fonction pour supprimer un message */
+function supprimeMessage(idMessage){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages&action=supprimerMessage&idMessage="+idMessage,
+            dataType:"html",
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+               // $('#contenuMessage'+idMessage).html(reponse);
+                $('#afficheInfoProfil').html(reponse);
           },
           error: function(xhr, ajaxOptions, thrownError) {
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

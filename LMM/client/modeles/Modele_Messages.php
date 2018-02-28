@@ -45,14 +45,18 @@
 		}
 
 		/**  
-		* @brief     	Supprimer un message de la BD
-		* @details   	Exécute la suppression d'un message de la BD 
+		* @brief     	Supprimer la relation entre un usager et un message de la BD
+		* @details   	Exécute la suppression d'une relation usager-message de la BD 
 		* @param   		<int>		$id_message 		Identifiant du message
+        * @param   		<string>	$idUsager 		Identifiant du message
 		* @return    	<bool>		résultat de la requete SQL
 		*/
-		public function retirer($id_message) {
-		  	$resultat = $this->supprimer($id_message);
-			return $resultat;
+		public function retirer($id_message, $idUsager) {
+            $query = "DELETE FROM message_user WHERE id_message=? AND id_username=?";
+			$donnees = array($id_message, $idUsager);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat;
+
 		}
 
         /**  
@@ -78,8 +82,8 @@
             $query = "select * from message_user mu join message m on mu.id_message = m.id join usager u on m.id_userEmetteur = u.username where mu.id_username = ?";
             $donnees = array($id_usager);
             $resultat = $this->requete($query, $donnees);
-			$result->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Message");
-			return $result->fetchAll();
+			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Message");
+			return $resultat->fetchAll();
 		}
         
 	}

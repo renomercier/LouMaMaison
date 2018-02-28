@@ -229,7 +229,7 @@ footer {
     left: 25px !important;
 }
 
-h6, .filtre_usager a.nav-link{
+h6, h7, .filtre_usager a.nav-link{
     color: #0275d8 !important;
     cursor: pointer;
 }

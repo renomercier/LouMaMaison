@@ -113,9 +113,7 @@
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
 									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
                                 }
-							$this->afficheVue("header",$data);
                             $this->afficheVue("AfficheAptsProprio", $data); 
-							$this->afficheVue("footer");
                             }
 					break;
 					
@@ -623,9 +621,9 @@
             foreach($data["appartements"] as $appartement)
             { 
                 $adresse=[];
-                $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
-                $appartement->moyenne = $moyenne['moyenne'];
-                $appartement->nbrVotant = $moyenne['nbr_votant'];
+               // $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
+               // $appartement->moyenne = $moyenne['moyenne'];
+               // $appartement->nbrVotant = $moyenne['nbr_votant'];
                 // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
 				//pour afficher nb notes

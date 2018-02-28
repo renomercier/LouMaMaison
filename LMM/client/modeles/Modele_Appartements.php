@@ -117,7 +117,7 @@
                         JOIN usager u ON a.id_userProprio = u.username 
                         JOIN quartier q ON a.id_nomQuartier = q.id 
                         LEFT JOIN
-                            (SELECT (id_appartement) as Apparteval, AVG(rating) AS moyenne FROM evaluation e 
+                            (SELECT (id_appartement) as Apparteval, AVG(rating) AS moyenne, COUNT(rating) AS nbr_votant FROM evaluation e 
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
                                 ON note.Apparteval = a.id
                     WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
@@ -137,7 +137,7 @@
             }
             if(!empty($filtre['nbrPers']))
             {
-                $query.= " AND a.nbPersonnes = " . $filtre['nbrPers'] ."";
+                $query.= " AND a.nbPersonnes >= " . $filtre['nbrPers'] ."";
             }
             if(!empty($filtre['dateDepart']))
             {
@@ -155,7 +155,7 @@
             {
                 $query.= " AND a.id_typeApt = '" . $filtre['id_typeApt'] ."'";
             }
-            $query.= " GROUP BY d.id_appartement LIMIT " . $premiereEntree .", ".$appartParPage."";
+            $query.= " GROUP BY a.id LIMIT " . $premiereEntree .", ".$appartParPage."";
 
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
