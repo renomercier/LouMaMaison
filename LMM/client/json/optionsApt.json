@@ -1,8 +1,18 @@
 {
- "options" : [ 	{ "id" : 1, "option" : "stationnement", "icone" : "<i class='fa fa-car'></i>" },
- 				{ "id" : 2, "option" : "wifi", "icone" : "<i class='fa fa-wifi'></i>" }, 
- 				{ "id" : 3, "option" : "television", "icone" : "<i class='fa fa-tv'></i>" },
- 				{ "id" : 4, "option" : "cintres", "icone" : "" },
- 				{ "id" : 5, "option" : "fer a repasser", "icone" : "" }
+ "options" : [ 	{ "id" : 1, "option" : "Stationnement" },
+ 				{ "id" : 2, "option" : "Ascenseur" }, 
+ 				{ "id" : 3, "option" : "Accessible aux personnes handicapées" }, 
+ 				{ "id" : 4, "option" : "Wifi" }, 
+ 				{ "id" : 5, "option" : "Télévision" },
+ 				{ "id" : 6, "option" : "Cintres" },
+ 				{ "id" : 7, "option" : "Fer à repasser" },
+ 				{ "id" : 8, "option" : "Sèche-cheveux" },
+ 				{ "id" : 9, "option" : "Climatisation" },
+ 				{ "id" : 10, "option" : "Laveuse/Sécheuse" },
+ 				{ "id" : 11, "option" : "Cuisine tout equipée" },
+ 				{ "id" : 10, "option" : "Vaisselle et couverts" },
+ 				{ "id" : 11, "option" : "" },
+ 				{ "id" : 12, "option" : "", },
+ 				{ "id" : 13, "option" : "" }
  			]
 } 

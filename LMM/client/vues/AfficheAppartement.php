@@ -304,17 +304,32 @@
         
         <div class="sectionAptDetail-d col-sm-4">
             <br>
+            
             <!--
             <pre>
-                <?php
-                    var_dump($data['tab_dispos']);
-                ?>
+                <?= var_dump($data['moyenneApt']); ?>
             </pre>
             -->
             
             <div class="aptReservation col-sm-12">
                 <h4>$<?= $data['appartement']->getMontantParJour(); ?> CAD <small>par jour</small></h4>
-                <h6>Ratings</h6>
+                <h6>Ratings
+                    <?php
+                        for($i=1; $i<=$data['moyenneApt'][0]/2; $i++)
+                        {
+                    ?>
+                            <i class="fa fa-star"></i>
+                    <?php
+                        }
+                        if($data['moyenneApt'][0] % 2 != 0)
+                        {
+                                     ?>   
+                            <i class="fa fa-star-half"></i>
+                    <?php
+                        }
+                    ?>                
+                </h6>
+                
                 <hr>
                 
                 <!--
