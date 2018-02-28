@@ -176,7 +176,7 @@
                     <h6><?= $data['typeApt'][0]['typeApt']; ?></h6>
                     <h2><?= $data['appartement']->getTitre(); ?></h2>
                     <h4><?= $data['quartier'][0]['nomQuartier']; ?></h4>
-                    <p>Montréal</p>
+                    <p><?= $data['appartement']->getVille(); ?></p>
                 </div>
                 <div class="">
                     <div class="text-center align-middle">
@@ -199,9 +199,6 @@
                 <div class="iconeAptDescription">
                     <p><i class="fa fa-bed fa-lg"></i>&nbsp<?= $data['appartement']->getNbLits(); ?> lits</p>
                 </div>
-                <div class="iconeAptDescription">
-                    <p><i class="fa fa-bath fa-lg"></i>&nbsp1 salle de bain</p>
-                </div>
             </div>
             
             <hr>
@@ -212,9 +209,28 @@
                 </div>
             </div>
             
+   		  <?php
+
+	        if( (isset($_SESSION["username"])) && (($_SESSION["username"]) != $data['proprietaire']->getUsername()) )
+          {
+          ?>
+            
             <div class="d-block">
                 <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
             </div>
+            
+        <?php
+            } else {
+        ?>
+                
+            <div class="d-block">
+                <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+            </div>  
+            
+                
+        <?php
+            }
+        ?>
             
             <hr>
             
@@ -402,6 +418,4 @@
     </section>
     
     <!-- Fin container -->
-</div>
-
- 
+</div> 

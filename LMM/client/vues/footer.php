@@ -5,6 +5,7 @@
 * @author     	Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version    	v.1 | fevrier 2018
 -->
+    </div>
         <footer>
             
             <section class="container">
@@ -13,7 +14,7 @@
                 
                 <div class="row">                    
                     <div class="footer-logo col-sm-3">
-                        <a href="#"><img src="./images/logo_sur_blanc.svg"  class="footerLogo img-thumbnail img-fluid" alt="Logo"></a>
+                        <a href="index.php"><img src="./images/logo_sur_blanc.svg"  class="footerLogo img-thumbnail img-fluid" alt="Logo"></a>
                     </div>
                     <div class="footer-text col-sm-3">
                         <h5>LouMaMaison</h5>
@@ -82,9 +83,5 @@
             </section>
             
         </footer>
-
-  <!-- script carte google -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>
-
     </body>
 </html>

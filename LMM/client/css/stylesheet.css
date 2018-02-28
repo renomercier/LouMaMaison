@@ -53,6 +53,9 @@ html, body {
    color:    #999 !important;
    font-size: 0.8em !important;
 }
+a, a:hover{
+    text-decoration: none;
+}
 
 /* --------------------------------------------------- Images   */
 .thumbnail{
@@ -66,6 +69,24 @@ html, body {
 
 
 /* Opacite des photos lorsque "hovered on" */
+.photoAppartement:hover, .aptPhotoSupp:hover {
+    opacity: 0.7;
+}
+
+/*----- modalGaleriePhoto  -----*/
+
+/* Modal-Carousel pour photos supplementaires */
+
+.modal-header, .modal-footer {  
+    color: #ffffff;
+    background-color: #014B88;
+}
+
+.fa_custom{
+	color: #999;
+}
+
+/* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .photoSupplementaire:hover {
     opacity: 0.7;
 }
@@ -77,6 +98,46 @@ html, body {
 .modal-header, .modal-footer {  
     color: #ffffff;
     background-color: #014B88;
+}
+
+.modal-xl {
+    max-height: auto;
+    max-width: 70%;
+}
+
+/*----- page AfficheAppartement -----*/
+
+.sectionAptDetail {
+    
+}
+
+.sectionAptDetail-g, .sectionAptDetail-d {
+    padding=0;
+    /*border: 1px solid #000000; */ 
+}
+
+.reservation, .afficheDisponibilites {
+    padding: 20px;
+    border: 1px solid #585759;
+}
+
+.afficheDisponibilites {
+    padding: 10px;
+    height: 165px;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid #585759;
+}
+
+.iconeDescription {
+    margin-right: 20px;
+}
+
+/*----- footer -----*/
+
+footer {
+    color: #ffffff;
+    background-color: #585759;
 }
 
 .modal-xl {
@@ -144,6 +205,41 @@ footer {
     background-color: #585759;
 }
 
+#carte{
+    height: 100vh;
+    position: fixed !important;
+    overflow: hidden;
+    right: 1em;
+    top: 3em;
+}
+
+.appart, .gm-style-iw{
+    line-height: 1em;
+}
+
+.appart p, .gm-style-iw p{
+    margin: .3em auto;
+}
+
+.card-block{
+    padding: .1em;
+}
+
+.gm-style-iw{
+    left: 25px !important;
+}
+
+h6, .filtre_usager a.nav-link{
+    color: #0275d8 !important;
+    cursor: pointer;
+}
+@media only screen and (max-width: 768px) {
+    #carte{
+        position: relative!important;
+        right: 0em;
+    }
+}
+
 footer hr {
     border: 0.5px solid #ffffff;; 
 }
@@ -173,9 +269,3 @@ footer hr {
 .footer-media-item a:hover {
     color: #014B88;
 }
-
-/* --------------------------------------------------- Carte   */
-#carte {
-    height: 50%;
-}
-
