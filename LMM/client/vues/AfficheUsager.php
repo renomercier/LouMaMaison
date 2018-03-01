@@ -171,7 +171,6 @@
                                     <input type="password" name="pwd0" id="pwd0" class="col-sm-12 ">
                                     <small class="form-text text-muted" id="aidePwd0"></small>
                                 </div>
-                                <input type="checkbox" id="#afficheMDP">Afficher mot de passe
                             </div>                         
 
                             <div class="row mb-2">

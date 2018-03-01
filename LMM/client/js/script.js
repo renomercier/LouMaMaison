@@ -150,10 +150,13 @@ $(document).ready(function() {
                         else if(response[0].messageSucces){ //s'on n'as pas des erreurs côté php
                            $("#erreur_pass").empty().addClass("alert alert-success").text(response[0].messageSucces).fadeOut( 5000, "linear");
                             $('#pwd0').empty();    
-                            $('#pwd0').val("*****");    
+                            $('#pwd0').val("*****");
+							$('#pwd0')[0].type="text";						
+							setTimeout(function() {$('#pwd0')[0].type="password"}, 2000);						
                             $('#pwd1').empty();    
-                            $('#pwd1').val("*****");    
- 
+                            $('#pwd1').val("*****");
+							$('#pwd1')[0].type="text";								
+							setTimeout(function() {$('#pwd1')[0].type="password"}, 2000);
                         }
                        
 					},  
@@ -176,27 +179,7 @@ $(document).ready(function() {
 		}	
 	});
 
-    $("#afficheMDP").toggle(
-        x = document.getElementById('pwd0');
-        function(){
-           x.type = "text";
-        },
-          function(){
-           x.type = "password";
-        } 
-    );
-    
-    /**
-    *   Fonction pour toggle mot de passe visibility
-    */
-	function afficheMotDePasse() {
-        var x = document.getElementById('pwd0');
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
-    };
+
 
     /* definir la class active a la categorie d'usagers visitée */
     $('.filtre_usager .nav-link').on( "click", function( e ) {
