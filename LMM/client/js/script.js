@@ -127,7 +127,7 @@ $(document).ready(function() {
     * Fonction pour modifier le mot de passe
     */
     	$(document).on('click', '.sauvegarderMotDePasse', function(e){
-            var idUserPass = $(this).prev().val();	
+            var idUserPass = $('input[name="idUserPass"]').val();	
 			
             // une fois les validations js faites, on soumet le formulaire
             if(isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
@@ -136,7 +136,7 @@ $(document).ready(function() {
 					cache: false,
 					url: 'index.php?Usagers&action=modifierMotDePasse',
 					method: "POST",
-					dataType : 'html',		
+					dataType : 'json',		
 					data: {
                         pwd0:$("#pwd0").val(),
                         idUser:idUserPass
@@ -144,11 +144,15 @@ $(document).ready(function() {
 					}, 
 					success: function (response) {                       
 						//vérification côté php, s'il y des erreurs
-						if(response[0].messageErreur) {
-                            $("#erreur_pass").empty().addClass("alert alert-warning").text("<p>"+response[0].messageErreur + "</p>");
+						if(response.messageErreur) {
+                            $("#erreur_pass").empty().addClass("alert alert-warning").text(response.messageErreur);
                         } 
                         else if(response[0].messageSucces){ //s'on n'as pas des erreurs côté php
-                           $("#erreur_pass").empty().css("display", "block").addClass("alert alert-success").text("<p>"+response[0].messageSucces + "</p>").fadeOut( 5000, "linear"); 
+                           $("#erreur_pass").empty().addClass("alert alert-success").text(response[0].messageSucces).fadeOut( 5000, "linear");
+                            $('#pwd0').empty();    
+                            $('#pwd0').val("*****");    
+                            $('#pwd1').empty();    
+                            $('#pwd1').val("*****");    
  
                         }
                        
@@ -172,7 +176,27 @@ $(document).ready(function() {
 		}	
 	});
 
-	
+    $("#afficheMDP").toggle(
+        x = document.getElementById('pwd0');
+        function(){
+           x.type = "text";
+        },
+          function(){
+           x.type = "password";
+        } 
+    );
+    
+    /**
+    *   Fonction pour toggle mot de passe visibility
+    */
+	function afficheMotDePasse() {
+        var x = document.getElementById('pwd0');
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    };
 
     /* definir la class active a la categorie d'usagers visitée */
     $('.filtre_usager .nav-link').on( "click", function( e ) {
