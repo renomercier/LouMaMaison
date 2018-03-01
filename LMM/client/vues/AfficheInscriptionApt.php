@@ -106,7 +106,7 @@
     <div class="form-group">
       <div class="row">
           <label for="noApt" class="col-sm-5 form-control-label">No d'appartement</label>
-          <input type="text" name="noApt" class="col-sm-7 form-control" id="noApt" value="<?= isset($data['apt']) ? $data['apt']->getNoApt() : '' ?>" placeholder="Entrer le numéro d'appartement" aria-describedby="aideNoApt">
+          <input type="text" name="noApt" class="col-sm-7 form-control" id="noApt" value="<?= isset($data['apt']) ? $data['apt']->getNoApt() : '' ?>" placeholder="Entrer le numéro d'appartement (facultatif)" aria-describedby="aideNoApt">
           <small class="form-text text-muted" id="aideNoApt"></small> 
       </div>
     </div>
@@ -176,7 +176,7 @@
     <div class="form-group">
       <label for="montantParJour" class="form-control-label ">Montant demandé par jour</label>
       <div class="row">
-        <input type="text" name="montantParJour" class="col-sm-12 form-control" id="montantParJour" value="<?= isset($data['apt']) ? $data['apt']->getMontantParJour() : '' ?>" placeholder="Entrer le montant demandé par jour" aria-describedby="aideMontant">
+        <input type="text" name="montantParJour" class="col-sm-12 form-control" id="montantParJour" value="<?= isset($data['apt']) ? $data['apt']->getMontantParJour() : '' ?>" placeholder="Montant demandé par jour" aria-describedby="aideMontant">
         <small class="form-text text-muted" id="aideMontant"></small> 
       </div>
     </div>

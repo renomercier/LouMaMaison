@@ -1,6 +1,6 @@
 <?php
 /**
-* @file 		/controller/Controleur_Accueil.php
+* @file 		/controller/Controleur_Evaluation.php
 * @brief 		Projet WEB 2
 * @details								
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -13,7 +13,7 @@
     *
     *   1 methode  |   traite()
     */
-	class Controleur_Accueil extends BaseControleur
+	class Controleur_Evaluations extends BaseControleur
 	{	
 		/**
 		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
@@ -29,7 +29,7 @@
                 et ses droits sur le site
             */
             $message= $this->initialiseMessages();
-            //
+           
 			//si le paramètre action existe
 			if(isset($params["action"]))
 			{
@@ -37,8 +37,13 @@
 				//ce switch détermine la vue et obtient le modèle
 				switch($params["action"])
 				{
-					case "machin":
-                        $this->afficheVue("header", $message);
+					case "sauvegarderEvaluation" :
+                        
+                        $modeleEvaluation = $this->getDAO("Evaluations");
+
+                        $evaluation = new Evaluation('2', 'commentaire', '2018-02-28', '1', 'nat');
+                        var_dump($evaluation);
+                        die;
 						break;
 
 					default:
@@ -46,12 +51,12 @@
 				}				
 			}
             else{
-                $this->afficheVue("header", $message);
-                $this->afficheVue("accueil");
+            //    $this->afficheVue("header", $message);
+            //    $this->afficheVue("accueil");
             }
             
             // affichage du footer
-            $this->afficheVue("footer");
+            // $this->afficheVue("footer");
         }
 	}
 ?>

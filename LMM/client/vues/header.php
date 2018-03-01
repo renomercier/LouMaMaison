@@ -66,9 +66,8 @@
           <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
           <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
                 <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>  
-                <!-- lientemporaire pour modifier un appartement -->
-<!-- @temp      <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=17" role="button">Modifier ce logis</a></p>  --> 
-
+                <!-- lientemporaire pour modifier un appartement 
+                <p><a class="btn btn-primary" href="index.php?Evaluations&action=sauvegarderEvaluation" role="button">Instancier une evaluation</a></p> -->
           <?php } 
           }
           else{

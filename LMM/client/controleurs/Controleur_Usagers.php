@@ -38,14 +38,14 @@
 				switch($params["action"])
 				{
 					// case de connexion d'un usager
-					case "login":
+					case "Connexion":
                         $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
                         $this->afficheVue('footer');
 						break;
 
 					// case de deconnexion d'un usager	
-					case "logout":
+					case "Déconnexion":
                         session_destroy();
                             // redirection vers la page d'accueil
                             echo "<script>window.location='./index.php?Appartements'</script>";
