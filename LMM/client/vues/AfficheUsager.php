@@ -29,30 +29,69 @@
             </div>
             <div class="mb-3">
                 <div class="mb-3">
-                   <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                   <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
                   Changer la photo
                    </button>
                 </div>
-                <div class="collapse" id="collapseExample2">
+                <div class="collapse" id="collapsePhoto">
                 </div>
             </div>
             <div class="mb-3">
                 <div class="mb-3">
-                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
-                   Details
+                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseProfil" aria-expanded="false" aria-controls="collapseProfil">
+                   Profil
                     </button>
                 </div>
-                <div class="collapse" id="collapseExample1">
+                <div class="collapse" id="collapseProfil">
                     <div id="profilUser" class="">
                         <form class="form">
 							<div class="panel">
 								<div class="panel-header">Profil</div>
-								<div class="panel-body pb-0">
-									<div class="col-md-12 row" id="div_info_plus"></div>
-									<div class="col-md-12 row" id="div_info_contact"></div>
-									<div class="col-md-12 row" id="div_info_role"></div>						
-									<div class="panel-footer text-right" id="div_modif_profil">	</div>					
-									<input type="hidden" name="usernameProp" value="<?=$data["usager"]->getUsername();?>">
+								<div class="panel-body pb-0">					
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-5 text-right">
+                                            <small><label>Nom d'usager</label></small>
+                                        </div>
+                                        <div class="col-sm-8 col-md-7" id="div_user_nom"></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-5 text-right">
+                                            <small><label>Adresse</label></small>
+                                        </div>
+                                        <div class="col-sm-8 col-md-7" id="div_adresse">
+                                        </div>    
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-5 text-right">
+                                            <small><label>Téléphone</label></small>
+                                        </div>
+                                        <div class="col-sm-8 col-md-7" id="div_telephone">
+                                        </div>    
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-5 text-right">
+                                            <small><label>Mode de paiement</label></small>
+                                        </div>
+                                        <div class="col-sm-8 col-md-7" id="div_paiement">
+                                        </div>    
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-5 text-right">
+                                            <small><label>Moyen de contact</label></small>
+                                        </div>
+                                        <div class="col-sm-8 col-md-7" id="div_contact">
+                                        </div>    
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-5 text-right">
+                                            <small><label>Vous êtes</label></small>
+                                        </div>
+                                        <div class="col-sm-8 col-md-7" id="div_role">
+                                        </div>    
+                                    </div>
+                                    <div class="panel-footer text-right" id="div_modif_profil">
+                                         <input type="hidden" name="usernameProp" value="<?=$data["usager"]->getUsername();?>">
+                                    </div>     
 								</div>
 							</div>
                         </form>
@@ -62,7 +101,7 @@
                     <div class="modal fade" data-animation="false" id="myModal<?=$_SESSION["username"]?>" role="dialog">
                       <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-header bg-info">
+                          <div class="modal-header bg-primary">
                             <h3 class="modal-title text-white">Modifier votre profil</h3>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>
@@ -143,7 +182,7 @@
                                     <button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Sauvegarder</button>
                                 </form>
                           </div>
-                          <div class="modal-footer bg-info">
+                          <div class="modal-footer bg-primary">
                               <div class="erreurModif"></div>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                           </div>
@@ -154,18 +193,18 @@
             </div>
         <div class="mb-3">
             <div class="mb-3">
-                <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Securite
+                <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseMDP" aria-expanded="false" aria-controls="collapseMDP">
+                Sécurité
                 </button>
             </div>
-            <div class="collapse" id="collapseExample">
+            <div class="collapse" id="collapseMDP">
                 <form class="form">
                     <div class="panel">
                         <div class="panel-header">Changer le mot de passe</div>
                         <div class="panel-body">
                             <div class="row mb-2">
                                 <div class="col-sm-4 col-md-5 text-right">
-                                    <label>Mot de passe</label>
+                                    <small> <label>Mot de passe</label></small>
                                 </div>
                                 <div class="col-sm-8 col-md-7">
                                     <input type="password" name="pwd0" id="pwd0" class="col-sm-12 ">
@@ -175,7 +214,7 @@
 
                             <div class="row mb-2">
                                 <div class="col-sm-4 col-md-5 text-right">
-                                    <label>Confirmer le mot de passe</label>
+                                    <small> <label>Confirmer le mot de passe</label></small>
                                 </div>
                                 <div class="col-sm-8 col-md-7">
                                     <input type="password" name="pwd1" id="pwd1" class="col-sm-12">
@@ -216,7 +255,7 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <span id="info_contact"><div class="row mb-0"><div class="col-sm-6 col-md-6 text-left"><label>Moyen de contact : </label></div><div class="col-sm-6 col-md-6"> <?=$data["modeCommunication"][0]->moyenComm;?></div></div></span>
+                <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
                 <a class="nav-link" href="#" id="historique">Voyages</a>
                 <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
@@ -238,12 +277,12 @@
                     if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
                     {
                     ?>
-                        <span id="info_plus" class="">
-                           <div class="row">Username : <?=$data["usager"]->getUsername();?></div> 
-                           <div class="row">Adresse : <?=$data["usager"]->getAdresse();?></div> 
-                           <div class="row">Téléphone : <?=$data["usager"]->getTelephone();?></div> 
-                           <div class="row mb-0">Mode de paiement : <?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></div> 
-                        </span>
+                        
+                           <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
+                           <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
+                           <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
+                           <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></p> 
+                     
                         <?php 
                         if($data["isClient"]) 
                         {
@@ -268,17 +307,17 @@
                         $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
                         $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
 						?>
-					<span id="info_role" class="row">Rôle : 
+					<p id="data_role">
 						<?php
 						foreach($data["usager"]->roles as $role)
 						{
 						?> 
-						   <div class="mr-1"><?=$role->nomRole?></div>
+						   <span class="mr-1"><?=$role->nomRole?></span>
 
 						<?php
 						}
 						?>
-					</span>
+					</p>
 					<?php
                     if(!$data["isSuperAdmin"])
                     {

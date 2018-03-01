@@ -10,26 +10,22 @@ $(document).ready(function() {
 
    /**
 	* 	Fonction pour afficher un profil d'usager
-	*/
-		$("#div_info_plus").append($("#info_plus"));
-		
-		$("#div_info_contact").append($("#info_contact"));
-
-		$("#div_info_role").append($("#info_role"));
-        
+	*/	
+        $("#div_user_nom").append($("#data_user_nom"));		
+		$("#div_adresse").append($("#data_adresse"));
+		$("#div_telephone").append($("#data_telephone"));
+		$("#div_paiement").append($("#data_paiement"));
+		$("#div_contact").append($("#data_contact"));
+		$("#div_role").append($("#data_role"));
 		$("#div_modif_profil").append($(".btn-modifier"));
 		
-		$("#div_messagerie").append($("#messagerie"));
-		
-		$("#div_action_admin").append($("#action_admin"));
-       
-		$(".menuProfil").append($("#div_action_admin"));
-		
-		$("#div_historique").append($("#historique"));
-		
-		$("#div_reservations").append($("#reservations"));
-		
-		$("#div_mes_appts").append($("#mes_appts"));
+		$("#div_messagerie").append($("#messagerie"));		
+		$("#div_action_admin").append($("#action_admin"));       
+		$(".menuProfil").append($("#div_action_admin"));		
+		$("#div_historique").append($("#historique"));		
+		$("#div_reservations").append($("#reservations"));		
+		$("#div_mes_appts").append($("#mes_appts"))
+    
 		
 	/**
 	* 	Fonction pour Modifier un profil d'usager
@@ -69,11 +65,17 @@ $(document).ready(function() {
                             $('.modal-backdrop.fade.show').remove();
                             $('body').removeClass("modal-open");
                             $("#div_info_nom").empty();
-                            $("#div_info_plus").empty();
-                            $("#div_info_contact").empty();
+                            $("#div_user_nom").empty();
+                            $("#div_adresse").empty();
+                            $("#div_telephone").empty();
+                            $("#div_paiment").empty();
+                            $("#div_contact").empty();
                             $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3>");               
-                            $("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response[0][0].adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response[0][0].telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response[0][0].modePaiement + "</div>");
-                            $("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response[0][0].moyenContact + "</div>");  
+                            $("#div_user_nom").html(idUser); 
+                            $("#div_adresse").html(response[0][0].adresse);
+                            $("#div_telephone").html(response[0][0].telephone);
+                            $("#div_paiement").html(response[0][0].modePaiement);
+                            $("#div_contact").html(response[0][0].moyenContact);  
                         }
                        
 					},  
@@ -145,10 +147,10 @@ $(document).ready(function() {
 					success: function (response) {                       
 						//vérification côté php, s'il y des erreurs
 						if(response.messageErreur) {
-                            $("#erreur_pass").empty().addClass("alert alert-warning").text(response.messageErreur);
+                            $("#erreur_pass").empty().css("display", "block").addClass("alert alert-warning").text(response.messageErreur);
                         } 
                         else if(response[0].messageSucces){ //s'on n'as pas des erreurs côté php
-                           $("#erreur_pass").empty().addClass("alert alert-success").text(response[0].messageSucces).fadeOut( 5000, "linear");
+                           $("#erreur_pass").empty().css("display", "block").addClass("alert alert-success").text(response[0].messageSucces).fadeOut( 5000, "linear");
                             $('#pwd0').empty();    
                             $('#pwd0').val("*****");
 							$('#pwd0')[0].type="text";						
