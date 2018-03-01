@@ -87,7 +87,7 @@
             //
             $data['banni'] = (isset($_SESSION["username"]) && $_SESSION["isBanned"]==1) ? "<p class='alert alert-danger'>Vous êtes banni ! prenez contact avec l'administrateur</p>" : "";
             //
-            $data['log'] = (isset($_SESSION["username"])) ? "logout" : "login";
+            $data['log'] = (isset($_SESSION["username"])) ? "Déconnexion" : "Connexion";
             
             return $data;
         }

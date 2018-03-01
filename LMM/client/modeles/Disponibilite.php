@@ -22,7 +22,15 @@
 		private $disponibilite;
 		private $id_appartement;
 		
-		//constructeur
+		/**
+        *   constructeur de la classe Disponibilite
+        *       
+        *   @param <int>           	$id                     l'id de la disponibilite 
+        *   @param <date>           $dateDebut              date de debut de la disponibilite    
+        *   @param <date>       	$dateFin            	date de fin de la disponibilite 
+        *   @param <tinyint>        $disponibilite          si la disponibilite est libre ou pas  
+        *   @param <int>           	$id_appartement         l'id de l'appartement auquel correspond cette disponibilite  
+        */
 		public function __construct($id = "", $dateDebut = "", $dateFin = "", $disponibilite = 1, $idAppartement = "")
 		{
 			$this->setId($id);
