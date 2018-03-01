@@ -455,7 +455,13 @@ $(document).ready(function() {
     
     // appel de la fonction d'affichage de tous les messages
     var idUsager = $('input[name="idUser"]').val();
-    $('h7[name="Messagerie"]').on('click', function(e){
+        if($('p[name="Messagerie"]')){
+        
+            // afficher la liste des messages
+            afficheListeMessages(idUsager);
+        }
+    
+    $('p[name="Messagerie"]').click( function(e){
         
         // afficher la liste des messages
         afficheListeMessages(idUsager);
@@ -464,7 +470,7 @@ $(document).ready(function() {
             setTimeout(function(){
 
                     // appel de la fonction d'affichage des details du message
-                $('h7[name="detailMessage"]').on('click', function(e){
+                $('p[name="detailMessage"]').on('click', function(e){
                     var idMessage = $(this).attr('value');
                     afficheDetailsMessage(idMessage);
                     });
@@ -497,6 +503,21 @@ function afficheListeMessages(idUser){
           }
         });
 }
+
+function racourcisMessages(idUser)
+{
+             // window.location='index.php?Usagers&action=afficheUsager&idUsager='+idUser;
+             $('p[name="Messagerie"]').load(
+               $('p[name="Messagerie"]').click());
+    
+  //  window.location='index.php?Usagers&action=afficheUsager&idUsager='+idUser;
+    
+                
+//            $('p[name="Messagerie"]').click();
+//afficheListeMessages(idUser);
+//    stop();
+}
+
 
 /* fonction pour afficher tout les details d'un message */
 function afficheDetailsMessage(idMessage){

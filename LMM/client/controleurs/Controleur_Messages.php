@@ -51,6 +51,7 @@
 						// chargement du modele et recuperation du data
 						$modeleMessages = $this->getDAO("Messages");
 						$data['message'] = $modeleMessages->obtenir_par_id($params['idMessage']);
+                        $modeleMessages->definir_messages_lu($params['idMessage'], $_SESSION['username']);
                         $this->afficheVue("detailsMessage", $data);
 
                     break;

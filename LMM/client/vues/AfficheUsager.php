@@ -168,14 +168,14 @@
                 {
             ?>
                 <span id="info_contact"><div  class="form-group row mb-0">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
-                <h7 class="nav-link" href="#" id="historique">Voyages</h7>
-                <h7 class="nav-link" name="<?=$messagerie?>" id="messagerie" value="<?=$_SESSION["username"]?>"><?=$messagerie?></h7>
+                <p class="nav-link" href="#" id="historique">Voyages</p>
+                <p class="nav-link" name="<?=$messagerie?>" id="messagerie" value="<?=$_SESSION["username"]?>"><?=$messagerie?></p>
 
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <h7 class="nav-link" href="#" id="mes_appts">Appartements</h7>
+                       <p class="nav-link" href="#" id="mes_appts">Appartements</p>
                    <?php      
                     }
                     ?>

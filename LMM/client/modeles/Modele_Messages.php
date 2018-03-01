@@ -86,5 +86,16 @@
 			return $resultat->fetchAll();
 		}
         
+        /**  
+		* @brief     	Definir un message comme etant Déja lu
+		* @param   		<int>		$id_message 		Identifiant du message
+        * @param   		<string>	$idUsager 		Identifiant du message
+		* @return    	<bool> 	Résultat de la requête SQL
+		*/
+        public function definir_messages_lu($id_message, $idUsager) {
+			$query = "UPDATE message_user SET statut = 1 WHERE id_message =? AND id_username =?";
+			$donnees = array($id_message, $idUsager);
+			return $this->requete($query, $donnees);
+		}
 	}
 ?>
