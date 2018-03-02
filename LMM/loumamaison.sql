@@ -422,11 +422,11 @@ CREATE TABLE IF NOT EXISTS `usager` (
 --
 
 INSERT INTO `usager` (`username`, `nom`, `prenom`, `photo`, `adresse`, `telephone`, `motDePasse`, `valideParAdmin`, `banni`, `id_moyenComm`, `coor_moyenComm`, `id_modePaiement`, `id_adminBan`, `id_adminValid`) VALUES
-('nat', 'nat', 'nat', 'Wall-E6.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
-('Nouveau00', 'no', 'no', 'profil.jpg', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, NULL, 'salim'),
-('renaud', 'renaud', 'renaud', NULL, 'renaud', '778787', '12345', 0, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
-('salim', 'salim', 'salim', 'Wall-E4.png', 'salim', '44', '12345', 1, 0, 1, 'coordonnée MC', 1, NULL, NULL),
-('yul', 'yul', 'yul', NULL, 'yul', '5454', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
+('nat', 'nat', 'nat', './images/minion-03.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
+('Nouveau00', 'no', 'no', './images/new-user-01.png', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, NULL, 'salim'),
+('renaud', 'renaud', 'renaud', './images/minion-09.png', 'renaud', '778787', '12345', 0, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
+('salim', 'salim', 'salim', './images/minion-04.png', 'salim', '44', '12345', 1, 0, 1, 'coordonnée MC', 1, NULL, NULL),
+('yul', 'yul', 'yul', './images/minion-02.png', 'yul', '5454', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
 
 --
 -- Contraintes pour les tables exportées

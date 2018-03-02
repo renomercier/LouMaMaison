@@ -13,6 +13,61 @@
 
 <div class="container detailAppartement">
     
+	<!-- Modal disponibilite -->
+    <div class="modal fade" id="modal<?= $data['appartement']->getId(); ?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                
+				<div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="modal<?= $data['appartement']->getId(); ?>">Disponibilité</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				        <span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+                
+				<div class="modal-body">
+				    <form class="form-inline">
+				        <label class="mr-sm-2">Date de debut</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="dateDebut<?= $data['appartement']->getId(); ?>" >
+				        <label class="mr-sm-2">Date de fin</label><input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="dateFin<?= $data['appartement']->getId(); ?>">
+				        <button type="button" id="ajouterDispo<?= $data['appartement']->getId(); ?>" value = "<?= $data['appartement']->getId(); ?>" class="btn btn-success btnAjouterDispo">Ajouter</button>
+				        <table class="table table-hover table_dispo">
+				            <tbody>
+								<tr id="dispoRes<?= $data['appartement']->getId(); ?>">
+								    <th>Date de debut</th>
+                                    <th>Date de fin</th>
+								</tr>
+								<?php
+								    foreach( $data["tab_dispos"] as $dispo) 
+								    {
+								?>
+								<tr id="ajoutDispoRes<?=$dispo['id'];?>"> 
+									<td id="dateDebut<?=$dispo['id'];?>"> <?=$dispo['dateDebut'];?> </td>
+								    <td id="dateFin<?=$dispo['id'];?>">  <?=$dispo['dateFin']?> </td>
+								    <input type="hidden" name="id_apt" value="<?= $data['appartement']->getId(); ?>">
+								    <td>
+										<button type="button" class="btn btn-warning btnSupprimerDispo" id="btnSupprimerDispo<?=$dispo['id'];?>" value="<?=$dispo['id'];?>">Supprimer</button>
+									</td>
+                                </tr>
+								<?php
+								    }
+								?>
+				            </tbody>
+				        </table>
+				    </form>
+				</div>
+                
+				<div class="modal-footer bg-primary">
+				    <div id="erreurDispo<?= $data['appartement']->getId(); ?>"></div>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+				</div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
     <!-- Modal du carousel de photos -->
     <div class="modal fade" id="modalGaleriePhoto" tabindex="-1" role="dialog" aria-labelledby="modalPhotoSupp" aria-hidden="true">
       <div class="modal-dialog modal-xl" role="document">
@@ -211,12 +266,12 @@
             
    		  <?php
 
-	        if( (isset($_SESSION["username"])) && (($_SESSION["username"]) != $data['proprietaire']->getUsername()) )
+	        if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
           {
           ?>
             
             <div class="d-block">
-                <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
             </div>
             
         <?php
@@ -224,10 +279,9 @@
         ?>
                 
             <div class="d-block">
-                <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
             </div>  
-            
-                
+      
         <?php
             }
         ?>
@@ -318,97 +372,118 @@
             
         </div>
         
-        <div class="sectionAptDetail-d col-sm-4">
+        <div class="sectionAptDetail-d col-sm-4 sticky">
             <br>
+
+             <?php
+                if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
+                {
+             ?>
             
-            <!--
-            <pre>
-                <?= var_dump($data['moyenneApt']); ?>
-            </pre>
-            -->
+                <div class="aptModification col-sm-12">
             
-            <div class="aptReservation col-sm-12">
-                <h4>$<?= $data['appartement']->getMontantParJour(); ?> CAD <small>par jour</small></h4>
-                <h6>Ratings
-                    <?php
-                        for($i=1; $i<=$data['moyenneApt'][0]/2; $i++)
-                        {
-                    ?>
-                            <i class="fa fa-star"></i>
-                    <?php
-                        }
-                        if($data['moyenneApt'][0] % 2 != 0)
-                        {
-                                     ?>   
-                            <i class="fa fa-star-half"></i>
-                    <?php
-                        }
-                    ?>                
-                </h6>
-                
-                <hr>
-                
-                <!--
-                <div class="aptDisponibilites">
-                    <h4 class="text-center">Disponibilités</h4>
+                    <div class="">                     
+                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier cet appartement</a></p> 
+                    </div>
+                    <hr>
+                    <div class="">
+                        <button type="button" data-toggle="modal" data-target="#modal<?= $data['appartement']->getId() ;?>"  class="btn btn-block btn-primary btn-lg" >Gérer les disponibilités</button>
+                    </div>
                     
-                    <?php
-                        $nbrD = 0;
-				        foreach($data["tab_dispos"] as $dispo) {
-                            $nbrD++;
-				    ?>
-                            <p><?= $nbrD; ?>. Du: <?= $dispo['dateDebut'] ?>  Au: <?= $dispo['dateFin'] ?></p>
-				    <?php
-					   }
-				    ?>
                 </div>
-                <hr>
-                -->
-                
-                <div class="demandeReservation">
-                    <form id="formApt" method="POST" action="index.php?Appartements&action=sauvegarderApt">
+            
+            <?php
+                } else {
+            ?>
+                <div class="aptReservation col-sm-12">
+                    <h4>$<?= $data['appartement']->getMontantParJour(); ?> CAD <small>par nuit</small></h4>
+                    <h6>Ratings
+                        <?php
+                            for($i=1; $i<=$data['moyenneApt']['moyenne']/2; $i++)
+                            {
+                        ?>
+                                <i class="fa fa-star"></i>
+                        <?php
+                            }
+                            if($data['moyenneApt']['moyenne'] % 2 != 0)
+                            {
+                                         ?>   
+                                <i class="fa fa-star-half"></i>
+                        <?php
+                            }
+                        ?>
+                        <?php
+							if($data['moyenneApt']['moyenne'] == null) 
+							{ 
+						?>
+								<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
+						<?php
+							}
+				        ?>
+                        <?= $data['moyenneApt']['nbr_votant'] ;?>
+                    </h6>
+                    <hr>
+                    <!--
+                    <div class="aptDisponibilites">
+                        <h4 class="text-center">Disponibilités</h4>
 
-                        <!-- Date d'arrivée -->
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="dateArrivee">Date d'arrivée</label>
-                                <input type="date" name="dateArrivee" id="dateArrivee" size="8" class="form-control text-muted" aria-describedby="aideDateArrivee">
-                                <small class="form-text text-muted" id="aideDateArrivee"></small>
+                        <?php
+                            $nbrD = 0;
+                            foreach($data["tab_dispos"] as $dispo) {
+                                $nbrD++;
+                        ?>
+                                <p><?= $nbrD; ?>. Du: <?= $dispo['dateDebut'] ?>  Au: <?= $dispo['dateFin'] ?></p>
+                        <?php
+                           }
+                        ?>
+                    </div>
+                    <hr>
+                    -->                
+                    <div class="demandeReservation">
+                        <form id="formApt" method="POST" action="index.php?Appartements&action=sauvegarderApt">
+                            <!-- Date d'arrivée -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="dateArrivee">Date d'arrivée</label>
+                                    <input type="date" name="dateArrivee" id="dateArrivee" size="8" class="form-control text-muted" aria-describedby="aideDateArrivee">
+                                    <small class="form-text text-muted" id="aideDateArrivee"></small>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Date de départ -->
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="dateDepart">Date de départ</label>
-                                <input type="date" name="dateDepart" id="dateDepart" size="8" class="form-control text-muted" aria-describedby="aideDateDepart">
-                                <small class="form-text text-muted" id="aideDateDepart"></small>
+                            <!-- Date de départ -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="dateDepart">Date de départ</label>
+                                    <input type="date" name="dateDepart" id="dateDepart" size="8" class="form-control text-muted" aria-describedby="aideDateDepart">
+                                    <small class="form-text text-muted" id="aideDateDepart"></small>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Nombre de personnes -->
-                        <div class="form-group">
-                            <div class="row">
-                                <label for="nbPersonnes">Nombre de personnes</label>
-                                <select class="form-control text-muted" name="nbPersonnes" id="nbPersonnes" aria-describedby="aideNbPersonnes">
-                                    <option selected>Sélectionnez</option>
-                                    <?php
-                                        for ($i = 1; $i <= $data['appartement']->getNbPersonnes(); $i++) {
-                                            echo $i;
-                                            echo "<option value=" . $i . ">" . $i . "</option>";
-                                        }
-                                    ?>         
-                                </select>
-                                <small class="form-text text-muted" id="aideNbPersonnes"></small>
+                            <!-- Nombre de personnes -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="nbPersonnes">Nombre de personnes</label>
+                                    <select class="form-control text-muted" name="nbPersonnes" id="nbPersonnes" aria-describedby="aideNbPersonnes">
+                                        <option selected>Sélectionnez</option>
+                                        <?php
+                                            for ($i = 1; $i <= $data['appartement']->getNbPersonnes(); $i++) {
+                                                echo $i;
+                                                echo "<option value=" . $i . ">" . $i . "</option>";
+                                            }
+                                        ?>         
+                                    </select>
+                                    <small class="form-text text-muted" id="aideNbPersonnes"></small>
+                                </div>
                             </div>
-                        </div>
 
-                        <input type="submit" class="btn btn-primary btn-block btn-lg" id="inputSubmit" value="Demande de réservation">						
-                    </form>
+                            <input type="submit" class="btn btn-primary btn-block btn-lg" id="inputSubmit" value="Demande de réservation">						
+                        </form>
+                    </div>
+                    <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
+                    <hr>
                 </div>
-                <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
-                <hr>
-            </div>
+            
+            <?php
+                }
+            ?>   
             
         </div>
         

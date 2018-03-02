@@ -83,7 +83,7 @@
                         // Recuperer le type de l'appartement
                         $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
                         // Recuperer la moyenne de l'appartement
-                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
+                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($params['id_appart']);
                         // Recuperer les disponibilites de l'appartement
                         $modeleDisponibilites = $this->getDAO("Disponibilites");
                         $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);

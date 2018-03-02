@@ -73,27 +73,12 @@ a, a:hover{
     opacity: 0.7;
 }
 
-/*----- modalGaleriePhoto  -----*/
-
-/* Modal-Carousel pour photos supplementaires */
-
-.modal-header, .modal-footer {  
-    color: #ffffff;
-    background-color: #014B88;
-}
 
 .fa_custom{
 	color: #999;
 }
 
-/* Opacite des photos lorsque "hovered on" */
-.photoAppartement:hover, .photoSupplementaire:hover {
-    opacity: 0.7;
-}
-
-/*----- modalGaleriePhoto  -----*/
-
-/* Modal-Carousel pour photos supplementaires */
+/*----- modalGaleriePhoto -----*/
 
 .modal-header, .modal-footer {  
     color: #ffffff;
@@ -102,7 +87,7 @@ a, a:hover{
 
 .modal-xl {
     max-height: auto;
-    max-width: 70%;
+    max-width: 65%;
 }
 
 /*----- page AfficheAppartement -----*/
@@ -116,47 +101,7 @@ a, a:hover{
     /*border: 1px solid #000000; */ 
 }
 
-.reservation, .afficheDisponibilites {
-    padding: 20px;
-    border: 1px solid #585759;
-}
-
-.afficheDisponibilites {
-    padding: 10px;
-    height: 165px;
-    width: auto;
-    overflow-y: scroll;
-    border: 1px solid #585759;
-}
-
-.iconeDescription {
-    margin-right: 20px;
-}
-
-/*----- footer -----*/
-
-footer {
-    color: #ffffff;
-    background-color: #585759;
-}
-
-.modal-xl {
-    max-height: auto;
-    max-width: 66%;
-}
-
-/*----- page AfficheAppartement -----*/
-
-.sectionAptDetail {
-    
-}
-
-.sectionAptDetail-g, .sectionAptDetail-d {
-    padding=0;
-    /*border: 1px solid #000000; */ 
-}
-
-.aptReservation, .aptDisponibilites {
+.aptReservation, .aptDisponibilites, .aptModification {
     padding: 20px;
     border: 1px solid #585759;
 }
