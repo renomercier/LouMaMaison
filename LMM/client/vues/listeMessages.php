@@ -5,43 +5,53 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-<div class="messages col-md-12">
+
     <?php
     if(count($data["messages"]) != 0)
     {
     ?>
-        <table class="table mt-5">
-            <thead>
-              <tr>
+
+
+<div class="messages col-md-12">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
                 <th></th>
-                <th>Emetteur</th>
-                <th>Titre</th>
+                <th>De</th>
+                <th>Objet</th>
                 <th>Date</th>
                 <th></th>
                 <th></th>
-              </tr>
-            </thead>
-            <tbody>
+            </tr>
+          </thead>
                 <?php
-                        foreach($data["messages"] as $message)
-                        {   
-                            $enveloppe = $message->statut == 0 ? '<i class="fa fa-envelope text-warning"></i>' : '<i class="fa fa-envelope-open text-muted"></i>';
-                            ?>
-                                <tr>
-                                        <td><?=$enveloppe?></td>
-                                        <td><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$message->getId_userEmetteur()?>"><?=$message->getId_userEmetteur()?></a></td>
-                                        <td><p name="detailMessage" value="<?=$message->id_message?>"><?=$message->getTitre()?></p></td>
-                                        <td class="text-muted"><?=$message->getDateHeure()?></td>
-                                        <td><h6 class="actionMessage" name="supprimeMessage" value="<?=$message->id_message?>" onclick="supprimeMessage(<?=$message->id_message?>)"><i class="fa fa-reply"></i></h6></td>
-                                        <td><h6 class="actionMessage" name="supprimeMessage" value="<?=$message->id_message?>" onclick="supprimeMessage(<?=$message->id_message?>)"><i class="fa fa-trash" aria-hidden="true"></i></h6></td>
-                                </tr>
-                                <tr name="contenuMessage" id="contenuMessage<?=$message->id_message?>"></tr>
-                            <?php    
-                        }
+                    foreach($data["messages"] as $message)
+                    {   
+                        $enveloppe = $message->statut == 0 ? '<i class="fa fa-envelope text-warning"></i>' : '<i class="fa fa-envelope-open text-muted"></i>';
+                        $apercu = substr($message->getTitre(),0,20);
+                        ?>
 
+                        <tr>
+                            <td class="iconEnveloppe<?=$message->id_message?>"><?=$enveloppe?></td>
+                            <td><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$message->getId_userEmetteur()?>"><?=$message->getId_userEmetteur()?></a></td>
+                            <td><p name="detailMessage" onclick="afficheDetailsMessage(<?=$message->id_message?>)"><?=$apercu?>...</p></td>
+                            <td class="text-muted dateMessage"><?=$message->getDateHeure()?></td>
+                            <td><h6 class="actionMessage" name="repondreMessage" value="<?=$message->id_message?>" onclick="formulaireMessage(<?=$message->id_message?>, <?=$apercu?>)"><i class="fa fa-reply"></i></h6></td>
+                            <td><h6 class="actionMessage" name="supprimeMessage" value="<?=$message->id_message?>" onclick="supprimeMessage(<?=$message->id_message?>)"><i class="fa fa-trash" aria-hidden="true"></i></h6></td>
+                        </tr>
+                
+                            <td colspan="6" name="contenuMessage" id="contenuMessage<?=$message->id_message?>"></td>
+                      
+
+                        <?php    
+                    }
                 ?>
-            </tbody>
         </table>
+      </div><!--end of .table-responsive-->
+
+</div>
+
             <?php
                 }else
                 {
@@ -55,4 +65,3 @@
                 <?php
                 }
             ?>
-</div>

@@ -229,6 +229,16 @@ h6, p[name='detailMessage'], .filtre_usager a.nav-link, p.nav-link{
     color: #0275d8 !important;
     cursor: pointer;
 }
+
+td[name='contenuMessage']{
+    padding: 0;
+    border: none;
+    box-shadow: 0 .5px .5px 0 rgba(0, 0, 0, 0.2), 0 .3px 15px 0 rgba(0, 0, 0, 0.19);
+}
+
+.dateMessage{
+    font-size: .8em;
+}
 @media only screen and (max-width: 768px) {
     #carte{
         position: relative!important;

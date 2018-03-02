@@ -65,7 +65,8 @@
          
           <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
           <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
-            <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>  
+            <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>
+            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><i class="fa fa-envelope"></i></a></li>
                
           <?php } 
           }
@@ -77,7 +78,6 @@
           }
 		      ?>
             <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>" onclick="racourcisMessages('<?=$_SESSION["username"]?>')"><i class="fa fa-envelope text-warning"></i></a></li>
 	    </ul>          
     </div>
   </nav>

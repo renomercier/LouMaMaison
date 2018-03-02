@@ -1,7 +1,7 @@
 <!--
-* @file         /listeMessages.php
+* @file         /detailMessage.php
 * @brief        Projet WEB 2
-* @details      Affichage d'une liste de messages recus
+* @details      Affichage des détails d'un message
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->

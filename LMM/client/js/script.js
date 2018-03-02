@@ -453,10 +453,17 @@ function actionAdmin(idUser, action) {
 
 $(document).ready(function() {
     
-    // appel de la fonction d'affichage de tous les messages
     var idUsager = $('input[name="idUser"]').val();
-        if($('p[name="Messagerie"]')){
-        
+    
+    /* faire une test pour verifier la provenace de la requete*/
+    $.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if(results)	return results[1]; else return 0;
+    }
+    
+    // appel de la fonction d'affichage de tous les messages
+    
+        if($.urlParam('messages') == 'ok'){
             // afficher la liste des messages
             afficheListeMessages(idUsager);
         }
@@ -465,24 +472,6 @@ $(document).ready(function() {
         
         // afficher la liste des messages
         afficheListeMessages(idUsager);
-        
-        // attendre la fin du chargement pour permettre l'affichage des details du message
-            setTimeout(function(){
-
-                    // appel de la fonction d'affichage des details du message
-                $('p[name="detailMessage"]').on('click', function(e){
-                    var idMessage = $(this).attr('value');
-                    afficheDetailsMessage(idMessage);
-                    });
-                
-                    // appel de la fonction de suppression de message
-               /* $('h6[name="supprimeMessage"]').on('click', function(e){
-                    var idMessage = $(this).attr('value');
-                    supprimeMessage(idMessage);
-                    });*/
-                
-            }, 100);
-        
         e.stopImmediatePropagation();
         });
 });
@@ -492,7 +481,7 @@ function afficheListeMessages(idUser){
     
            $.ajax({
             method: "POST",
-            url: "index.php?Messages&action=afficherListeMessages&idUsager="+idUser,
+            url: "index.php?Messages&action=afficherListeMessages&messages=ok&idUsager="+idUser,
             dataType:"html",
     // comportement en cas de success ou d'echec
           success:function(reponse) {
@@ -504,19 +493,14 @@ function afficheListeMessages(idUser){
         });
 }
 
+/*
 function racourcisMessages(idUser)
 {
              // window.location='index.php?Usagers&action=afficheUsager&idUsager='+idUser;
              $('p[name="Messagerie"]').load(
                $('p[name="Messagerie"]').click());
-    
-  //  window.location='index.php?Usagers&action=afficheUsager&idUsager='+idUser;
-    
-                
-//            $('p[name="Messagerie"]').click();
-//afficheListeMessages(idUser);
-//    stop();
-}
+
+}*/
 
 
 /* fonction pour afficher tout les details d'un message */
@@ -528,8 +512,9 @@ function afficheDetailsMessage(idMessage){
             dataType:"html",
     // comportement en cas de success ou d'echec
           success:function(reponse) {
-                $.each($('tr[name="contenuMessage"]'), function(){$(this).html('')});
+                $.each($('td[name="contenuMessage"]'), function(){$(this).html('');});
                 $('#contenuMessage'+idMessage).html(reponse);
+                $('.iconEnveloppe'+idMessage).html('<i class="fa fa-envelope-open text-muted"></i>');
           },
           error: function(xhr, ajaxOptions, thrownError) {
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -553,4 +538,12 @@ function supprimeMessage(idMessage){
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
           }
         });
+}
+
+/* ouvrire le formulaire de reponse à un message*/
+function formulaireMessage(idMessage, objet)
+{
+    $.each($('td[name="contenuMessage"]'), function(){$(this).html('');});
+    $('#contenuMessage'+idMessage).load('vues/ecrireMessage.php');
+    setTimeout(function () { $('#contenuMessage'+idMessage+' #objet').val('re: '+objet); }, 100);
 }

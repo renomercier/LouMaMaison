@@ -155,9 +155,9 @@
                 
                 </ul>
 			</div>
-			<div class="row" id="afficheInfoProfil">
-				
-			</div>
+                <div class="row" id="afficheInfoProfil">
+                    
+                </div>
 		</div>
     </div>
 </div>
