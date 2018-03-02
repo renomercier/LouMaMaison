@@ -7,12 +7,10 @@
 		- hash du mot de passe avant insertion BD
 		- changer vue d'affichage pour message succès 
 		JS
-		- regex à paufiner... username - pwd - tel (international) 
 
-	Inscription d'un Appartement:	
+
+	Inscription et modification d'un Appartement:	
 		- redirections des messages d'erreur
-
-	Modif d'un appart:
  
 
 	Photos:
@@ -20,14 +18,27 @@
 		- gérer le nb max (10 en tout)
 		- modifier une photo... 
 
-Notes:	
-	- fonction champ unique *Salim*
-	- photo a null dans la table, ou idee pour sauvegarde appart...
-	- footer a enlever... a cause des vues partielles
-	- a temp sur la page des listes d'appart
-	- modif Appartement (options enlevees de l'insert de base)
 
-	Vérifier si tout est compatible sur les différents navigateurs:
+
+----------------------
+Notes pour l'équipe: -
+----------------------
+
+	CSS ---------------------------
+		- vérifier styles modal-xl
+
+	Modele_Locations
+		- Fonction creerLocation à modifier 
+
+
+
+
+
+
+
+
+
+	* Vérifier si tout est compatible sur les différents navigateurs:
 
 		- css ajout des webkit-mox-o
 		- types d'inputs

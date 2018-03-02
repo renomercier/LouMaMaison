@@ -19,18 +19,28 @@
 		private $id;
 		private $dateDebut;
 		private $dateFin;
-		private $valideParPrestatire;
+		private $valideParPrestataire;
 		private $validePaiement;
 		private $idAppartement;
 		private $idUserClient;
 		
-		//constructeur
-		public function __construct($id = "", $dateDebut = "", $dateFin = "", $valideParPrestatire =0, $validePaiement = 0, $idAppartement = "", $idUserClient = "")
+		/**
+        *   constructeur de la classe Location
+        *       
+        *   @param <int>           	$id                     l'id de la location 
+        *   @param <date>           $dateDebut              date de debut de la location     
+        *   @param <date>        	$dateFin            	date de debut de la location   
+        *   @param <tinyint>        $valideParPrestataire   bool si valide par Proprio 
+        *   @param <tinyint>        $validePaiement         bool si paiement valide  
+        *   @param <int>        	$idAppartement          l'id de l'appartement  
+        *   @param <string>        	$idUserClient           l'id de l'utilisateur    
+        */
+		public function __construct($id = "", $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $idAppartement = "", $idUserClient = "")
 		{
 			$this->setId($id);
 			$this->setDateDebut($dateDebut);
 			$this->setDateFin($dateFin);
-			$this->setValideParPrestatire($valideParPrestatire);
+			$this->setvalideParPrestataire($valideParPrestataire);
 			$this->setValidePaiement($validePaiement);
 			$this->setIdAppartement($idAppartement);
 			$this->setIdUserClient($idUserClient);
@@ -52,9 +62,9 @@
 			return $this->dateFin;
 		}
 		
-		public function getValideParPrestatire()
+		public function getvalideParPrestataire()
 		{
-			return $this->valideParPrestatire;
+			return $this->valideParPrestataire;
 		}
 		
 		public function getValidePaiement()
@@ -107,10 +117,10 @@
 			}
 		}
 		
-		public function setValideParPrestatire($valideParPrestatire)
+		public function setvalideParPrestataire($valideParPrestataire)
 		{
-			if(is_bool($valideParPrestatire)) {
-				$this->valideParPrestatire = $valideParPrestatire;
+			if(is_bool($valideParPrestataire)) {
+				$this->valideParPrestataire = $valideParPrestataire;
 			}
 			else {
 				return false;
@@ -146,5 +156,4 @@
 				return false;
 		}
 	}
-
 ?>

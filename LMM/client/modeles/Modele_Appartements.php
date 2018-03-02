@@ -1,11 +1,10 @@
 <?php
 /**
-* @file     
-* @brief    
-* @details  
-*                               
-* @author   
-* @version    
+* @file         /Modele_Appartements.php
+* @brief        Projet WEB 2
+* @details                              
+* @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
+* @version      v.1 | fevrier 2018  
 */
 
 	/**
@@ -13,9 +12,10 @@
     * @details  lie les requetes d'objets Appartement a la BD
     *                   - definit les requetes specifiques a la classe
     *
-*** *   ...11 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
-	* 						supprimerAppartement(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), getQuartier(),
-	* 						sauvegarderPhoto()
+*** *   ...18 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
+	* 						supprimerAppartement(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
+	* 						getTypeApt_par_id(), getQuartier(), getQuartier_par_id(), getPhotos_par_id(),
+	* 						obtenirAptProprio(), obtenir_apt_avec_type(), obtenir_apt_avec_nb_notes(), sauvegarderPhoto()
     */
     class Modele_Appartements extends BaseDAO {
 
@@ -120,9 +120,8 @@
                             (SELECT (id_appartement) as Apparteval, AVG(rating) AS moyenne, COUNT(rating) AS nbr_votant FROM evaluation e 
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
                                 ON note.Apparteval = a.id
-                    WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
+                    	WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
 
-            
             if(!empty($filtre['priMin']))
             {
                 $query.= " AND a.montantParJour >= " . $filtre['priMin'] ."";
@@ -173,18 +172,7 @@
 			$resultat = $this->requete($query, $donnees);
             return $resultat->fetch();
 		}
-        
-        /**
-		* @brief      Chercher tous les quartiers sauvegardés dans la bd
-		* @return     tableau de quartier
-		*/
-		public function obtenir_quartiers()
-		{
-			$query = "SELECT * FROM quartier";
-			$resultat = $this->requete($query);
-            return $resultat->fetchAll();
-		}
-
+       
         /**
 		* @brief		Lecture des types d'appartements de la BD
 		* @details		Permet de recuperer tous les types d'appartements dans la table type_apt
@@ -218,12 +206,12 @@
 		* @param 		Aucun parametre envoyé
 		* @return    	<type> 		toutes les rangées de la table quartier ou false 
 		*/
-		public function getQuartier() {
+		public function getQuartiers() {
 
 			$query = "SELECT id, nomQuartier from quartier";
 			$resultat = $this->requete($query);
             return $this->requete($query);   
-        }
+        }	
 		
         /**
 		* @brief		Lecture du nom d'un quartier de la BD
@@ -298,8 +286,7 @@
 			$resultat = $this->requete($query, $donnees);
             return $resultat->fetch();
 		}
-    
-		
+    		
         /**
 		* @brief		Insertion de photos supplementaires pour un appartement dans la table photo
 		* @details		Permet de recuperer tous les quartiers dans la table quartier
@@ -314,5 +301,17 @@
 			$resultat = $this->requete($query, $donnees);
             return $resultat;   
         }
+
+        /**
+		* @brief      Chercher tous les quartiers sauvegardés dans la bd
+		* @return     tableau de quartier
+		*/
+/*		public function obtenir_quartiers()
+		{
+			$query = "SELECT * FROM quartier";
+			$resultat = $this->requete($query);
+            return $resultat->fetchAll();
+		}	*/
+
     }
 ?>
