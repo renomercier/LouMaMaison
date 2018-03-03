@@ -21,15 +21,17 @@
 		private $sujet;
 		private $dateHeure;
 		private $id_userEmetteur;
+        private $archive;
 		
 		//constructeur
-		public function __construct($id = "", $titre = "", $sujet = "", $dateHeure = "", $id_userEmetteur = "")
+		public function __construct($id = "", $titre = "", $sujet = "", $dateHeure = "", $id_userEmetteur = "", $archive=0)
 		{
 			$this->setId($id);
 			$this->setTitre($titre);
 			$this->setSujet($sujet);
 			$this->setDateHeure($dateHeure);
 			$this->setId_userEmetteur($id_userEmetteur);
+            $this->setArchive($archive);
 		}
 		
 		//getters 
@@ -57,6 +59,11 @@
 		{
 			return $this->id_userEmetteur;
 		}
+        
+        public function getArchive()
+		{
+			return $this->archive;
+		}
 		
 		//setters
 		public function setId($id)
@@ -76,17 +83,22 @@
 		
 		public function setSujet($sujet) 
 		{
-            $this->setSujet = $sujet;
+            $this->sujet = $sujet;
 		}
 		
 		public function setDateHeure($dateHeure)
 		{
-			$this->setDateHeure = date("Y-m-d H:i:s");
+			$this->dateHeure = date("Y-m-d H:i:s");
 		}
 		
 		public function setId_userEmetteur($id_userEmetteur)
 		{
-            $this->setId_userEmetteur = $id_userEmetteur;
+            $this->id_userEmetteur = $id_userEmetteur;
+		}
+        
+        public function setArchive($archive)
+		{
+			 $this->archive = $archive;
 		}
 
 	}

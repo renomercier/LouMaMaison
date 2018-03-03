@@ -29,6 +29,7 @@
   <script src="js/formEvt.js"></script>   
   <script src="js/fonctions.js"></script> 
   <!-- Tether, ensuite Bootstrap JS. -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -62,11 +63,10 @@
               }
           ?>
             <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
-         
+            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><i class="fa fa-envelope"></i></a></li>
           <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
           <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
             <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>
-            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><i class="fa fa-envelope"></i></a></li>
                
           <?php } 
           }

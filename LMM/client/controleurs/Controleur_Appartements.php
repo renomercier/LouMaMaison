@@ -85,8 +85,14 @@
                         $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
                         // Recuperer le type de l'appartement
                         $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                        
+                        
                         // Recuperer la moyenne de l'appartement
-                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
+                       /* $moyenne = $modeleApts->obtenir_moyenne($data['appartement']->getId());
+                        $data['moyenneApt'] = $moyenne['moyenne'];
+                        $data['nbr_votants'] = $moyenne['nbr_votant'];*/
+                        
+                        
                         // Recuperer les disponibilites de l'appartement
                         $modeleDisponibilites = $this->getDAO("Disponibilites");
                         $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);

@@ -42,6 +42,17 @@
 						// chargement du modele et recuperation du data
 						$modeleMessages = $this->getDAO("Messages");
 						$data['messages'] = $modeleMessages->obtenir_messages_recus($params['idUsager']);
+                        $data['recus'] = true;
+                        $this->afficheVue("listeMessages", $data);
+
+                    break;
+                        
+                        // case affichage de la liste des messages envoyés par un usager
+					case "afficheMessagesEnvoyes" :
+						// chargement du modele et recuperation du data
+						$modeleMessages = $this->getDAO("Messages");
+						$data['messages'] = $modeleMessages->obtenir_messages_envoyes($params['idUsager']);
+                        $data['recus'] = false;
                         $this->afficheVue("listeMessages", $data);
 
                     break;
@@ -56,19 +67,40 @@
 
                     break;
                                             
+                        
                         // case suppression d'un message
 					case "supprimerMessage" :
 						// chargement du modele et recuperation du data
 						$modeleMessages = $this->getDAO("Messages");
-						$resultat = $modeleMessages->retirer($params['idMessage'], $_SESSION['username']);
-                        if($resultat){
-                            $data['succes'] = "Message supprimé";
-                        }
-                        else{
-                            $data['succes'] = "Ce message n'a pas pu être supprimé";
-                        }
+						$resultat = $modeleMessages->suppression_logique($params['idMessage'], $_SESSION['username']);
                         $data['messages'] = $modeleMessages->obtenir_messages_recus($_SESSION['username']);
+                        $data['recus'] = true;
                         $this->afficheVue("listeMessages", $data);
+
+                    break;
+                        
+                        // case suppression d'un message
+					case "archiverMessage" :
+						// chargement du modele et recuperation du data
+						$modeleMessages = $this->getDAO("Messages");
+						$resultat = $modeleMessages->misAjourChampUnique('archive', 1, $params['idMessage']);
+                        $data['messages'] = $modeleMessages->obtenir_messages_envoyes($_SESSION['username']);
+                        $data['recus'] = false;
+                        $this->afficheVue("listeMessages", $data);
+
+                    break;
+                        
+                        // case ecrire un message
+					case "ecrireMessage" :
+						// chargement du modele
+                        if(isset($_SESSION['username']) && isset($params['idDestination']) && !empty($params['idDestination']) && isset($params['objet']) && !empty($params['objet']) && isset($params['texte']) && !empty($params['texte']))
+                        {
+                            $modeleMessages = $this->getDAO("Messages");
+                            $message = new Message;
+                            $message->setId(0); $message->setTitre($params['objet']); $message->setSujet($params['texte']); $message->setDateHeure(0); $message->setId_userEmetteur($_SESSION['username']); $message->setArchive(0);
+                            $dernierID = $modeleMessages->creerMessage($message);
+                            $modeleMessages->lier_message_destinatair($dernierID, $params['idDestination']);
+                        }
 
                     break;
                         

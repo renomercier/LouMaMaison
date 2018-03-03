@@ -169,8 +169,21 @@
             ?>
                 <span id="info_contact"><div  class="form-group row mb-0">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
                 <p class="nav-link" href="#" id="historique">Voyages</p>
-                <p class="nav-link" name="<?=$messagerie?>" id="messagerie" value="<?=$_SESSION["username"]?>"><?=$messagerie?></p>
 
+            <?php                                    
+                if(isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) 
+                {
+            ?>
+                <p class="nav-link" name="Messagerie" id="messagerie" value="<?=$_SESSION["username"]?>">Messagerie</p>
+            <?php                                    
+                }
+                else
+                {
+              ?> 
+                <p class="nav-link" name="Contacter" id="messagerie" value="<?=$data["usager"]->getUsername()?>" onclick="formulaireNouveauMessage('afficheInfoProfil')">Contacter</p>
+            <?php
+                }
+            ?>
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {

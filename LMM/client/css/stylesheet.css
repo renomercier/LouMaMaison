@@ -225,9 +225,15 @@ footer {
     left: 25px !important;
 }
 
-h6, p[name='detailMessage'], .filtre_usager a.nav-link, p.nav-link{
-    color: #0275d8 !important;
+.filtre_usager a.nav-link, p.nav-link{
+    color: #0275d8 ;
     cursor: pointer;
+}
+
+.messages .table td a, h6, p[name='detailMessage']{
+    cursor: pointer;
+    color: #636c72;
+    font-weight: 400;
 }
 
 td[name='contenuMessage']{
@@ -274,4 +280,20 @@ footer hr {
 
 .footer-media-item a:hover {
     color: #014B88;
+}
+
+.messages .table td, .table th{
+    padding: 0;
+    color: #636c72;
+}
+.messages .table thead th{
+    padding: .75em;
+}
+.messages .non_lu td, .non_lu td p, .non_lu td a{
+    font-weight: 800 !important;
+}
+
+.img-thumbnail{
+    background:none;
+    border: none;
 }
