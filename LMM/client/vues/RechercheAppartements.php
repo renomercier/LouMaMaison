@@ -113,13 +113,13 @@
                     </div>
                     
                     <!-- nbre de personnes -->
-                      <div class="form-group">
-                          <label for="appartParPage" class="form-control-label ">Nombre de resultat par page</label>
-                          <div class="row">
-                            <input type="number" min="0" name="appartParPage" class="col-sm-12 form-control" id="appartParPage">
-                        </div>
+                    <div class="form-group">
+                        <label for="appartParPage" class="form-control-label ">Nombre de resultat par page</label>
+                        <div class="row">
+                          <input type="number" min="0" name="appartParPage" class="col-sm-12 form-control" id="appartParPage">
                       </div>
-                      <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
                 </div>						
             </form>
         </div>

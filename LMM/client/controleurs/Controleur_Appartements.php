@@ -35,44 +35,40 @@
                 //ce switch détermine la vue et obtient le modèle
                 switch($params["action"])
                 {
+                    // case de gestion des filtres pour affichage des appartements
+                    case "filtrer":
+                    
+                        // numero de la page actuelle
+                        $numPage = isset($params['page']) && is_numeric($params['page'])? $params['page'] : 1;
+                    
+                        // nombre d'appartements à afficher par page
+                        $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
+                   
+                        // nombre de personnes
+                        $filtre['nbrPers'] = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
+                    
+                        // prix minimum
+                        $filtre['priMin'] = isset($params['prixMin']) && is_numeric($params['prixMin']) ? $params['prixMin'] : 0;
+                    
+                        // prix maximum
+                        $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
+                    
+                        // nombre d'etoiles
+                        $filtre['note'] = isset($params['note'])? $params['note'] : 0;
+                    
+                        // quartier
+                        $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
+                    
+                        // date d'arrivée
+                        $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0;
+                    
+                        // date de départ
+                        $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
 
-                        case "filtrer":
-                        
-                            // numero de la page actuelle
-                            $numPage = isset($params['page']) && is_numeric($params['page'])? $params['page'] : 1;
-                        
-                            // nombre d'appartements à afficher par page
-                            $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
-                       
-                            // nombre de personnes
-                            $filtre['nbrPers'] = isset($params['nbrPersonnes']) && is_numeric($params['nbrPersonnes'])? $params['nbrPersonnes'] : 0;
-                        
-                            // prix minimum
-                            $filtre['priMin'] = isset($params['prixMin']) && is_numeric($params['prixMin']) ? $params['prixMin'] : 0;
-                        
-                            // prix maximum
-                            $filtre['prixMax'] = isset($params['prixMax']) && is_numeric($params['prixMax']) ? $params['prixMax'] : 0;
-                        
-                            // type de logis
-                            $filtre['id_typeApt'] = isset($params['id_typeApt']) && is_numeric($params['id_typeApt']) ? $params['id_typeApt'] : 0;
-                        
-                            // nombre d'etoiles
-                            $filtre['note'] = isset($params['note'])? $params['note'] : 0;
-                        
-                            // quartier
-                            $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
-                        
-                            // date d'arrivée
-                            $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0;
-                        
-                            // date de départ
-                            $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
-
-                            $data = $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
-                            $this->afficheVue("listeAppartements", $data);
+                        $data = $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
+                        $this->afficheVue("listeAppartements", $data);
 						break;
-
-                            
+                           
                     // Case d'affichage du detail d'un appartement
                     case "afficherAppartement" :    
                         // chargement du modele Appartement
@@ -85,14 +81,8 @@
                         $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
                         // Recuperer le type de l'appartement
                         $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
-                        
-                        
                         // Recuperer la moyenne de l'appartement
-                       /* $moyenne = $modeleApts->obtenir_moyenne($data['appartement']->getId());
-                        $data['moyenneApt'] = $moyenne['moyenne'];
-                        $data['nbr_votants'] = $moyenne['nbr_votant'];*/
-                        
-                        
+                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
                         // Recuperer les disponibilites de l'appartement
                         $modeleDisponibilites = $this->getDAO("Disponibilites");
                         $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
@@ -106,6 +96,7 @@
 						$this->afficheVue("footer");
                         break;
 					
+                    // case d'affichage d'un appartement par proprio
 					case "afficheAptsProprio" :
 						
 						if(isset($_SESSION["username"]) && isset($params["idProprio"])) {
@@ -119,10 +110,13 @@
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
 									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
                                 }
+							$this->afficheVue("header",$data);
                             $this->afficheVue("AfficheAptsProprio", $data); 
+							$this->afficheVue("footer");
                             }
 					break;
 					
+                    // case de suppression d'une disponibilite (d'un appartement)
 					case "supprimeDisponibilite":
 						if(isset($params['id_dispo']) && !empty($params['id_dispo'])) 
 						{
@@ -137,7 +131,8 @@
 							echo $reponse;		
 						}
 					break;
-                                            
+                    
+                    // case d'ajout d'une disponibilite pour un appartement                        
                     case "ajouteDisponibilite" :
 						$message_dispo="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
@@ -170,7 +165,7 @@
 											}
 											else 
 											{
-												// message à l'usager - s'il la requete echoue
+												// message à l'usager - si la requete echoue
 												$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
 												echo $message_dispo;                                        
 											}
@@ -246,8 +241,8 @@
                             $this->afficheFormAppartement($params);
                             $this->afficheVue("footer");
                         }
-
                         break;
+
                     // case de sauvegarde (creation ou modification) d'un appartement
                     case "sauvegarderApt" :
 
@@ -260,14 +255,13 @@
                             // validation des champs input du formulaire d'inscription d'un appartement
                             $params['erreurs'] = $this->validerAppartement([ 'Le titre de l\'annonce'=>$params["titre"], 'Le descriptif de l\'appartement'=>$params["descriptif"], 'Le nom de rue'=>$params['rue'], 'Le numéro d\'appartement'=>$params['noApt'], 'Le code postal'=>$params['codePostal'] ], [ 'Le numéro civique'=>$params['noCivique'], 'Le montant du logement'=>$params['montantParJour'], 'Le nombre de personnes'=>$params['nbPersonnes'], 'Le nombre de chambres'=>$params['nbChambres'], 'Le nombre de lits'=>$params['nbLits'], 'Le type d\'appartement'=>$params['id_typeApt'], 'Le quartier'=>$params['id_nomQuartier'] ], [ 'Les options'=>isset($params['options']) ? $params['options'] : "" ] );                            
                             // si pas d'erreurs, on instancie l'appartement et on l'insère dans la BD
-
                             if(!$params['erreurs']) {
                                 
 /* @temp */                     // nouvel objet appartement
                                 $appartement = new Appartement((isset($params['idApt']) ? $params['idApt'] : 0), (isset($params['options']) ? $params['options'] : ""), $params['titre'], $params['descriptif'], $params['montantParJour'], $params['nbPersonnes'], $params['nbLits'], $params['nbChambres'], $params['noApt'], $params['noCivique'], $params['rue'], $params['codePostal'], $params['id_typeApt'], $_SESSION['username'], $params['id_nomQuartier']);
-
                                 // chargement du modele Appartement
                                 $modeleApts = $this->getDAO("Appartements");
+
                                 // si idApt et si valide, on modifie
                                 if(isset($params['idApt']) && filter_var($params['idApt'], FILTER_VALIDATE_INT)) {
                                     $modifApt = $modeleApts->sauvegarderAppartement($appartement);
@@ -327,8 +321,8 @@
                         // preparation du tableau d'options, avec ajout d'une cle pour manipulation js
                         $tabOptions = (['o'=>$data['options']]);
                         echo json_encode($tabOptions);
-
                         break;
+                        
                     // affichage du  formulaire d'ajout d'images pour un appartement
                     case "afficherFormulaireImage" :
 
@@ -455,16 +449,14 @@
             if(isset($data['id']) && !empty($data['id'])) {
                 // si oui, on recupere les donnees de l'appartement
                 $data['apt'] = $modeleApts->obtenir_par_id($data['id']);
-//              $data['apt'] = $modeleApts->obtenir_par_id(2);
-                // appel de la fonction qui prepare le tableau d'options a afficher
-//              $data['options'] = $this->prepareTabOptions($data['apt']->getOptions());
             }
             // chargement des differents quartiers de Mtl
-            $data['tab_quartier'] = $modeleApts->getQuartier();
+            $data['tab_quartier'] = $modeleApts->getQuartiers();
             $data['tab_typeApt'] = $modeleApts->getTypesApt();
             // affichage du formulaire d'inscription d'un appartement avec tableau de data rempli
-            $this->afficheVue("afficheInscriptionApt", $data);
+/**/        $this->afficheVue("afficheInscriptionApt", $data);
         }
+
         /**
         * @brief        Fonction de validation si l'usager est connecte et a les permissions nécessaires pour ajouter un appartement
         * @details      Validation de la variable avant affichage du formulaire
@@ -472,6 +464,7 @@
         * @return       <string>    Les messages d'erreur à afficher à l'usager, si tel est le cas
         */
         private function validerPermissionApt($usager) {
+
             // declaration de la 'string' d'erreurs
             $erreurs = "";
             // 'nettoyage' de la variable et verification si le champ est vide
@@ -502,6 +495,7 @@
             }      
             return $erreurs;
         }
+
         /**
         * @brief        Fonction de validation des parametres du formulaire d'inscription d'un appartement
         * @details      Validation des différents inputs avant l'instanciation et l'insertion dans la BD
@@ -509,8 +503,10 @@
         * @return       <string>    Les messages d'erreur à afficher à l'usager 
         */
         private function validerAppartement(array $tabString, array $tabNumber, array $options = null) {
+
             // declaration de la 'string' d'erreurs
             $erreurs = "";
+
             // verification si un champ de type string est rempli et valide
             foreach($tabString AS $s => $valeur) {
                 // 'nettoyage' des donnees et verification si le champ est vide
@@ -541,6 +537,11 @@
                 // si le resultat n'est pas vide, verifications supplementaires 
                 if($resultat != "") {
                     if($n == 'Le montant du logement') {
+                    /*  if(preg_match(',', $valeur)) {
+                            $valeur = preg_replace(',', '.', $valeur);
+                            var_dump($valeur);
+                            die;
+                        }   */
                         $erreurs .= (!is_float(floatval($valeur))) ? $n . " est invalide<br>" : "";
                     }
                     else { 
@@ -567,7 +568,6 @@
          * @return     <array>      $tabOptions             tableau des differents options associees a un appartement
          */
         public function prepareTabOptions($optionsSerialisees) {
-
             // declaration du tableau d'options
             $tabOptions = array();
             // separation de la 'string' d'options
@@ -580,6 +580,49 @@
                 $tabOptions[] .= $option;
             }
             return $tabOptions;
+        }
+
+        /**
+         * @brief      fonction de preparation des options a l'affichage
+         * @details    separe la chaine par option et soustrait le nom de chaque option
+         * @params     <string>     $optionsSerialisees     les options serialisees en js
+         * @return     <array>      $tabOptions             tableau des differents options associees a un appartement
+         */
+        public function prepareTabOptionsPourAffichage($optionsSerialisees) {
+
+            // on recupere le fichier json
+            $jsonOptions = file_get_contents("./json/optionsApt.json");
+            $options = (json_decode($jsonOptions, true));
+
+            // declaration des tableau d'options et d'objet d'options
+            $tabObjets = array();
+            $tabOptions = array();
+
+            // separation de la 'string' d'options d'un appartement
+            $tabTemp = explode('&', $optionsSerialisees);
+            
+            // on boucle dans le tableau des options d'un appartement
+            for($i=0; $i<count($tabTemp); $i++) {
+                
+                // pour chaque option, on soustrait le nom
+                $delimiter = strpos($tabTemp[$i], "=");
+                $option = substr($tabTemp[$i], 0, $delimiter);
+
+                // ajout de l'option preparee dans le tableau pour affichage
+                $tabOptions[] = $option;
+                
+                // on compare les options de l'appartement avec toutes les options
+                foreach($options AS $o) { 
+                    // recuperation des options de l'appartement seulement
+                    for($j=0; $j<count($o); $j++) {   
+                        if($o[$j]['id'] == $tabOptions[$i]) {
+                            // on popule le tableau des options
+                            $tabObjets[]= $o[$j];
+                        }
+                    } 
+                }  
+            }
+            return $tabObjets;
         }
 
         /**
@@ -599,7 +642,7 @@
             // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
             
-            $data['quartier'] = $modeleAppartement->obtenir_quartiers();
+            $data['quartier'] = $modeleAppartement->getQuartiers();
             $data['tab_typeApt'] = $modeleAppartement->getTypesApt();
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
@@ -627,16 +670,9 @@
             foreach($data["appartements"] as $appartement)
             { 
                 $adresse=[];
-               // $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
-               // $appartement->moyenne = $moyenne['moyenne'];
-               // $appartement->nbrVotant = $moyenne['nbr_votant'];
-                // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
-				//pour afficher nb notes
-				//$appartement->NbNotes = $modeleAppartement->obtenir_apt_avec_nb_notes($appartement->getId())[0];
             }
             return $data;
         }
     }
-
 ?>

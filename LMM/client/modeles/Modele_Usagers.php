@@ -1,6 +1,6 @@
 <?php
 /**
-* @file 		/modeles/Usagers.php
+* @file 		/Modele_Usagers.php
 * @brief 		Projet WEB 2
 * @details								
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -12,9 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Usagers a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-	* 	13 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
+***	* 	14 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
 	*					misAjourChampUnique(), definir_role_usager(), obtenir_avec_role(), definir_admin(), getModePaiement(), 
-	* 					getModeCommunication(), obtenir_avec_paiement_communication()
+	* 					getModeCommunication(), obtenir_avec_paiement_communication(), filtrer_les_usagers()
 	*/
 	class Modele_Usagers extends BaseDAO
 	{	
@@ -150,16 +150,13 @@
         /**
 		* @brief		Fonction pour effectuer une jointure entre l'usager et son role
 		* @details		Permet de recuperer toutes les informations relative à un usager
-		* @param 		<string>		$usager		
+		* @param 		<objet>		$usager	 		une instance d'usager	
 		* @return    	<...> 		les rangées correspondant à un usager donné
 		*/
-        ////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////
-        // fonction incomplete, à completer les jointures a mesure que le projet avance
-        
+/**/ 	// fonction incomplete, à completer les jointures a mesure que le projet avance
 		public function obtenir_avec_role($usager)
         {
-            $query = "SELECT * from role_user JOIN role ON id_nomRole = id WHERE id_username =?";
+            $query = "SELECT * from role_user JOIN role ON id_nomRole = id WHERE id_username = ?";
             $donnees = array($usager->getUsername());
             $resultat = $this->requete($query, $donnees);
             $usager->roles = $resultat->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Usager");
@@ -246,7 +243,12 @@
             return $lUsager;
         }
 
-        
+        /**
+		* @brief		Fonction qui construit une requete a partir des differents roles et permissions requis pour l'usager
+		* @details		
+		* @param 		<array> 	$filtre  	les roles et permissions requis		
+		* @return    	<...> 		resultat de la requete ou false	
+		*/
         public function filtrer_les_usagers($filtre){
             $query = "SELECT * FROM " . $this->getTableName() . " u 
                         JOIN role_user ru ON u.username = id_username 
@@ -280,5 +282,5 @@
 
 			return $lesUsagers;
         }
-}   
+	}   
 ?>

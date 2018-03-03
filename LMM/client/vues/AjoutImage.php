@@ -27,5 +27,4 @@
 		</div>
 		</form>
 	</div>
-
 	<h4 id='loading' >loading..</h4>

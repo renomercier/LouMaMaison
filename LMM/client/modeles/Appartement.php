@@ -59,7 +59,6 @@
         *   @param <bool>          $actif                  si l'appartement est actif 
         *   @param <string>        $ville                  la ville de l'appartement       
         */  
-        
         public function __construct($id = 0, $options = '', $titre = '', $descriptif = '', $montantParJour = 0.00, $nbPersonnes = 0, $nbLits = 0, $nbChambres = 0 , $noApt = '', $noCivique = 0,  $rue = '', $codePostal = '', $id_typeApt = 0, $id_userProprio = '', $id_nomQuartier = 0, $actif = 1, $photoPrincipale = "", $ville = "") {   
             
             $this->setId($id);

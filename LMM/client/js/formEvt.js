@@ -54,7 +54,7 @@ $(document).ready(function() {
         var valCoorMComm = isText(form.coor_moyenComm.value);
         (!valCoorMComm) ? ($('#' + form.coor_moyenComm.id).addClass('alert-warning'), $('#aideCoorMC').empty().append('Veuillez entrer un moyen de communication valide'))  : ($('#' + form.coor_moyenComm.id).removeClass('alert-warning'), $('#aideCoorMC').empty());           
         // verification si l'id est un int
-/**/        var valModePaiement = isInt(form.modePaiement.value);
+        var valModePaiement = isInt(form.modePaiement.value);
         (!valModePaiement) ? ($('#' + form.modePaiement.id).addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($('#' + form.modePaiement.id).removeClass('alert-warning'), $('#aideModePaiement').empty());
        
         // une fois les validations faites, on soumet le formulaire
@@ -98,20 +98,20 @@ $(document).ready(function() {
         if($('#idApt')[0].value != "") {
 
             var idApt = $('#idApt')[0].value;
-            console.log("ici");
             // requete afin de populer le select des quartiers de Mtl
             $.ajax({
                 url: 'index.php?Appartements&action=getOptionsApt&id='+idApt, 
                 type: 'POST', 
                 dataType : 'json',
                 success : function(result, statut) {
+
                     // on boucle dans le tableau d'options de l'appartement
                     result.o.forEach( function(r) {
+
                         var input = $("#formApt input[type^='checkbox']");
                         // on boucle dans chq option pour voir si elle est a cocher
                         for(var i=0; i<input.length; i++) {
-                            if(input[i].name == r) {
-
+                            if(input[i].id == r) {
                                 input[i].setAttribute('checked', 'checked')
                             }
                         }
@@ -130,13 +130,15 @@ $(document).ready(function() {
     /**
     *   requete json pour affichage des options d'un appartement
     */
-    $.getJSON('json/optionsApt.json', function(o) {
+    if($('#idApt')[0]) {
+        $.getJSON('json/optionsApt.json', function(o) {
 
-        $('#option').empty();
-        o.options.forEach( function(op) {
-            $('#option').append('<div class="form-check option"><label class="form-check-label"><input type="checkbox" name="' + op.option + '" id="' + op.option + '" value="checked" class="form-check-input">&nbsp;' + op.option + '</label></div>');
-        }) 
-    }); 
+            $('#option').empty();
+            o.options.forEach( function(op) {
+                $('#option').append('<div class="form-check option"><label class="form-check-label"><input type="checkbox" name="' + op.id + '" id="' + op.id + '" value="checked" class="form-check-input">&nbsp;' + op.option + '</label></div>');
+            }) 
+        }); 
+    }
 
     /**
     *   serialisation des options choisies a chaque click,
@@ -147,7 +149,6 @@ $(document).ready(function() {
         // serialisation de tous les inputs et ajout de la 'string' serialisee au formulaire (input hidden) 
         var options = $("#formApt input[type='checkbox']" ).serialize();
         var valeurOptions = $('#optionsSerialises').val(options);
-        console.log(valeurOptions);
         console.log(options);
     });
 
@@ -180,10 +181,9 @@ $(document).ready(function() {
         var valNoCivique = isInt(form.noCivique.value);
         (!valNoCivique) ? ($('#' + form.noCivique.id).addClass('alert-warning'), $('#aideNoCivique').empty().append('Le numéro civique est invalide, veillez à n\'inscrire que des chiffres'))  : ($('#' + form.noCivique.id).removeClass('alert-warning'), $('#aideNoCivique').empty());
         // validation format nom (nom de rue)
-        var valRue = isName(form.rue.value);
+        var valRue = isText(form.rue.value);
         (!valRue) ? ($('#' + form.rue.id).addClass('alert-warning'), $('#aideNomRue').empty().append('Le nom de rue est invalide'))  : ($('#' + form.rue.id).removeClass('alert-warning'), $('#aideNomRue').empty());
         // s'il y a une valeur dans le champ no d'appartement (il est facultatif)
-        console.log(form.noApt.value);
         if(form.noApt.value != "") {
             // validation format texte
             var valNoApt = isText(form.noApt.value);
@@ -199,43 +199,30 @@ $(document).ready(function() {
         (!valNomQuartier) ? ($('#' + form.id_nomQuartier.id).addClass('alert-warning'), $('#aideQuartier').empty().append('Vous devez choisir le quartier où se situe l\'appartement'))  : ($('#' + form.id_nomQuartier.id).removeClass('alert-warning'), $('#aideQuartier').empty());
         // verification si le quartier est un int (sa valeur)
         var valNbPersonnes = isInt(form.nbPersonnes.value);
-        (!valNbPersonnes) ? ($('#' + form.nbPersonnes.id).addClass('alert-warning'), $('#aideNbPersonnes').empty().append('Veuillez entrer le nombre de personnes en chiffre seulement'))  : ($('#' + form.nbPersonnes.id).removeClass('alert-warning'), $('#aideNbPersonnes').empty());
+        (!valNbPersonnes) ? ($('#' + form.nbPersonnes.id).addClass('alert-warning'), $('#aideNbPersonnes').empty().append('Nombre invalide. Veuillez entrer le nombre de personnes en chiffre seulement'))  : ($('#' + form.nbPersonnes.id).removeClass('alert-warning'), $('#aideNbPersonnes').empty());
         // verification si le quartier est un int (sa valeur)
         var valNbChambres = isInt(form.nbChambres.value);
-        (!valNbChambres) ? ($('#' + form.nbChambres.id).addClass('alert-warning'), $('#aideNbChambres').empty().append('Veuillez entrer le nombre de chambres en chiffre seulement'))  : ($('#' + form.nbChambres.id).removeClass('alert-warning'), $('#aideNbChambres').empty());
+        (!valNbChambres) ? ($('#' + form.nbChambres.id).addClass('alert-warning'), $('#aideNbChambres').empty().append('Nombre invalide. Veuillez entrer le nombre de chambres en chiffre seulement'))  : ($('#' + form.nbChambres.id).removeClass('alert-warning'), $('#aideNbChambres').empty());
         // verification si le quartier est un int (sa valeur)
         var valNbLits = isInt(form.nbLits.value);
-        (!valNbLits) ? ($('#' + form.nbLits.id).addClass('alert-warning'), $('#aideNbLits').empty().append('Veuillez entrer le nombre de lits en chiffre seulement'))  : ($('#' + form.nbLits.id).removeClass('alert-warning'), $('#aideNbLits').empty());
+        (!valNbLits) ? ($('#' + form.nbLits.id).addClass('alert-warning'), $('#aideNbLits').empty().append('Nombre invalide. Veuillez entrer le nombre de lits en chiffre seulement'))  : ($('#' + form.nbLits.id).removeClass('alert-warning'), $('#aideNbLits').empty());
         // validation format float ou int
-/**/        var valMontantParJour = isInt(form.montantParJour.value);
-        (!valMontantParJour) ? ($('#' + form.montantParJour.id).addClass('alert-warning'), $('#aideMontant').empty().append('Le montant est invalide'))  : ($('#' + form.montantParJour.id).removeClass('alert-warning'), $('#aideMontant').empty());
+        var valMontantParJour = isFloat(form.montantParJour.value);
+        (!valMontantParJour) ? ($('#' + form.montantParJour.id).addClass('alert-warning'), $('#aideMontant').empty().append('Montant invalide. Veuillez entrer le montant en chiffre seulement'))  : (setAttributes($('#montantParJour')[0], { "value" : valMontantParJour }), $('#' + form.montantParJour.id).removeClass('alert-warning'), $('#aideMontant').empty());
         // verification si l'usager a selectionne des options (facultatives)
-/**/    if(form.options) {
-            console.log("alloooo");
+        if(form.optionsSerialises.value != "") {
             // validation format texte (string serialisee)
             var valOptions = isText(form.options.value);
-            (!valOptions) ? ($('#' + form.options.id).addClass('alert-warning'), $('#checkbox').empty().append('L\'adresse est invalide'))  : ($('#' + form.options.id).removeClass('alert-warning'), $('#checkbox').empty());
+            (!valOptions) ? ($('#option').addClass('alert-warning'), $('#checkbox').empty().append('Les options sont invalides'))  : ($('#option').removeClass('alert-warning'), $('#checkbox').empty());
         } else {
             $('#checkbox').empty()
         }
-        
-        console.log(valTitre);
-        console.log(valDescriptif);
-        console.log(valTypeApt);
-        console.log(valNoCivique);
-        console.log(valRue);
-        console.log(valNoApt);
-        console.log(valCodePostal);
-        console.log(valNomQuartier);
-        console.log(valNbPersonnes);
-        console.log(valNbChambres);
-        console.log(valNbLits);
+
         console.log(valMontantParJour);
-        console.log(valOptions);    
-        console.log(form.options);    
+        console.log($('#montantParJour')[0]);
 
         if(valTitre  && valDescriptif && valTypeApt && valNoCivique && valRue && ((valNoApt != undefined) ? valNoApt : (valNoApt == undefined)) && valCodePostal 
-            && valNomQuartier && valNbPersonnes && valNbChambres && valNbLits && valMontantParJour && ((valOptions) ? valOptions : (valOptions == undefined)) ) {
+            && valNomQuartier && valNbPersonnes && valNbChambres && valNbLits && valMontantParJour && ((valOptions) ? valOptions : (!valOptions)) ) {
 
             // soumission du formulaire
             $(this).unbind('submit').submit();
