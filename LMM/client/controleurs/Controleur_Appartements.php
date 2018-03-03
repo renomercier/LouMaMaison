@@ -196,7 +196,7 @@
 							}
 							else
 							{
-								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vérifier vos dates"));
+								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous vérifier vos dates"));
 								echo $message_dispo;     
 							}   
 						}
@@ -213,9 +213,41 @@
 						{
 							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
 								$modeleDisponibilites = $this->getDAO("Disponibilites");
-								$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($params['dateDebut'],$params['dateFin'],$params['id_appart']); 
-								$idDispo = $data['idDispo']->getId();
-								
+								$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($params['dateDebut'],$params['dateFin'],$params['id_appart']); var_dump($data['idDispo']);die();
+								if($data['idDispo']) {
+									$idDispo = $data['idDispo']->getId();								
+									$dateDebutAncien=$data['idDispo']->getDateDebut();
+									$dateFinAncien=$data['idDispo']->getDateFin();	
+
+									$dateBeginNew = $modeleDisponibilites->newDateBegin($params['dateFin']);
+									$dateFinNew = $modeleDisponibilites->newDateEnd($params['dateDebut']);
+
+									if($dateDebutAncien<=$dateFinNew)
+									{	
+										$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $params['id_appart']);			
+									}
+									if($dateBeginNew<=$dateFinAncien)
+									{	
+										$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $params['id_appart']);					
+									}
+									
+									//réserver un apt à cette date
+									$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+									//creer un objet location
+									$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $params['id_userClient'], $params['nbPersonnes']);
+									//chargement du modele Location 
+									$modeleLocation = $this->getDAO("Locations");
+									//creation de location
+									$resultat = $modeleLocation->creerLocation($location);
+									if($resultat) {
+										$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Veuillez vous attendre une confirmation de propriètaire."));//creer une message de success 
+										echo $message_reservation;
+									}
+								}
+								else {
+									$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous choisir d'autres dates!"));
+									echo $message_reservation;
+								}
 							}
 							else {
 								$message_reservation = json_encode(array("messageErreur"=>"Vous devez être connecté pour faire la demande de réservation"));

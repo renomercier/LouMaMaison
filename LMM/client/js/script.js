@@ -370,8 +370,8 @@ var funcAjouteDispo = function(e){
 				{ 
 					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
 				} 
-				else if(reponse[1].messageSucces){ //s'on n'as pas des erreurs côté php
-					
+				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
+					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {

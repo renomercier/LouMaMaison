@@ -26,7 +26,7 @@
 		private $nbPersonnes;
 		
 		//constructeur
-		public function __construct($id = "", $dateDebut = "", $dateFin = "", $valideParPrestatire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="")
+		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="")
 		{
 			$this->setId($id);
 			$this->setDateDebut($dateDebut);
@@ -82,7 +82,7 @@
 		//setters
 		public function setId($id)
 		{
-			if(is_int($id)) {
+			if(is_int(intval($id))) {
 				$this->id = $id;
 			}
 			else
@@ -91,75 +91,37 @@
 		
 		public function setDateDebut($dateDebut) //YYYY-MM-DD
 		{
-			$today = Date("Y-m-d");
-			//var_dump($today);
-			if($dateDebut < $today) {
-				$this->dateDebut = $today;
-			}
-			else {
-				$this->dateDebut = $dateDebut;
-			}
+			$this->dateDebut = $dateDebut;
 		}
 		
 		public function setDateFin($dateFin) 
 		{
-			$today = Date("Y-m-d"); 
-			$dateFin = strtotime("+1 day", strtotime($today)); //ajouter 1 jour a aujourd'hui si la date fin est aujourd'hui ou avant
-			$dateFinNew = Date('Y-m-d', $dateFin);
-			if($dateFin <= $today) {
-				$this->dateFin = $dateFinNew;
-			}
-			else {
-				$this->dateFin = $dateFin;
-			}
+			$this->dateFin = $dateFin;
 		}
 		
 		public function setValideParPrestataire($valideParPrestataire)
 		{
-			if(is_bool($valideParPrestataire)) {
-				$this->valideParPrestataire = $valideParPrestataire;
-			}
-			else {
-				return false;
-			}
+			$this->valideParPrestataire = $valideParPrestataire;
 		}
 		
 		public function setValidePaiement($validePaiement)
 		{
-			if(is_bool($validePaiement)) {
-				$this->validePaiement = $validePaiement;
-			}
-			else {
-				return false;
-			}
+			$this->validePaiement = $validePaiement;
 		}
 		
 		public function setIdAppartement($idAppartement)
 		{
-			if(is_int($idAppartement)) {
-				$this->idAppartement = $id_appartement;
-			}
-			else {
-				return false;
-			}
+			$this->id_appartement = $idAppartement;
 		}
 		
 		public function setIdUserClient($id_userClient)
 		{
-			if(is_int($id_userClient)) {
-				$this->id_userClient = $id_userClient;
-			}
-			else
-				return false;
+			$this->id_userClient = $id_userClient;
 		}
 		
 		public function setNbPersonnes($nbPersonnes)
 		{
-			if(is_int($nbPersonnes)) {
-				$this->nbPersonnes = $nbPersonnes;
-			}
-			else
-				return false;
+			$this->nbPersonnes = $nbPersonnes;
 		}	
 	}
 

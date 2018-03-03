@@ -35,8 +35,8 @@
 		 */ 
 		public function creerLocation(Location $Location)
 		{
-			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, valideParPrestataire, validePaiement, id_userClient, nbPersonnes) VALUES (?, ?, ?, ?, ?, ?)";
-			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getValideParPrestataire(), $Location->getValidePaiement(), $Location->getIdUserClient(), $Location->getNbPersonnes());
+			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement, id_userClient,  nbPersonnes) VALUES (?, ?, ?, ?, ?)";
+			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getIdAppartement(), $Location->getIdUserClient(),  $Location->getNbPersonnes());
 			return $this->requete($query, $data);
 		}
 		
