@@ -65,6 +65,23 @@
             return $this->requete($query, $donnees);                
         }
         
-        
+		 
+        /**
+		* @brief		
+		* @details		
+		* @param 		
+		* @return    	
+		*/
+        function obtenirIdDispo($dateDebut, $dateFin, $id_apt)
+		{
+			
+			$query = "SELECT id from " . $this->getTableName() . "
+			WHERE disponibilite = 1 AND dateDebut <= ? AND dateFin >= ? AND id_appartement = ?";
+			$donnees = array($dateDebut, $dateFin, $id_apt);
+			$resultat = $this->requete($query, $donnees);
+			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Disponibilite'); 
+			$lDispo = $resultat->fetch();
+			return $lDispo;
+		}
 	}
 ?>

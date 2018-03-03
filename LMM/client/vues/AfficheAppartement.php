@@ -372,7 +372,7 @@
                             </div>
                         </div>
 						<input type="hidden" value="<?=$data['appartement']->getId();?>" name="id_appart">
-						<input type="hidden" value="<?php isset($_SESSION['username']) ? $_SESSION['username'] : "" ?>" name="id_userClient">
+						<input type="hidden" value="<?=(isset($_SESSION['username'])) ? $_SESSION['username'] : "" ?>" name="id_userClient">
                         <button type="button" class="btn btn-primary btn-block btn-lg" id="demandeReservation">Réserver</button>						
                     </form>
                 </div>

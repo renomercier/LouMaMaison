@@ -1,6 +1,6 @@
 <?php
 /**
-* @file         /Modele_Location.php
+* @file         /Modele_Locations.php
 * @brief        Projet WEB 2
 * @details                              
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -8,13 +8,13 @@
 */
 
 	/**
-	* @class 	Modele_Location - herite de BaseDao
+	* @class 	Modele_Locations - herite de BaseDao
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
 	* @methodes	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique()
 	*/
-	class Modele_Location extends BaseDAO
+	class Modele_Locations extends BaseDAO
 	{
 
 		/**  
@@ -66,6 +66,21 @@
 		public function misAjourChampUnique($leChamp, $laValeur, $id)
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
+		}
+		
+		 
+        /**
+		* @brief		
+		* @details		
+		* @param 		
+		* @return    	
+		*/
+		public function obtenir_par_idApt($idApt, $colonneIdApt) {
+		$query = "SELECT * from " . $this->getTableName() . " WHERE " . $colonneIdApt ."= ?"; 
+		$donnees = array($idApt);
+		$resultat = $this->requete($query, $donnees);
+		$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+		return $resultat->fetchAll();
 		}
 		
 	}

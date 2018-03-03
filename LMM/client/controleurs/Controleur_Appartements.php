@@ -89,8 +89,7 @@
                         $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
                         // Recuperer le proprietaire de l'appartement
                         $modeleUsagers = $this->getDAO("Usagers");
-                        $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
-                        
+                        $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());						
                         // Affichage du detail d'un appartement
 						$this->afficheVue("header",$data);
                         $this->afficheVue("AfficheAppartement", $data);
@@ -213,7 +212,9 @@
 						if(isset($params['id_appart']) && isset($params['dateDebut']) && isset($params['dateFin']) && isset($params['nbPersonnes']) && !empty($params['id_appart']) && !empty($params['dateDebut']) && !empty($params['dateFin']) && !empty($params['nbPersonnes']) && is_numeric($params['nbPersonnes']))
 						{
 							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
-							
+								$modeleDisponibilites = $this->getDAO("Disponibilites");
+								$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($params['dateDebut'],$params['dateFin'],$params['id_appart']); 
+								$idDispo = $data['idDispo']->getId();
 								
 							}
 							else {

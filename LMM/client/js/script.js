@@ -353,7 +353,6 @@ var funcAjouteDispo = function(e){
 		var dateFin = $('input[name="dateFin"]').val();
 		var id_userClient = $('input[name="id_userClient"]').val();
 		var nbPersonnes = $('option:selected').val();
-		
 		$.ajax({
 			cache: false,
 			url: 'index.php?Appartements&action=creerLocation',
