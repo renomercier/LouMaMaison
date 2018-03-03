@@ -75,7 +75,7 @@
 								<?php
 								}
 								?>
-                              <small class="text-muted">(<?=$appartement->nbrVotant;?>)</small></p> 
+                              <small class="text-muted">(<?=$appartement->nbr_votant;?>)</small></p> 
 
                             <!-- lientemporaire pour modifier un appartement -->
 <!-- @temp -->              <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $appartement->id_appartement; ?>" role="button">Modifier ce logis</a></p> 

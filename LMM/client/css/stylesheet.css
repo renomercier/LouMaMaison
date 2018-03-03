@@ -109,6 +109,44 @@ a, a:hover{
     max-height: auto;
     max-width: 70%;
 }
+
+/*----- page AfficheAppartement -----*/
+
+.sectionAptDetail {
+    
+}
+
+.sectionAptDetail-g, .sectionAptDetail-d {
+    padding=0;
+    /*border: 1px solid #000000; */ 
+}
+
+.reservation, .afficheDisponibilites {
+    padding: 20px;
+    border: 1px solid #585759;
+}
+
+.afficheDisponibilites {
+    padding: 10px;
+    height: 165px;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid #585759;
+}
+
+.iconeDescription {
+    margin-right: 20px;
+}
+
+/*----- footer -----*/
+
+footer {
+    color: #ffffff;
+    background-color: #585759;
+    position: relative;
+    bottom: -10em;
+}
+
 .modal-xl {
     max-height: auto;
     max-width: 66%;
@@ -129,6 +167,35 @@ a, a:hover{
     width: auto;
     overflow-y: scroll;
     border: 1px solid #585759;
+}
+
+.iconeAptDescription {
+    margin-right: 20px;
+}
+
+
+.aptPhotoPrincipale {
+    
+}
+
+.aptPhotoSupp {
+    height: 5em;
+    width: 6.5em; 
+}
+
+.aptPhotoModal {
+    height: 45em;
+    width: 60em; 
+}
+
+.aptPhotoProprio {
+    height: 5em;
+    width: 5em; 
+}
+
+.aptIcones {
+    height: 2em;
+    width: 2em;
 }
 
 /* --------------------------------------------------- google carte   */
@@ -158,10 +225,46 @@ a, a:hover{
     left: 25px !important;
 }
 
+.filtre_usager a.nav-link, p.nav-link{
+    color: #0275d8 ;
+    cursor: pointer;
+}
+
+.messages .table td a, h6, p[name='detailMessage']{
+    cursor: pointer;
+    color: #636c72;
+    font-weight: 400;
+}
+
+.messages .table td, .table th{
+    padding: 0;
+    color: #636c72;
+}
+
+.messages .table thead th{
+    padding: .75em;
+}
+.messages .non_lu td, .non_lu td p, .non_lu td a{
+    font-weight: 800 !important;
+}
+
+td[name='contenuMessage']{
+    padding: 0;
+    border: none;
+    box-shadow: 0 .5px .5px 0 rgba(0, 0, 0, 0.2), 0 .3px 15px 0 rgba(0, 0, 0, 0.19);
+}
+
+.dateMessage{
+    font-size: .8em;
+}
+@media only screen and (max-width: 768px) {
+    #carte{
+        position: relative!important;
+        right: 0em;
+    }
+
 /* --------------------------------------------------- footer   */
-footer {
-    color: #ffffff;
-    background-color: #585759;
+
 }
 footer hr {
     border: 0.5px solid #ffffff;; 
@@ -185,4 +288,9 @@ footer hr {
 }
 .footer-media-item a:hover {
     color: #014B88;
+}
+
+.img-thumbnail{
+    background:none;
+    border: none;
 }

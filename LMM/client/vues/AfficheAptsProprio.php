@@ -13,16 +13,13 @@
 			{ 
 		?>
 				<div class="col-md-6">
-					<!--<h5><?=$appartement->getId()?></h5>-->
 					<?php						
 						if ($appartement->getPhotoPrincipale() != "") {
 							$photoApt = $appartement->getPhotoPrincipale();
 						} else {
 							$photoApt = "./images/profil.jpg";
 						}
-					 ?>    
-                    <p>getId: <?= $appartement->getId();?></p>	
-                    <p>id_apt: <?=  $appartement->id_appartement; ?></p>	
+					 ?>    	
 					<!--<img src="./images/profil.jpg" alt="mon appart">-->
 					<div class="col-md-12">
 						<a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getId() ?>" >

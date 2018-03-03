@@ -155,9 +155,9 @@
                 
                 </ul>
 			</div>
-			<div class="row" id="afficheInfoProfil">
-				
-			</div>
+                <div class="row" id="afficheInfoProfil">
+                    
+                </div>
 		</div>
     </div>
 </div>
@@ -168,14 +168,27 @@
                 {
             ?>
                 <span id="info_contact"><div  class="form-group row mb-0">Moyen de contact : <?=$data["modeCommunication"][0]->moyenComm;?></div></span>
-                <a class="nav-link" href="#" id="historique">Voyages</a>
-                <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
+                <p class="nav-link" href="#" id="historique">Voyages</p>
 
+            <?php                                    
+                if(isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) 
+                {
+            ?>
+                <p class="nav-link" name="Messagerie" id="messagerie" value="<?=$_SESSION["username"]?>">Messagerie</p>
+            <?php                                    
+                }
+                else
+                {
+              ?> 
+                <p class="nav-link" name="Contacter" id="messagerie" value="<?=$data["usager"]->getUsername()?>" onclick="formulaireNouveauMessage('afficheInfoProfil')">Contacter</p>
+            <?php
+                }
+            ?>
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <a class="nav-link" href="#" id="mes_appts">Appartements</a>
+                       <p class="nav-link" href="#" id="mes_appts">Appartements</p>
                    <?php      
                     }
                     ?>

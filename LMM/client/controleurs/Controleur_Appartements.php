@@ -642,7 +642,8 @@
             // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
             
-/**/        $data['quartier'] = $modeleAppartement->getQuartiers();
+            $data['quartier'] = $modeleAppartement->getQuartiers();
+            $data['tab_typeApt'] = $modeleAppartement->getTypesApt();
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             if(isset($page))
@@ -669,13 +670,7 @@
             foreach($data["appartements"] as $appartement)
             { 
                 $adresse=[];
-                $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
-                $appartement->moyenne = $moyenne['moyenne'];
-                $appartement->nbrVotant = $moyenne['nbr_votant'];
-                // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
-				//pour afficher nb notes
-				//$appartement->NbNotes = $modeleAppartement->obtenir_apt_avec_nb_notes($appartement->getId())[0];
             }
             return $data;
         }

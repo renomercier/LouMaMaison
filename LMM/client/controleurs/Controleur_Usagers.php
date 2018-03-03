@@ -366,6 +366,15 @@
 							$this->afficheVue('footer');							
 						}	
 						break;
+                        
+                    // case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
+					case "afficherListeMessages" :
+						// chargement du modele et recuperation du data
+						$modeleMessages = $this->getDAO("Messages");
+						$data['messages'] = $modeleMessages->obtenir_messages_recus($params['idUsager']);
+                        $this->afficheVue("listeMessages", $data);
+
+						break;
 
 					// case par defaut
 					default:
