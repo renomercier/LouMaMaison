@@ -198,7 +198,7 @@ $(document).ready(function() {
 		Fonction pour afficher des apts du proprio
 	*/	
 		$(document).on('click', '#mes_appts', function(e){
-			var idUserProprio = $("input[name='usernameProp']").val(); 
+			var idUserProprio = $("#userNom")[0].innerHTML;
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
@@ -206,14 +206,7 @@ $(document).ready(function() {
 				success:function(reponse) {
 					$('#afficheInfoProfil').empty();
 					$('#afficheInfoProfil').html(reponse);
-					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");
-					$('#afficheInfoProfil nav').remove();
-					$('#afficheInfoProfil .alert').remove();
-					$('#afficheInfoProfil footer').remove();
-					$('#afficheInfoProfil script').remove();
-					$('#afficheInfoProfil #carte').remove();
-                   // var idApt = $('.btn-modal')[0].id;
-                    
+					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

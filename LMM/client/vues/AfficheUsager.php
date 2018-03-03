@@ -14,7 +14,7 @@
 <div class="container-fluid detail">
     <!-- Tout le monde peut voir -->
     <div class="row">
-        
+     
         <div class="col-sm-12 succes_erreur">	
         </div>
         
@@ -22,11 +22,34 @@
             <div class="row">
                 <div class="col-md-5">
                         <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid"> </div>
-                    </div>
-                <div class="col-md-5 d-flex align-items-center" id="div_info_nom">
-                        <h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
+                </div>
+				<!--On affiche nom d'usager pour les gens pas connectés ou bannis ou non activés, ainsi que
+					pour les connectés; 
+						on affiche nom complet juste pour le proprio du profil qu'est active et pas banni ET pour le superadmin
+						ET pour les admins actives et non bannis
+					-->
+                <div class="col-md-5" id="div_info_nom">
+					<?php
+					if(isset($_SESSION["username"])) {
+						if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)  
+						{
+						?>
+							<h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
+						<?php
+						}
+					}
+						?>
+					<h3 id="userNom">		
+						<?=$data["usager"]->getUsername();?>
+					</h3>
                 </div>
             </div>
+			<!-- Juste le proprio du profil qu'est connecte, active et pas banni peut changer sa photo			
+			-->
+			<?php 
+			if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
+			{
+			?>
             <div class="mb-3">
                 <div class="mb-3">
                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
@@ -36,6 +59,14 @@
                 <div class="collapse" id="collapsePhoto">
                 </div>
             </div>
+			<?php
+			}
+			
+			 if(isset($_SESSION["username"])) 
+             {
+                if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
+                 {
+			?>
             <div class="mb-3">
                 <div class="mb-3">
                     <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseProfil" aria-expanded="false" aria-controls="collapseProfil">
@@ -191,6 +222,14 @@
                     </div>
                 </div>
             </div>
+			<?php
+				}
+			}
+		/* Juste le proprio du profil qu'est connecte, active et pas banni peut changer son mot de passe		
+			*/
+		if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
+		{
+		?>
         <div class="mb-3">
             <div class="mb-3">
                 <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseMDP" aria-expanded="false" aria-controls="collapseMDP">
@@ -233,7 +272,10 @@
                     </div>
                 </form>
             </div>
-        </div>                             
+        </div>
+		<?php 
+		}
+		?>
     </div>
         <div class="col-md-8" >
 			<div class="row  justify-content-end" >
@@ -255,7 +297,7 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
+                
                 <a class="nav-link" href="#" id="historique">Voyages</a>
                 <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
@@ -267,14 +309,14 @@
                    <?php      
                     }
                     ?>
-
-                <!-- Si c'est mon profil je peux le voir avec toute l'info et Admin et SuperAdmin aussi-->  
+				
+                <!-- Le proprio du profil peux le voir avec toute l'info et Admin et SuperAdmin aussi (connectes, actives, pas bannis)-->  
                 <?php
 
                  if(isset($_SESSION["username"])) 
                  {
 
-                    if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
+                    if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"] && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0))  
                     {
                     ?>
                         
@@ -282,6 +324,17 @@
                            <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
                            <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
                            <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></p> 
+						   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
+						   <p id="data_role">
+							<?php
+							foreach($data["usager"]->roles as $role)
+							{
+							?> 
+							   <span class="mr-1"><?=$role->nomRole?></span>
+							<?php
+							}
+							?>
+							</p>
                      
                         <?php 
                         if($data["isClient"]) 
@@ -294,6 +347,7 @@
                         <?php 
                         }
                     }
+						/*Seulement le proprio du profil active, pas banni et connecte peut modifier son profil*/
                          if($_SESSION["username"] == $_REQUEST["idUsager"]) 
                         {
                         ?>
@@ -307,17 +361,7 @@
                         $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
                         $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
 						?>
-					<p id="data_role">
-						<?php
-						foreach($data["usager"]->roles as $role)
-						{
-						?> 
-						   <span class="mr-1"><?=$role->nomRole?></span>
-
-						<?php
-						}
-						?>
-					</p>
+					
 					<?php
                     if(!$data["isSuperAdmin"])
                     {
