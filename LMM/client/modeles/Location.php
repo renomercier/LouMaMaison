@@ -19,21 +19,23 @@
 		private $id;
 		private $dateDebut;
 		private $dateFin;
-		private $valideParPrestatire;
+		private $valideParPrestataire;
 		private $validePaiement;
-		private $idAppartement;
-		private $idUserClient;
+		private $id_appartement;
+		private $id_userClient;
+		private $nbPersonnes;
 		
 		//constructeur
-		public function __construct($id = "", $dateDebut = "", $dateFin = "", $valideParPrestatire =0, $validePaiement = 0, $idAppartement = "", $idUserClient = "")
+		public function __construct($id = "", $dateDebut = "", $dateFin = "", $valideParPrestatire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="")
 		{
 			$this->setId($id);
 			$this->setDateDebut($dateDebut);
 			$this->setDateFin($dateFin);
-			$this->setValideParPrestatire($valideParPrestatire);
+			$this->setValideParPrestataire($valideParPrestataire);
 			$this->setValidePaiement($validePaiement);
-			$this->setIdAppartement($idAppartement);
-			$this->setIdUserClient($idUserClient);
+			$this->setIdAppartement($id_appartement);
+			$this->setIdUserClient($id_userClient);
+			$this->setNbPersonnes($nbPersonnes);
 		}
 		
 		//getters 
@@ -52,9 +54,9 @@
 			return $this->dateFin;
 		}
 		
-		public function getValideParPrestatire()
+		public function getValideParPrestataire()
 		{
-			return $this->valideParPrestatire;
+			return $this->valideParPrestataire;
 		}
 		
 		public function getValidePaiement()
@@ -64,12 +66,17 @@
 		
 		public function getIdAppartement()
 		{
-			return $this->idAppartement;
+			return $this->id_appartement;
 		}
 		
 		public function getIdUserClient()
 		{
-			return $this->idUserClient;
+			return $this->id_userClient;
+		}
+		
+		public function getNbPersonnes()
+		{
+			return $this->nbPersonnes;
 		}
 		
 		//setters
@@ -107,10 +114,10 @@
 			}
 		}
 		
-		public function setValideParPrestatire($valideParPrestatire)
+		public function setValideParPrestataire($valideParPrestataire)
 		{
-			if(is_bool($valideParPrestatire)) {
-				$this->valideParPrestatire = $valideParPrestatire;
+			if(is_bool($valideParPrestataire)) {
+				$this->valideParPrestataire = $valideParPrestataire;
 			}
 			else {
 				return false;
@@ -130,21 +137,30 @@
 		public function setIdAppartement($idAppartement)
 		{
 			if(is_int($idAppartement)) {
-				$this->idAppartement = $idAppartement;
+				$this->idAppartement = $id_appartement;
 			}
 			else {
 				return false;
 			}
 		}
 		
-		public function setIdUserClient($idUserClient)
+		public function setIdUserClient($id_userClient)
 		{
-			if(is_int($idUserClient)) {
-				$this->idUserClient = $idUserClient;
+			if(is_int($id_userClient)) {
+				$this->id_userClient = $id_userClient;
 			}
 			else
 				return false;
 		}
+		
+		public function setNbPersonnes($nbPersonnes)
+		{
+			if(is_int($nbPersonnes)) {
+				$this->nbPersonnes = $nbPersonnes;
+			}
+			else
+				return false;
+		}	
 	}
 
 ?>

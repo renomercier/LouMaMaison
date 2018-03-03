@@ -166,7 +166,7 @@ $(document).ready(function() {
 						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 					}
 				});
-				return;	
+				//return;	
 			}
 			else {
 			//empecher le comportement normal du bouton
@@ -233,10 +233,17 @@ $(document).ready(function() {
 	/**
 		Action ajouter une disponibilite d'un apprtement
 	*/ 
-	//$(".btnAjouterDispo").one('click', funcAjouteDispo);
 	$(document).on('click', $(".btnAjouterDispo"), function(){
 		$(".btnAjouterDispo").one('click', funcAjouteDispo);
 	});
+	
+	/**
+		Action demande d'une reservation d'un appartement
+	*/
+	$(document).on('click', $("#demandeReservation"), function(){
+		$("#demandeReservation").one('click', funcDemandeReservation);
+	});
+	
 });	
 
 
@@ -289,7 +296,6 @@ var funcSupprimeDispo = function(e){
 */
 var funcAjouteDispo = function(e){
 	var id_apt =  $(this).val(); 
-    console.log(id_apt);
 	var dateDebut = $('#dateDebut'+id_apt).val();
 	var dateFin = $('#dateFin'+id_apt).val();
 	$.ajax({
@@ -337,6 +343,44 @@ var funcAjouteDispo = function(e){
     e.stopImmediatePropagation();
    // return false;
 }
+
+/**
+	Fonction pour faire une demande de reservation d'un appartement
+*/
+	var funcDemandeReservation = function(e){
+		var id_apt = $('input[name="id_appart"]').val();
+		var dateDebut = $('input[name="dateDebut"]').val();
+		var dateFin = $('input[name="dateFin"]').val();
+		var id_userClient = $('input[name="id_userClient"]').val();
+		var nbPersonnes = $('option:selected').val();
+		
+		$.ajax({
+			cache: false,
+			url: 'index.php?Appartements&action=creerLocation',
+			method: 'POST',
+			dataType : 'json',		
+			data: {
+				id_appart : id_apt,
+				dateDebut : dateDebut,
+				dateFin : dateFin,
+				id_userClient : id_userClient,
+				nbPersonnes : nbPersonnes
+			},
+			success:function(reponse) {
+				if(reponse.messageErreur) 
+				{ 
+					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
+				} 
+				else if(reponse[1].messageSucces){ //s'on n'as pas des erreurs côté php
+					
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+    e.stopImmediatePropagation();	
+	}
 
 
 /*////////////////////////////////////////////////////////////////*/

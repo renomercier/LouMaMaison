@@ -11,7 +11,7 @@
 	* @class 	Modele_Disponibilites - herite de BaseDao
 	* @details  
 	*
-	* 	... methodes	|	getTableName(), 
+	* @methodes		getTableName(), afficheDisponibilite(), supprimeDisponibilite(), ajouteDisponibilite()
 	*/
 	class Modele_Disponibilites extends BaseDAO
 	{

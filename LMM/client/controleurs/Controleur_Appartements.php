@@ -206,7 +206,27 @@
 							$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
 							echo $message_dispo;		
                         }
-                    break;                
+                    break;
+
+					case "creerLocation" :
+						$message_reservation="";
+						if(isset($params['id_appart']) && isset($params['dateDebut']) && isset($params['dateFin']) && isset($params['nbPersonnes']) && !empty($params['id_appart']) && !empty($params['dateDebut']) && !empty($params['dateFin']) && !empty($params['nbPersonnes']) && is_numeric($params['nbPersonnes']))
+						{
+							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
+							
+								
+							}
+							else {
+								$message_reservation = json_encode(array("messageErreur"=>"Vous devez être connecté pour faire la demande de réservation"));
+								echo $message_reservation;
+							}
+
+						}
+						else {
+							$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
+							echo $message_reservation;	
+						}
+					break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
