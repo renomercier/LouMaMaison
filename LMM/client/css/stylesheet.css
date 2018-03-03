@@ -76,37 +76,12 @@ a, a:hover{
     width: 100%;
     height: auto;
 }
-/* Opacite des photos lorsque "hovered on" */
-.photoAppartement:hover, .aptPhotoSupp:hover {
-    opacity: 0.7;
-}
 
 .fa_custom{
 	color: #999;
 }
 
 /*----- modalGaleriePhoto -----*/
-
-.aptPhotoSupp {
-    height: 5em;
-    width: 6.5em; 
-}
-.aptPhotoModal {
-    height: 45em;
-    width: 60em; 
-}
-.aptPhotoProprio {
-    height: 5em;
-    width: 5em; 
-}
-.aptIcones {
-    height: 2em;
-    width: 2em;
-}
-
-/* modalGaleriePhoto  */
-
-/* Modal-Carousel pour photos supplementaires */
 
 .modal-header, .modal-footer {  
     color: #ffffff;
@@ -124,6 +99,7 @@ a, a:hover{
     /*border: 1px solid #000000; */ 
 }
 
+
 .aptReservation, .aptDisponibilites, .aptModification {
     padding: 20px;
     border: 1px solid #585759;
@@ -134,6 +110,28 @@ a, a:hover{
     width: auto;
     overflow-y: scroll;
     border: 1px solid #585759;
+}
+
+/* Opacite des photos lorsque "hovered on" */
+.photoAppartement:hover, .aptPhotoSupp:hover {
+    opacity: 0.7;
+}
+
+.aptPhotoSupp {
+    height: 5em;
+    width: 6.5em; 
+}
+.aptPhotoModal {
+    height: 45em;
+    width: 60em; 
+}
+.aptPhotoProprio, .aptPhotoComment {
+    height: 5em;
+    width: 5em; 
+}
+.aptIcones, .aptIconesOptions {
+    height: 2em;
+    width: 2em;
 }
 
 /* --------------------------------------------------- google carte   */

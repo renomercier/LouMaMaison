@@ -236,10 +236,7 @@
                 <div class="">
                     <div class="text-center align-middle">
                         <img src="<?= $data['proprietaire']->getPhoto(); ?>" class="aptPhotoProprio rounded-circle img-fluid" alt="PhotoProprio">
-
-                        <!--<img src="/images/profil.jpg" class="aptProprio rounded-circle img-fluid" alt="PhotoProprio">-->
-
-                        <p><?= $data['appartement']->getId_userProprio() ?></p>
+                        <p><?= $data['appartement']->getId_userProprio(); ?></p>
                     </div>
                 </div>
             </div>
@@ -262,59 +259,57 @@
                 <div class="d-inline">
                     <p><?= $data['appartement']->getDescriptif(); ?></p>
                 </div>
-            </div>
             
-   		  <?php
+                <?php
 
-	        if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
-          {
-          ?>
+                    if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
+                  {
+                  ?>
+
+                    <div class="d-block">
+                        <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                    </div>
+
+                <?php
+                    } else {
+                ?>
+
+                    <div class="d-block">
+                        <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                    </div>  
+
+                <?php
+                    }
+                ?>
             
-            <div class="d-block">
-                <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
             </div>
-            
-        <?php
-            } else {
-        ?>
-                
-            <div class="d-block">
-                <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
-            </div>  
-      
-        <?php
-            }
-        ?>
             
             <hr>
             
             <div class="aptEquipements d-block">
-                <h5 class="row">Équipements / fonctionnalités</h5>
+                <h5 class="row">Équipements et fonctionnalités</h5>
                 <div class="row">
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">blablablablabla...</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">blablablablabla...</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">blablablablabla...</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">blablablablabla...</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">blablablablabla...</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/griller.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">blablablablabla...</p>
-                    </div>
+                    
+                    <?php
+
+                        foreach($data["tab_options"] as $option) {
+                            if  ($option['id'] > 4) {
+                    ?>
+                            
+                            <div class="d-inline col-sm-6">
+                                <div class="">
+                                    <img src="<?= $option['icone']; ?>" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                    <p class="d-inline"><?= $option['option']; ?></p>
+                                </div>
+                                <br>
+                            </div>
+                                         
+                <?php                    
+                            }
+                        }
+                    reset($data["tab_options"]);
+                ?>   
+
                 </div>
             </div>
             
@@ -322,16 +317,31 @@
             
             <div class="aptReglement d-block">
                 <h5 class="row">Règlement intérieur</h5>
+                
                 <div class="row">
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/no-smoking.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">Non fumeur</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/043-dog.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">Animaux permis</p>
-                    </div>
+                    
+                    <?php
+
+                        foreach($data["tab_options"] as $option) {
+                            
+                            if  ($option['id'] == 4) {
+                    ?>
+                            
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="<?= $option['icone']; ?>" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline"><?= $option['option']; ?></p>
+                                    </div>
+                                    <br>
+                                </div>
+                                         
+                    <?php
+                                }
+                        }
+                        reset($data["tab_options"]);
+                    ?>
                 </div>
+                
                 <div class="">
                     <p>C'est selon...</p>
                     <p>Bacon ipsum dolor amet spare ribs pork loin ribeye shank kevin beef chicken strip steak burgdoggen leberkas. Venison t-bone short ribs buffalo spare ribs, pork chop brisket boudin chicken jerky shankle drumstick hamburger ground round turkey. Beef ribeye rump doner fatback. Cow filet mignon tongue, capicola ball tip cupim shankle meatball bacon pancetta andouille pork loin swine jowl bresaola.</p>
@@ -350,25 +360,114 @@
             
             <hr>
             
-            <div class="d-block">
+            <div class="aptAcces d-block">
                 <h5  class="row">Accèssibilité</h5>
                 <div class="row">
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/elevator.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">Ascenseur</p>
-                    </div>
-                    <div class="d-inline col-sm-6">
-                        <img src="./icones/013-sign-1.svg" class="aptIcones img-fluid" alt="Icone">
-                        <p class="d-inline">Handicap</p>
-                    </div>
+                    
+                    <?php
+
+                        foreach($data["tab_options"] as $option) {
+                            
+                            if  ($option['id'] <= 3) {
+                    ?>
+                            
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="<?= $option['icone']; ?>" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline"><?= $option['option']; ?></p>
+                                    </div>
+                                    <br>
+                                </div>
+                                         
+                    <?php
+                                }
+                        }
+                        reset($data["tab_options"]);
+                    ?>
                 </div>
             </div>
             
             <hr>
             
-            <div class="row">
-                <h5>Commentaires</h5>
+            <div class="aptCommentaires d-block">
+                <h3 class="row"><?= $data['moyenneApt']['nbr_votant'] ;?> commentaire(s) &nbsp&nbsp<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i></h3>
+                
+                <?php
+                    foreach($data["tab_evals"] as $eval) {
+                ?>
+                        <hr>
+                        <div class="row">
+                            <div class="d-inline thumbnail col-sm-2">
+                                <img src="<?= $eval['photo']; ?>" class="aptPhotoComment rounded-circle img-fluid" alt="PhotoComment">
+                            </div>
+                            <div class="d-inline text-center col-sm-2">
+                                <h5><?= $eval['username']; ?></h5>
+                                
+                                <p><?= date('M Y',strtotime($eval['dateNotif']));; ?></p>
+                                
+                                <!--
+                                <p><?= $eval['dateNotif']; ?></p>
+                                -->
+                            </div>
+                            <div class="col-sm-12">
+                                <p><?= $eval['commentaire']; ?></p>
+                            </div>                           
+                        </div>
+                                         
+                <?php
+                    }
+                ?>
+                
             </div>
+            
+            <hr>
+            
+            <div class="aptHote d-block">      
+                <div class="row col-sm-12 justify-content-between">
+                    <div class="d-inline">
+                        <h3 class="row">Votre hôte : <?= $data['appartement']->getId_userProprio(); ?></h3>
+                        <p>Membre autorisé LouMaMaison.</p>
+                    </div>
+                    <div class="d-inline">
+                        <div class="text-center align-middle">
+                            <img src="<?= $data['proprietaire']->getPhoto(); ?>" class="aptPhotoProprio rounded-circle img-fluid" alt="PhotoProprio">
+                        </div>
+                    </div>
+                </div> 
+                
+                <div class="row align-middle">
+                    <div class="d-inline col-sm-12 text-left">
+                        <?php
+
+                            if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
+                        {
+                        ?>
+                                <div class="d-block">
+                                    <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                                </div>
+                        <?php
+                            } else {
+                        ?>
+                                <div class="d-block">
+                                    <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                                </div>  
+                        <?php
+                            }
+                        ?>
+                    </div>
+                </div>                      
+            </div>
+            
+            <hr>
+            
+            <div class="aptWarning d-block">      
+                <h5 class="row">Communiquez toujours via LouMaMaison</h5>
+                    <div class="">
+                        <p>Il circule des centaines de versions différentes du Lorem ipsum, mais ce texte aurait originellement été tiré de l'ouvrage de Cicéron, De Finibus Bonorum et Malorum (Liber Primus, 32), texte populaire à cette époque, dont l'une des premières phrases est : « Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit... » (« Il n'existe personne qui aime la souffrance pour elle-même, ni qui la recherche ni qui la veuille pour ce qu'elle est... »).</p>
+                    </div>
+                                     
+            </div>
+            
             
         </div>
         

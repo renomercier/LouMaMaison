@@ -147,15 +147,20 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
 
 INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appartement`, `id_username`) VALUES
 (1, 10, NULL, '2018-02-28', 1, 'nat'),
-(2, 10, NULL, '2018-02-27', 18, 'renaud'),
-(3, 7, NULL, '2018-02-25', 2, 'salim'),
-(4, 1, NULL, '2018-02-28', 3, 'salim'),
-(5, 8, NULL, '2018-02-18', 17, 'renaud'),
-(6, 5, NULL, '2018-02-24', 4, 'yul'),
+(2, 10, 'Nunc at augue vel ligula tristique scelerisque a id urna. Nulla eget nunc et orci vehicula tempor at non augue. Quisque leo erat, semper ac vehicula sed, vulputate vitae quam. Curabitur sed mauris id tellus ultrices euismod. Cras pharetra eros a massa faucibus malesuada. Proin hendrerit ultricies enim, et vulputate ligula sodales luctus.', '2018-02-27', 18, 'renaud'),
+(3, 7, 'Fusce faucibus accumsan feugiat. Sed porttitor suscipit tincidunt. Sed et felis nec lorem luctus aliquam eget et erat. Interdum et malesuada fames ac ante ipsum primis in faucibus.', '2018-02-27', 18, 'nat'),
+(4, 7, NULL, '2018-02-25', 2, 'salim'),
+(5, 1, NULL, '2018-02-28', 3, 'salim'),
+(6, 8, 'Quisque sit amet ligula vel dolor gravida venenatis non at nunc. Ut porttitor eu nisl eget semper. Aenean tempus neque et orci congue, ac finibus magna commodo.', '2018-02-18', 17, 'renaud'),
+(7, 9, 'Vestibulum feugiat facilisis ipsum, quis tincidunt dolor aliquet sed. Duis sed bibendum nibh, vitae hendrerit libero. Donec vel fringilla mi, quis iaculis mi. Nam a suscipit neque. Integer id euismod enim.', '2018-02-18', 17, 'yul'),
+(8, 5, NULL, '2018-02-24', 4, 'yul'),
 (9, 4, NULL, '2018-02-23', 5, 'salim'),
 (10, 3, NULL, '2018-02-22', 6, 'nat'),
-(11, 9, NULL, '2018-02-23', 16, 'renaud'),
-(12, 7, NULL, '2018-02-24', 15, 'renaud');
+(11, 9, 'Phasellus porta, neque at fringilla mattis, nisi sapien laoreet ipsum, tincidunt aliquet nisl justo eu nisl. Donec consequat est dui, ut porta quam scelerisque non.', '2018-02-23', 16, 'renaud'),
+(12, 6, 'Fusce ligula nisi, porta quis tincidunt quis, porttitor ac lacus. In hac habitasse platea dictumst. Maecenas ligula lorem, varius sit amet orci vestibulum, lacinia consequat libero.', '2018-02-23', 16, 'salim'),
+(13, 7, 'Curabitur ligula mauris, fermentum at sodales a, tempor non felis. Integer lacus metus, feugiat sed augue nec, sodales maximus velit. Integer ullamcorper consequat tortor, at euismod erat dictum vel. Integer eget commodo dolor. Vivamus vehicula metus nisi, sed rhoncus felis ullamcorper sit amet.', '2018-02-24', 15, 'renaud'),
+(14, 10, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis cursus felis, eget lobortis mi dictum eu. Mauris et efficitur tellus, in tempor odio. Sed pretium viverra metus sit amet pretium.', '2018-02-24', 15, 'yul');
+
 
 -- --------------------------------------------------------
 

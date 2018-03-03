@@ -73,19 +73,33 @@
                     case "afficherAppartement" :    
                         // chargement du modele Appartement
                         $modeleApts = $this->getDAO("Appartements");
+                        
                         // Recuperer le detail de l'appartement               
-                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
+                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);                      
+                        
+                        // json_decode des options de l'appartement
+                        $data['tab_options'] = $this->prepareTabOptionsPourAffichage($data['appartement']->getOptions());                        
+                        
                         // Recuperer les photos de l'appartement
                         $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
+                        
                         // Recuperer le quartier de l'appartement
                         $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
                         // Recuperer le type de l'appartement
                         $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                        
                         // Recuperer la moyenne de l'appartement
-                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
+                        //$data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
+                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($params['id_appart']);
+                        
                         // Recuperer les disponibilites de l'appartement
                         $modeleDisponibilites = $this->getDAO("Disponibilites");
                         $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
+                        
+                        // Recuperer les commentaires d'évaluations de l'appartement
+                        $modeleEvaluations = $this->getDAO("Evaluations");
+                        $data['tab_evals'] = $modeleEvaluations->obtenir_tous_non_null($params['id_appart']);
+                        
                         // Recuperer le proprietaire de l'appartement
                         $modeleUsagers = $this->getDAO("Usagers");
                         $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
