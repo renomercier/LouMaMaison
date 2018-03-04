@@ -65,9 +65,6 @@
         </div>
     </div>
     
-    
-    
-    
     <!-- Modal du carousel de photos -->
     <div class="modal fade" id="modalGaleriePhoto" tabindex="-1" role="dialog" aria-labelledby="modalPhotoSupp" aria-hidden="true">
       <div class="modal-dialog modal-xl" role="document">
@@ -176,7 +173,7 @@
     <!--end modal -->
     </div>
     
-
+    <!-- Section de l'affichage des photos de l'appartement -->
     <section class="row sectionAptPhoto">
         
 		<!-- Affichage des messages a l'usager -->
@@ -219,11 +216,13 @@
 			
         </div>
 
-        <!-- Fin row -->    
+        <!-- Fin section photo -->    
     </section>
     
-    
-    <section class="sectionAptDetail d-flex">    
+    <!-- Section de l'affichage du détail de l'appartement -->
+    <section class="sectionAptDetail row">
+        
+        <!-- portion gauche de l'écran -->
         <div class="sectionAptDetail-g col-sm-8">
             <br>
             <div class="row justify-content-between">
@@ -286,6 +285,7 @@
             
             <hr>
             
+            <!-- affichage des equipements de l'appartememnt -->
             <div class="aptEquipements d-block">
                 <h5 class="row">Équipements et fonctionnalités</h5>
                 <div class="row">
@@ -315,6 +315,7 @@
             
             <hr>
             
+            <!-- affichage des reglements de l'appartememnt -->
             <div class="aptReglement d-block">
                 <h5 class="row">Règlement intérieur</h5>
                 
@@ -350,6 +351,7 @@
             
             <hr>
             
+            <!-- affichage de la politique d'annulation de la réservation de l'appartememnt -->
             <div class="aptAnnulation d-block">
                 <h5 class="row">Annulation</h5>
                 <div class="">
@@ -360,6 +362,7 @@
             
             <hr>
             
+            <!-- affichage des accès à l'appartememnt -->
             <div class="aptAcces d-block">
                 <h5  class="row">Accèssibilité</h5>
                 <div class="row">
@@ -389,6 +392,7 @@
             
             <hr>
             
+            <!-- affichage des commentaires de l'appartememnt -->
             <div class="aptCommentaires d-block">
                 <h3 class="row"><?= $data['moyenneApt']['nbr_votant'] ;?> commentaire(s) &nbsp&nbsp<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i></h3>
                 
@@ -396,18 +400,14 @@
                     foreach($data["tab_evals"] as $eval) {
                 ?>
                         <hr>
+
                         <div class="row">
-                            <div class="d-inline thumbnail col-sm-2">
+                            <div class="">
                                 <img src="<?= $eval['photo']; ?>" class="aptPhotoComment rounded-circle img-fluid" alt="PhotoComment">
                             </div>
-                            <div class="d-inline text-center col-sm-2">
-                                <h5><?= $eval['username']; ?></h5>
-                                
+                            <div class="text-center">
+                                <h5><?= $eval['username']; ?></h5>                          
                                 <p><?= date('M Y',strtotime($eval['dateNotif']));; ?></p>
-                                
-                                <!--
-                                <p><?= $eval['dateNotif']; ?></p>
-                                -->
                             </div>
                             <div class="col-sm-12">
                                 <p><?= $eval['commentaire']; ?></p>
@@ -422,6 +422,7 @@
             
             <hr>
             
+            <!-- affichage de l'hôte de l'appartememnt -->
             <div class="aptHote d-block">      
                 <div class="row col-sm-12 justify-content-between">
                     <div class="d-inline">
@@ -460,6 +461,7 @@
             
             <hr>
             
+            <!-- affichage des politique de communication de l'appartememnt -->
             <div class="aptCommunication d-block">      
                 <h5 class="row">Communiquez toujours via LouMaMaison</h5>
                 <div class="">
@@ -467,14 +469,16 @@
                 </div>                              
             </div>
             
+            <!-- affichage du quartier de l'appartememnt -->
             <div class="aptQuartier d-block">                 
                 <h5 class="row">Le Quartier</h5>
                 <div class="">
-                    <p>Le logis de <?= $data['proprietaire']->getUsername(); ?> est situé à <em><?= $data['appartement']->getVille(); ?></em> dans le quartier <em><?= $data['quartier'][0]['nomQuartier']; ?></em></p>
+                    <p>Le logis de <?= $data['proprietaire']->getUsername(); ?> est situé à <strong><em><?= $data['appartement']->getVille(); ?></em></strong> dans le quartier <strong><em><?= $data['quartier'][0]['nomQuartier']; ?></em></strong></p>
                 </div>
                             
                 <div id="accordion" role="tablist" aria-multiselectable="true">
-
+                  
+                  <!-- affichage des informations sur le quartier de l'appartement -->
                   <div class="card">
                     <div class="card-header" role="tab" id="headingOne">
                       <h6 class="mb-0">
@@ -486,6 +490,8 @@
                     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                       <div class="card-block">
                           <p>Montréal est la plus grande ville de la province de Québec au Canada. Située sur une île du fleuve Saint-Laurent, elle doit son nom au mont Royal, la colline à trois sommets qui domine la ville. Ses arrondissements, dont la plupart étaient autrefois des villes indépendantes, comprennent des quartiers allant du Vieux-Montréal colonial français, avec la basilique Notre-Dame de style néogothique au centre, au très bohème Plateau-Mont-Royal.</p>
+                          
+                          <!-- affichage des moyens de transports disponibles -->
                           <div>
                             <h6>Transports disponibles</h6>
                             <div class="">
@@ -514,6 +520,8 @@
                               </div>
                             </div>
                           </div>
+                          
+                          <!-- affichage des services de proximité disponibles -->
                           <div>
                             <h6>Services disponibles à proximité</h6>
                             <div class="">
@@ -541,8 +549,8 @@
                                 </div>
                                 <div class="d-inline col-sm-6">
                                     <div class="">
-                                        <img src="./icones/bench.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
-                                        <p class="d-inline">Parc</p>
+                                        <img src="./icones/shop.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Boutiques</p>
                                     </div>
                                     <br>
                                 </div> 
@@ -550,11 +558,27 @@
                             </div>
                           </div>
                           
+                          <!-- affichage des autres attraits disponibles -->
+                          <div>
+                            <h6>Autres</h6>
+                            <div class="">
+                              <div class="row">
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/bench.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Parc</p>
+                                    </div>
+                                    <br>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>                     
                           
                       </div>
                     </div>
                   </div>
                   
+                  <!-- affichage des activités disponibles dans la ville -->
                   <div class="card">
                     <div class="card-header" role="tab" id="headingTwo">
                       <h6 class="mb-0">
@@ -566,6 +590,8 @@
                     <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                       <div class="card-block">
                           <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                          
+                          <!-- affichage des liens utiles dans la ville -->
                           <div>
                             <h6>Liens utiles</h6>
                             <ul>
@@ -582,26 +608,31 @@
 
                 </div>
                 
+                <!-- affichage du quartier de l'appartememnt -->
+                <div id="carteQuartier">
+                
+                </div>
+                
                 <br>
-                
-                
 
             </div>
             
         </div>
         
-        <div class="sectionAptDetail-d col-sm-4 sticky">
+        <!-- portion droite de l'écran -->
+        <div class="sectionAptDetail-d col-sm-4 flex-first flex-sm-unordered">
             <br>
-
-             <?php
+            
+            <!-- Si l'usager est le proprio de l'appartement : affichage des boutons de gestion -->
+            <?php
                 if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
                 {
-             ?>
+            ?>
             
                 <div class="aptModification col-sm-12">
             
                     <div class="">                     
-                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier cet appartement</a></p> 
+                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier l'appartement</a></p> 
                     </div>
                     <hr>
                     <div class="">
@@ -613,6 +644,7 @@
             <?php
                 } else {
             ?>
+                <!-- Et si l'usager n'est pas le proprio de l'appartement : affichage d'une demande de réservation -->
                 <div class="aptReservation col-sm-12">
                     <h4>$<?= $data['appartement']->getMontantParJour(); ?> CAD <small>par nuit</small></h4>
                     <h6>Ratings
@@ -641,22 +673,7 @@
                         <?= $data['moyenneApt']['nbr_votant'] ;?>
                     </h6>
                     <hr>
-                    <!--
-                    <div class="aptDisponibilites">
-                        <h4 class="text-center">Disponibilités</h4>
-
-                        <?php
-                            $nbrD = 0;
-                            foreach($data["tab_dispos"] as $dispo) {
-                                $nbrD++;
-                        ?>
-                                <p><?= $nbrD; ?>. Du: <?= $dispo['dateDebut'] ?>  Au: <?= $dispo['dateFin'] ?></p>
-                        <?php
-                           }
-                        ?>
-                    </div>
-                    <hr>
-                    -->                
+               
                     <div class="demandeReservation">
                         <form id="formApt" method="POST" action="index.php?Appartements&action=sauvegarderApt">
                             <!-- Date d'arrivée -->
@@ -692,22 +709,22 @@
                                 </div>
                             </div>
 
-                            <input type="submit" class="btn btn-primary btn-block btn-lg" id="inputSubmit" value="Demande de réservation">						
+                            <input type="submit" class="col-sm-12 btn btn-primary btn-lg" id="inputSubmit" value="Demander une réservation">						
                         </form>
                     </div>
                     <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
                     <hr>
+                    <br>
                 </div>
             
+                
             <?php
                 }
-            ?>   
+            ?>           
             
         </div>
         
-
-    
-        <!-- Fin d-flex -->    
+        <!-- Fin section detail -->     
     </section>
     
     <!-- Fin container -->

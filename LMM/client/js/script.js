@@ -339,7 +339,7 @@ $(document).ready(function() {
       });
     }
 
-    // fonction pour placer un marqueur sur la carte.
+    // fonction pour placer un marqueur sur la carte du Quartier.
     function placerSureCarteQuartier(adrAppart, miniature) {
         Geocoder = new google.maps.Geocoder(); 
         Geocoder.geocode( { 'address': adrAppart}, function(results, status) {
@@ -383,7 +383,7 @@ $(document).ready(function() {
         });
     }
 
-// fonction pour supprimer les marqueurs de la carte du Quartier
+    // fonction pour supprimer les marqueurs de la carte du Quartier
     function clearMarkers() {
         for(var i=0; i< marqueurs.length; i++)
         {
@@ -391,7 +391,7 @@ $(document).ready(function() {
         }
     }
 
-// boucler dans le tableau des adresses et les placer sur la carte du Quartier.
+    // boucler dans le tableau des adresses et les placer sur la carte du Quartier.
      window.onload=function() {    
         $("div.appart").each(function(){
             var miniature = $('<div class="miniature">').append($(this).html());
