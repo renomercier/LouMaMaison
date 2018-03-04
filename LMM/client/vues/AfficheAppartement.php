@@ -460,14 +460,133 @@
             
             <hr>
             
-            <div class="aptWarning d-block">      
+            <div class="aptCommunication d-block">      
                 <h5 class="row">Communiquez toujours via LouMaMaison</h5>
-                    <div class="">
-                        <p>Il circule des centaines de versions différentes du Lorem ipsum, mais ce texte aurait originellement été tiré de l'ouvrage de Cicéron, De Finibus Bonorum et Malorum (Liber Primus, 32), texte populaire à cette époque, dont l'une des premières phrases est : « Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit... » (« Il n'existe personne qui aime la souffrance pour elle-même, ni qui la recherche ni qui la veuille pour ce qu'elle est... »).</p>
-                    </div>
-                                     
+                <div class="">
+                    <p>Il circule des centaines de versions différentes du Lorem ipsum, mais ce texte aurait originellement été tiré de l'ouvrage de Cicéron, De Finibus Bonorum et Malorum (Liber Primus, 32), texte populaire à cette époque, dont l'une des premières phrases est : « Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit... » (« Il n'existe personne qui aime la souffrance pour elle-même, ni qui la recherche ni qui la veuille pour ce qu'elle est... »).</p>
+                </div>                              
             </div>
             
+            <div class="aptQuartier d-block">                 
+                <h5 class="row">Le Quartier</h5>
+                <div class="">
+                    <p>Le logis de <?= $data['proprietaire']->getUsername(); ?> est situé à <em><?= $data['appartement']->getVille(); ?></em> dans le quartier <em><?= $data['quartier'][0]['nomQuartier']; ?></em></p>
+                </div>
+                            
+                <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingOne">
+                      <h6 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Connaître le quartier
+                        </a>
+                      </h6>
+                    </div>
+                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="card-block">
+                          <p>Montréal est la plus grande ville de la province de Québec au Canada. Située sur une île du fleuve Saint-Laurent, elle doit son nom au mont Royal, la colline à trois sommets qui domine la ville. Ses arrondissements, dont la plupart étaient autrefois des villes indépendantes, comprennent des quartiers allant du Vieux-Montréal colonial français, avec la basilique Notre-Dame de style néogothique au centre, au très bohème Plateau-Mont-Royal.</p>
+                          <div>
+                            <h6>Transports disponibles</h6>
+                            <div class="">
+                              <div class="row">
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/taxi.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Taxi</p>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/metro.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Metro/autobus</p>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/bicycle.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Bixi</p>
+                                    </div>
+                                    <br>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <h6>Services disponibles à proximité</h6>
+                            <div class="">
+                              <div class="row">
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/groceries-1.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Marché</p>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/food-2.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Traiteur</p>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/pub.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Bistro/café</p>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="d-inline col-sm-6">
+                                    <div class="">
+                                        <img src="./icones/bench.svg" class="aptIconesOptions d-inline img-fluid" alt="OptionAppartement">
+                                        <p class="d-inline">Parc</p>
+                                    </div>
+                                    <br>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingTwo">
+                      <h6 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Que faire à Montréal
+                        </a>
+                      </h6>
+                    </div>
+                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="card-block">
+                          <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                          <div>
+                            <h6>Liens utiles</h6>
+                            <ul>
+                                <li><a href="https://www.mtl.org/fr" target="_blank" title="Découvrez Montreal">Tourisme Montréal</a></li>
+                                <li><a href="http://ville.montreal.qc.ca/culture/mieux-connaitre-montreal" target="_blank" title="Mieux connaitre Montreal">Mieux connaître Montréal</a></li>
+                                <li><a href="http://montreal-guidetouristique.com/" target="_blank" title="Guide touristique de Montreal">Guide touristique de Montréal</a></li>
+                                <li><a href="http://museesmontreal.org/fr/musees" target="_blank" title="Guide des musees de Montreal">Guide des musées de Montréal</a></li>
+                               <li><a href="https://www.uneparisienneamontreal.com/guide-bonnes-adresses/" target="_blank" title="Suggestion de restaurants">Suggestion de restaurants</a></li>
+                            </ul>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                
+                <br>
+                
+                
+
+            </div>
             
         </div>
         

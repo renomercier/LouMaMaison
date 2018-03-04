@@ -85,8 +85,14 @@
                         
                         // Recuperer le quartier de l'appartement
                         $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
+                        
                         // Recuperer le type de l'appartement
                         $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                        
+                        // Reconstituer l'adresse pour la localisation sur la carte google du Quartier
+                        $data['adresse'] = $data['appartement']->getNoCivique()." ".$data['appartement']->getRue()." ".$data['appartement']->getVille();
+                        // to delete...
+                        //$appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
                         
                         // Recuperer la moyenne de l'appartement
                         //$data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
