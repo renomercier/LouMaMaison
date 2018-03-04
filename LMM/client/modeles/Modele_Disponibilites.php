@@ -33,7 +33,7 @@
 		*/
         public function afficheDisponibilite($id_apt) 
         {
-            $query = "SELECT * FROM " . $this->getTableName() . " WHERE disponibilite = 1 AND dateDebut>= NOW() AND id_appartement = ?";
+            $query = "SELECT * FROM " . $this->getTableName() . " WHERE disponibilite = 1 AND dateDebut>= DATE(NOW()) AND id_appartement = ?";
             $donnees = array($id_apt);
             $resultat= $this->requete($query, $donnees);
             return $resultat->fetchAll();
