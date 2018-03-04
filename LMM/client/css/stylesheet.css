@@ -300,6 +300,57 @@ footer hr {
     color: #014B88;
 }
 
+/************/
+#btn-profil{
+    border-color: transparent;
+    outline: none;
+    color: #767676;
+	background-color: transparent;
+	
+}
+
+#btn-profil:hover{
+    border-bottom: 2px solid #efefef;
+    color: #484848;
+}
+
+#btn-profil[aria-expanded="true"]{
+    color: #0275d8;
+    font-weight: 700;
+    border-bottom: 1px solid #0275d8;
+}
+
+.panel {
+    border: 1px solid #dce0e0;
+    background-color: #fff;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.panel-header {
+	color: #484848;
+    /*color: #fff;*/
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce0e0;
+    background-color: #edefed;
+    /*background-color: #919191;*/
+    padding: 20px;
+}
+
+.panel-footer {
+    position: relative;
+    margin: 0;
+    padding: 20px;
+    border-top: 1px solid #dce0e0;
+}
+
+.panel-body {
+    padding: 20px;
+}
+
 .img-thumbnail{
     background:none;
     border: none;

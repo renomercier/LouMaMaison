@@ -11,7 +11,7 @@
 	* @class 	Modele_Disponibilites - herite de BaseDao
 	* @details  
 	*
-***	* 	... 4 methodes	|	getTableName(), afficheDisponibilite(), supprimeDisponibilite(), ajouteDisponibilite()
+	* @methodes		getTableName(), afficheDisponibilite(), supprimeDisponibilite(), ajouteDisponibilite()
 	*/
 	class Modele_Disponibilites extends BaseDAO
 	{
@@ -33,7 +33,7 @@
 		*/
         public function afficheDisponibilite($id_apt) 
         {
-            $query = "SELECT * FROM " . $this->getTableName() . " WHERE disponibilite = 1 AND id_appartement = ?";
+            $query = "SELECT * FROM " . $this->getTableName() . " WHERE disponibilite = 1 AND dateDebut>= DATE(NOW()) AND id_appartement = ?";
             $donnees = array($id_apt);
             $resultat= $this->requete($query, $donnees);
             return $resultat->fetchAll();
@@ -61,7 +61,66 @@
             $query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement) VALUES (?, ?, ?)";
             $donnees = array($dateDebut, $dateFin, $id_apt);
             return $this->requete($query, $donnees);                
-        }
-           
+        }      
+		 
+        /**
+		* @brief		
+		* @details		
+		* @param 		
+		* @return    	
+		*/
+        public function obtenirIdDispo($dateDebut, $dateFin, $id_apt)
+		{
+			$query = "SELECT * from " . $this->getTableName() . "
+			WHERE disponibilite = 1 AND dateDebut <= ? AND dateFin >= ? AND id_appartement = ?";
+			$donnees = array($dateDebut, $dateFin, $id_apt);
+			$resultat = $this->requete($query, $donnees);
+			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Disponibilite'); 
+			$lDispo = $resultat->fetch();
+			return $lDispo;
+		}
+		
+		/**  
+		* @brief      Calculer la date de début de la nouvelle location
+		* @details    Dans le cas de location qu'est au mileu de disponibilité, 
+		* on créer la date de début de la nouvelle location 
+		* @param    dateEnd   date de fin de location cherchée par un client 
+		* @return	  la date de début de la nouvelle location   
+		*/ 	
+		public function newDateBegin($dateEnd)
+		{
+			// + 1 day from date
+			$newDateRef = strtotime("+1 day", strtotime($dateEnd));
+			$newDateBegin = Date('Y-m-d', $newDateRef);
+			return $newDateBegin;		
+		}
+		
+		/**  
+		* @brief      Calculer la date de fin de la nouvelle location
+		* @details    Dans le cas de location qu'est au mileu de disponibilité, 
+		* on créer la date de fin de la nouvelle location 
+		* @param    dateBegin  date de début de location cherchée par un client 
+		* @return	  la date de fin de la nouvelle location   
+		*/ 		
+		public function newDateEnd($dateBegin)
+		{
+			// - 1 day to date
+			$newDateRef=strtotime("-1 day", strtotime($dateBegin));
+			$newDateEnd=Date('Y-m-d', $newDateRef);
+			return $newDateEnd;		
+		}
+		
+		 /**
+		* @brief		Fonction pour réserver un appartement
+		* @details		Permet de changer le statut de champ: disponibilité
+		* @param 		<VAR>		$leChamp		Le champ à modifier (disponibilite)
+		* @param 		<VAR>		$laValeur		La nouvelle valeur de ce champ
+		* @param 		<VAR>		$id 			id de disponibilité dans la base de données
+		* @return    	<bool>		résultat de la requete
+		*/
+		public function misAjourChampUnique($leChamp, $laValeur, $id)
+		{
+			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
+		}
 	}
 ?>
