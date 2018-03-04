@@ -21,9 +21,12 @@
 		private $dateFin;
 		private $valideParPrestataire;
 		private $validePaiement;
-		private $idAppartement;
-		private $idUserClient;
+		private $id_appartement;
+		private $id_userClient;
+		private $nbPersonnes;
 		
+
+
 		/**
         *   constructeur de la classe Location
         *       
@@ -35,15 +38,18 @@
         *   @param <int>        	$idAppartement          l'id de l'appartement  
         *   @param <string>        	$idUserClient           l'id de l'utilisateur    
         */
-		public function __construct($id = "", $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $idAppartement = "", $idUserClient = "")
+		
+		//constructeur
+		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="")
 		{
 			$this->setId($id);
 			$this->setDateDebut($dateDebut);
 			$this->setDateFin($dateFin);
-			$this->setvalideParPrestataire($valideParPrestataire);
+			$this->setValideParPrestataire($valideParPrestataire);
 			$this->setValidePaiement($validePaiement);
-			$this->setIdAppartement($idAppartement);
-			$this->setIdUserClient($idUserClient);
+			$this->setIdAppartement($id_appartement);
+			$this->setIdUserClient($id_userClient);
+			$this->setNbPersonnes($nbPersonnes);
 		}
 		
 		//getters 
@@ -62,7 +68,7 @@
 			return $this->dateFin;
 		}
 		
-		public function getvalideParPrestataire()
+		public function getValideParPrestataire()
 		{
 			return $this->valideParPrestataire;
 		}
@@ -74,18 +80,23 @@
 		
 		public function getIdAppartement()
 		{
-			return $this->idAppartement;
+			return $this->id_appartement;
 		}
 		
 		public function getIdUserClient()
 		{
-			return $this->idUserClient;
+			return $this->id_userClient;
+		}
+		
+		public function getNbPersonnes()
+		{
+			return $this->nbPersonnes;
 		}
 		
 		//setters
 		public function setId($id)
 		{
-			if(is_int($id)) {
+			if(is_int(intval($id))) {
 				$this->id = $id;
 			}
 			else
@@ -94,66 +105,37 @@
 		
 		public function setDateDebut($dateDebut) //YYYY-MM-DD
 		{
-			$today = Date("Y-m-d");
-			//var_dump($today);
-			if($dateDebut < $today) {
-				$this->dateDebut = $today;
-			}
-			else {
-				$this->dateDebut = $dateDebut;
-			}
+			$this->dateDebut = $dateDebut;
 		}
 		
 		public function setDateFin($dateFin) 
 		{
-			$today = Date("Y-m-d"); 
-			$dateFin = strtotime("+1 day", strtotime($today)); //ajouter 1 jour a aujourd'hui si la date fin est aujourd'hui ou avant
-			$dateFinNew = Date('Y-m-d', $dateFin);
-			if($dateFin <= $today) {
-				$this->dateFin = $dateFinNew;
-			}
-			else {
-				$this->dateFin = $dateFin;
-			}
+			$this->dateFin = $dateFin;
 		}
 		
-		public function setvalideParPrestataire($valideParPrestataire)
+		public function setValideParPrestataire($valideParPrestataire)
 		{
-			if(is_bool($valideParPrestataire)) {
-				$this->valideParPrestataire = $valideParPrestataire;
-			}
-			else {
-				return false;
-			}
+			$this->valideParPrestataire = $valideParPrestataire;
 		}
 		
 		public function setValidePaiement($validePaiement)
 		{
-			if(is_bool($validePaiement)) {
-				$this->validePaiement = $validePaiement;
-			}
-			else {
-				return false;
-			}
+			$this->validePaiement = $validePaiement;
 		}
 		
 		public function setIdAppartement($idAppartement)
 		{
-			if(is_int($idAppartement)) {
-				$this->idAppartement = $idAppartement;
-			}
-			else {
-				return false;
-			}
+			$this->id_appartement = $idAppartement;
 		}
 		
-		public function setIdUserClient($idUserClient)
+		public function setIdUserClient($id_userClient)
 		{
-			if(is_int($idUserClient)) {
-				$this->idUserClient = $idUserClient;
-			}
-			else
-				return false;
+			$this->id_userClient = $id_userClient;
 		}
+		
+		public function setNbPersonnes($nbPersonnes)
+		{
+			$this->nbPersonnes = $nbPersonnes;
+		}	
 	}
 ?>

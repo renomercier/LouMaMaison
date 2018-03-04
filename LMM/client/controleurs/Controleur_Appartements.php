@@ -110,9 +110,7 @@
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
 									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
                                 }
-							$this->afficheVue("header",$data);
                             $this->afficheVue("AfficheAptsProprio", $data); 
-							$this->afficheVue("footer");
                             }
 					break;
 					
@@ -133,7 +131,7 @@
 					break;
                     
                     // case d'ajout d'une disponibilite pour un appartement                        
-                    case "ajouteDisponibilite" :
+                   case "ajouteDisponibilite" :
 						$message_dispo="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
                         if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
@@ -141,7 +139,7 @@
 							//verification de dates
 							$today = Date("Y-m-d");
 	
-							if($obj['dateDebut'] >= $today && $obj['dateFin']> $obj['dateDebut'])
+							if($obj['dateDebut'] >= $today && $obj['dateFin']>= $obj['dateDebut'])
 							{	
 								$datesAnciens = $modeleDispo->afficheDisponibilite($obj['id_apt']);
 								if($datesAnciens)
@@ -150,7 +148,7 @@
 										$dateDebutOld = $dateOld['dateDebut'];
 										$dateFinOld = $dateOld['dateFin'];
 									}
-										if(($obj['dateDebut'] > $dateFinOld && $obj['dateFin']>$obj['dateDebut']) || ($obj['dateDebut'] < $dateDebutOld && $obj['dateFin'] < $dateDebutOld && $obj['dateFin'] > $obj['dateDebut']))
+										if(($obj['dateDebut'] > $dateFinOld && $obj['dateFin']>=$obj['dateDebut']) || ($obj['dateDebut'] < $dateDebutOld && $obj['dateFin'] < $dateDebutOld && $obj['dateFin'] >= $obj['dateDebut']))
 										{
 											$data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
 											if($data['disponibilite']) 
@@ -165,7 +163,7 @@
 											}
 											else 
 											{
-												// message à l'usager - si la requete echoue
+												// message à l'usager - s'il la requete echoue
 												$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
 												echo $message_dispo;                                        
 											}
@@ -201,7 +199,7 @@
 							}
 							else
 							{
-								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vérifier vos dates"));
+								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous vérifier vos dates"));
 								echo $message_dispo;     
 							}   
 						}
@@ -210,7 +208,75 @@
 							$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
 							echo $message_dispo;		
                         }
-                    break;                
+                    break;
+					
+					//case de creation de location
+					case "creerLocation" :
+						$message_reservation="";
+						$today = Date("Y-m-d");
+						if(isset($params['id_appart']) && isset($params['dateDebut']) && isset($params['dateFin']) && isset($params['nbPersonnes']) && !empty($params['id_appart']) && !empty($params['dateDebut']) && !empty($params['dateFin']) && !empty($params['nbPersonnes']) && is_numeric($params['nbPersonnes']))
+						{
+							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
+								if($_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) {
+									if($params['dateFin']>=$params['dateDebut'] && $params['dateDebut']>=$today) {
+										$modeleDisponibilites = $this->getDAO("Disponibilites");
+										$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($params['dateDebut'],$params['dateFin'],$params['id_appart']);
+										if($data['idDispo']) {
+											$idDispo = $data['idDispo']->getId();								
+											$dateDebutAncien=$data['idDispo']->getDateDebut();
+											$dateFinAncien=$data['idDispo']->getDateFin();	
+
+											$dateBeginNew = $modeleDisponibilites->newDateBegin($params['dateFin']);
+											$dateFinNew = $modeleDisponibilites->newDateEnd($params['dateDebut']);
+
+											if($dateDebutAncien<=$dateFinNew)
+											{	
+												$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $params['id_appart']);			
+											}
+											if($dateBeginNew<=$dateFinAncien)
+											{	
+												$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $params['id_appart']);					
+											}
+											
+											//réserver un apt à cette date
+											$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+											//creer un objet location
+											$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $params['id_userClient'], $params['nbPersonnes']);
+											//chargement du modele Location 
+											$modeleLocation = $this->getDAO("Locations");
+											//creation de location
+											$resultat = $modeleLocation->creerLocation($location);
+											if($resultat) {
+												$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Veuillez vous attendre une confirmation de propriètaire."));//creer une message de success 
+												echo $message_reservation;
+											}
+										}
+										else if ($data['idDispo']==false){
+											$message_reservation = json_encode(array("messageErreur"=>"L'appartement n'est pas disponible. Veuillez vous choisir d'autres dates!"));
+											echo $message_reservation;
+										}
+									}
+									else {
+										$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous vérifier les dates!"));
+										echo $message_reservation;
+									}
+								}
+								else {
+									$message_reservation = json_encode(array("messageErreur"=>"Vous devez être validé par l'admin et n'est pas banni pour faire la demande de réservation"));
+									echo $message_reservation;
+								}
+							}
+							else {
+								$message_reservation = json_encode(array("messageErreur"=>"Vous devez être connecté pour faire la demande de réservation"));
+								echo $message_reservation;
+							}
+
+						}
+						else {
+							$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
+							echo $message_reservation;	
+						}
+					break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :

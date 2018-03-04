@@ -1,6 +1,6 @@
 <?php
 /**
-* @file         /Modele_Location.php
+* @file         /Modele_Locations.php
 * @brief        Projet WEB 2
 * @details                              
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -8,13 +8,13 @@
 */
 
 	/**
-	* @class 	Modele_Location - herite de BaseDao
+	* @class 	Modele_Locations - herite de BaseDao
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 2 methodes	|	getTableName(), creerLocation()
+	* @methodes	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique()
 	*/
-	class Modele_Location extends BaseDAO
+	class Modele_Locations extends BaseDAO
 	{
 
 		/**  
@@ -27,25 +27,61 @@
 			return "location";
 		}
 	
-	/////////////////////////////////// - mettre les ? ? ? ? au lieu des variables	
-	/////////////////////////////////// - la fonction doit prendre en parametre un objet absolument
-	/////////////////////////////////// - je propose sauvegarderLocation puisque la fonction servira à créer ou modifier une location
 		/**  
 		* @brief     	Créer location d'un appartement
-		* @details   	Insérer les dates de début et de fin de location de certain appartement par certain client, ainsi que l'id de cette location 
-		* @param   		dateDebut      	date de début de location
-		* @param   		dateFin        	date de fin de location
-		* @param		idAppartement 	id de l'app
-		* @param 		idUser			courriel d'utilisateur
-		* @return    	Array :  		'location'
+		* @details   	Inscrire la création d'une location à la BD
+		* @param   		<object>      	Location
+		* @return    	Résultat de la requête SQL
 		 */ 
-		function creerLocation($dateDebut, $dateFin, $idAppartement, $idUser)
+		public function creerLocation(Location $Location)
 		{
-			global $connexion;
-			$requete = "INSERT INTO location(dateDebut, dateFin, id_appartement, id_usager) VALUES ('" . filtre($dateDebut) . "', '" . filtre($dateFin) . "','" . filtre($idAppartement) . "','" . filtre($idUser) . "')";		
-			$resultat = mysqli_query($connexion, $requete);		
-			return $resultat;
+			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement, id_userClient,  nbPersonnes) VALUES (?, ?, ?, ?, ?)";
+			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getIdAppartement(), $Location->getIdUserClient(),  $Location->getNbPersonnes());
+			return $this->requete($query, $data);
 		}
-
+		
+		/**  
+		* @brief     	Afficher des locations avec status différents
+		* @param   		<int>   $valideParPrestataire : validé ou non par proprio
+		* @param   		<int>   $validePaiement : le paiment validé ou non 
+		* @param   		<int>   $dateNow : date d'aujourd'hui
+		* @return    	<...> 	Résultat de la requête SQL
+		*/
+        public function afficheLocation($valideParPrestataire, $validePaiement, $dateNow) 
+        {
+            $query = "SELECT * FROM " . $this->getTableName() . " WHERE valideParPrestataire = ? AND validePaiement = ? AND dateDebut > ?";
+            $donnees = array($valideParPrestataire, $validePaiement, $dateNow);
+            $resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();
+        }
+		 
+        /**
+		* @brief		Fonction pour changer le status de validation
+		* @details		Permet de changer le statut des champs: validePaiement et 	valideParPrestataire
+		* @param 		<VAR>		$leChamp		Le champ à modifier (validePaiement / valideParPrestataire)
+		* @param 		<VAR>		$laValeur		La nouvelle valeur de ce champ
+		* @param 		<VAR>		$id 			id de location dans la base de données
+		* @return    	<bool>		résultat de la requete
+		*/
+		public function misAjourChampUnique($leChamp, $laValeur, $id)
+		{
+			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
+		}
+		
+		 
+        /**
+		* @brief		
+		* @details		
+		* @param 		
+		* @return    	
+		*/
+		public function obtenir_par_idApt($idApt, $colonneIdApt) {
+		$query = "SELECT * from " . $this->getTableName() . " WHERE " . $colonneIdApt ."= ?"; 
+		$donnees = array($idApt);
+		$resultat = $this->requete($query, $donnees);
+		$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+		return $resultat->fetchAll();
+		}
+		
 	}
 ?>
