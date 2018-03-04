@@ -198,7 +198,8 @@ $(document).ready(function() {
 		Fonction pour afficher des apts du proprio
 	*/	
 		$(document).on('click', '#mes_appts', function(e){
-			var idUserProprio = $("#userNom")[0].innerHTML;
+			var idUserProprio =$('input[name="idUser"]').val();
+			//var idUserProprio = $("#userNom")[0].innerHTML;
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
@@ -553,8 +554,8 @@ function actionAdmin(idUser, action) {
 
 $(document).ready(function() {
     
-    //var idUsager = $('input[name="idUser"]').val();
-    var idUsager = $("#userNom")[0].innerHTML;
+    var idUsager = $('input[name="idUser"]').val();
+    //var idUsager = $("#userNom")[0].innerHTML;
     
     /* faire une test pour verifier la provenace de la requete*/
     $.urlParam = function(name){
