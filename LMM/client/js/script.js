@@ -319,11 +319,25 @@ function naviguer(appartParPage, page) {
 /* sila div #carte estchargée, inclure le script de la carte google */
 
 $(document).ready(function() {
-       if($('#carte').length)
-        {
-            var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
-            $('body').append(scriptGoogle);
-        } 
+    
+    // charger le script de la carte google
+   if($('#carte').length)
+    {
+        var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
+        $('body').append(scriptGoogle);
+    } 
+
+    var carte = $("#carte");
+
+    $(window).scroll(function() {    
+        var scroll = $(window).scrollTop();
+        if (scroll >= window.innerHeight-300) {
+            carte.addClass("carte_fixe");
+        
+        } else {
+            carte.removeClass("carte_fixe");
+        }
+    });
 });
 
 
@@ -474,7 +488,30 @@ $(document).ready(function() {
         afficheListeMessages(idUsager, 'afficherListeMessages');
         e.stopImmediatePropagation();
         });
+        // appel de la fonction pour verifier l'existance de nouveaux message
+        // setInterval(notificationMessage, 5000);
+        notificationMessage();
 });
+
+/* recuperer les notification pour les nouveaux messages non lus*/
+function notificationMessage(){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages",
+            //dataType:"html",
+            data:{
+                action: 'notification',
+            },
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+            $('.badge-notify').html(reponse);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
 
 /* fonction pour afficher tout les messages reçus par un usagers */
 function afficheListeMessages(idUser, action){
@@ -581,7 +618,7 @@ function formulaireNouveauMessage(selecteur)
 {
     $('#'+selecteur).load('vues/ecrireMessage.php');
     setTimeout(function () {
-        var destinatair = $('#profilUser input[name="usernameProp"]').val();
+        var destinatair = $('#profilUser input[name="idProprio"]').val();
         $('#destination').val(destinatair);
         // appel de la fonction ecrireMessage()
         $('button#envoiMessage').click(function(e){

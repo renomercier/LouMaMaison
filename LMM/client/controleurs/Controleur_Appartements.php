@@ -58,9 +58,12 @@
                     
                         // quartier
                         $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
+                        
+                        // type appartement
+                        $filtre['id_typeApt'] = isset($params['id_typeApt'])? $params['id_typeApt'] : 0;
                     
                         // date d'arrivée
-                        $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0;
+                        $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0; 
                     
                         // date de départ
                         $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
@@ -188,7 +191,8 @@
 										$reponse = array($dispoNew);
 										$reponse1 = array("messageSucces"=>"Vous avez ajouté une disponibilité!");//creer une message de success 
 										$tempData = [];
-										$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     //renvoyer une seule reponse avec 2 array dedans!                                
+										$tempData = ([$reponse, $reponse1]);//joindre 2 objets dans une array                     
+                                        //renvoyer une seule reponse avec 2 array dedans!                                
 										echo json_encode($tempData);
 									}
 									else 

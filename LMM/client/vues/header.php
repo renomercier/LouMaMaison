@@ -21,6 +21,7 @@
   <link rel="stylesheet" target=_blank href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <link href="css/stylesheet.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise" rel="stylesheet">
 
   <!-- src script js -->
     
@@ -40,47 +41,74 @@
 <header>
 </header>
 <body class="container-fluid">
-  <nav class="navbar sticky-top navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="index.php">LE LOGO</a>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="nav navbar-nav">
-          <li class="nav-item active">
-              <a class="nav-link" href="index.php?Appartements">Accueil</a>
-          </li>
-    		  <?php
 
-	        if(isset($_SESSION["username"])) 
-          {
-              // actions disponibles pour usager de type admin et valide par superadmin
-              if((in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)
-              {
-          ?>
-            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheListeUsagers">Usagers</a></li>
-    			<?php
-              }
-          ?>
-            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
-            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><i class="fa fa-envelope"></i></a></li>
-          <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
-          <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
-            <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>
-          <?php } 
-          }
-          else{
-          ?>
-            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
+    <div class="row navigation-logo">
+        <div class="col-md-2 logo-entete">
+             <a class="navbar-brand" href="index.php"><img src="./images/logo_sur_blanc.svg" alt="loumamaison"></a>
+        </div>
 
-          <?php
-          }
-		      ?>
-            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-	    </ul>          
+        <div class="col-md-10 navigation">
+            
+              <nav class="navbar navbar-toggleable-md navbar-light bg-faded ">
+                  
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                  <ul class="navbar-nav ml-auto">
+                      <li class="nav-item active">
+                          <a class="nav-link" href="index.php?Appartements">Accueil</a>
+                      </li>
+                          <?php
+
+                        if(isset($_SESSION["username"])) 
+                      {
+                          // actions disponibles pour usager de type admin et valide par superadmin
+                          if((in_array(1,$_SESSION["role"])||in_array(2,$_SESSION["role"])) && $_SESSION["isActiv"] ==1)
+                          {
+                      ?>
+                        <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheListeUsagers">Usagers</a></li>
+                            <?php
+                          }
+                      ?>
+                        <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
+                        <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><i class="fa fa-envelope"></i><span class="badge badge-notify"></span></a></li>
+                      <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
+                      <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
+                        <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>
+                      <?php } 
+                      }
+                      else{
+                      ?>
+                        <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficherInscriptionUsager">S'inscrire</a></li>
+
+                      <?php
+                      }
+                          ?>
+                        <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
+                    </ul>
+                </div>
+              </nav>   
+        </div>
+          <!-- Messages a l'usager concernant son statut -->
+        <div class="message_user">
+
+        </div>
     </div>
-  </nav>
-
-  <!-- Messages a l'usager concernant son statut -->
-	<?=$data['message']?>
-	<?=$data['banni']?>
+ 
+    <div id="image-entete" class="carousel slide " data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="./images/entete.jpg" alt="Montreal">
+          <div class="carousel-caption">
+            <p class="slogan">Un jour, ça marchera</p>
+            <p>louer tout simplement</p>
+          </div>   
+        </div>
+      </div>
+    </div>
+    <ul class="navbar-nav mr-auto mb-5 bg-secondary text-white p-2">
+        <li class="nav-item "><?=$data['message']?></li>
+        <li class="nav-item "><?=$data['banni']?></li>
+    </ul>

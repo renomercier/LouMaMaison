@@ -201,11 +201,21 @@ footer {
 /* --------------------------------------------------- google carte   */
 #carte{
     height: 100vh;
-    position: fixed !important;
-    overflow: hidden;
-    right: 1em;
-    top: 3em;
 }
+
+.absolut{
+    position: absolute;
+    overflow: hidden;
+    right: 0em;
+    top: 0em; 
+}
+
+.carte_fixe{
+    position: fixed !important;
+    right: 1em;
+    top: 1em;
+}
+
 @media only screen and (max-width: 768px) {
     #carte{
         position: relative!important;
@@ -293,4 +303,59 @@ footer hr {
 .img-thumbnail{
     background:none;
     border: none;
+}
+
+.badge-notify{
+    background:red;
+    position:relative;
+    bottom: 1em;
+}
+
+.badge{
+    font-size: .8em;
+    border-radius: 1rem;
+}
+
+.row .accueil{
+    position: relative;
+}
+
+#image-entete img{
+    min-width: 100vw;
+    height: auto;
+    object-fit: cover;
+}
+
+.navbar-brand img{
+    width: 4em;
+}
+
+.navigation-logo{
+    position: relative;
+    z-index: 122;
+}
+
+.navigation{
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: #f7f7f9;
+    padding-bottom: .55rem;   
+}
+
+.logo-entete{
+    position: fixed;
+    top: 0;
+    background: #f7f7f9;
+}
+
+.bg-secondary{
+    background: #585759;
+}
+
+.slogan{
+    font-family: 'Waiting for the Sunrise', cursive;
+    font-size: 9em;
+    font-weight: 800;
+    line-height: 97%;
 }

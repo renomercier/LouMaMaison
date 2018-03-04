@@ -41,7 +41,7 @@
 					case "afficherListeMessages" :
 						// chargement du modele et recuperation du data
 						$modeleMessages = $this->getDAO("Messages");
-						$data['messages'] = $modeleMessages->obtenir_messages_recus($params['idUsager']);
+						$data['messages'] = $modeleMessages->obtenir_messages_recus($_SESSION['username']);
                         $data['recus'] = true;
                         $this->afficheVue("listeMessages", $data);
 
@@ -102,8 +102,12 @@
                             $modeleMessages->lier_message_destinatair($dernierID, $params['idDestination']);
                         }
 
+                        // verifier l'existance de nouveaux messages
+					case "notification" :
+                        $nonLu= $this->nombreMessagesNonLus();
+                        echo $nonLu;
                     break;
-                        
+            
 					// case par defaut
 					default:
 						trigger_error("Action invalide.");				
@@ -115,5 +119,14 @@
                 echo "<script>window.location='./index.php?Appartements'</script>"; 
 			}
 		}
+        
+        protected function nombreMessagesNonLus()
+        {
+            $modeleMessages = $this->getDAO("Messages");
+            $resultat = $modeleMessages->obtenir_nombre_messages_nonLus($_SESSION['username']);
+            $nbrNonLus = $resultat[0];
+            return $nbrNonLus;
+        }
+
 	}
 ?>

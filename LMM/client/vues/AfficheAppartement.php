@@ -210,9 +210,14 @@
             </div>
             
             <div class="d-block">
-                <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
             </div>
             
+            <!-- formulare de redaction d'un message -->
+            <div id="profilUser">
+                <input type="hidden" name="idProprio" value="<?= $data['appartement']->getId_userProprio() ?>">
+                <div class="row" id="afficheInfoProfil"></div>
+            </div>
             <hr>
             
             <div class="aptEquipements d-block">
