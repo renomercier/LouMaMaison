@@ -25,6 +25,20 @@
 		private $id_userClient;
 		private $nbPersonnes;
 		
+
+
+		/**
+        *   constructeur de la classe Location
+        *       
+        *   @param <int>           	$id                     l'id de la location 
+        *   @param <date>           $dateDebut              date de debut de la location     
+        *   @param <date>        	$dateFin            	date de debut de la location   
+        *   @param <tinyint>        $valideParPrestataire   bool si valide par Proprio 
+        *   @param <tinyint>        $validePaiement         bool si paiement valide  
+        *   @param <int>        	$idAppartement          l'id de l'appartement  
+        *   @param <string>        	$idUserClient           l'id de l'utilisateur    
+        */
+		
 		//constructeur
 		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="")
 		{
@@ -124,5 +138,4 @@
 			$this->nbPersonnes = $nbPersonnes;
 		}	
 	}
-
 ?>

@@ -13,6 +13,7 @@
 			{ 
 		?>
 				<div class="col-md-4 appart">
+
 					<?php						
 						if ($appartement->getPhotoPrincipale() != "") {
 							$photoApt = $appartement->getPhotoPrincipale();

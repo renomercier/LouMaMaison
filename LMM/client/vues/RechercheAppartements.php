@@ -51,6 +51,22 @@
                 </div>
               </div>
 
+            <!-- Type de logis -->
+            <div class="form-group" id="divTypeApt">
+              <label for="typeApt" class="form-control-label my-1 mr-sm-2">Type de logis</label>
+              <div class="row">
+              <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="id_typeApt" id="typeApt" aria-describedby="aideTypeApt">
+              <option value="0">-- Choisir un type de logis --</option>
+            <?php foreach($data['tab_typeApt'] AS $t) 
+                    { ?>
+                      <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
+            <?php   }
+                   ?>
+              </select>
+              <small class="form-text text-muted" id="aideTypeApt"></small>
+              </div>
+            </div>
+                
               <!-- Quartier -->
               <div class="form-group">
                 <label for="quartier" class="form-control-label my-1 mr-sm-2">Quartier</label>
@@ -97,13 +113,13 @@
                     </div>
                     
                     <!-- nbre de personnes -->
-                      <div class="form-group">
-                          <label for="appartParPage" class="form-control-label ">Nombre de resultat par page</label>
-                          <div class="row">
-                            <input type="number" min="0" name="appartParPage" class="col-sm-12 form-control" id="appartParPage">
-                        </div>
+                    <div class="form-group">
+                        <label for="appartParPage" class="form-control-label ">Nombre de resultat par page</label>
+                        <div class="row">
+                          <input type="number" min="0" name="appartParPage" class="col-sm-12 form-control" id="appartParPage">
                       </div>
-                      <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
                 </div>						
             </form>
         </div>

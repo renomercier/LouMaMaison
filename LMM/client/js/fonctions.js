@@ -1,6 +1,5 @@
 /*  ------------------------------------------------    @fonctions de validation    */
   
-
     /**
     * @brief    Fonction qui verifie si un des checkbox est coché
     * @details  La fonction boucle dans le tableau jusqu'a ce qu'un input 'checked' (selectionne) soit detecte 
@@ -27,7 +26,7 @@
     function isUsername(elm) {  
 
         // ne tolere aucun espace ni avant ni après ni au milieu du pseudo 
-        var regEx = /^(?=.*[A-Z])(?!.*\s).{8,40}$/gi;                  
+        var regEx = /^(?=.*[A-Z\d])(?!.*\s).{8,20}$/g;                  
     //  var regEx = /^[\da-záàâäãåçéèêëíìîïñóòôöõúùûüýÿ]{6,}$/gi;     
         var result = elm.match(regEx);
         return result ? result : false;;
@@ -67,7 +66,7 @@
     */
     function isPassword(elm) {    
         
-        //	var regEx =	/^(?!.*\s).*[a-z]+.*[\d]+.*$/g; 
+        //	var regEx =	/^(?!.*\s).*$/g; // pour tests --- accepte tout sauf les espaces
         // positive lookahead: au moins une lettre maj. ou un chiffre | negative lookahead: pas d'espaces permis                   
         var regEx = /^(?=.*[A-Z\d])(?!.*\s).{8,20}$/g;              
         var result = elm.match(regEx);
@@ -165,7 +164,9 @@
     */
     function isPhoneNumber(elm) {
 
-        var regEx = /^1?[-\s.]?(\d{3})[-\s.]?(\d{3})[-\s.](\d{4})$/g;
+        // prend tout caractere sauf les lettres (entre 10 et 20 - 9+1 et 19+1)
+        var regEx = /^\S(?!.*[A-Z]).*.{9,19}\S$/gi;
+    //  var regEx = /^1?[-\s.]?(\d{3})[-\s.]?(\d{3})[-\s.](\d{4})$/g;
         var result = elm.match(regEx);
         
         return result ? result : false;
@@ -178,7 +179,20 @@
     */
     function isInt(elm) {
 
-        return (elm == parseInt(elm, 10) && elm != 0) ? true : false;
+        return (elm == parseInt(elm, 10) && elm >= 1) ? true : false;
+    }
+
+    /**
+    * @brief    Fonction qui verifie si une valeur est un float (accepte egalement les entiers)        
+    * @param    <value>     elm     valeur de l'id           
+    * @return   True si c'est  un float (ou entier), sinon false
+    */
+    function isFloat(elm) {
+        
+        // on remplace la virgule si tel est le cas
+        var regEx = /,/g;
+        var floatElm = elm.replace(regEx, '.');
+        return (floatElm == parseFloat(floatElm, 10) && floatElm >= 1) ? floatElm : false;
     }
 
     /**

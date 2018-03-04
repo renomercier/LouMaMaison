@@ -38,14 +38,14 @@
 				switch($params["action"])
 				{
 					// case de connexion d'un usager
-					case "login":
+					case "Connexion":
                         $this->afficheVue("header", $data);
 						$this->afficheVue("AfficheLogin");
                         $this->afficheVue('footer');
 						break;
 
 					// case de deconnexion d'un usager	
-					case "logout":
+					case "Déconnexion":
                         session_destroy();
                             // redirection vers la page d'accueil
                             echo "<script>window.location='./index.php?Appartements'</script>";
@@ -412,6 +412,15 @@
 							$this->afficheFormInscription($params);	
 							$this->afficheVue('footer');							
 						}	
+						break;
+                        
+                    // case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
+					case "afficherListeMessages" :
+						// chargement du modele et recuperation du data
+						$modeleMessages = $this->getDAO("Messages");
+						$data['messages'] = $modeleMessages->obtenir_messages_recus($params['idUsager']);
+                        $this->afficheVue("listeMessages", $data);
+
 						break;
 
 					// case par defaut

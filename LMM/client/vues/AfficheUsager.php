@@ -62,10 +62,10 @@
 			<?php
 			}
 			
-			 if(isset($_SESSION["username"])) 
+			/* if(isset($_SESSION["username"])) 
              {
                 if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
-                 {
+                 {*/
 			?>
             <div class="mb-3">
                 <div class="mb-3">
@@ -222,11 +222,13 @@
                     </div>
                 </div>
             </div>
-			<?php
+			<?php /*
 				}
-			}
-		/* Juste le proprio du profil qu'est connecte, active et pas banni peut changer son mot de passe		
-			*/
+			}*/
+		?>
+		<!--Juste le proprio du profil qu'est connecte, active et pas banni peut changer son mot de passe		
+			-->
+		<?php
 		if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
 		{
 		?>
@@ -286,8 +288,11 @@
 				    <li class="nav-item" id="div_mes_appts"></li>
                 </ul>
 			</div>
-			<div class="row" id="afficheInfoProfil">	
-			</div>
+
+                <div class="row" id="afficheInfoProfil">
+                    
+                </div>
+
 		</div>
     </div>
 </div>
@@ -297,15 +302,28 @@
                 if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
                 {
             ?>
-                
-                <a class="nav-link" href="#" id="historique">Voyages</a>
-                <a class="nav-link" href="#" id="messagerie" ><?=$messagerie?></a>
 
+                <p class="nav-link" href="#" id="historique">Voyages</p>
+
+            <?php                                    
+                if(isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) 
+                {
+            ?>
+                <p class="nav-link" name="Messagerie" id="messagerie" value="<?=$_SESSION["username"]?>">Messagerie</p>
+            <?php                                    
+                }
+                else
+                {
+              ?> 
+                <p class="nav-link" name="Contacter" id="messagerie" value="<?=$data["usager"]->getUsername()?>" onclick="formulaireNouveauMessage('afficheInfoProfil')">Contacter</p>
+            <?php
+                }
+            ?>
                 <!-- S'il y a des appartements en cas de proprio -->
                     <?php 
                         if($data["isProprio"]) {
                     ?>
-                       <a class="nav-link" href="#" id="mes_appts">Appartements</a>
+                       <p class="nav-link" href="#" id="mes_appts">Appartements</p>
                    <?php      
                     }
                     ?>
@@ -342,7 +360,7 @@
                         ?>  
 
                         <!-- s'i j'ai des réservations comme client -->
-                        <a class="nav-link" href="#" id="reservations">Réservations</a>
+                        <p class="nav-link" href="#" id="reservations">Réservations</p>
 
                         <?php 
                         }

@@ -9,11 +9,21 @@ html, body {
 .pagination li{
     cursor: pointer;
 }
-
+h6, .filtre_usager a.nav-link{
+    color: #0275d8 !important;
+    cursor: pointer;
+}
 
 /* --------------------------------------------------- Icones   */
 .fa-star, .fa-star-half{
     color: darkorange;
+}
+.fa_custom{
+    color: #999;
+}
+
+.iconeAptDescription {
+    margin-right: 20px;
 }
 
 /* --------------------------------------------------- Forms   */
@@ -66,35 +76,30 @@ a, a:hover{
     width: 100%;
     height: auto;
 }
-
-
 /* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .photoSupplementaire:hover {
     opacity: 0.7;
 }
+.aptPhotoSupp {
+    height: 5em;
+    width: 6.5em; 
+}
+.aptPhotoModal {
+    height: 45em;
+    width: 60em; 
+}
+.aptPhotoProprio {
+    height: 5em;
+    width: 5em; 
+}
+.aptIcones {
+    height: 2em;
+    width: 2em;
+}
 
-/*----- modalGaleriePhoto  -----*/
+/* modalGaleriePhoto  */
 
 /* Modal-Carousel pour photos supplementaires */
-
-.modal-header, .modal-footer {  
-    color: #ffffff;
-    background-color: #014B88;
-}
-
-.fa_custom{
-	color: #999;
-}
-
-/* Opacite des photos lorsque "hovered on" */
-.photoAppartement:hover, .photoSupplementaire:hover {
-    opacity: 0.7;
-}
-
-/*----- modalGaleriePhoto  -----*/
-
-/* Modal-Carousel pour photos supplementaires */
-
 .modal-header, .modal-footer {  
     color: #ffffff;
     background-color: #014B88;
@@ -138,6 +143,8 @@ a, a:hover{
 footer {
     color: #ffffff;
     background-color: #585759;
+    position: relative;
+    bottom: -10em;
 }
 
 .modal-xl {
@@ -145,22 +152,15 @@ footer {
     max-width: 66%;
 }
 
-/*----- page AfficheAppartement -----*/
-
-.sectionAptDetail {
-    
-}
-
+/* --------------------------------------------------- page AfficheAppartement */
 .sectionAptDetail-g, .sectionAptDetail-d {
     padding=0;
     /*border: 1px solid #000000; */ 
 }
-
 .aptReservation, .aptDisponibilites {
     padding: 20px;
     border: 1px solid #585759;
 }
-
 .aptDisponibilites {
     padding: 10px;
     height: 165px;
@@ -198,13 +198,7 @@ footer {
     width: 2em;
 }
 
-/*----- footer -----*/
-
-footer {
-    color: #ffffff;
-    background-color: #585759;
-}
-
+/* --------------------------------------------------- google carte   */
 #carte{
     height: 100vh;
     position: fixed !important;
@@ -212,60 +206,86 @@ footer {
     right: 1em;
     top: 3em;
 }
-
-.appart, .gm-style-iw{
-    line-height: 1em;
-}
-
-.appart p, .gm-style-iw p{
-    margin: .3em auto;
-}
-
-.card-block{
-    padding: .1em;
-}
-
-.gm-style-iw{
-    left: 25px !important;
-}
-
-h6, .filtre_usager a.nav-link{
-    color: #0275d8 !important;
-    cursor: pointer;
-}
 @media only screen and (max-width: 768px) {
     #carte{
         position: relative!important;
         right: 0em;
     }
 }
+.appart, .gm-style-iw{
+    line-height: 1em;
+}
+.appart p, .gm-style-iw p{
+    margin: .3em auto;
+}
+.card-block{
+    padding: .1em;
+}
+.gm-style-iw{
+    left: 25px !important;
+}
 
+.filtre_usager a.nav-link, p.nav-link{
+    color: #0275d8 ;
+    cursor: pointer;
+}
+
+.messages .table td a, h6, p[name='detailMessage']{
+    cursor: pointer;
+    color: #636c72;
+    font-weight: 400;
+}
+
+.messages .table td, .table th{
+    padding: 0;
+    color: #636c72;
+}
+
+.messages .table thead th{
+    padding: .75em;
+}
+.messages .non_lu td, .non_lu td p, .non_lu td a{
+    font-weight: 800 !important;
+}
+
+td[name='contenuMessage']{
+    padding: 0;
+    border: none;
+    box-shadow: 0 .5px .5px 0 rgba(0, 0, 0, 0.2), 0 .3px 15px 0 rgba(0, 0, 0, 0.19);
+}
+
+.dateMessage{
+    font-size: .8em;
+}
+@media only screen and (max-width: 768px) {
+    #carte{
+        position: relative!important;
+        right: 0em;
+    }
+
+/* --------------------------------------------------- footer   */
+
+}
 footer hr {
     border: 0.5px solid #ffffff;; 
 }
-
 .footer-list ul {
     padding: 0;
     text-decoration: none;
     list-style-type: none;
 }
-
 .footer-list ul a {
     color: #ffffff;
  }
-
 .footer-list ul li:hover {
     text-decoration: underline;
 }
-
 .footer-media-item, .footer-list-xtra {
     margin-left: 15px;
 }
-
 .footer-media-item a {
     color: #ffffff;
 }
-
 .footer-media-item a:hover {
     color: #014B88;
 }
@@ -319,4 +339,9 @@ footer hr {
 
 .panel-body {
     padding: 20px;
+
+.img-thumbnail{
+    background:none;
+    border: none;
+
 }
