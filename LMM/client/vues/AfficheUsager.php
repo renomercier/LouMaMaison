@@ -11,7 +11,7 @@
  ?>
 
 
-<div class="container-fluid detail">
+<div class="container detail">
     <!-- Tout le monde peut voir -->
     <div class="row">
      
@@ -20,7 +20,7 @@
         
         <div class="col-md-4">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-3">
                         <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid"> </div>
                 </div>
 				<!--On affiche nom d'usager pour les gens pas connectés ou bannis ou non activés, ainsi que
@@ -28,20 +28,20 @@
 						on affiche nom complet juste pour le proprio du profil qu'est active et pas banni ET pour le superadmin
 						ET pour les admins actives et non bannis
 					-->
-                <div class="col-md-5" id="div_info_nom">
+                <div class="col-md-6" id="div_info_nom">
 					<?php
 					if(isset($_SESSION["username"])) {
 						if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0)  
 						{
 						?>
-							<h3><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h3>
+							<h4><?=$data["usager"]->getNom() ?> <?=$data["usager"]->getPrenom() ?></h4>
 						<?php
 						}
 					}
 						?>
-					<h3 id="userNom">		
+					<h5 id="userNom">		
 						<?=$data["usager"]->getUsername();?>
-					</h3>
+					</h5>
                 </div>
             </div>
 			<!-- Juste le proprio du profil qu'est connecte, active et pas banni peut changer sa photo			
