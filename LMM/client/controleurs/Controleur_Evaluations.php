@@ -37,26 +37,84 @@
 				//ce switch détermine la vue et obtient le modèle
 				switch($params["action"])
 				{
-					case "sauvegarderEvaluation" :
-                        
-                        $modeleEvaluation = $this->getDAO("Evaluations");
+					case "ajouterEvaluationApt" :
 
-                        $evaluation = new Evaluation('2', 'commentaire', '2018-02-28', '1', 'nat');
-                        var_dump($evaluation);
-                        die;
+						// chargement du modele Appartement
+                        $modeleApts = $this->getDAO("Appartements");
+                        // Recuperer le detail de l'appartement               
+                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id']);
+				//		$data['id_appartement'] = $params['id'];
+					    $this->afficheVue("header", $message);
+           		   		$this->afficheVue("ajoutEvaluation", $data);
+						break;
+
+					case "sauvegarderEvaluation" :
+
+                        // on verifie si les champs requis sont remplis
+/* @temp */             if(isset($params['id_appartement']) && !empty($params['id_appartement']) && isset($params['rating']) && !empty($params['id_appartement']) && $_SESSION['username']) {
+
+                        	// validation des differents parametres
+                        	if(filter_var($params['id_appartement'], FILTER_VALIDATE_INT) && filter_var($params['rating'], FILTER_VALIDATE_INT) && ($params['rating'] <= 10) && ($params['rating'] >= 0)) {
+
+                        		// validation du champ commentaire s'il existe
+	                        	if(isset($params['commentaire']) && !empty($params['commentaire'])) {
+	                        		if(is_string($params['commentaire']) && filter_var($params['commentaire'], FILTER_SANITIZE_STRING)) {
+	                        			$commentaire = $params['commentaire'];
+	                        		}
+	                        	}
+	                        	// sinon on met sa valeur par defaut (null)
+	                        	else if(trim($params['commentaire'] == "")) {
+	                        		$commentaire = null;
+	                        	}
+
+/* @ finaliser */               // validation si l'usager a bien une location de cet appartement
+/*	                        	$modeleLocations = $this->getDAO("Locations");
+	                        	$permissionUsager = $modeleLocations->($params['id_location']);
+	                        	--- validation si id_appartement et id_username == ---
+*/
+	                        	// recuperation de la date et de l'heure de l'evaluation
+		                        $dateEvaluation = new DateTime;
+		                        // chargement du modele Evaluations et instanciation de l'evaluation
+		                        $modeleEvaluation = $this->getDAO("Evaluations");
+		                        $evaluation = new Evaluation($params['rating'], $commentaire, $dateEvaluation, $params['id_appartement'], $_SESSION['username']);
+								// si l'instanciation est un succes
+								if($evaluation) {
+									$resultat = $modeleEvaluation->sauvegarderEvaluation($evaluation);
+/* @temp */								$data['succes'] = 'Votre évaluation a été sauvegardée avec succès';
+
+
+								}
+								// sinon message a l'usager
+								else {
+									$data['erreurs'] = 'Votre évaluation n\'a pu être sauvegardée';
+/* @temp *///						affichage du message d'erreurs....?
+								}
+                        	}
+                        	else {
+                        		$data['erreurs'] = 'Paramètres d\'évaluation invalides, veuillez vérifier vos informations';
+/* @temp *///					affichage du message d'erreurs....?
+                        	}	
+                        }
+                        // si on n'a pas les champs requis
+                        else {
+                        	$data['erreurs'] = 'Veuillez vous assurer de remplir les champs requis pour votre évaluation';
+/* @temp *///				affichage du message d'erreurs....?
+                        }
 						break;
 
 					default:
 						trigger_error("Action invalide.");		
-				}				
-			}
+				} // fin du switch				
+			} 
+			// si pas de parametre action
             else{
-            //    $this->afficheVue("header", $message);
-            //    $this->afficheVue("accueil");
+            	  $this->afficheVue("header", $message);
+                  $this->afficheVue("afficheUsager");
+                  $this->afficheVue("footer");
             }
-            
-            // affichage du footer
-            // $this->afficheVue("footer");
-        }
+
+        } // fin de la methode traite()
+
 	}
+
 ?>

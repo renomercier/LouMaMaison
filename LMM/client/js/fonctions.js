@@ -196,6 +196,36 @@
     }
 
     /**
+    * @brief    Fonction qui attribut une evaluation (entre 0 et 5 étoiles) sur un appartement 
+    * @details  La fonction affiche le nb d'etoiles attribuees par l'usager
+    * @param    <int>       valeur      valeur de l'evaluation (entre 0 et 10)            
+    * @return   le nombre d'étoiles à afficher  
+    */
+    function setNbEtoiles(valeur) {
+
+        // declaration de la string d'affichage des etoiles
+        var resultat = '';
+        // on verifie si on a une demi-etoile a afficher
+        var mi_etoile = valeur % 2;
+        // si la valeur est 0, on affiche 5 etoiles grises
+        if(valeur == 0) {
+            for(var i=0; i<5; i++) {
+                resultat += '<i class="fa fa-star fa_custom"></i>&nbsp;';
+            }  
+        }
+        // sinon, on calcule le nb d'étoiles a afficher incluant la demi s'il y a lieu
+        else {
+            for(var i=2; i<=valeur; i+=2) {
+                resultat += '<i class="fa fa-star"></i>&nbsp;';
+            }
+            if(mi_etoile != 0) {
+                resultat += '<i class="fa fa-star-half"></i>';
+            }
+        }
+        return '<p>' + resultat + '</p>';
+    }
+
+    /**
     * @brief    Cree un element 
     * @details  Fonction appelee pour creer des elements a inserer dans le DOM            
     * @param    <string>    elmName     nom de l'element a creer (localName)  

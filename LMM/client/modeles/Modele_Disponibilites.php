@@ -11,7 +11,7 @@
 	* @class 	Modele_Disponibilites - herite de BaseDao
 	* @details  
 	*
-***	* 	... 4 methodes	|	getTableName(), afficheDisponibilite(), supprimeDisponibilite(), ajouteDisponibilite()
+***	* 	... 5 methodes	|	getTableName(), afficheDisponibilite(), supprimeDisponibilite(), supprimeDispoParApt(), ajouteDisponibilite()
 	*/
 	class Modele_Disponibilites extends BaseDAO
 	{
@@ -41,12 +41,24 @@
         
         /**  
 		* @brief     	Supprimer une disponibilite d'un appartement
-		* @param   		<int>   	$id_dispo 		Identifiant de disponibilite
+		* @param   		<int>   	$id_dispo  		Identifiant de la table disponibilite 
 		* @return    	<boolean>   ( resultat de la requete ou false )
 		*/
         public function supprimeDisponibilite($id_dispo) 
         {
             return $this->supprimer($id_dispo);
+        }
+
+        /**  
+		* @brief     	Supprimer une disponibilite d'un appartement
+		* @param   		<int>   	$id  	Identifiant de l'appartement
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function supprimeDispoParApt($idApt) 
+        {
+            $query = "DELETE FROM " . $this->getTableName() . " WHERE id_appartement = ?";
+			$donnees = array($idApt);
+			return $this->requete($query, $donnees);
         }
         
         /**  

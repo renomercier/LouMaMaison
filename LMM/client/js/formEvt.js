@@ -229,26 +229,43 @@ $(document).ready(function() {
         } 
     });
 
+    /*
+    *   code a executer lorsque le modal d'evaluation d'un Apt est ouvert
+    */
+    if($('#myModalEval')[0]) {
+
+        // affichage de l'evaluation par defaut (5 etoiles grises)
+        document.getElementById("etoilesGrises").innerHTML = setNbEtoiles(0);
+
+        /*
+        *   ecouteur d'evenement sur l'input d'evaluation (nb d'etoiles)
+        */
+        $("#echelleEval").on('input', function() {
+            // affichage du nb d'etoiles defini par l'usager
+            document.getElementById("etoiles").innerHTML = setNbEtoiles(this.value);
+            document.querySelector('.divEvaluation span').innerHTML = (this.value/2);
+        });
+
+        $('#myModalEval').on('change', function() {
+            
+        });
+    }
+
     // declaration du tableau de 'files' (pour les images)
     var tabFiles = [];
 
     // ref: https://www.formget.com/ajax-image-upload-php/
     $("#uploadimage").on('submit',(function(e) {
-//        console.log(tabFiles);
-//        var tab = JSON.stringify(tabFiles);
 
         e.preventDefault();
         $("#message").empty();
-        $('#loading').show();
 
         // instanciation du tableau a envoyer par ajax
         var ajaxData = new FormData();
-//          console.log(tabFiles);
         // on ajoute l'id de l'apt dans le tableau (tableau idApt) 
         ajaxData.append('idApt', $('#idApt')[0].value);
         // ensuite on ajoute chaque files d'image dans le tableau (tableau 'file')
         for(var i=0; i<tabFiles.length; i++) {
-//          console.log(tabFiles[i]);
             ajaxData.append('file['+i+']', tabFiles[i]);
         }
         // envoi de la requete 
@@ -261,7 +278,6 @@ $(document).ready(function() {
             processData:false,        
             success: function(data)   
             {
-                $('#loading').hide();
                 $("#message").html(data);
             }
         });
@@ -276,57 +292,87 @@ $(document).ready(function() {
     $("#btnAjoutImage").on('click',(function(e) {
         // creation de la div principale pour la nouvelle image
         var divPrincipale = document.getElementById('ajoutImage');
+        var hr = document.createElement('hr');
+            divPrincipale.appendChild(hr);
         // creation de la divImg
-        var div = addElement("div", ["img"]);
+        var div = addElement("div", ["img", "imgSupp", "text-center"]);
         var divImg = divPrincipale.appendChild(div);
         // creation de la balise Img
         var img = addElement("img", ["previwing"]);
+            setAttributes(img, { "id" : "img_" + tabFiles.length })
         var nouvelleImg = divImg.appendChild(img);
+        var br = document.createElement('br');
+            divImg.appendChild(br);
         // creation de la balise small
         var small = addElement("small", ["previwing"]);
+            setAttributes(small, { "id" : "imgText_" + tabFiles.length })
         var divSmall = divImg.appendChild(small);
-        // creation de l'input de type file
+        // creation d'un input suppression d'image
+    /*    var button = addElement("input", ["btn", "btn-danger"]);
+            setAttributes(button, { "type" : "button", "id" : "imgButton_" + tabFiles.length, "value" : "supprimer cette photo" })
+        var divButton = divImg.appendChild(button);     */
+        var hr = document.createElement('hr');
+            divPrincipale.appendChild(hr);
+        // creation de l'input de type file      
         var input = addElement("input", ["file"]);
-            setAttributes(input, { "type" : "file", "name" : "file[]" });
+            setAttributes(input, { "type" : "file", "name" : "file[]", "id" :  tabFiles.length });
         var divInput = divPrincipale.appendChild(input); 
         // appel de la fonction qui affichera
-        ajouterNouvelleImage();
+        ajouterNouvelleImage(tabFiles.length);
     }));
 
     /**
     *   Fonction pour pre-visualiser les images supplementaires a telecharger
     */
     // ref: https://www.formget.com/ajax-image-upload-php/
-    var ajouterNouvelleImage = function() {
+    var ajouterNouvelleImage = function(noFile) {
 
         $(".file").change(function(e) {
 
-            $("#message").empty(); // To remove the previous error message
+            // recuperation de l'id de l'image
+            var idFile = e.target.id;
+            $('#temp').val(idFile);
+            // recuperation des differentes valeurs du fichiers de l'image pour validation
             var file = this.files[0];
             var nomFile = file.name;
             var imagefile = file.type;
             var match= ["image/jpeg","image/png","image/jpg"];
+            // si le type d'image choisie est invalide
             if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]))) {
-
-                $('#previewing').attr('src','noimage.png');
-                $("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
+                // message a l'usager
+                $("#imgText_" + idFile).empty().append('Seuls les formats jpg, png et jpeg sont acceptés');
                 return false;
             }
+            // si le type d'image est valide
             else {
-
+                // on charge l'image et lui assigne une url temporaire 
                 var reader = new FileReader();
                 reader.onload = imageIsLoaded;
                 reader.readAsDataURL(this.files[0]);
-                tabFiles.push(this.files[0]);
-//              console.log(tabFiles);
-                var input = $(".file:last")[0];
-                addText(input.previousElementSibling.childNodes[1], nomFile); 
+                // affichage du nom de l'image 
+                $("#imgText_" + idFile).empty().append(nomFile, e);
+                // drapeau image a creer a true
+                var flag = true;
+                // on verifie si le fichier d'image est a remplacer ou a creer
+                for(var i=0; i<tabFiles.length; i++) {
+                    // si le fichier existe on le remplace
+                    if(i == idFile) {
+                        tabFiles.splice(i, 1, this.files[0]);
+                        flag = false;
+                    }
+                }
+                // si le fichier image n'existe pas on le cree
+                if(flag) {
+                    tabFiles.push(this.files[0]);
+                }
+                console.log(tabFiles);
             }
         });
         function imageIsLoaded(e) {
-            var input = $(".file:last")[0];
-            input.previousElementSibling.childNodes[0].setAttribute('src', e.target.result);
-            input.previousElementSibling.childNodes[0].setAttribute('height', '100px');  
+            // recuperation de la balise pour afficher un 'preview' de l'image
+            var noImg = $('#temp')[0].value;
+            document.getElementById('img_' + noImg).setAttribute('src', e.target.result); 
+            document.getElementById('img_' + noImg).setAttribute('height', '100px');  
         };
     } // fin fonction ajouterNouvelleImage
 
@@ -337,31 +383,39 @@ $(document).ready(function() {
     $(function() {
         $("#file").change(function(e) {
 
-            $("#message").empty(); 
+            // recuperation des differentes valeurs du fichiers de l'image pour validation
             var file = this.files[0];
-//          console.log(file)
             var nomFile = file.name;
             var imagefile = file.type;
             var match= ["image/jpeg","image/png","image/jpg"];
+            // si le type d'image est invalide
             if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]))) {
-                $('#previewing').attr('src','noimage.png');
-                $("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
+                // message a l'usager
+                $("#imgText_" + idFile).empty().append('Seuls les formats jpg, png et jpeg sont acceptés');
                 return false;
             }
+            // si le type d'image est valide
             else {
+                // on charge l'image et lui assigne une url temporaire
                 var reader = new FileReader();
                 reader.onload = imageIsLoaded;
                 reader.readAsDataURL(this.files[0]);
-                tabFiles.push(this.files[0]);
-//              console.log(tabFiles);
+                // si la photo principale existe, on la remplace
+                if(tabFiles[0]) {
+                    tabFiles.splice(0, 1, this.files[0]);
+                }
+                // si elle n'existe pas on la cree
+                else {
+                    tabFiles.push(this.files[0]);
+                }
+                // affichage du nom de l'image 
                 $('#image_preview small').text(nomFile);
             }
         });
         function imageIsLoaded(e) {
             $('#image_preview').css("display", "block");
             $('#previewing').attr('src', e.target.result);
-            $('#previewing').attr('height', '100px');
-            
+            $('#previewing').attr('height', '100px');      
         };
     });
 

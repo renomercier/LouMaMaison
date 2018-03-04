@@ -8,23 +8,28 @@
 
 <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
 <div class="container ajoutImg">
-	<hr>
+	
 	<form id="uploadimage" action="" method="post" enctype="multipart/form-data">
-	<div id="image_preview"><img id="previewing" src="" /><small></small></div>
-	<hr id="line">
-
-	<div id="selectImage">
-		<label></label><br/>
-		<div id="ajoutImage">
-		<input type="file" name="file[]" id="file" required />
+		<hr>
+			<div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
+		<hr>
+			<div id="selectImage">
+				<div id="ajoutImage">
+					<label id="inputFile"><input type="file" name="file[]" id="file" required /></label>
+				</div>
+				<input type="hidden" name="action" value="ajouterPhoto" required />
+				<input type="hidden" id="idApt" name="idApt" value="<?= isset($data['idApt']) ? $data['idApt'] : '' ?>" required />
+			</div>
 		
-		</div>
-		<input type="hidden" name="action" value="ajouterPhoto" required />
-		<input type="hidden" id="idApt" name="idApt" value="<?= isset($data['idApt']) ? $data['idApt'] : '' ?>" required />
+		
+		<div>
+			<?php if(isset($data['idApt'])) { ?>
+			<button class="pull-right" type="button" id="btnAjoutImage">Ajouter une image</button>
+			<?php } ?>
 
-		<button type="button" id="btnAjoutImage">Ajouter une image</button>
-		<input type="submit" value="Upload" class="submit" />
+			<input class="pull-right" type="submit" value="Upload" class="submit" />
 		</div>
-		</form>
-	</div>
-	<h4 id='loading' >loading..</h4>
+		
+	</form>
+	<input id="temp" name="temp" value="" type="hidden"/>
+</div>

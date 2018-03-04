@@ -12,9 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Usagers a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	14 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
+***	* 	15 methodes	|	getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarder(), retirer(), authentification(), 
 	*					misAjourChampUnique(), definir_role_usager(), obtenir_avec_role(), definir_admin(), getModePaiement(), 
-	* 					getModeCommunication(), obtenir_avec_paiement_communication(), filtrer_les_usagers()
+	* 					getModeCommunication(), obtenir_avec_paiement_communication(), filtrer_les_usagers(), editerChampProfil()
 	*/
 	class Modele_Usagers extends BaseDAO
 	{	
@@ -282,5 +282,20 @@
 
 			return $lesUsagers;
         }
+
+        /**
+		* @brief      	Met a jour la valeur d'une colonne specifique dans une table
+		*				la valeur d'une colonne specifique dans une table 
+		* @param      	<varchar>  		$champ     	Titre du champ
+		* @param      	<varchar>  		$val     	Valeur du champ 
+		* @param      	<varchar>  		$id     	L'id de l'Appartement
+		* @return     	<boolean>  		( resultat de la requete ou false )
+		*/
+		public function editerChampProfil($champ, $val, $id) {
+			
+			$query = "UPDATE " . $this->getTableName() . " SET " . $champ . " = ? WHERE " . $this->getClePrimaire() . " = ?";			
+			$donnees = array($val, $id);
+			return $this->requete($query, $donnees);
+		}
 	}   
 ?>

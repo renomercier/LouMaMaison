@@ -200,7 +200,7 @@
                         {
                         ?>  
 
-                        <!-- s'i j'ai des réservations comme client -->
+                        <!-- si j'ai des réservations comme client -->
                         <a class="nav-link" href="#" id="reservations">Réservations</a>
 
                         <?php 
@@ -210,6 +210,7 @@
                         {
                         ?>
                          <button type="button" class="btn btn-info mb-2 btn-modifier" data-toggle="modal" data-target="#myModal<?=$_SESSION["username"]?>"  id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
+                         <button type="button" class="btn btn-info mb-2 btn-modifier"><a href="index.php?Usagers&action=afficherFormulaireImageProfil" >Modifier votre photo</a></button>
 						<?php
                          }
 

@@ -12,8 +12,8 @@
     * @details  lie les requetes d'objets Appartement a la BD
     *                   - definit les requetes specifiques a la classe
     *
-*** *   ...18 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
-	* 						supprimerAppartement(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
+*** *   ...19 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
+	* 						supprimerAppartement(), supprimePhotosParApt(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
 	* 						getTypeApt_par_id(), getQuartier(), getQuartier_par_id(), getPhotos_par_id(),
 	* 						obtenirAptProprio(), obtenir_apt_avec_type(), obtenir_apt_avec_nb_notes(), sauvegarderPhoto()
     */
@@ -100,6 +100,18 @@
       	public function supprimerAppartement($id) {
       		
             return $this->supprimer($id);
+        }
+
+        /**  
+		* @brief     	Supprimer les photos supplementaires d'un appartement
+		* @param   		<int>   	$id  	Identifiant de l'appartement 
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function supprimePhotosParApt($idApt) 
+        {
+            $query = "DELETE FROM photo WHERE id_appartement = ?";
+			$donnees = array($idApt);
+			return $this->requete($query, $donnees);
         }
         
         /**

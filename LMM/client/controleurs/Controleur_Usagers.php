@@ -11,7 +11,8 @@
     * @class    Controleur_Usagers - herite de la classe BaseController
     * @details 	
     *
-    *   5 methodes  |   traite(), afficheListeUsagers(), afficheFormInscription(), validerUsager(), attribution_role()
+    *   7 methodes  |   traite(), afficheAccueil(), afficheListeUsagers(), afficheFormInscription(), afficheProfil(),  
+    *					attribution_role(), validerUsager()
     */
 	class Controleur_Usagers extends BaseControleur
 	{	
@@ -299,6 +300,16 @@
 						}
 						break;
 
+					// affichage du  formulaire d'ajout d'images pour un appartement
+                    case "afficherFormulaireImage" :
+
+                        if(isset($params['id']) && !empty($params['id']) && $_SESSION['username']) {
+                            $data['idApt'] = $params['id'];
+                            $this->afficheVue("header");
+                            $this->afficheVue("AjoutImage", $data); 
+                        }
+                        break;
+
 					// case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
 					case "afficherInscriptionUsager" :
 						// chargement du modele et recuperation du data
@@ -311,6 +322,15 @@
                             $this->afficheVue('footer');
 						}
 						break;
+
+					// affichage du formulaire d'ajout d'une image pour profil usager
+                    case "afficherFormulaireImageProfil" :
+
+                        if(isset($_SESSION['username'])) {
+                            $this->afficheVue("header");
+                            $this->afficheVue("AjoutImage", $data); 
+                        }
+                        break;
 
 					// case de sauvegarde d'un usager
 					case "sauvegarderUsager" :
@@ -450,29 +470,6 @@
 				$this->afficheVue("afficheInscriptionUsager", $data);		
 			}
 		}
-
-		/**
-		* @brief		Fonction d'attribution des differents roles d'un usager
-		* @details		L'usager peut choisir les roles client et/ou prestataire
-		* @param 		<string> 	$usager 		id de l'usager	
-		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
-		* @return    	<bool> 	
-		*/
-		public function attribution_role($usager, $tabRoles) {
-
-			$flag = true;
-			// chargement du modele usager
-			$modeleUsagers = $this->getDAO("Usagers");
-			// on boucle dans les differents roles pour les integrer dans la BD
-			foreach($tabRoles AS $r) {
-				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
-				if(!$resultat) {
-					$flag = false;
-					return $flag;
-				}
-			}
-			return $flag;
-		}
         
         /**
 		* @brief		Fonction d'affichage d'un profil usager 
@@ -523,6 +520,29 @@
             $this->afficheVue("header",$data);
             $this->afficheVue("AfficheUsager", $data); 
         }
+
+		/**
+		* @brief		Fonction d'attribution des differents roles d'un usager
+		* @details		L'usager peut choisir les roles client et/ou prestataire
+		* @param 		<string> 	$usager 		id de l'usager	
+		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
+		* @return    	<bool> 	
+		*/
+		public function attribution_role($usager, $tabRoles) {
+
+			$flag = true;
+			// chargement du modele usager
+			$modeleUsagers = $this->getDAO("Usagers");
+			// on boucle dans les differents roles pour les integrer dans la BD
+			foreach($tabRoles AS $r) {
+				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
+				if(!$resultat) {
+					$flag = false;
+					return $flag;
+				}
+			}
+			return $flag;
+		}
         
 		/**
 		* @brief		Fonction de validation des parametres du formulaire d'inscription d'un usager
