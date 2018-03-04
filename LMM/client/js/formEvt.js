@@ -255,6 +255,33 @@ $(document).ready(function() {
     var tabFiles = [];
 
     // ref: https://www.formget.com/ajax-image-upload-php/
+    $("#uploadimageProfil").on('submit',(function(e) {
+
+        e.preventDefault();
+        $("#message").empty();
+
+        // instanciation du tableau a envoyer par ajax
+        var ajaxData = new FormData();  
+        // ensuite on ajoute chaque files d'image dans le tableau (tableau 'file')
+        for(var i=0; i<tabFiles.length; i++) {
+            ajaxData.append('file['+i+']', tabFiles[i]);
+        }
+        // envoi de la requete 
+        $.ajax({
+            url: "index.php?Appartements&action=ajouterPhoto", 
+            type: "POST", 
+            data: ajaxData,
+            contentType: false,       
+            cache: false,             
+            processData:false,        
+            success: function(data)   
+            {
+                $("#photoProfilUsager").html(data);
+            }
+        });
+    }));
+
+    // ref: https://www.formget.com/ajax-image-upload-php/
     $("#uploadimage").on('submit',(function(e) {
 
         e.preventDefault();
@@ -410,6 +437,7 @@ $(document).ready(function() {
                 }
                 // affichage du nom de l'image 
                 $('#image_preview small').text(nomFile);
+                console.log(tabFiles);
             }
         });
         function imageIsLoaded(e) {

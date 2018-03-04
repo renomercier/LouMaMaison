@@ -97,6 +97,10 @@ input.slider {
     width: 100%;
     height: auto;
 }
+.img-thumbnail{
+    background:none;
+    border: none;
+}
 /* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .photoSupplementaire:hover {
     opacity: 0.7;
@@ -138,12 +142,9 @@ input.slider {
 }
 .modal-xl {
     max-height: auto;
-    max-width: 70%;
-}
-.modal-xl {
-    max-height: auto;
     max-width: 66%;
 }
+
 
 /* --------------------------------------------------- vue Evaluation Apt  */
 .titreEval {
@@ -183,6 +184,84 @@ input.slider {
 }
 
 
+
+/* ---------------------------------------------------  vue message usager  */
+.filtre_usager a.nav-link, p.nav-link{
+    color: #0275d8 ;
+    cursor: pointer;
+}
+.messages .table td a, h6, p[name='detailMessage']{
+    cursor: pointer;
+    color: #636c72;
+    font-weight: 400;
+}
+.messages .table td, .table th{
+    padding: 0;
+    color: #636c72;
+}
+.messages .table thead th{
+    padding: .75em;
+}
+.messages .non_lu td, .non_lu td p, .non_lu td a{
+    font-weight: 800 !important;
+}
+td[name='contenuMessage']{
+    padding: 0;
+    border: none;
+    box-shadow: 0 .5px .5px 0 rgba(0, 0, 0, 0.2), 0 .3px 15px 0 rgba(0, 0, 0, 0.19);
+}
+.dateMessage{
+    font-size: .8em;
+}
+
+
+/* --------------------------------------------------- button   */
+#btn-profil{
+    border-color: transparent;
+    outline: none;
+    color: #767676;
+	background-color: transparent;
+	
+}
+#btn-profil:hover{
+    border-bottom: 2px solid #efefef;
+    color: #484848;
+}
+#btn-profil[aria-expanded="true"]{
+    color: #0275d8;
+    font-weight: 700;
+    border-bottom: 1px solid #0275d8;
+}
+
+/* --------------------------------------------------- panels   */
+.panel {
+    border: 1px solid #dce0e0;
+    background-color: #fff;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.panel-header {
+	color: #484848;
+    /*color: #fff;*/
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce0e0;
+    background-color: #edefed;
+    /*background-color: #919191;*/
+    padding: 20px;
+}
+.panel-footer {
+    position: relative;
+    margin: 0;
+    padding: 20px;
+    border-top: 1px solid #dce0e0;
+}
+.panel-body {
+    padding: 20px;
+
+
 /* --------------------------------------------------- google carte   */
 #carte{
     height: 100vh;
@@ -210,11 +289,9 @@ input.slider {
     left: 25px !important;
 }
 
+
 /* --------------------------------------------------- footer   */
-footer {
-    color: #ffffff;
-    background-color: #585759;
-}
+
 footer hr {
     border: 0.5px solid #ffffff;; 
 }
@@ -237,4 +314,10 @@ footer hr {
 }
 .footer-media-item a:hover {
     color: #014B88;
+}
+footer {
+    color: #ffffff;
+    background-color: #585759;
+    position: relative;
+    bottom: -10em;
 }

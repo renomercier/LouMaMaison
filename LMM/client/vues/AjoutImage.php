@@ -7,8 +7,7 @@
   </div> <!-- fin div row -->
 
 <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
-<div class="container ajoutImg">
-	
+<div class="container ajoutImg">	
 	<form id="uploadimage" action="" method="post" enctype="multipart/form-data">
 		<hr>
 			<div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
@@ -20,7 +19,6 @@
 				<input type="hidden" name="action" value="ajouterPhoto" required />
 				<input type="hidden" id="idApt" name="idApt" value="<?= isset($data['idApt']) ? $data['idApt'] : '' ?>" required />
 			</div>
-		
 		
 		<div>
 			<?php if(isset($data['idApt'])) { ?>

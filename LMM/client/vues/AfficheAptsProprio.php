@@ -5,6 +5,7 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
+
 <div class="resultat">
     <div class="row">        
         <?php 
@@ -12,8 +13,8 @@
 			foreach($data["appartements"] as $appartement)
 			{ 
 		?>
-				<div class="col-md-6">
-					<!--<h5><?=$appartement->getId()?></h5>-->
+				<div class="col-md-4 appart">
+
 					<?php						
 						if ($appartement->getPhotoPrincipale() != "") {
 							$photoApt = $appartement->getPhotoPrincipale();
@@ -21,76 +22,65 @@
 							$photoApt = "./images/profil.jpg";
 						}
 					 ?>    
-                    <p>getId: <?= $appartement->getId();?></p>	
-                    <p>id_apt: <?=  $appartement->id_appartement; ?></p>	
 					<!--<img src="./images/profil.jpg" alt="mon appart">-->
-					<div class="col-md-12">
+					<div class="thumbnail">
 						<a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getId() ?>" >
-						<img src="<?= $photoApt ?>" class="photoAppartement img img-fluid thumbnail" alt="mon appart">
+						<img src="<?= $photoApt ?>" class="card-img-top photoAppartement img img-fluid thumbnail" alt="mon appart">
 						</a>
-					</div>  
-					
-					<div class="col-md-12">
-						<div class="d-inline">
-							<h6> <?=$appartement->typeApt;?> </h6>
-							<h2><?=$appartement->getTitre();?></h2>
-							<h4>$<?=$appartement->getMontantParJour();?> par nuit</h4>
-							<p>Hôte: <?=$appartement->username;?></p>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="iconeDescription">
-							<p><i class="fa fa-male fa-lg"></i>&nbsp<?= $appartement->getNbPersonnes(); ?> personnes</p>
-						</div>
-						<div class="iconeDescription">
-							<p><i class="fa fa-square-o fa-lg"></i>&nbsp<?= $appartement->getNbChambres(); ?> chambres</p>
-						</div>
-						<div class="iconeDescription">
-							<p><i class="fa fa-bed fa-lg"></i>&nbsp<?= $appartement->getNbLits(); ?> lits</p>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="d-inline">
-							<h6>
-							<?php
-							for($i=1; $i<=$appartement->moyenne/2; $i++)
-							{
-							?>
-							<i class="fa fa-star"></i>
-							<?php
-							}
-							if($appartement->moyenne % 2 != 0)
-							{
-							?>   
-							<i class="fa fa-star-half"></i>
-							<?php
-							}
-							?>
-							<?php
-							if($appartement->moyenne == null) 
-							{ 
-							?>
-								<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
-							<?php
-							
-							}
-							?>
-							<?=$appartement->NbNotes;?>
-							</h6>
-					
-							<h6> <?=$appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();?></h6>
-						</div>
-					</div>
+				 
+                        <div class="card-block">			
+                         
+                            <p class="card-text">Hôte: <?=$appartement->username;?></p>                        
+                            <p class="card-text">                            
+                                  <small><?= $appartement->getNbPersonnes(); ?>&nbsp<i class="fa fa-male fa-lg"></i>                        
+                                    <?= $appartement->getNbChambres(); ?>&nbsp<i class="fa fa-square-o fa-lg"></i>            
+                                    <?= $appartement->getNbLits(); ?>&nbsp<i class="fa fa-bed fa-lg"></i> </small>    
+                            </p>
+                            <h5 class="card-title"> <?=$appartement->getTitre();?></h5>
+                            <p class="card-text">$<?=$appartement->getMontantParJour();?> par nuit</p>
+                            <p class="card-text">
+                                <?php
+                                for($i=1; $i<=$appartement->moyenne/2; $i++)
+                                {
+                                ?>
+                                <i class="fa fa-star"></i>
+                                <?php
+                                }
+                                if($appartement->moyenne % 2 != 0)
+                                {
+                                ?>   
+                                <i class="fa fa-star-half"></i>
+                                <?php
+                                }
+                                ?>
+                                <?php
+                                if($appartement->moyenne == null) 
+                                { 
+                                ?>
+                                    <i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i>
+                                <?php
+
+                                }
+                                ?>
+                                <small calss="text-muted"><?=$appartement->NbNotes;?></small>
+                            </p>
+                            <p> <?=$appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();?>
+                            </p>
+                    </div>
+                </div>
 				<?php 
 					if($appartement->username == $_SESSION['username'])
 					{
 				?>
-						<div class="col-md-12">
+						<p class="card-text">
+<!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?=$appartement->getId()?>" role="button">Modifier ce logis</a></p> 
+<!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=supprimerAppartement&id=<?=$appartement->getId()?>" role="button">Supprimer ce logis</a></p> 
+
 							<form>
 								<input type="hidden" value="<?=$appartement->getId_userProprio()?>">
 								<button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>"  class="btn btn-primary mb-2" >Disponibilite</button>
 							</form>
-						</div>
+						</p>
 						<!-- Modal -->
 						<div class="modal fade" id="modal<?=$appartement->getId()?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-animation="false">
 							<div class="modal-dialog modal-lg" role="document">

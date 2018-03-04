@@ -111,14 +111,12 @@
                                     $apt->typeApt = $modeleApt->obtenir_apt_avec_type($apt->getId())[0]->typeApt;
 									$apt->NbNotes = $modeleApt->obtenir_apt_avec_nb_notes($apt->getId())[0];									
                                 }
-							$this->afficheVue("header",$data);
                             $this->afficheVue("AfficheAptsProprio", $data); 
-							$this->afficheVue("footer");
-                        }
-                        break;
-
+                            }
+					break;
+					
                     // case de suppression d'un appartement
-					case "supprimerAppartement" :
+                    case "supprimerAppartement" :
 
                         if(isset($params['id']) && !empty($params['id']) && $_SESSION['username']) {
 
@@ -156,42 +154,37 @@
                                     // suppression des dependances (evaluations - dispo - photosSupp)
                                     $suppressionEvaluationApt = $modeleEvaluation->supprimeEvaluationParApt($params['id']);
                                     $suppressionDispoApt = $modeleDispo->supprimeDispoParApt($params['id']);
-                                    $suppressionPhotosApt = $modeleApt->supprimePhotosParApt($params['id']);
+/**/                                $suppressionPhotosApt = $modeleApt->supprimePhotosParApt($params['id']);
                                     // lorsque toutes les dependances sont supprimees
                                     if($suppressionEvaluationApt && $suppressionDispoApt && $suppressionPhotosApt) {
                                         // suppression de l'appartement du profil utilisateur
-                                        $supressionApt = $modeleApt->supprimerAppartement($params['id']);
+/**/                                    $supressionApt = $modeleApt->supprimerAppartement($params['id']);
                                         // si l'appartement est supprime, message succes a l'usager
                                         if($supressionApt) {
-                                            $params['succes'] = "La supression de l'appartement a été effectuée avec succès";
-/**/                                        echo "réussi";
+                                            echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $_SESSION['username'] . "&message=La supression de l\'appartement a été effectuée avec succès'</script>";
                                         }
                                         // sinon message d'erreur
                                         else {
-                                            $params['erreurs'] = "La supression de l'appartement a échoué, veuillez communiquer avec l'administration";
-/**/                                        echo "echec 1";
+                                            echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $_SESSION['username'] . "&message_e=La supression de l\'appartement a échoué, veuillez communiquer avec l\'administration'</script>";
                                         }
                                     }
                                     // si les supressions d'evaluation, de dispo et de photos ont echoue
                                     else {
-                                        $params['erreurs'] = "La supression de l'appartement a échoué, veuillez vérifier si des locations sont en cours ou à venir ";
-/**/                                    echo "echec 2";   
+                                        echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $_SESSION['username'] . "&message_e=La supression de l\'appartement a échoué, veuillez vérifier si des locations sont en cours ou à venir'</script>";
                                     }
                                 }
                                 // s'il y a location en cours
                                 else {
-                                    $params['erreurs'] = "La supression de l'appartement n'a pu être effectué, des locations sont en cours ou à venir";
-/**/                                echo "echec 3";
+                                    echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $_SESSION['username'] . "&message_e=La supression de l\'appartement a échoué, veuillez vérifier si des locations sont en cours ou à venir'</script>";
                                 }
                             }
                             // si l'usager n'a pas les permissions requises pour supprimer un appartement
                             else {
-                                $params['erreurs'] = "Vous n'avez pas les permissions pour supprimer cet appartement";
-/**/                            echo "echec 4";
+                                echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $_SESSION['username'] . "&message_e=Vous n'avez pas les permissions pour supprimer cet appartement'</script>";
                             }
                         } 
                         break;   
- 
+
                     // case de suppression d'une disponibilite (d'un appartement)
 					case "supprimeDisponibilite":
 						if(isset($params['id_dispo']) && !empty($params['id_dispo'])) 
@@ -206,10 +199,10 @@
 							$reponse = json_encode(array("messageErreur"=>"Choisissez une disponibilité!"));//creer une message d'échec
 							echo $reponse;		
 						}
-					    break;
+					   break;
                     
                     // case d'ajout d'une disponibilite pour un appartement                        
-                    case "ajouteDisponibilite" :
+                   case "ajouteDisponibilite" :
 						$message_dispo="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
                         if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
@@ -217,7 +210,7 @@
 							//verification de dates
 							$today = Date("Y-m-d");
 	
-							if($obj['dateDebut'] >= $today && $obj['dateFin']> $obj['dateDebut'])
+							if($obj['dateDebut'] >= $today && $obj['dateFin']>= $obj['dateDebut'])
 							{	
 								$datesAnciens = $modeleDispo->afficheDisponibilite($obj['id_apt']);
 								if($datesAnciens)
@@ -226,7 +219,7 @@
 										$dateDebutOld = $dateOld['dateDebut'];
 										$dateFinOld = $dateOld['dateFin'];
 									}
-										if(($obj['dateDebut'] > $dateFinOld && $obj['dateFin']>$obj['dateDebut']) || ($obj['dateDebut'] < $dateDebutOld && $obj['dateFin'] < $dateDebutOld && $obj['dateFin'] > $obj['dateDebut']))
+										if(($obj['dateDebut'] > $dateFinOld && $obj['dateFin']>=$obj['dateDebut']) || ($obj['dateDebut'] < $dateDebutOld && $obj['dateFin'] < $dateDebutOld && $obj['dateFin'] >= $obj['dateDebut']))
 										{
 											$data['disponibilite'] = $modeleDispo->ajouteDisponibilite($obj['dateDebut'], $obj['dateFin'],$obj['id_apt']);
 											if($data['disponibilite']) 
@@ -241,7 +234,7 @@
 											}
 											else 
 											{
-												// message à l'usager - si la requete echoue
+												// message à l'usager - s'il la requete echoue
 												$message_dispo = json_encode(array("messageErreur"=>"La requete echoue"));
 												echo $message_dispo;                                        
 											}
@@ -277,7 +270,7 @@
 							}
 							else
 							{
-								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vérifier vos dates"));
+								$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous vérifier vos dates"));
 								echo $message_dispo;     
 							}   
 						}
@@ -286,7 +279,75 @@
 							$message_dispo = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
 							echo $message_dispo;		
                         }
-                    break;                
+                        break;
+					
+					//case de creation de location
+					case "creerLocation" :
+						$message_reservation="";
+						$today = Date("Y-m-d");
+						if(isset($params['id_appart']) && isset($params['dateDebut']) && isset($params['dateFin']) && isset($params['nbPersonnes']) && !empty($params['id_appart']) && !empty($params['dateDebut']) && !empty($params['dateFin']) && !empty($params['nbPersonnes']) && is_numeric($params['nbPersonnes']))
+						{
+							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
+								if($_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) {
+									if($params['dateFin']>=$params['dateDebut'] && $params['dateDebut']>=$today) {
+										$modeleDisponibilites = $this->getDAO("Disponibilites");
+										$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($params['dateDebut'],$params['dateFin'],$params['id_appart']);
+										if($data['idDispo']) {
+											$idDispo = $data['idDispo']->getId();								
+											$dateDebutAncien=$data['idDispo']->getDateDebut();
+											$dateFinAncien=$data['idDispo']->getDateFin();	
+
+											$dateBeginNew = $modeleDisponibilites->newDateBegin($params['dateFin']);
+											$dateFinNew = $modeleDisponibilites->newDateEnd($params['dateDebut']);
+
+											if($dateDebutAncien<=$dateFinNew)
+											{	
+												$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $params['id_appart']);			
+											}
+											if($dateBeginNew<=$dateFinAncien)
+											{	
+												$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $params['id_appart']);					
+											}
+											
+											//réserver un apt à cette date
+											$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+											//creer un objet location
+											$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $params['id_userClient'], $params['nbPersonnes']);
+											//chargement du modele Location 
+											$modeleLocation = $this->getDAO("Locations");
+											//creation de location
+											$resultat = $modeleLocation->creerLocation($location);
+											if($resultat) {
+												$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Veuillez vous attendre une confirmation de propriètaire."));//creer une message de success 
+												echo $message_reservation;
+											}
+										}
+										else if ($data['idDispo']==false){
+											$message_reservation = json_encode(array("messageErreur"=>"L'appartement n'est pas disponible. Veuillez vous choisir d'autres dates!"));
+											echo $message_reservation;
+										}
+									}
+									else {
+										$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous vérifier les dates!"));
+										echo $message_reservation;
+									}
+								}
+								else {
+									$message_reservation = json_encode(array("messageErreur"=>"Vous devez être validé par l'admin et n'est pas banni pour faire la demande de réservation"));
+									echo $message_reservation;
+								}
+							}
+							else {
+								$message_reservation = json_encode(array("messageErreur"=>"Vous devez être connecté pour faire la demande de réservation"));
+								echo $message_reservation;
+							}
+
+						}
+						else {
+							$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
+							echo $message_reservation;	
+						}
+					   break;
 
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
@@ -356,34 +417,35 @@
                                     $this->afficheVue("AjoutImage", $data);
                                 }
                                 // si modification reussie
-/**/                            else if(isset($modifApt)) {
-                                    $data['succes'] = "<p class='alert alert-success'>Votre appartement a été modifié avec succès!";
+                                else if(isset($modifApt)) {
+                                    $data['succes'] = "<p class='alert alert-success'>Votre appartement a été modifié avec succès!</p>";
                                     $this->afficheVue("header");
-/* redir @temp */                   $this->afficheFormAppartement($data);
+                                    // redirection vers la page du profil usager
+                                    echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $_SESSION['username'] . "&message=Votre appartement a été modifié avec succès!'</script>";
                                 }
                                 // si la sauvegarde a echoue
                                 else {
                                     $params['erreurs'] = "Votre appartement n'a pu être sauvegardée, veuillez recommencer ou communiquer avec l'administration si le problème persiste";
                                     $this->afficheFormAppartement($params);
-									$this->afficheVue("footer");
+                                    $this->afficheVue("footer");
                                 }
                             }
                             // si on a des erreurs de validation de params
                             else {
                                 // affichage du formulaire avec data de l'usager et messages d'erreurs a afficher
-								$this->afficheVue("header",$data);
+                                $this->afficheVue("header",$data);
                                 $this->afficheFormAppartement($params);
-								$this->afficheVue("footer");
+                                $this->afficheVue("footer");
                             }
                         }
                         // si on n'a pas tous les parametres requis
                        else {
-							$this->afficheVue("header",$data);
+                            $this->afficheVue("header",$data);
                             $params['erreurs'] = "Veuillez vous assurer de bien remplir tous les champs requis du formulaire";
                             $this->afficheFormAppartement($params);
                             $this->afficheVue("footer");
                             }
-                            	
+                                
                         break;
 
                     // case pour remplir les options selectionnees d'un appartement (en vue de modification)
@@ -453,9 +515,14 @@
                                             // on charge la photo dans le dossier images
                                             move_uploaded_file($sourcePath, $targetPath) ; 
 
+                                            $fileName = "./images/" . $i . "_" . $_SESSION['username'] . "_" . $_FILES['file']['name'][$i];
+
                                             // chargement des modeles Appartements et Usagers
                                             $modeleApts = $this->getDAO("Appartements");
                                             $modeleUsagers = $this->getDAO("Usagers");
+
+                                            // bool pour differencier photo profil de photo apt
+                                            $flag = false;
                                             // si la photo est une photo principale
                                             if($i == 0) {
                                                 // si on a un id d'apt, on modifie le champ photoPrincipale de l'appartement
@@ -467,6 +534,10 @@
                                                 else {
                                                     // mise a jour du champ photo 
                                                     $resultat = $modeleUsagers->editerChampProfil("photo", $fileName, $_SESSION['username']);
+                                                    $modeleUsagers = $this->getDAO("Usagers");
+                                                    $usager = $modeleUsagers->obtenir_par_id($_SESSION['username']);
+                                                    $photoProfil = $usager->getPhoto();
+                                                    $flag = true;
                                                 }  
                                             } 
                                             // si la photo est une photo supplementaire
@@ -478,9 +549,15 @@
                                             if(!$resultat) {
                                                 $data['erreurs'] .= "L'image " . $_FILES['file']['name'][$i] . " n'a pu être sauvegardée<br/>";
                                             } 
-                                            // sinon, message success a l'usager
+                                            // sinon, messages success a l'usager
+                                            // photo appartement
                                             else {
-                                                $data['succes'] .= "L'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès<br/>";
+                                                if($flag) {
+                                                    echo '<div id="photo"><img src="' . $photoProfil . '" class="img img-fluid" width="100px"> </div>';
+                                                }
+                                                else {
+                                                    $data['succes'] .= "L'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès<br/>";
+                                                }
                                             }
                                         }
                                     }
@@ -493,21 +570,20 @@
                             // si on a des erreurs, affichage des messages a l'usager
                             if($data['erreurs']) {
                                 $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
-                                echo $data['erreurs'];
+                                //echo $data['erreurs'];
                             }
                             // sinon, affichage du message succes
                             else {
-/* redir page dispo */          echo "<p class='alert alert-success'>" . $data['succes'] . "</p>";
+/* redir page dispo */          //echo "<p class='alert alert-success'>" . $data['succes'] . "</p>";
                             }
                         }
                         break;
 
-					default :
-						trigger_error("Action invalide.");		
-				} // fin du switch 				
-			}
+                    default :
+                        trigger_error("Action invalide.");      
+                } // fin du switch              
+            }
             // si aucune action, affichage de la page d'accueil par defaut
-
             else{ 
                 $data= $this->initialiseMessages();
                 $this->afficheVue("header",$data);
@@ -737,7 +813,8 @@
             // definir le nombre d'appart à afficher par page
             $data['appartParPage']=$appartParPage;
             
-/**/        $data['quartier'] = $modeleAppartement->getQuartiers();
+            $data['quartier'] = $modeleAppartement->getQuartiers();
+            $data['tab_typeApt'] = $modeleAppartement->getTypesApt();
             // calculer le nombre de pages necessaires pour afficher tous les resultats
             $data['nbrPage'] = ceil($nbrAppart/$appartParPage);
             if(isset($page))
@@ -764,15 +841,10 @@
             foreach($data["appartements"] as $appartement)
             { 
                 $adresse=[];
-                $moyenne = $modeleAppartement->obtenir_moyenne($appartement->getId());
-                $appartement->moyenne = $moyenne['moyenne'];
-                $appartement->nbrVotant = $moyenne['nbr_votant'];
-                // reconstituer l'adresse pour la localisation sur la carte google
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
-				//pour afficher nb notes
-				//$appartement->NbNotes = $modeleAppartement->obtenir_apt_avec_nb_notes($appartement->getId())[0];
             }
             return $data;
         }
     }
+
 ?>

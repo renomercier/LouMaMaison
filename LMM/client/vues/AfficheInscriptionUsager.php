@@ -62,9 +62,6 @@
         </div>
       </div>
 
-
-
-
       <!-- Adresse -->
       <div class="form-group">
           <label for="adresse" class="form-control-label ">Adresse</label>
@@ -87,7 +84,7 @@
       <div class="form-group">
           <label for="pwd0" class="form-control-label ">Mot de passe</label>
           <div class="row">
-<!--type:pwd--> <input type="password" name="pwd0" class="col-sm-12 form-control" id="pwd0" placeholder="Entre 8 et 20 caractères. Doit contenir au minimum 1 lettre majuscule ou chiffre" aria-describedby="aidePwd0">
+            <input type="password" name="pwd0" class="col-sm-12 form-control" id="pwd0" placeholder="Entre 8 et 20 caractères. Doit contenir au minimum 1 lettre majuscule ou chiffre" aria-describedby="aidePwd0">
             <small class="form-text text-muted" id="aidePwd0"></small> 
         </div>
       </div>
@@ -96,7 +93,7 @@
       <div class="form-group">
           <label for="pwd1" class="form-control-label ">Confirmer le mot de passe</label>
           <div class="row">
-<!--type:pwd--> <input type="password" name="pwd1" class="col-sm-12 form-control" id="pwd1" placeholder="confirmer le mot de passe" aria-describedby="aidePwd1">
+            <input type="password" name="pwd1" class="col-sm-12 form-control" id="pwd1" placeholder="confirmer le mot de passe" aria-describedby="aidePwd1">
             <small class="form-text text-muted" id="aidePwd1"></small> 
         </div>
       </div>

@@ -1,6 +1,6 @@
 <?php
 /**
-* @file         /Modele_Location.php
+* @file         /Modele_Locations.php
 * @brief        Projet WEB 2
 * @details                              
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
@@ -8,11 +8,11 @@
 */
 
 	/**
-	* @class 	Modele_Location - herite de BaseDao
+	* @class 	Modele_Locations - herite de BaseDao
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 2 methodes	|	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique(), 
+***	* 	... 5 methodes	|	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique(), 
 	*						obtenir_par_idApt()
 	*/
 	class Modele_Locations extends BaseDAO
@@ -35,12 +35,13 @@
 		* @return    	Résultat de la requête SQL
 		 */ 
 		public function creerLocation(Location $Location)
+
 		{
-			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, valideParPrestataire, validePaiement, id_userClient) VALUES (?, ?, ?, ?, ?)";
-			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getValideParPrestataire(), $Location->getValidePaiement(), $Location->getIdUserClient());
+			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement, id_userClient,  nbPersonnes) VALUES (?, ?, ?, ?, ?)";
+			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getIdAppartement(), $Location->getIdUserClient(),  $Location->getNbPersonnes());
 			return $this->requete($query, $data);
 		}
-		
+				
 		/**  
 		* @brief     	Afficher des locations avec status différents
 		* @param   		<int>   $valideParPrestataire : validé ou non par proprio
@@ -84,7 +85,6 @@
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
 			return $resultat->fetchAll();
 		}
-
 	}
 
 ?>

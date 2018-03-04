@@ -116,7 +116,7 @@
                             $data= $this->initialiseMessages();
                             $this->afficheVue("header",$data);
                             $this->afficheVue("NavigationListeUsagers");
-							//affiche tous les usagers
+							// tous les usagers
 							$this->afficheListeUsagers();
                             $this->afficheVue('footer');
 						}
@@ -149,7 +149,15 @@
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
-                        {       
+                        {   
+                            // si on a un message (succes) a afficher a l'usager
+/* ajout */                 if(isset($params['message']) && is_string($params['message']) && (trim($params['message'] != ""))) {
+                                $data['succes'] = $params['message'];
+                            }
+                            // si on a un message (erreur) a afficher a l'usager
+/* ajout */                 if(isset($params['message_e']) && is_string($params['message_e']) && (trim($params['message_e'] != ""))) {
+                                $data['erreurs'] = $params['message'];
+                            }
                             $this->afficheProfil($params["idUsager"], $data);
                             $this->afficheVue('footer');
                         }
@@ -163,9 +171,9 @@
 					case "modifierProfil":
 						$message_profil="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
-						if(isset($params["idUser"]) && isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"]) && isset($params["pwd0"])) 
+						if(isset($params["idUser"]) && isset($params["prenom"]) && isset($params["nom"]) && isset($params["adresse"]) && isset($params["telephone"]) && isset($params["moyenComm"]) &&  isset($params["paiement"])) 
 						{
-							if(!empty($params["idUser"]) && !empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"]) && !empty($params["pwd0"])) 
+							if(!empty($params["idUser"]) && !empty($params["prenom"]) && !empty($params["nom"])&& !empty($params["adresse"]) && !empty($params["telephone"]) && !empty($params["moyenComm"]) && !empty($params["paiement"])) 
 							{
 								if(!isset($params['idUser']) || $params['idUser'] == '')
 								{
@@ -183,11 +191,11 @@
 									} else {
 										$photo =$data["usager"]->getPhoto();
 									}
-                                    
-                                      $coor_moyenComm = $data["usager"]->getCoorMoyenComm();
+                                    $coor_moyenComm = $data["usager"]->getCoorMoyenComm();
+                                    $motdepasse = $data["usager"]->getMotDePasse();
 								}
 								$modeleUsagers = $this->getDAO("Usagers");
-								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $obj['motdepasse'], $obj['moyenComm'], $coor_moyenComm,  $obj["paiement"]);
+								$usager = new Usager($idUser, $obj["nom"], $obj["prenom"], $photo, $obj['adresse'], $obj['telephone'], $motdepasse, $obj['moyenComm'], $coor_moyenComm,  $obj["paiement"]);
 								// appel du modele_Usagers et insertion dans la BD
 								$resultat = $modeleUsagers->sauvegarder($usager);
 									if($resultat) {								
@@ -220,6 +228,53 @@
 							echo $message_profil;
 						}
 					break;
+                        
+                    //case modifier mot de passe
+                    case "modifierMotDePasse" :
+                     $message_profil="";
+						
+						if(isset($params["idUser"]) && isset($params["pwd0"]))
+                        {
+                            if(!empty($params["idUser"]) && !empty($params["pwd0"]))
+                            {
+                                $idUser = $params['idUser']; //sinon, on modifie l'existante
+                                               
+								$modeleUsagers = $this->getDAO("Usagers");
+								$data["usager"] = $modeleUsagers->obtenir_par_id($idUser);
+                                $usager = new Usager($idUser, $data["usager"]->getNom(), $data["usager"]->getPrenom(), $data["usager"]->getPhoto(), $data["usager"]->getAdresse(), $data["usager"]->getTelephone(), $params['pwd0'], $data["usager"]->getIdMoyenComm(), $data["usager"]->getCoorMoyenComm(),  $data["usager"]->getIdModePaiement());
+                                // appel du modele_Usagers et insertion dans la BD
+								$resultat = $modeleUsagers->sauvegarder($usager);
+                                if($resultat) {								
+                                        header('Content-type: application/json'); //absolument mettre ce header pour json
+                                        //$user = $modeleUsagers->obtenir_par_id($params['idUser']); 
+                                        //convertir les objets en array pour les mettre dans un seul tableau pour les encoder ensuite en renvoyer vers client
+                                        
+                                        $reponse = (array("messageSucces"=>"Votre mot de passe a ete modifie avec succes!"));//creer une message de success
+
+                                        $tempData = [];
+                                        $tempData = ([$reponse]);                 
+                                        echo json_encode($tempData); 
+                                    }
+                                    else 
+                                    {
+                                        // message à l'usager - s'il la requete echoue
+										$message_profil = json_encode(array("messageErreur"=>"La requete echoue"));
+										echo $message_profil;                                        
+                                    }
+							}
+							else 
+							{
+								$message_profil = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis"));
+								echo $message_profil;				
+							}
+						}
+						else
+						{
+							$message_profil = json_encode(array("messageErreur"=>"Non-non-non...!"));
+							echo $message_profil;
+						}
+					break;
+                           
 					
                     // case pour bannir | réahabiliter un usager
 					case "inversBan":
@@ -386,6 +441,15 @@
 							$this->afficheVue('footer');							
 						}	
 						break;
+                        
+                    // case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
+					case "afficherListeMessages" :
+						// chargement du modele et recuperation du data
+						$modeleMessages = $this->getDAO("Messages");
+						$data['messages'] = $modeleMessages->obtenir_messages_recus($params['idUsager']);
+                        $this->afficheVue("listeMessages", $data);
+
+						break;
 
 					// case par defaut
 					default:
@@ -428,25 +492,23 @@
                 $usager->isAdmin=false;
                 
                 foreach($usager->roles as $role)
+                {
+                    if($role->id_nomRole == 1)
                     {
-                        if($role->id_nomRole == 1)
-                        {
-                            $usager->isSuperAdmin = true;
-                        }
-                        if($role->id_nomRole == 2)
-                        {
-                            $usager->isAdmin = true;
-                        }
+                        $usager->isSuperAdmin = true;
                     }
-                
+                    if($role->id_nomRole == 2)
+                    {
+                        $usager->isAdmin = true;
+                    }
+                }
                 $usager->etatBann = ($usager->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
                 $usager->etatActiv = ($usager->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
                 $usager->etatAdmin = ($usager->isAdmin) ? 'Déchoir' : 'Promouvoir';
             }
 			$this->afficheVue("AfficheListeUsagers", $data);
 		}
-
-                
+         
 		/**
 		* @brief 		Affichage du formulaire d'inscription d'un usager
 		* @details 		Recupere des donnees en parametre pour affichage des choix de l'usager et des erreurs à afficher
@@ -480,6 +542,13 @@
 		*/
         private function afficheProfil($id, $data)
         { 
+/* ajout */ if(isset($data['succes'])) {
+                $data['succes'] = "<p class='alert alert-success'>". $data['succes'] . "</p>";
+            }
+/* ajout */ if(isset($data['erreurs'])) {
+                $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
+            }
+
             // formatage du message d'erreurs à afficher
 		    $data['erreur'] = "";
             $modeleUsagers = $this->getDAO("Usagers");
