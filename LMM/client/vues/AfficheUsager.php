@@ -307,6 +307,7 @@
                     <li class="nav-item" id="div_messagerie"></li>
                     <li class="nav-item" id="div_historique"></li>
 				    <li class="nav-item" id="div_reservations"></li>
+				    <li class="nav-item" id="div_demandes_reservations"></li>
 				    <li class="nav-item" id="div_mes_appts"></li>
                 </ul>
 			</div>
@@ -379,7 +380,18 @@
                         ?>  
 
                         <!-- si j'ai des réservations comme client -->
-                        <a class="nav-link" href="#" id="reservations">Réservations</a>
+                        <a class="nav-link" href="#" id="mesReservations">Mes Réservations</a>
+
+                        <?php 
+                        }
+						
+						
+                        if($data["isProprio"]) 
+                        {
+                        ?>  
+
+                        <!-- si j'ai des réservations comme Proprio -->
+                        <a class="nav-link" href="#" id="demandesReservations">Demandes de Réservations</a>
 
                         <?php 
                         }

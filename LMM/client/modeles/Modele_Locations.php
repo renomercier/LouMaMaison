@@ -43,18 +43,61 @@
 		}
 				
 		/**  
-		* @brief     	Afficher des locations avec status différents
-		* @param   		<int>   $valideParPrestataire : validé ou non par proprio
-		* @param   		<int>   $validePaiement : le paiment validé ou non 
+		* @brief     	Afficher des locations du proprio avec status différents
+		* @param   		<int>   $idProprio : 
 		* @param   		<int>   $dateNow : date d'aujourd'hui
 		* @return    	<...> 	Résultat de la requête SQL
 		*/
-        public function afficheLocation($valideParPrestataire, $validePaiement, $dateNow) 
+        public function afficheLocation($dateNow, $idProprio) 
         {
-            $query = "SELECT * FROM " . $this->getTableName() . " WHERE valideParPrestataire = ? AND validePaiement = ? AND dateDebut > ?";
-            $donnees = array($valideParPrestataire, $validePaiement, $dateNow);
+            $query = "SELECT * FROM " . $this->getTableName() . " l 
+					JOIN 
+					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
+					JOIN usager u ON l.id_userClient = u.username
+					WHERE dateDebut >= ? AND id_userProprio = ?";
+            $donnees = array($dateNow, $idProprio);
             $resultat = $this->requete($query, $donnees);
-            return $resultat->fetchAll();
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+			return $resultat->fetchAll();
+        }
+		
+		/**  
+		* @brief     	Afficher des locations du client avec status différents
+		* @param   		<int>   $idClient : 
+		* @param   		<int>   $dateNow : date d'aujourd'hui
+		* @return    	<...> 	Résultat de la requête SQL
+		*/
+        public function afficheLocationClient($dateNow, $idClient) 
+        {
+            $query = "SELECT * FROM " . $this->getTableName() . " l 
+					JOIN 
+					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
+					JOIN usager u ON l.id_userClient = u.username
+					WHERE dateDebut >= ? AND id_userClient=?";
+            $donnees = array($dateNow, $idClient);
+            $resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+			return $resultat->fetchAll();
+        }
+		
+		/**  
+		* @brief     	Afficher des locations par son ID
+		* @param   		<int>   $idLocation : 
+		* @param   		<int>   $dateNow : date d'aujourd'hui
+		* @return    	<...> 	Résultat de la requête SQL
+		*/
+        public function obtenir_location_par_id($dateNow, $idLocation) 
+        {
+            $query = "SELECT * FROM " . $this->getTableName() . " l 
+					JOIN 
+					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
+					JOIN usager u ON l.id_userClient = u.username
+					WHERE dateDebut >= ? AND id = ?";
+            $donnees = array($dateNow, $idLocation);
+            $resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+			$lLocation = $resultat->fetch();
+			return $lLocation;
         }
 		 
         /**
