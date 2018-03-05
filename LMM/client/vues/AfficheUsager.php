@@ -5,11 +5,17 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-
+<!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
+<div class="row">
+    <div id="message" class="col-sm-12">
+       <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+       <?= isset($data['succes']) ? $data['succes'] : '' ?>
+    </div>
+</div> <!-- fin div row -->
+  
 <?php              
     $messagerie = (isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) ? "Messagerie" : "Contacter";
- ?>
-
+?>
 
 <div class="container-fluid detail">
     <!-- Tout le monde peut voir -->
@@ -20,14 +26,14 @@
         
         <div class="col-md-4">
             <div class="row">
-                <div class="col-md-5">
-                        <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid"> </div>
+                <div id="photoProfilUsager" class="col-md-5">
+                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid" width="100px"> </div>
                 </div>
 				<!--On affiche nom d'usager pour les gens pas connectés ou bannis ou non activés, ainsi que
 					pour les connectés; 
-						on affiche nom complet juste pour le proprio du profil qu'est active et pas banni ET pour le superadmin
-						ET pour les admins actives et non bannis
-					-->
+					on affiche nom complet juste pour le proprio du profil qu'est active et pas banni ET pour le superadmin
+					ET pour les admins actives et non bannis
+				-->
                 <div class="col-md-5" id="div_info_nom">
 					<?php
 					if(isset($_SESSION["username"])) {
@@ -38,7 +44,7 @@
 						<?php
 						}
 					}
-						?>
+					?>
 					<h3 id="userNom">		
 						<?=$data["usager"]->getUsername();?>
 					</h3>
@@ -51,21 +57,40 @@
 			{
 			?>
             <div class="mb-3">
-                <div class="mb-3">
+                <div class="mb-3">                   
                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
                   Changer la photo
                    </button>
                 </div>
                 <div class="collapse" id="collapsePhoto">
+
+                    <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
+                    <div class="container ajoutImg">    
+                        <form id="uploadimageProfil" action="" method="post" enctype="multipart/form-data">
+                            <hr>
+                                <div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
+                            <hr>
+                                <div id="selectImage">
+                                    <div id="ajoutImage">
+                                        <label id="inputFile"><input type="file" name="file[]" id="file" required /></label>
+                                    </div>
+                                    <input type="hidden" name="action" value="ajouterPhoto" required />
+                                </div>
+                            
+                            <div>
+                                <input class="pull-right" type="submit" value="Upload" class="submit" />
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 			<?php
 			}
-			
 			/* if(isset($_SESSION["username"])) 
-             {
+            {
                 if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
-                 {*/
+            {*/
 			?>
             <div class="mb-3">
                 <div class="mb-3">
@@ -168,17 +193,15 @@
                                                             if($data['modePaiement'][0]->id == $p['id']) { ?>
                                                               <option selected value=<?=  $p['id'] ?>><?= $p['modePaiement'] ?></option>
                                                   <?php     } 
-                                                            else { 
-                                                    ?>
+                                                            else { ?>
                                                               <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
                                                   <?php     }
                                                         }
-
-                                                          else { ?>
+                                                        else { ?>
                                                             <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-                                                  <?php   }
+                                                  <?php }
                                                     }
-                                                         ?>
+                                                    ?>
                                                     </select>
                                                     <small class="form-text text-muted" id="aideModePaiement"></small>
                                                 </td>
@@ -266,10 +289,9 @@
                         <div class="panel-footer text-right">
                             <input type="hidden" name="idUserPass" value="<?=$_SESSION["username"]?>">
                             
-                             <button type="button" id="submit_form_pass<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderMotDePasse">Sauvegarder</button>
+                            <button type="button" id="submit_form_pass<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderMotDePasse">Sauvegarder</button>
                             <div id="erreur_pass" class="col-sm-12 mt-3"></div>
-                           
-                           
+
                         </div>
                     </div>
                 </form>
@@ -288,11 +310,8 @@
 				    <li class="nav-item" id="div_mes_appts"></li>
                 </ul>
 			</div>
-
-                <div class="row" id="afficheInfoProfil">
-                    
+                <div class="row" id="afficheInfoProfil">  
                 </div>
-
 		</div>
     </div>
 </div>
@@ -331,76 +350,78 @@
                 <!-- Le proprio du profil peux le voir avec toute l'info et Admin et SuperAdmin aussi (connectes, actives, pas bannis)-->  
                 <?php
 
-                 if(isset($_SESSION["username"])) 
-                 {
+                if(isset($_SESSION["username"])) 
+                {
 
                     if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"] && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0))  
                     {
                     ?>
                         
-                           <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
-                           <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
-                           <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
-                           <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></p> 
-						   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
-						   <p id="data_role">
-							<?php
-							foreach($data["usager"]->roles as $role)
-							{
-							?> 
-							   <span class="mr-1"><?=$role->nomRole?></span>
-							<?php
-							}
-							?>
-							</p>
+                       <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
+                       <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
+                       <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
+                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></p> 
+					   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
+					   <p id="data_role">
+						<?php
+						foreach($data["usager"]->roles as $role)
+						{
+						?> 
+						   <span class="mr-1"><?=$role->nomRole?></span>
+						<?php
+						}
+						?>
+						</p>
                      
                         <?php 
                         if($data["isClient"]) 
                         {
                         ?>  
 
-                        <!-- s'i j'ai des réservations comme client -->
-                        <p class="nav-link" href="#" id="reservations">Réservations</p>
+                        <!-- si j'ai des réservations comme client -->
+                        <a class="nav-link" href="#" id="reservations">Réservations</a>
 
                         <?php 
                         }
                     }
-						/*Seulement le proprio du profil active, pas banni et connecte peut modifier son profil*/
-                         if($_SESSION["username"] == $_REQUEST["idUsager"]) 
-                        {
-                        ?>
-                         <button type="button" class="btn btn-primary btn-modifier" data-toggle="modal" data-target="#myModal<?=$_SESSION["username"]?>"  id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
-						<?php
-                         }
-
-                 }
-
-                        $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
-                        $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
-                        $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
-						?>
-					
-					<?php
-                    if(!$data["isSuperAdmin"])
+					/*Seulement le proprio du profil active, pas banni et connecte peut modifier son profil*/
+                    if($_SESSION["username"] == $_REQUEST["idUsager"]) 
                     {
-                        if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
-                        {
-                        ?>	  
-                            <li class="dropdown nav-item col-md-6" id="div_action_admin">
-                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions Admin
-                              </button>
-                            </li>
-                            <div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                
-                                <li><button class="btn btn-default actionAdmin" name="inversBan" id="<?=$data["usager"]->getUsername()?>"><?=$etatBann?></button></li>
-                                <li><button class="btn btn-default actionAdmin" name="inversActiv" id="<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></button> </li>
-                                <li><button class="btn btn-default actionAdmin" name="inversAdmin" id="<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></button> </li>
+                    ?>
+                     <button type="button" class="btn btn-primary btn-modifier" data-toggle="modal" data-target="#myModal<?=$_SESSION["username"]?>"  id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
+                     <button type="button" class="btn btn-info mb-2 btn-modifier"><a href="index.php?Usagers&action=afficherFormulaireImageProfil" >Modifier votre photo</a></button>
 
-                            </div>
-							
-                        <?php
-                        }    
+					<?php
                     }
+
                 }
-            ?> 
+                
+                $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
+                $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
+                $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
+				?>
+				
+				<?php
+                if(!$data["isSuperAdmin"])
+                {
+                    if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
+                    {
+                    ?>	  
+                        <li class="dropdown nav-item col-md-6" id="div_action_admin">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions Admin
+                          </button>
+                        </li>
+                        <div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            
+                            <li><button class="btn btn-default actionAdmin" name="inversBan" id="<?=$data["usager"]->getUsername()?>"><?=$etatBann?></button></li>
+                            <li><button class="btn btn-default actionAdmin" name="inversActiv" id="<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></button> </li>
+                            <li><button class="btn btn-default actionAdmin" name="inversAdmin" id="<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></button> </li>
+
+                        </div>
+						
+                    <?php
+                    }    
+                }
+            }
+        ?> 

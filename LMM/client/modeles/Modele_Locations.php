@@ -12,7 +12,8 @@
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-	* @methodes	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique()
+***	* 	... 5 methodes	|	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique(), 
+	*						obtenir_par_idApt()
 	*/
 	class Modele_Locations extends BaseDAO
 	{
@@ -26,7 +27,7 @@
 		{
 			return "location";
 		}
-	
+
 		/**  
 		* @brief     	Créer location d'un appartement
 		* @details   	Inscrire la création d'une location à la BD
@@ -34,12 +35,13 @@
 		* @return    	Résultat de la requête SQL
 		 */ 
 		public function creerLocation(Location $Location)
+
 		{
 			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement, id_userClient,  nbPersonnes) VALUES (?, ?, ?, ?, ?)";
 			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getIdAppartement(), $Location->getIdUserClient(),  $Location->getNbPersonnes());
 			return $this->requete($query, $data);
 		}
-		
+				
 		/**  
 		* @brief     	Afficher des locations avec status différents
 		* @param   		<int>   $valideParPrestataire : validé ou non par proprio
@@ -67,21 +69,22 @@
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
 		}
-		
-		 
-        /**
-		* @brief		
-		* @details		
-		* @param 		
-		* @return    	
+
+		/**  
+		* @brief     	Fonction de recherche d'une location par appartement
+		* @details   	Recherche une ou plusieurs location(s) associee(s) a un appartement
+		* @param   		<int>		$idApt			Identifiant d'appartement
+		* @param   		<int>		$colonneIdApt	Le nom de la colonne id_appartement
+		* @return    	Résultat de la requête SQL
 		*/
 		public function obtenir_par_idApt($idApt, $colonneIdApt) {
-		$query = "SELECT * from " . $this->getTableName() . " WHERE " . $colonneIdApt ."= ?"; 
-		$donnees = array($idApt);
-		$resultat = $this->requete($query, $donnees);
-		$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
-		return $resultat->fetchAll();
+
+			$query = "SELECT * from " . $this->getTableName() . " WHERE " . $colonneIdApt ."= ?"; 
+			$donnees = array($idApt);
+			$resultat = $this->requete($query, $donnees);
+			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+			return $resultat->fetchAll();
 		}
-		
 	}
+
 ?>

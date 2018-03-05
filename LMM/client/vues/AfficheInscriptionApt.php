@@ -1,38 +1,10 @@
-<!--<p class='alert alert-warning'>Veuillez noter que ce site affiche exclusivement des logements situés à Montréal</p>-->
-
-  <!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
-  <div class="row">
-    <div class="col-sm-12">
-       <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
-       <?= isset($data['succes']) ? $data['succes'] : '' ?>
-    </div>
-  </div> <!-- fin div row -->
-      
-  <!-- div content-modal -->
-  <!--
-  <div class="modal fade" id="myModalApt">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <h5 class="modal-title"></h5>
-          <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
-          <small>Fermer&nbsp;</small><i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
-          </button>
-        </div> 
-
-        <div id="bodyApt" class="modal-body">  
-        </div> 
-
-        <div id="modalFooter" class="modal-footer">
-        </div> 
-
-      </div>
-    </div>
-  </div> -->
-<!-- fin modal-header -->  
-<!-- fin modal-body -->
-<!-- fin modal-footer -->
+<!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
+<div class="row">
+  <div class="col-sm-12">
+     <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+     <?= isset($data['succes']) ? $data['succes'] : '' ?>
+  </div>
+</div> <!-- fin div row -->
 
 <div class="container" id="divAjoutApt">
   <!-- on verifie si l'usager est connecte et a les droits d'ajout d'un apartement -->
@@ -64,19 +36,19 @@
       <div class="row">
       <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="id_typeApt" id="typeApt" aria-describedby="aideTypeApt">
       <?= (isset($data['apt'])) ? '<option value="0">-- Choisir un type de logis --</option>' : '<option value="0" selected>-- Choisir un type de logis --</option>' ?>
-    <?php foreach($data['tab_typeApt'] AS $t) {
-            if(isset($data['apt'])) { 
-              if($data['apt']->getId_typeApt() == $t['id']) { ?>
-                <option selected value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
-    <?php     } 
+      <?php foreach($data['tab_typeApt'] AS $t) {
+              if(isset($data['apt'])) { 
+                if($data['apt']->getId_typeApt() == $t['id']) { ?>
+                  <option selected value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
+      <?php     } 
+                else { ?>
+                  <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
+      <?php     }
+              } 
               else { ?>
                 <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
-    <?php     }
-            } 
-            else { ?>
-              <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
-    <?php   }
-          } ?>
+      <?php   }
+            } ?>
       </select>
       <small class="form-text text-muted" id="aideTypeApt"></small>
       </div>
@@ -126,20 +98,20 @@
       <div class="row">
       <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="id_nomQuartier" id="quartier" aria-describedby="aideQuartier">
       <?= (isset($data['apt'])) ? '<option value="0">-- Choisir un quartier --</option>' : '<option value="0" selected>-- Choisir un quartier --</option>' ?>
-    <?php foreach($data['tab_quartier'] AS $q) {
-            if(isset($data['apt'])) { 
+      <?php foreach($data['tab_quartier'] AS $q) {
+              if(isset($data['apt'])) { 
 
-              if($data['apt']->getId_nomQuartier() == $q['id']) { ?>
-                <option selected value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
-    <?php     } 
+                if($data['apt']->getId_nomQuartier() == $q['id']) { ?>
+                  <option selected value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
+      <?php     } 
+                else { ?>
+                  <option value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
+      <?php     }
+              } 
               else { ?>
                 <option value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
-    <?php     }
-            } 
-            else { ?>
-              <option value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
-    <?php   }
-          } ?>
+      <?php   }
+            } ?>
       </select>
       <small class="form-text text-muted" id="aideQuartier"></small>
       </div>
@@ -183,8 +155,8 @@
 
     <!-- Options de l'appartement -->
     <div>
+      <label class="form-control-label ">Options liées à l'appartement</label>
       <div id="option" class="py-3">
-        <label class="form-control-label ">Options liées à l'appartement</label>
       </div><small class="form-text text-muted pl-0" id="checkbox"></small> 
     </div> <!-- fin div options -->
     

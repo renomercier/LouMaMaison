@@ -5,7 +5,6 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-
 <div class="container">
     
     <div class="row">
@@ -62,9 +61,6 @@
         </div>
       </div>
 
-
-
-
       <!-- Adresse -->
       <div class="form-group">
           <label for="adresse" class="form-control-label ">Adresse</label>
@@ -87,7 +83,7 @@
       <div class="form-group">
           <label for="pwd0" class="form-control-label ">Mot de passe</label>
           <div class="row">
-<!--type:pwd--> <input type="password" name="pwd0" class="col-sm-12 form-control" id="pwd0" placeholder="Entre 8 et 20 caractères. Doit contenir au minimum 1 lettre majuscule ou chiffre" aria-describedby="aidePwd0">
+            <input type="password" name="pwd0" class="col-sm-12 form-control" id="pwd0" placeholder="Entre 8 et 20 caractères. Doit contenir au minimum 1 lettre majuscule ou chiffre" aria-describedby="aidePwd0">
             <small class="form-text text-muted" id="aidePwd0"></small> 
         </div>
       </div>
@@ -96,7 +92,7 @@
       <div class="form-group">
           <label for="pwd1" class="form-control-label ">Confirmer le mot de passe</label>
           <div class="row">
-<!--type:pwd--> <input type="password" name="pwd1" class="col-sm-12 form-control" id="pwd1" placeholder="confirmer le mot de passe" aria-describedby="aidePwd1">
+            <input type="password" name="pwd1" class="col-sm-12 form-control" id="pwd1" placeholder="confirmer le mot de passe" aria-describedby="aidePwd1">
             <small class="form-text text-muted" id="aidePwd1"></small> 
         </div>
       </div>
@@ -140,19 +136,19 @@
         <div class="row">
         <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="modePaiement" id="modePaiement" aria-describedby="aideModePaiement">
         <?= (isset($data['modePaiement'])) ? '<option value="0">-- Choisir un mode de paiement --</option>' : '<option value="0" selected>-- Choisir un mode de paiement --</option>' ?>
-      <?php foreach($data['paiement'] AS $p) {
-              if(isset($data['modePaiement'])) { 
-                if($data['modePaiement'] == $p['id']) { ?>
-                  <option selected value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-      <?php     } 
+        <?php foreach($data['paiement'] AS $p) {
+                if(isset($data['modePaiement'])) { 
+                  if($data['modePaiement'] == $p['id']) { ?>
+                    <option selected value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
+        <?php     } 
+                  else { ?>
+                    <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
+        <?php     }
+                } 
                 else { ?>
                   <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-      <?php     }
-              } 
-              else { ?>
-                <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-      <?php   }
-            } ?>
+        <?php   }
+              } ?>
         </select>
         <small class="form-text text-muted" id="aideModePaiement"></small>
         </div>

@@ -6,6 +6,9 @@ html, body {
 }
 
 /* --------------------------------------------------- H1-h6, li, a, p etc. */
+a, a:hover{
+    text-decoration: none;
+}
 .pagination li{
     cursor: pointer;
 }
@@ -21,7 +24,6 @@ h6, .filtre_usager a.nav-link{
 .fa_custom{
     color: #999;
 }
-
 .iconeAptDescription {
     margin-right: 20px;
 }
@@ -63,9 +65,28 @@ h6, .filtre_usager a.nav-link{
    color:    #999 !important;
    font-size: 0.8em !important;
 }
-a, a:hover{
-    text-decoration: none;
+input.slider {
+    width: 100%;
 }
+#inputFile, .file {
+    width: 138px;
+    height: 30px;
+    display: block;
+    overflow: hidden;
+/*    
+    background: url(btn-choose-file.gif) 0 0 no-repeat;
+    cursor: pointer;    */
+}
+#file {
+
+}
+
+/* --------------------------------------------------- vue Ajout Image  */
+#image_preview, .imgSupp {
+    height: 120px;
+    margin: 0;
+}
+
 
 /* --------------------------------------------------- Images   */
 .thumbnail{
@@ -75,6 +96,10 @@ a, a:hover{
 .thumbnail img{
     width: 100%;
     height: auto;
+}
+.img-thumbnail{
+    background:none;
+    border: none;
 }
 /* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .photoSupplementaire:hover {
@@ -96,61 +121,50 @@ a, a:hover{
     height: 2em;
     width: 2em;
 }
+.imgEval {
+    width: 75%;
+    height: 75%;
+    margin: 0 auto;
+}
 
 /* modalGaleriePhoto  */
 
 /* Modal-Carousel pour photos supplementaires */
+
+/* --------------------------------------------------- Modal */
 .modal-header, .modal-footer {  
     color: #ffffff;
     background-color: #014B88;
 }
-
-.modal-xl {
-    max-height: auto;
-    max-width: 70%;
+#myModalEval .modal-header, #myModalEval .modal-footer {  
+    background-color: white;
+    color: black;
 }
-
-/*----- page AfficheAppartement -----*/
-
-.sectionAptDetail {
-    
-}
-
-.sectionAptDetail-g, .sectionAptDetail-d {
-    padding=0;
-    /*border: 1px solid #000000; */ 
-}
-
-.reservation, .afficheDisponibilites {
-    padding: 20px;
-    border: 1px solid #585759;
-}
-
-.afficheDisponibilites {
-    padding: 10px;
-    height: 165px;
-    width: auto;
-    overflow-y: scroll;
-    border: 1px solid #585759;
-}
-
-.iconeDescription {
-    margin-right: 20px;
-}
-
-/*----- footer -----*/
-
-footer {
-    color: #ffffff;
-    background-color: #585759;
-    position: relative;
-    bottom: -10em;
-}
-
 .modal-xl {
     max-height: auto;
     max-width: 66%;
 }
+
+
+/* --------------------------------------------------- vue Evaluation Apt  */
+.titreEval {
+    width: 100%;
+}
+.divEvaluation small {
+    width: 10px;
+}
+.divEtoiles {
+    position: relative;
+}
+#etoilesGrises {
+    z-index: 0;
+}
+#etoiles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+} 
 
 /* --------------------------------------------------- page AfficheAppartement */
 .sectionAptDetail-g, .sectionAptDetail-d {
@@ -169,33 +183,83 @@ footer {
     border: 1px solid #585759;
 }
 
-.iconeAptDescription {
-    margin-right: 20px;
+
+
+/* ---------------------------------------------------  vue message usager  */
+.filtre_usager a.nav-link, p.nav-link{
+    color: #0275d8 ;
+    cursor: pointer;
+}
+.messages .table td a, h6, p[name='detailMessage']{
+    cursor: pointer;
+    color: #636c72;
+    font-weight: 400;
+}
+.messages .table td, .table th{
+    padding: 0;
+    color: #636c72;
+}
+.messages .table thead th{
+    padding: .75em;
+}
+.messages .non_lu td, .non_lu td p, .non_lu td a{
+    font-weight: 800 !important;
+}
+td[name='contenuMessage']{
+    padding: 0;
+    border: none;
+    box-shadow: 0 .5px .5px 0 rgba(0, 0, 0, 0.2), 0 .3px 15px 0 rgba(0, 0, 0, 0.19);
+}
+.dateMessage{
+    font-size: .8em;
 }
 
 
-.aptPhotoPrincipale {
-    
+/* --------------------------------------------------- button   */
+#btn-profil{
+    border-color: transparent;
+    outline: none;
+    color: #767676;
+	background-color: transparent;
+	
+}
+#btn-profil:hover{
+    border-bottom: 2px solid #efefef;
+    color: #484848;
+}
+#btn-profil[aria-expanded="true"]{
+    color: #0275d8;
+    font-weight: 700;
+    border-bottom: 1px solid #0275d8;
 }
 
-.aptPhotoSupp {
-    height: 5em;
-    width: 6.5em; 
+/* --------------------------------------------------- panels   */
+.panel {
+    border: 1px solid #dce0e0;
+    background-color: #fff;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
-
-.aptPhotoModal {
-    height: 45em;
-    width: 60em; 
+.panel-header {
+	color: #484848;
+    /*color: #fff;*/
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce0e0;
+    background-color: #edefed;
+    /*background-color: #919191;*/
+    padding: 20px;
 }
-
-.aptPhotoProprio {
-    height: 5em;
-    width: 5em; 
+.panel-footer {
+    position: relative;
+    margin: 0;
+    padding: 20px;
+    border-top: 1px solid #dce0e0;
 }
-
-.aptIcones {
-    height: 2em;
-    width: 2em;
+.panel-body {
+    padding: 20px;
 }
 
 /* --------------------------------------------------- google carte   */
@@ -225,47 +289,9 @@ footer {
     left: 25px !important;
 }
 
-.filtre_usager a.nav-link, p.nav-link{
-    color: #0275d8 ;
-    cursor: pointer;
-}
-
-.messages .table td a, h6, p[name='detailMessage']{
-    cursor: pointer;
-    color: #636c72;
-    font-weight: 400;
-}
-
-.messages .table td, .table th{
-    padding: 0;
-    color: #636c72;
-}
-
-.messages .table thead th{
-    padding: .75em;
-}
-.messages .non_lu td, .non_lu td p, .non_lu td a{
-    font-weight: 800 !important;
-}
-
-td[name='contenuMessage']{
-    padding: 0;
-    border: none;
-    box-shadow: 0 .5px .5px 0 rgba(0, 0, 0, 0.2), 0 .3px 15px 0 rgba(0, 0, 0, 0.19);
-}
-
-.dateMessage{
-    font-size: .8em;
-}
-@media only screen and (max-width: 768px) {
-    #carte{
-        position: relative!important;
-        right: 0em;
-    }
 
 /* --------------------------------------------------- footer   */
 
-}
 footer hr {
     border: 0.5px solid #ffffff;; 
 }
@@ -289,59 +315,9 @@ footer hr {
 .footer-media-item a:hover {
     color: #014B88;
 }
-
-/************/
-#btn-profil{
-    border-color: transparent;
-    outline: none;
-    color: #767676;
-	background-color: transparent;
-	
-}
-
-#btn-profil:hover{
-    border-bottom: 2px solid #efefef;
-    color: #484848;
-}
-
-#btn-profil[aria-expanded="true"]{
-    color: #0275d8;
-    font-weight: 700;
-    border-bottom: 1px solid #0275d8;
-}
-
-.panel {
-    border: 1px solid #dce0e0;
-    background-color: #fff;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-}
-
-.panel-header {
-	color: #484848;
-    /*color: #fff;*/
-    font-size: 16px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #dce0e0;
-    background-color: #edefed;
-    /*background-color: #919191;*/
-    padding: 20px;
-}
-
-.panel-footer {
+footer {
+    color: #ffffff;
+    background-color: #585759;
     position: relative;
-    margin: 0;
-    padding: 20px;
-    border-top: 1px solid #dce0e0;
-}
-
-.panel-body {
-    padding: 20px;
-
-.img-thumbnail{
-    background:none;
-    border: none;
-
+    bottom: -10em;
 }

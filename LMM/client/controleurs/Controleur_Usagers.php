@@ -11,7 +11,8 @@
     * @class    Controleur_Usagers - herite de la classe BaseController
     * @details 	
     *
-    *   5 methodes  |   traite(), afficheListeUsagers(), afficheFormInscription(), validerUsager(), attribution_role()
+    *   7 methodes  |   traite(), afficheAccueil(), afficheListeUsagers(), afficheFormInscription(), afficheProfil(),  
+    *					attribution_role(), validerUsager()
     */
 	class Controleur_Usagers extends BaseControleur
 	{	
@@ -115,7 +116,7 @@
                             $data= $this->initialiseMessages();
                             $this->afficheVue("header",$data);
                             $this->afficheVue("NavigationListeUsagers");
-							//affiche tous les usagers
+							// tous les usagers
 							$this->afficheListeUsagers();
                             $this->afficheVue('footer');
 						}
@@ -149,6 +150,14 @@
                     case "afficheUsager" :
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
                         {   
+                            // si on a un message (succes) a afficher a l'usager
+/* ajout */                 if(isset($params['message']) && is_string($params['message']) && (trim($params['message'] != ""))) {
+                                $data['succes'] = $params['message'];
+                            }
+                            // si on a un message (erreur) a afficher a l'usager
+/* ajout */                 if(isset($params['message_e']) && is_string($params['message_e']) && (trim($params['message_e'] != ""))) {
+                                $data['erreurs'] = $params['message'];
+                            }
                             $this->afficheProfil($params["idUsager"], $data);
                             $this->afficheVue('footer');
                         }
@@ -359,6 +368,15 @@
 						}
 						break;
 
+					// affichage du formulaire d'ajout d'une image pour profil usager
+                    case "afficherFormulaireImageProfil" :
+
+                        if(isset($_SESSION['username'])) {
+                            $this->afficheVue("header");
+                            $this->afficheVue("AjoutImage", $data); 
+                        }
+                        break;
+
 					// case de sauvegarde d'un usager
 					case "sauvegarderUsager" :
 
@@ -369,7 +387,7 @@
 							if(isset($params['photo'])) {
 							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
 							} else {
-								$photo = "profil.jpg";
+								$photo = "./images/profil.jpg";
 							}
 
 							// validation des champs input du formulaire d'inscription d'un usager
@@ -387,9 +405,9 @@
 									$roles = (isset($params['client']) && isset($params['prestataire'])) ? [ $params['client'], $params['prestataire'] ] : (isset($params['prestataire']) ? [ $params['prestataire'] ] : [ $params['client'] ]);
 /* verif si role avant success*/	$nouveauxRoles = $this->attribution_role($usager->getUsername(), $roles);
 									// message à l'usager - success de l'insertion dans la BD
-									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
+									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Vous pouvez maintenant ajouter une photo pour votre profil usager. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
                 					$this->afficheVue("header", $data);
-/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);
+/* affichage @temps */				$this->afficheVue("AjoutImage", $data);
 									$this->afficheVue('footer');									
 								}
 								else {
@@ -464,25 +482,23 @@
                 $usager->isAdmin=false;
                 
                 foreach($usager->roles as $role)
+                {
+                    if($role->id_nomRole == 1)
                     {
-                        if($role->id_nomRole == 1)
-                        {
-                            $usager->isSuperAdmin = true;
-                        }
-                        if($role->id_nomRole == 2)
-                        {
-                            $usager->isAdmin = true;
-                        }
+                        $usager->isSuperAdmin = true;
                     }
-                
+                    if($role->id_nomRole == 2)
+                    {
+                        $usager->isAdmin = true;
+                    }
+                }
                 $usager->etatBann = ($usager->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
                 $usager->etatActiv = ($usager->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
                 $usager->etatAdmin = ($usager->isAdmin) ? 'Déchoir' : 'Promouvoir';
             }
 			$this->afficheVue("AfficheListeUsagers", $data);
 		}
-
-                
+         
 		/**
 		* @brief 		Affichage du formulaire d'inscription d'un usager
 		* @details 		Recupere des donnees en parametre pour affichage des choix de l'usager et des erreurs à afficher
@@ -506,29 +522,6 @@
 				$this->afficheVue("afficheInscriptionUsager", $data);		
 			}
 		}
-
-		/**
-		* @brief		Fonction d'attribution des differents roles d'un usager
-		* @details		L'usager peut choisir les roles client et/ou prestataire
-		* @param 		<string> 	$usager 		id de l'usager	
-		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
-		* @return    	<bool> 	
-		*/
-		public function attribution_role($usager, $tabRoles) {
-
-			$flag = true;
-			// chargement du modele usager
-			$modeleUsagers = $this->getDAO("Usagers");
-			// on boucle dans les differents roles pour les integrer dans la BD
-			foreach($tabRoles AS $r) {
-				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
-				if(!$resultat) {
-					$flag = false;
-					return $flag;
-				}
-			}
-			return $flag;
-		}
         
         /**
 		* @brief		Fonction d'affichage d'un profil usager 
@@ -539,6 +532,13 @@
 		*/
         private function afficheProfil($id, $data)
         { 
+/* ajout */ if(isset($data['succes'])) {
+                $data['succes'] = "<p class='alert alert-success'>". $data['succes'] . "</p>";
+            }
+/* ajout */ if(isset($data['erreurs'])) {
+                $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
+            }
+
             // formatage du message d'erreurs à afficher
 		    $data['erreur'] = "";
             $modeleUsagers = $this->getDAO("Usagers");
@@ -579,6 +579,29 @@
             $this->afficheVue("header",$data);
             $this->afficheVue("AfficheUsager", $data); 
         }
+
+		/**
+		* @brief		Fonction d'attribution des differents roles d'un usager
+		* @details		L'usager peut choisir les roles client et/ou prestataire
+		* @param 		<string> 	$usager 		id de l'usager	
+		* @param 		<array> 	$tabRoles 		tableau des roles de l'usager	
+		* @return    	<bool> 	
+		*/
+		public function attribution_role($usager, $tabRoles) {
+
+			$flag = true;
+			// chargement du modele usager
+			$modeleUsagers = $this->getDAO("Usagers");
+			// on boucle dans les differents roles pour les integrer dans la BD
+			foreach($tabRoles AS $r) {
+				$resultat = $modeleUsagers->definir_role_usager($usager, $r);
+				if(!$resultat) {
+					$flag = false;
+					return $flag;
+				}
+			}
+			return $flag;
+		}
         
 		/**
 		* @brief		Fonction de validation des parametres du formulaire d'inscription d'un usager
