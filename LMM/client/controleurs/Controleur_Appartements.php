@@ -380,7 +380,7 @@
 							$dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
 							
 							$idApt = $res->getIdAppartement();
-							
+							$idLocation = $res->getId();
 
 							
 							$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);$idDispo = $data['idDispo']->getId(); 				
@@ -400,6 +400,7 @@
 							
 							//réserver un apt à cette date
 							$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+							$modeleLocation->misAjourChampUnique('valideParPrestataire', 1, $idLocation);
 						}	
 					break;
 					
