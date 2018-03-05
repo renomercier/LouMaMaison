@@ -280,6 +280,31 @@ var clickHandler = function(e){
 }
 
 
+/* ============================  function pour le datepicker des disponibilites ============================================== */
+
+    $(function() { 
+        /*var todayDate = new Date().getDate();
+        var endD= new Date(new Date().setDate(todayDate - 15));*/
+        var currDate = moment().add(1, 'days');
+        
+        
+        $('input[name="daterange"]').daterangepicker({
+        
+            format: 'YYYY/MM/DD',
+            minDate: moment().add(1, 'days'),
+            maxDate: "03/26/2018",
+            
+            showDropdowns: true,
+            alwaysShowCalendars: true,
+            startDate: "02/26/2018",
+            endDate: "03/26/2018",
+            opens: "left"
+            
+        });
+    }); 
+
+
+
 /*////////////////////////////////////////////////////////////////*/
 /* filtrer le resultat de la recherche selon des critéres donnés*/
 
@@ -325,7 +350,7 @@ $(document).ready(function() {
        if($('#carteQuartier').length)
         {
             var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
-            $('#carteQuartier').append(scriptGoogle);
+            $('body').append(scriptGoogle);
         } 
 });
 

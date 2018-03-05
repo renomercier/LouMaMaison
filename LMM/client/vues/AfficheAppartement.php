@@ -609,7 +609,7 @@
                 </div>
                 
                 <!-- affichage du quartier de l'appartememnt -->
-                <div id="carteQuartier">
+                <div id="carteQuartier" class="col-sm-8">
                 
                 </div>
                 
@@ -620,7 +620,7 @@
         </div>
         
         <!-- portion droite de l'écran -->
-        <div class="sectionAptDetail-d col-sm-4 flex-first flex-sm-unordered">
+        <div class="sectionAptDetail-d col-md-4 flex-first flex-md-unordered">
             <br>
             
             <!-- Si l'usager est le proprio de l'appartement : affichage des boutons de gestion -->
@@ -644,7 +644,7 @@
             <?php
                 } else {
             ?>
-                <!-- Et si l'usager n'est pas le proprio de l'appartement : affichage d'une demande de réservation -->
+                <!-- Et sinon : affichage d'une demande de réservation -->
                 <div class="aptReservation col-sm-12">
                     <h4>$<?= $data['appartement']->getMontantParJour(); ?> CAD <small>par nuit</small></h4>
                     <h6>Ratings
@@ -679,12 +679,13 @@
                             <!-- Date d'arrivée -->
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="dateArrivee">Date d'arrivée</label>
-                                    <input type="date" name="dateArrivee" id="dateArrivee" size="8" class="form-control text-muted" aria-describedby="aideDateArrivee">
+                                    <label for="dateArrivee">Date arrivée &nbsp | &nbsp Date départ</label>
+                                    <input type="text" name="daterange" id="dateArrivee" size="8" class="form-control text-muted" aria-describedby="aideDateArrivee">
                                     <small class="form-text text-muted" id="aideDateArrivee"></small>
                                 </div>
                             </div>
                             <!-- Date de départ -->
+                            <!--
                             <div class="form-group">
                                 <div class="row">
                                     <label for="dateDepart">Date de départ</label>
@@ -692,6 +693,7 @@
                                     <small class="form-text text-muted" id="aideDateDepart"></small>
                                 </div>
                             </div>
+                            -->
                             <!-- Nombre de personnes -->
                             <div class="form-group">
                                 <div class="row">
