@@ -1,5 +1,5 @@
 $(document).ready(function() {
- 
+    
     /*chercher les apparts avec les filtres remplis*/
 
     $( "#filtrer" ).on( "click", function( e ) {
@@ -365,7 +365,8 @@ var funcAjouteDispo = function(e){
 					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
 				} 
 				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
-					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
+					//$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
+                    boutonPaypal();
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {

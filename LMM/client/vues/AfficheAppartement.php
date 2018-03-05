@@ -218,6 +218,8 @@
                 <input type="hidden" name="idProprio" value="<?= $data['appartement']->getId_userProprio() ?>">
                 <div class="row" id="afficheInfoProfil"></div>
             </div>
+            
+            <!-- -------------------------------------------------------------------------------------------------------------- -->
             <hr>
             
             <div class="aptEquipements d-block">
@@ -380,7 +382,11 @@
                 </div>
                 <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
                 <hr>
+                
 				<div id="erreurReservation"></div>
+                
+                <!-- paypal temporaire ------------------------------------------------------------------------------------- -->
+                <div id="paypal-button"></div>
             </div>
             
         </div>
