@@ -292,12 +292,12 @@ var clickHandler = function(e){
         
             format: 'YYYY/MM/DD',
             minDate: moment().add(1, 'days'),
-            maxDate: "03/26/2018",
+            maxDate: "03/19/2018",
             
             showDropdowns: true,
             alwaysShowCalendars: true,
             startDate: "02/26/2018",
-            endDate: "03/26/2018",
+            endDate: "03/19/2018",
             opens: "left"
             
         });
