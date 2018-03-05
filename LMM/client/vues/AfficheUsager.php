@@ -7,10 +7,10 @@
 -->
 <!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
 <div class="row">
-<div id="message" class="col-sm-12">
-   <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
-   <?= isset($data['succes']) ? $data['succes'] : '' ?>
-</div>
+    <div id="message" class="col-sm-12">
+       <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+       <?= isset($data['succes']) ? $data['succes'] : '' ?>
+    </div>
 </div> <!-- fin div row -->
   
 <?php              

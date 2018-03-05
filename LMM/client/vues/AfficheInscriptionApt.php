@@ -36,19 +36,19 @@
       <div class="row">
       <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="id_typeApt" id="typeApt" aria-describedby="aideTypeApt">
       <?= (isset($data['apt'])) ? '<option value="0">-- Choisir un type de logis --</option>' : '<option value="0" selected>-- Choisir un type de logis --</option>' ?>
-    <?php foreach($data['tab_typeApt'] AS $t) {
-            if(isset($data['apt'])) { 
-              if($data['apt']->getId_typeApt() == $t['id']) { ?>
-                <option selected value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
-    <?php     } 
+      <?php foreach($data['tab_typeApt'] AS $t) {
+              if(isset($data['apt'])) { 
+                if($data['apt']->getId_typeApt() == $t['id']) { ?>
+                  <option selected value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
+      <?php     } 
+                else { ?>
+                  <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
+      <?php     }
+              } 
               else { ?>
                 <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
-    <?php     }
-            } 
-            else { ?>
-              <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
-    <?php   }
-          } ?>
+      <?php   }
+            } ?>
       </select>
       <small class="form-text text-muted" id="aideTypeApt"></small>
       </div>
@@ -98,20 +98,20 @@
       <div class="row">
       <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="id_nomQuartier" id="quartier" aria-describedby="aideQuartier">
       <?= (isset($data['apt'])) ? '<option value="0">-- Choisir un quartier --</option>' : '<option value="0" selected>-- Choisir un quartier --</option>' ?>
-    <?php foreach($data['tab_quartier'] AS $q) {
-            if(isset($data['apt'])) { 
+      <?php foreach($data['tab_quartier'] AS $q) {
+              if(isset($data['apt'])) { 
 
-              if($data['apt']->getId_nomQuartier() == $q['id']) { ?>
-                <option selected value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
-    <?php     } 
+                if($data['apt']->getId_nomQuartier() == $q['id']) { ?>
+                  <option selected value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
+      <?php     } 
+                else { ?>
+                  <option value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
+      <?php     }
+              } 
               else { ?>
                 <option value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
-    <?php     }
-            } 
-            else { ?>
-              <option value=<?= $q['id'] ?>><?= $q['nomQuartier'] ?></option>
-    <?php   }
-          } ?>
+      <?php   }
+            } ?>
       </select>
       <small class="form-text text-muted" id="aideQuartier"></small>
       </div>

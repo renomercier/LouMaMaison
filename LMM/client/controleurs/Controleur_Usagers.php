@@ -355,16 +355,6 @@
 						}
 						break;
 
-					// affichage du  formulaire d'ajout d'images pour un appartement
-                    case "afficherFormulaireImage" :
-
-                        if(isset($params['id']) && !empty($params['id']) && $_SESSION['username']) {
-                            $data['idApt'] = $params['id'];
-                            $this->afficheVue("header");
-                            $this->afficheVue("AjoutImage", $data); 
-                        }
-                        break;
-
 					// case d'affichage du formulaire d'inscription d'un usager (a partir du menu)
 					case "afficherInscriptionUsager" :
 						// chargement du modele et recuperation du data
@@ -397,7 +387,7 @@
 							if(isset($params['photo'])) {
 							// ajout d'insertion d'une photo (src) à faire... + upload de l'image
 							} else {
-								$photo = "profil.jpg";
+								$photo = "./images/profil.jpg";
 							}
 
 							// validation des champs input du formulaire d'inscription d'un usager
@@ -415,9 +405,9 @@
 									$roles = (isset($params['client']) && isset($params['prestataire'])) ? [ $params['client'], $params['prestataire'] ] : (isset($params['prestataire']) ? [ $params['prestataire'] ] : [ $params['client'] ]);
 /* verif si role avant success*/	$nouveauxRoles = $this->attribution_role($usager->getUsername(), $roles);
 									// message à l'usager - success de l'insertion dans la BD
-									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
+									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Vous pouvez maintenant ajouter une photo pour votre profil usager. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
                 					$this->afficheVue("header", $data);
-/* affichage @temps */				$this->afficheVue("afficheInscriptionUsager", $data);
+/* affichage @temps */				$this->afficheVue("AjoutImage", $data);
 									$this->afficheVue('footer');									
 								}
 								else {

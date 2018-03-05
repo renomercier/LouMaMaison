@@ -1,4 +1,3 @@
-
 // on s'assure que le document soit pret 
 $(document).ready(function() {
 
@@ -251,6 +250,66 @@ $(document).ready(function() {
         });
     }
 
+/*   *********************************************   */
+
+    /**
+    *   requete de suppression d'un appartement
+    */
+    $(document).on('click', '.btnSuppressionApt', function(e) {
+
+        console.log("aloo");
+        var idApt = e.target.attributes[0].nodeValue;
+        var idUser = $('#nomHote')[0].attributes[1].nodeValue
+
+       
+        // requete de suppression d'un appartement
+        $.ajax({
+            url: 'index.php?Appartements&action=supprimerAppartement&id='+idApt, 
+            type: 'POST', 
+            dataType : 'html',
+            success : function(result, statut) {
+
+                afficherAptProprio(idUser);
+                setTimeout(function() {
+                    $('#resultatModifApt').append(result);
+                }, 500);
+            },
+            error : function(resultat, statut, erreur){
+
+            },
+            complete : function(resultat, statut){
+        
+            }
+        }); 
+    });
+
+    /**
+        Fonction pour afficher des apts du proprio
+    */  
+    var afficherAptProprio = function() {
+
+
+        var idUserProprio = $('input[name="idUser"]').val();
+        //var idUserProprio = $("#userNom")[0].innerHTML;
+        $.ajax({
+            method: "GET",
+            url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
+            dataType:"html",
+            success:function(reponse) {
+                $('#afficheInfoProfil').empty();
+                $('#afficheInfoProfil').html(reponse);
+                $('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+
+    }
+
+/*   *********************************************   */
+
+
     // declaration du tableau de 'files' (pour les images)
     var tabFiles = [];
 
@@ -258,8 +317,7 @@ $(document).ready(function() {
     $("#uploadimageProfil").on('submit',(function(e) {
 
         e.preventDefault();
-        $("#message").empty();
-
+        console.log("ici");
         // instanciation du tableau a envoyer par ajax
         var ajaxData = new FormData();  
         // ensuite on ajoute chaque files d'image dans le tableau (tableau 'file')
@@ -276,7 +334,7 @@ $(document).ready(function() {
             processData:false,        
             success: function(data)   
             {
-                $("#photoProfilUsager").html(data);
+                $("#photoProfilUsager").empty().html(data);
             }
         });
     }));
@@ -285,7 +343,6 @@ $(document).ready(function() {
     $("#uploadimage").on('submit',(function(e) {
 
         e.preventDefault();
-        $("#message").empty();
 
         // instanciation du tableau a envoyer par ajax
         var ajaxData = new FormData();
@@ -305,7 +362,7 @@ $(document).ready(function() {
             processData:false,        
             success: function(data)   
             {
-                $("#message").html(data);
+                $("#message").empty().html(data);
             }
         });
     }));

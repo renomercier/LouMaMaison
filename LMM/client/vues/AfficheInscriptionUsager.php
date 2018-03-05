@@ -5,7 +5,6 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-
 <div class="container">
     
     <div class="row">
@@ -137,19 +136,19 @@
         <div class="row">
         <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="modePaiement" id="modePaiement" aria-describedby="aideModePaiement">
         <?= (isset($data['modePaiement'])) ? '<option value="0">-- Choisir un mode de paiement --</option>' : '<option value="0" selected>-- Choisir un mode de paiement --</option>' ?>
-      <?php foreach($data['paiement'] AS $p) {
-              if(isset($data['modePaiement'])) { 
-                if($data['modePaiement'] == $p['id']) { ?>
-                  <option selected value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-      <?php     } 
+        <?php foreach($data['paiement'] AS $p) {
+                if(isset($data['modePaiement'])) { 
+                  if($data['modePaiement'] == $p['id']) { ?>
+                    <option selected value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
+        <?php     } 
+                  else { ?>
+                    <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
+        <?php     }
+                } 
                 else { ?>
                   <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-      <?php     }
-              } 
-              else { ?>
-                <option value=<?= $p['id'] ?>><?= $p['modePaiement'] ?></option>
-      <?php   }
-            } ?>
+        <?php   }
+              } ?>
         </select>
         <small class="form-text text-muted" id="aideModePaiement"></small>
         </div>

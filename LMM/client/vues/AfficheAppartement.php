@@ -10,8 +10,15 @@
     //$messagerie = (isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) ? "Messagerie" : "Contacter";
  ?>
 
-
 <div class="container detailAppartement">
+
+    <!-- affichage des messages a l'usager connecte concernant ses actions -->
+    <div class="row">
+      <div class="col-sm-12">
+         <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+         <?= isset($data['succes']) ? $data['succes'] : '' ?>
+      </div>
+    </div> <!-- fin div row -->
     
     <!-- Modal du carousel de photos -->
     <div class="modal fade" id="modalGaleriePhoto" tabindex="-1" role="dialog" aria-labelledby="modalPhotoSupp" aria-hidden="true">
