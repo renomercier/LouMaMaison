@@ -19,7 +19,6 @@
         private $id;
         private $actif;
         private $ville;
-        //
         private $options;
         private $titre;
         private $descriptif;
@@ -91,7 +90,6 @@
         public function getVille() {
             return $this->ville;
         }
-        //
         public function getOptions() {
             return $this->options;
         }
@@ -219,7 +217,7 @@
             } 
         }
         public function setId_userProprio($u) {
-/**/        if (is_string($u) && trim($u) != "") {
+            if (is_string($u) && trim($u) != "") {
                $this->id_userProprio = $u; 
             }
         }

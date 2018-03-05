@@ -11,6 +11,7 @@
 
 	Inscription et modification d'un Appartement:	
 		- redirections des messages d'erreur
+		- mettre div des messages sur page 
  
 
 	Photos:

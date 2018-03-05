@@ -13,6 +13,14 @@
 
 <div class="container detailAppartement">
     
+    <!-- affichage des messages a l'usager connecte concernant ses actions -->
+    <div class="row">
+      <div class="col-sm-12">
+         <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
+         <?= isset($data['succes']) ? $data['succes'] : '' ?>
+      </div>
+    </div> <!-- fin div row -->
+    
 	<!-- Modal disponibilite -->
     <div class="modal fade" id="modal<?= $data['appartement']->getId(); ?>" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-animation="false">
         <div class="modal-dialog modal-lg" role="document">
@@ -493,7 +501,7 @@
                           
                           <!-- affichage des moyens de transports disponibles -->
                           <div>
-                            <h6>Transports disponibles</h6>
+                            <h5>Transports disponibles</h5>
                             <div class="">
                               <div class="row">
                                 <div class="d-inline col-sm-6">
@@ -523,7 +531,7 @@
                           
                           <!-- affichage des services de proximité disponibles -->
                           <div>
-                            <h6>Services disponibles à proximité</h6>
+                            <h5>Services disponibles à proximité</h5>
                             <div class="">
                               <div class="row">
                                 <div class="d-inline col-sm-6">
@@ -560,7 +568,7 @@
                           
                           <!-- affichage des autres attraits disponibles -->
                           <div>
-                            <h6>Autres</h6>
+                            <h5>Autres</h5>
                             <div class="">
                               <div class="row">
                                 <div class="d-inline col-sm-6">
@@ -593,7 +601,7 @@
                           
                           <!-- affichage des liens utiles dans la ville -->
                           <div>
-                            <h6>Liens utiles</h6>
+                            <h5>Liens utiles</h5>
                             <ul>
                                 <li><a href="https://www.mtl.org/fr" target="_blank" title="Découvrez Montreal">Tourisme Montréal</a></li>
                                 <li><a href="http://ville.montreal.qc.ca/culture/mieux-connaitre-montreal" target="_blank" title="Mieux connaitre Montreal">Mieux connaître Montréal</a></li>
@@ -675,12 +683,12 @@
                     <hr>
                
                     <div class="demandeReservation">
-                        <form id="formApt" method="POST" action="index.php?Appartements&action=sauvegarderApt">
+                        <form id="formReserveApt" method="POST" action="">
                             <!-- Date d'arrivée -->
                             <div class="form-group">
                                 <div class="row">
                                     <label for="dateArrivee">Date arrivée &nbsp | &nbsp Date départ</label>
-                                    <input type="text" name="daterange" id="dateArrivee" size="8" class="form-control text-muted" aria-describedby="aideDateArrivee">
+                                    <input type="text" name="daterange" id="dateArrivee" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateArrivee">
                                     <small class="form-text text-muted" id="aideDateArrivee"></small>
                                 </div>
                             </div>
@@ -689,7 +697,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label for="dateDepart">Date de départ</label>
-                                    <input type="date" name="dateDepart" id="dateDepart" size="8" class="form-control text-muted" aria-describedby="aideDateDepart">
+                                    <input type="date" name="dateDepart" id="dateDepart" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateDepart">
                                     <small class="form-text text-muted" id="aideDateDepart"></small>
                                 </div>
                             </div>
@@ -698,7 +706,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label for="nbPersonnes">Nombre de personnes</label>
-                                    <select class="form-control text-muted" name="nbPersonnes" id="nbPersonnes" aria-describedby="aideNbPersonnes">
+                                    <select class="col-sm-12 form-control text-muted" name="nbPersonnes" id="nbPersonnes" aria-describedby="aideNbPersonnes">
                                         <option selected>Sélectionnez</option>
                                         <?php
                                             for ($i = 1; $i <= $data['appartement']->getNbPersonnes(); $i++) {
@@ -710,16 +718,17 @@
                                     <small class="form-text text-muted" id="aideNbPersonnes"></small>
                                 </div>
                             </div>
-
-                            <input type="submit" class="col-sm-12 btn btn-primary btn-lg" id="inputSubmit" value="Demander une réservation">						
+                            <input type="hidden" value="<?=$data['appartement']->getId();?>" name="id_appart">
+						    <input type="hidden" value="<?=(isset($_SESSION['username'])) ? $_SESSION['username'] : "" ?>" name="id_userClient">
+                            <button type="button" class="col-sm-12 btn btn-primary btn-block btn-lg" id="demandeReservation">Réserver</button>
                         </form>
+                        <div id="erreurReservation"></div>
                     </div>
                     <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
                     <hr>
                     <br>
                 </div>
-            
-                
+                        
             <?php
                 }
             ?>           

@@ -13,7 +13,7 @@
     *                   - definit les requetes specifiques a la classe
     *
 *** *   ...18 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
-	* 						supprimerAppartement(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
+	* 						supprimerAppartement(), supprimePhotosParApt(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
 	* 						getTypeApt_par_id(), getQuartier(), getQuartier_par_id(), getPhotos_par_id(),
 	* 						obtenirAptProprio(), obtenir_apt_avec_type(), obtenir_apt_avec_nb_notes(), sauvegarderPhoto()
     */
@@ -101,6 +101,18 @@
       		
             return $this->supprimer($id);
         }
+
+        /**  
+		* @brief     	Supprimer les photos supplementaires d'un appartement
+		* @param   		<int>   	$id  	Identifiant de l'appartement 
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function supprimePhotosParApt($idApt) 
+        {
+            $query = "DELETE FROM photo WHERE id_appartement = ?";
+			$donnees = array($idApt);
+			return $this->requete($query, $donnees);
+        }
         
         /**
 		* @brief      	Selectionne la liste d'appartements selon la page affichee et le nb d'appartements par page
@@ -150,6 +162,11 @@
             {
                 $query.= " AND moyenne BETWEEN " . $filtre['note'] ."-1 AND ". $filtre['note'] ."+1";
             }
+            if(!empty($filtre['id_typeApt']))
+            {
+                $query.= " AND a.id_typeApt = '" . $filtre['id_typeApt'] ."'";
+            }
+
             $query.= " GROUP BY a.id LIMIT " . $premiereEntree .", ".$appartParPage."";
 
 			$resultat = $this->requete($query);
@@ -302,16 +319,6 @@
             return $resultat;   
         }
 
-        /**
-		* @brief      Chercher tous les quartiers sauvegardés dans la bd
-		* @return     tableau de quartier
-		*/
-/*		public function obtenir_quartiers()
-		{
-			$query = "SELECT * FROM quartier";
-			$resultat = $this->requete($query);
-            return $resultat->fetchAll();
-		}	*/
-
     }
+
 ?>

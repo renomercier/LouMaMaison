@@ -35,7 +35,7 @@
 		*/
 		protected function supprimer($clePrimaire)
 		{
-			$query = "DELETE FROM " . $this->getTableName() . " WHERE " . $this->getClePrimaire() ."=?";
+			$query = "DELETE FROM " . $this->getTableName() . " WHERE " . $this->getClePrimaire() ." = ?";
 			$donnees = array($clePrimaire);
 			return $this->requete($query, $donnees);
 		}
@@ -52,7 +52,7 @@
 				$query = "SELECT * from " . $this->getTableName() . " WHERE " . $this->getClePrimaire() ."=?";
 			}
 			else{
-				$query = "SELECT * from " . $this->getTableName() . " WHERE " . $clePrimaire ."=?";
+				$query = "SELECT * from " . $this->getTableName() . " WHERE " . $clePrimaire ."= ?";
 			}
 			$donnees = array($valeurCherchee);
 			return $this->requete($query, $donnees);

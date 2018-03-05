@@ -35,7 +35,7 @@
         *   @param <int>           $id_appartement         l'id de l'appartement   
         *   @param <string>        $id_username            l'id de l'utilisateur    
         */
-		public function __construct($rating = "", $commentaire = "", $dateNotif = "", $id_appartement = 1, $id_username = "", $id = "")
+		public function __construct($rating = "", $commentaire = null, $dateNotif = "", $id_appartement = 1, $id_username = "", $id = "")
 		{
 			$this->setRating($rating);
 			$this->setCommentaire($commentaire);
@@ -70,53 +70,30 @@
 			if(is_int($id)) {
 				$this->id = $id;
 			}
-			else {
-				return false;
-			}
 		}
 		public function setRating($rating) {
 			if(is_int(+$rating)) {
 				$this->rating = $rating;
-			}
-			else {
-				return false;	
 			}
 		}
 		public function setCommentaire($c) {
 			if(is_string($c)) {
 				$this->commentaire = $c;
 			}
-			else {
-				return false;	
-			}
 		}
-		public function setDateNotif($dateNotif) {
-
-		//	$this->date = new DateTime();
-        //  $this->date = $this->date->format('Y-m-d H:i:s');
-
-			$today = Date("Y-m-d");
-			//var_dump($today);
-			if($dateNotif < $today) {
-				$this->dateNotif = $today;
-			}
-			else {
-				$this->dateNotif = $dateNotif;
-			}
+		public function setDateNotif(DateTime $dateNotif) {
+        	
+			$this->dateNotif = $dateNotif->format('Y-m-d H:i:s');
 		}
 		public function setIdAppartement($id) {
 			if(is_int(+$id)) {
 				$this->id_appartement = $id;
 			}
-			else
-				return false;
 		}
 		public function setIdUsername($id) {
 			if(is_string($id)) {
 				$this->id_username = $id;
 			}
-			else
-				return false;
 		}
 
 	}

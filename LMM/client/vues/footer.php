@@ -14,7 +14,7 @@
                 
                 <div class="row">                    
                     <div class="footer-logo col-sm-3">
-                        <a href="index.php"><img src="./images/logo_sur_blanc.svg"  class="footerLogo img-thumbnail img-fluid" alt="Logo"></a>
+                        <a href="#"><img src="./images/logo_sur_noir.svg"  class="footerLogo img-thumbnail img-fluid" alt="Logo"></a>
                     </div>
                     <div class="footer-text col-sm-3">
                         <h5>LouMaMaison</h5>

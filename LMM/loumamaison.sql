@@ -193,9 +193,36 @@ CREATE TABLE IF NOT EXISTS `message` (
   `sujet` varchar(2000) NOT NULL,
   `dateHeure` datetime NOT NULL,
   `id_userEmetteur` varchar(255) NOT NULL,
+  `archive` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_message_id_userEmetteur` (`id_userEmetteur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Contenu de la table `message`
+--
+
+INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `archive`) VALUES
+(1, '1111111', '1111111', '2018-03-01 00:00:00', 'nat', 0),
+(2, '222222222222222', '222222222222222', '2018-03-09 00:00:00', 'Nouveau00', 0),
+(29, 're: 1111111', 'zzzzzzzzzz', '2018-03-02 14:39:27', 'salim', 1),
+(30, 're: 1111111', 'wwwwwwwwwww', '2018-03-02 14:41:58', 'salim', 1),
+(31, 're: 1111111', '22222222222222222222', '2018-03-02 14:42:25', 'salim', 1),
+(32, 'rrrrrrrrrrrrrr', '333333333', '2018-03-02 14:43:14', 'salim', 0),
+(33, 'sadaddd', 'rrrrrrrrrrrrrrrrrrr', '2018-03-02 14:46:13', 'salim', 1),
+(35, 'rien', 'rienssssssssss', '2018-03-02 20:00:18', 'salim', 0),
+(39, 'gggggg', 'rrrrrggggg', '2018-03-03 01:26:03', 'salim', 1),
+(40, 're: re: 1111111', 'ssssssssssssssssssssssssss', '2018-03-03 01:26:32', 'salim', 1),
+(41, 're: sadaddd', 'assssssssssss', '2018-03-03 01:27:08', 'salim', 1),
+(42, 're: re: 1111111', 'hhhhhhhhhhhh', '2018-03-03 01:40:25', 'salim', 1),
+(43, '54', 'asssasas', '2018-03-03 01:40:53', 'salim', 1),
+(44, 'trien', 'trien', '2018-03-03 01:51:58', 'salim', 0),
+(45, 'sadaddd', 'rhrfhfh', '2018-03-03 02:03:56', 'salim', 0),
+(46, 'rrrrrrrrrrrrrr', 'sfsfsfsfsfsf', '2018-03-03 02:05:48', 'salim', 0),
+(47, 'dgdgdg', 'dgdgdgdgdg', '2018-03-03 02:07:18', 'salim', 0),
+(48, 'rrrrrrrrrrrrrr', 'cxvsxvxvxv', '2018-03-03 02:08:02', 'salim', 0),
+(49, 'teeeest', 'teessst', '2018-03-03 11:16:21', 'salim', 0),
+(50, 'salut', 'salut le terrien', '2018-03-03 11:25:43', 'salim', 0);
 
 -- --------------------------------------------------------
 
@@ -206,9 +233,37 @@ CREATE TABLE IF NOT EXISTS `message` (
 CREATE TABLE IF NOT EXISTS `message_user` (
   `id_message` int(11) NOT NULL,
   `id_username` varchar(255) NOT NULL,
+  `statut` tinyint(1) NOT NULL DEFAULT '0',
+  `supprime` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_message`,`id_username`),
   KEY `FK_message_user_id_username` (`id_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `message_user`
+--
+
+INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) VALUES
+(1, 'salim', 0, 0),
+(2, 'salim', 0, 0),
+(29, 'salim', 1, 1),
+(30, 'salim', 0, 1),
+(31, 'salim', 1, 0),
+(32, 'salim', 1, 1),
+(33, 'salim', 1, 0),
+(35, 'yul', 0, 0),
+(39, 'yul', 0, 0),
+(40, 'salim', 0, 1),
+(41, 'salim', 0, 0),
+(42, 'salim', 1, 0),
+(43, 'yul', 0, 0),
+(44, 'yul', 0, 0),
+(45, 'yul', 0, 0),
+(46, 'yul', 0, 0),
+(47, 'yul', 0, 0),
+(48, 'yul', 0, 0),
+(49, 'renaud', 0, 0),
+(50, 'renaud', 0, 0);
 
 -- --------------------------------------------------------
 

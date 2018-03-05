@@ -10,26 +10,22 @@ $(document).ready(function() {
 
    /**
 	* 	Fonction pour afficher un profil d'usager
-	*/
-		$("#div_info_plus").append($("#info_plus"));
-		
-		$("#div_info_contact").append($("#info_contact"));
-
-		$("#div_info_role").append($("#info_role"));
-        
+	*/	
+        $("#div_user_nom").append($("#data_user_nom"));		
+		$("#div_adresse").append($("#data_adresse"));
+		$("#div_telephone").append($("#data_telephone"));
+		$("#div_paiement").append($("#data_paiement"));
+		$("#div_contact").append($("#data_contact"));
+		$("#div_role").append($("#data_role"));
 		$("#div_modif_profil").append($(".btn-modifier"));
 		
-		$("#div_messagerie").append($("#messagerie"));
-		
-		$("#div_action_admin").append($("#action_admin"));
-       
-		$(".menuProfil").append($("#div_action_admin"));
-		
-		$("#div_historique").append($("#historique"));
-		
-		$("#div_reservations").append($("#reservations"));
-		
-		$("#div_mes_appts").append($("#mes_appts"));
+		$("#div_messagerie").append($("#messagerie"));		
+		$("#div_action_admin").append($("#action_admin"));       
+		$(".menuProfil").append($("#div_action_admin"));		
+		$("#div_historique").append($("#historique"));		
+		$("#div_reservations").append($("#reservations"));		
+		$("#div_mes_appts").append($("#mes_appts"))
+    
 		
 	/**
 	* 	Fonction pour Modifier un profil d'usager
@@ -38,7 +34,7 @@ $(document).ready(function() {
             var idUser = $(this).prev().val();	
 			
             // une fois les validations js faites, on soumet le formulaire
-            if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length && isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
+            if(isName($("#nom").val()) && isName($("#prenom").val()) && isText($("#adresse").val()) && isPhoneNumber($("#telephone").val()) && $("#moyenComm").length &&  $("#moyenComm").length ) {  
 				// envoie la requête par ajax			
 				var queryString1 = $("#modifierProfil"+idUser).serialize(); //recuperer l'info du formulaire
 				$.ajax({
@@ -54,7 +50,6 @@ $(document).ready(function() {
 						"telephone":$('input[name="telephone"]').val(),
 						"moyenComm":$('#moyenComm').val(),
 						"paiement":$('#modePaiement').val(),
-                        "motdepasse":$("#pwd0").val(),
                         "idUser":$('input[name="idUser"]').val()
 						}) 
 					}, 
@@ -70,11 +65,17 @@ $(document).ready(function() {
                             $('.modal-backdrop.fade.show').remove();
                             $('body').removeClass("modal-open");
                             $("#div_info_nom").empty();
-                            $("#div_info_plus").empty();
-                            $("#div_info_contact").empty();
+                            $("#div_user_nom").empty();
+                            $("#div_adresse").empty();
+                            $("#div_telephone").empty();
+                            $("#div_paiment").empty();
+                            $("#div_contact").empty();
                             $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3>");               
-                            $("#div_info_plus").html("<div class='form-group row col-sm-12'>Username : " + idUser + "</div><div class='form-group row col-sm-12'>Adresse : " + response[0][0].adresse + "</div><div class='form-group row col-sm-12'>Téléphone : " + response[0][0].telephone + "</div><div class='form-group row col-sm-12 mb-0'>Mode de paiement : " + response[0][0].modePaiement + "</div>");
-                            $("#div_info_contact").html("<span id='info_contact'><div  class='form-group row col-sm-12' >Moyen de contact : " + response[0][0].moyenContact + "</div>");  
+                            $("#div_user_nom").html(idUser); 
+                            $("#div_adresse").html(response[0][0].adresse);
+                            $("#div_telephone").html(response[0][0].telephone);
+                            $("#div_paiement").html(response[0][0].modePaiement);
+                            $("#div_contact").html(response[0][0].moyenContact);  
                         }
                        
 					},  
@@ -122,7 +123,65 @@ $(document).ready(function() {
 			(valModePaiement !=1) ? ($("#modePaiement").addClass('alert-warning'), $('#aideModePaiement').empty().append('Vous devez choisir un mode de paiement'))  : ($("#modePaiement").removeClass('alert-warning'), $('#aideModePaiement').empty());
 		}	
 	});
-	
+    
+    /************/
+    /**
+    * Fonction pour modifier le mot de passe
+    */
+    	$(document).on('click', '.sauvegarderMotDePasse', function(e){
+            var idUserPass = $('input[name="idUserPass"]').val();	
+			
+            // une fois les validations js faites, on soumet le formulaire
+            if(isPassword($("#pwd0").val()) && valPwdConfirm($("#pwd1").val(), $("#pwd0").val()) ) {  
+				// envoie la requête par ajax			
+				$.ajax({
+					cache: false,
+					url: 'index.php?Usagers&action=modifierMotDePasse',
+					method: "POST",
+					dataType : 'json',		
+					data: {
+                        pwd0:$("#pwd0").val(),
+                        idUser:idUserPass
+						
+					}, 
+					success: function (response) {                       
+						//vérification côté php, s'il y des erreurs
+						if(response.messageErreur) {
+                            $("#erreur_pass").empty().css("display", "block").addClass("alert alert-warning").text(response.messageErreur);
+                        } 
+                        else if(response[0].messageSucces){ //s'on n'as pas des erreurs côté php
+                           $("#erreur_pass").empty().css("display", "block").addClass("alert alert-success").text(response[0].messageSucces).fadeOut( 5000, "linear");
+                            $('#pwd0').empty();    
+                            $('#pwd0').val("*****");
+							$('#pwd0')[0].type="text";						
+							setTimeout(function() {$('#pwd0')[0].type="password"}, 2000);						
+                            $('#pwd1').empty();    
+                            $('#pwd1').val("*****");
+							$('#pwd1')[0].type="text";								
+							setTimeout(function() {$('#pwd1')[0].type="password"}, 2000);
+                        }
+                       
+					},  
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+				//return;	
+			}
+			else {
+			//empecher le comportement normal du bouton
+			e.preventDefault();
+					
+			// validation du mot de passe
+			var valPwd0 = isPassword($("#pwd0").val());
+			(!valPwd0) ? ($("#pwd0").addClass('alert-warning'), $('#aidePwd0').empty().append('Le mot de passe doit contenir au minimum une lettre majuscule ou un chiffre'))  : ($("#pwd0").removeClass('alert-warning'), $('#aidePwd0').empty());
+			
+			var valPwd1 = isPassword($("#pwd1").val());
+			
+		}	
+	});
+
+
 
     /* definir la class active a la categorie d'usagers visitée */
     $('.filtre_usager .nav-link').on( "click", function( e ) {
@@ -139,7 +198,8 @@ $(document).ready(function() {
 		Fonction pour afficher des apts du proprio
 	*/	
 		$(document).on('click', '#mes_appts', function(e){
-			var idUserProprio = $("input[name='usernameProp']").val(); 
+			var idUserProprio =$('input[name="idUser"]').val();
+			//var idUserProprio = $("#userNom")[0].innerHTML;
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
@@ -147,14 +207,7 @@ $(document).ready(function() {
 				success:function(reponse) {
 					$('#afficheInfoProfil').empty();
 					$('#afficheInfoProfil').html(reponse);
-					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");
-					$('#afficheInfoProfil nav').remove();
-					$('#afficheInfoProfil .alert').remove();
-					$('#afficheInfoProfil footer').remove();
-					$('#afficheInfoProfil script').remove();
-					$('#afficheInfoProfil #carte').remove();
-                   // var idApt = $('.btn-modal')[0].id;
-                    
+					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -168,16 +221,23 @@ $(document).ready(function() {
 		Action supprimer une disponibilite d'un apprtement
 	*/
     $(document).on('click', $(".btnSupprimerDispo"), function(){
-		$(".btnSupprimerDispo").one('click', clickHandler1);
+		$(".btnSupprimerDispo").one('click', funcSupprimeDispo);
 	});
 
 	/**
 		Action ajouter une disponibilite d'un apprtement
 	*/ 
-	//$(".btnAjouterDispo").one('click', clickHandler);
 	$(document).on('click', $(".btnAjouterDispo"), function(){
-		$(".btnAjouterDispo").one('click', clickHandler);
+		$(".btnAjouterDispo").one('click', funcAjouteDispo);
 	});
+	
+	/**
+		Action demande d'une reservation d'un appartement
+	*/
+	$(document).on('click', $("#demandeReservation"), function(){
+		$("#demandeReservation").one('click', funcDemandeReservation);
+	});
+	
 });	
 
 
@@ -199,7 +259,7 @@ function valPwdConfirm(elm1, elm2) {
 /**
 	Fonction pour supprimer une disponibilite d'un apprtement
 */
-var clickHandler1 = function(e){
+var funcSupprimeDispo = function(e){
 	var idDispo = $(this).val();
 	var tr = $(this).parent().parent(); 
 	var id_apt = $('input[name="id_apt"]').val()
@@ -208,7 +268,7 @@ var clickHandler1 = function(e){
 			url: "index.php?Appartements&action=supprimeDisponibilite&id_dispo="+idDispo,
 			dataType:"json",
 			success:function(reponse) {
-				$('.btnSupprimerDispo').one('click', clickHandler1);
+				//$('.btnSupprimerDispo').one('click', funcSupprimeDispo);
 				if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
 					$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>").fadeOut( 1000, "linear");
 					tr.remove();
@@ -222,15 +282,14 @@ var clickHandler1 = function(e){
 			}
 		});
     e.stopImmediatePropagation();
-    return false;
+    //return false;
 }
 
 /**
        Fonction pour ajouter disponibilite d'un apprtement
 */
-var clickHandler = function(e){
+var funcAjouteDispo = function(e){
 	var id_apt =  $(this).val(); 
-    console.log(id_apt);
 	var dateDebut = $('#dateDebut'+id_apt).val();
 	var dateFin = $('#dateFin'+id_apt).val();
 	$.ajax({
@@ -248,7 +307,7 @@ var clickHandler = function(e){
 			}) 
 		}, 
       success: function(reponse){
-        $('.btnAjouterDispo').one('click', clickHandler);
+       // $('.btnAjouterDispo').one('click', funcAjouteDispo);
 		if(reponse.messageErreur) 
 		{ 
 			$("#erreurDispo"+id_apt).empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
@@ -276,8 +335,45 @@ var clickHandler = function(e){
 				}
     });
     e.stopImmediatePropagation();
-    return false;
+   // return false;
 }
+
+/**
+	Fonction pour faire une demande de reservation d'un appartement
+*/
+	var funcDemandeReservation = function(e){
+		var id_apt = $('input[name="id_appart"]').val();
+		var dateDebut = $('input[name="dateDebut"]').val();
+		var dateFin = $('input[name="dateFin"]').val();
+		var id_userClient = $('input[name="id_userClient"]').val();
+		var nbPersonnes = $('option:selected').val();
+		$.ajax({
+			cache: false,
+			url: 'index.php?Appartements&action=creerLocation',
+			method: 'POST',
+			dataType : 'json',		
+			data: {
+				id_appart : id_apt,
+				dateDebut : dateDebut,
+				dateFin : dateFin,
+				id_userClient : id_userClient,
+				nbPersonnes : nbPersonnes
+			},
+			success:function(reponse) {
+				if(reponse.messageErreur) 
+				{ 
+					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
+				} 
+				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
+					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+    e.stopImmediatePropagation();	
+	}
 
 
 /* ============================  function pour le datepicker des disponibilites ============================================== */
@@ -306,6 +402,7 @@ var clickHandler = function(e){
 
 
 /*////////////////////////////////////////////////////////////////*/
+
 /* filtrer le resultat de la recherche selon des critéres donnés*/
 
     function filtrerAppart(url){
@@ -557,4 +654,192 @@ function actionAdmin(idUser, action) {
             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
           }
         });
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* //////////////////////////////  ACTIONS SUR LES MESSAGES ////////////////////////////////////*/
+
+$(document).ready(function() {
+    
+    var idUsager = $('input[name="idUser"]').val();
+    //var idUsager = $("#userNom")[0].innerHTML;
+    
+    /* faire une test pour verifier la provenace de la requete*/
+    $.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if(results)	return results[1]; else return 0;
+    }
+    
+    // appel de la fonction d'affichage de tous les messages
+    
+        if($.urlParam('messages') == 'ok'){
+            // afficher la liste des messages
+            afficheListeMessages(idUsager, 'afficherListeMessages');
+        }
+        
+    $('p[name="Messagerie"]').click( function(e){
+        
+        // afficher la liste des messages
+        afficheListeMessages(idUsager, 'afficherListeMessages');
+        e.stopImmediatePropagation();
+        });
+});
+
+/* fonction pour afficher tout les messages reçus par un usagers */
+function afficheListeMessages(idUser, action){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages",
+            dataType:"html",
+            data:{
+                action: action,
+                idUsager: idUser
+            },
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+              
+                $('#afficheInfoProfil').html(reponse);
+              
+            if(action == 'afficheMessagesEnvoyes')
+              {
+                $('#afficheInfoProfil').html(reponse);
+                afficheMessEnvoyes();
+              }
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+
+/* fonction pour afficher tout les details d'un message */
+function afficheDetailsMessage(idMessage){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages",
+            dataType:"html",
+           data:{
+               action: 'detailsMessage',
+               idMessage:idMessage
+               },
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+                $.each($('td[name="contenuMessage"]'), function(){$(this).html('');});
+                $('#contenuMessage'+idMessage).html(reponse);
+                $('.iconEnveloppe'+idMessage).html('<i class="fa fa-envelope-open text-muted"></i>');
+                $('.iconEnveloppe'+idMessage).parent().removeClass('non_lu');
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+/* fonction pour supprimer un message */
+function supprimeMessage(idMessage, action){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages",
+            dataType:"html",
+            data: {
+                action: action,
+                idMessage: idMessage
+            },
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+               // $('#contenuMessage'+idMessage).html(reponse);
+              $('#afficheInfoProfil').html(reponse);
+               
+              if(action == 'archiverMessage')
+                  {
+                      afficheMessEnvoyes();
+                  }
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+/* ouvrire le formulaire de reponse à un message*/
+function formulaireMessage(idDestination, idMessage ='', objet='')
+{
+    $.each($('td[name="contenuMessage"]'), function(){$(this).html('');});
+    $('#contenuMessage'+idMessage).load('vues/ecrireMessage.php');
+    setTimeout(function () { 
+        $('#contenuMessage'+idMessage+' #objet').val('re: '+objet);
+        $('#contenuMessage'+idMessage+' #destination').val(idDestination);
+        
+        // appel de la fonction ecrireMessage()
+        $('button#envoiMessage').click(function(e){
+            e.preventDefault();
+            var objet = $('#objet').val();
+            var texte = $('#messageTextarea').val();
+            ecrireMessage(idDestination, objet, texte);
+            e.stopImmediatePropagation();
+        });
+    }, 100);
+}
+
+/* ouvrire le formulaire de redaction d'un nouveau  message*/
+function formulaireNouveauMessage(selecteur)
+{
+    $('#'+selecteur).load('vues/ecrireMessage.php');
+    setTimeout(function () {
+        var destinatair = $('#profilUser input[name="usernameProp"]').val();
+        $('#destination').val(destinatair);
+        // appel de la fonction ecrireMessage()
+        $('button#envoiMessage').click(function(e){
+            e.preventDefault();
+            var idDestination = $('#destination').val();
+            var objet = $('#objet').val();
+            var texte = $('#messageTextarea').val();
+            ecrireMessage(idDestination, objet, texte);
+            e.stopImmediatePropagation();
+        });
+    }, 100);
+}
+
+/* fonction pour ecrire un message */
+function ecrireMessage(idDestination, objet, texte){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages",
+            dataType:"html",
+            data:{
+                action: 'ecrireMessage',
+                idDestination : idDestination,
+                objet: objet,
+                texte: texte,
+            },
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+              $(".ecrireMessage").hide( "slide", {times:4}, 1000 );
+              $.each($('.tab-pane'), function(){$(this).removeClass('active');}); 
+              $.each($('.nav-tabs .nav-link'), function(){$(this).removeClass('active');});
+              $('#envoyes').addClass('active');
+              $('a[href="#envoyes"]').addClass('active');
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
+
+// fonction pour afficher les message envoyés
+function afficheMessEnvoyes(){
+    $.each($('.tab-pane'), function(){$(this).removeClass('active');}); 
+    $.each($('.nav-tabs .nav-link'), function(){$(this).removeClass('active');});
+    $('#envoyes').addClass('active');
+    $('a[href="#envoyes"]').addClass('active');
+    $('h6[name="repondreMessage"]').remove();
+    $('#envoyes').append($('div.table-responsive'));
+    $('#recus').html('');
 }
