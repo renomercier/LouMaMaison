@@ -3,7 +3,7 @@
     /* paypal*/
     
     /* initialiser la div qui contiendra le bouton paypal*/
-    function boutonPaypal(total){
+    function boutonPaypal(total, idLocation){
         
         /* creation du bouton paypal */
 //       paypal.Button.render({
@@ -43,6 +43,7 @@
         
         paypal.Button.render({
 
+            
             env: 'sandbox', // sandbox | production
 
             // Specify the style of the button
@@ -77,7 +78,7 @@
                             }
                         ]
                     }
-                }); console.log(payment);
+                });
             },
 
             // onAuthorize() is called when the buyer approves the payment
@@ -89,7 +90,9 @@
                     // Show a thank-you note
                     
                   return actions.payment.get().then(function(payment) {
-                    $("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>Détail du paiement: "+payment+ "</p>");
+                     
+                    setTimeout(function() {$("#myModal"+idLocation).modal('hide')}, 5000);
+                      
                       console.log(payment);
                 });
                    // document.querySelector('#thanksname').innerText = shipping.recipient_name;

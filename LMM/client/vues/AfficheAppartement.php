@@ -268,13 +268,12 @@
                 </div>
             
                 <?php
-
                     if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
                   {
                   ?>
 
                     <div class="d-block">
-                        <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                       <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                     </div>
 
                 <?php
@@ -283,20 +282,18 @@
 
                     <div class="d-block">
                         <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
-                    </div>
+                    </div>  
 
                 <?php
                     }
                 ?>
             
             </div>
-            
                 <!-- formulare de redaction d'un message -->
                 <div id="profilUser">
                     <input type="hidden" name="idProprio" value="<?= $data['appartement']->getId_userProprio() ?>">
                     <div class="row" id="afficheInfoProfil"></div>
                 </div> 
-            
             <hr>
             
             <!-- affichage des equipements de l'appartememnt -->
@@ -305,7 +302,6 @@
                 <div class="row">
                     
                     <?php
-
                         foreach($data["tab_options"] as $option) {
                             if  ($option['id'] > 4) {
                     ?>
@@ -336,7 +332,6 @@
                 <div class="row">
                     
                     <?php
-
                         foreach($data["tab_options"] as $option) {
                             
                             if  ($option['id'] == 4) {
@@ -382,7 +377,6 @@
                 <div class="row">
                     
                     <?php
-
                         foreach($data["tab_options"] as $option) {
                             
                             if  ($option['id'] <= 3) {
@@ -453,26 +447,29 @@
                 <div class="row align-middle">
                     <div class="d-inline col-sm-12 text-left">
                         <?php
-
                             if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
                         {
                         ?>
                                 <div class="d-block">
-                                    <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                                    <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                                 </div>
                         <?php
                             } else {
                         ?>
                                 <div class="d-block">
-                                    <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                                    <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                                 </div>  
                         <?php
                             }
                         ?>
                     </div>
-                </div>                      
-            </div>
-            
+                    <!-- formulare de redaction d'un message -->                     
+                </div>
+                    <div>
+                        <input type="hidden" name="idProprio" value="<?= $data['appartement']->getId_userProprio() ?>">
+                        <div class="row" id="afficheInfoProfil2"></div>
+                    </div> 
+                </div> 
             <hr>
             
             <!-- affichage des politique de communication de l'appartememnt -->
@@ -694,20 +691,20 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label for="dateArrivee">Date arrivée &nbsp | &nbsp Date départ</label>
-                                    <input type="text" name="daterange" id="dateArrivee" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateArrivee">
+                                    <input type="date" name="dateDebut" id="dateDebut" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateArrivee">
                                     <small class="form-text text-muted" id="aideDateArrivee"></small>
                                 </div>
                             </div>
                             <!-- Date de départ -->
-                            <!--
+                          
                             <div class="form-group">
                                 <div class="row">
                                     <label for="dateDepart">Date de départ</label>
-                                    <input type="date" name="dateDepart" id="dateDepart" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateDepart">
+                                    <input type="date" name="dateFin" id="dateFin" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateDepart">
                                     <small class="form-text text-muted" id="aideDateDepart"></small>
                                 </div>
                             </div>
-                            -->
+                            
                             <!-- Nombre de personnes -->
                             <div class="form-group">
                                 <div class="row">
@@ -725,8 +722,7 @@
                                 </div>
                             </div>
                             <input type="hidden" value="<?=$data['appartement']->getId();?>" name="id_appart">
-                            <input type="hidden" value="<?=(isset($_SESSION['username'])) ? $_SESSION['username'] : "" ?>" name="id_userClient">
-                            <input type="hidden" value="<?= $data['appartement']->getMontantParJour(); ?>" name="prixJour">
+						    <input type="hidden" value="<?=(isset($_SESSION['username'])) ? $_SESSION['username'] : "" ?>" name="id_userClient">
                             <button type="button" class="col-sm-12 btn btn-primary btn-block btn-lg" id="demandeReservation">Réserver</button>
                         </form>
                         <div id="erreurReservation"></div>

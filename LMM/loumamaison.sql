@@ -1,34 +1,27 @@
-<<<<<<< HEAD
 -- phpMyAdmin SQL Dump
--- version 4.1.4
--- http://www.phpmyadmin.net
+-- version 4.7.3
+-- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1
--- Время создания: Мар 06 2018 г., 08:59
--- Версия сервера: 5.6.15-log
--- Версия PHP: 5.5.8
+-- Host: localhost
+-- Generation Time: Mar 06, 2018 at 09:44 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- База данных: `loumamaison`
+-- Database: `loumamaison`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `appartement`
+-- Table structure for table `appartement`
 --
 
-CREATE TABLE IF NOT EXISTS `appartement` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `appartement` (
+  `id` int(11) NOT NULL,
   `actif` tinyint(1) NOT NULL DEFAULT '1',
   `options` varchar(1000) DEFAULT NULL,
   `titre` varchar(255) NOT NULL,
@@ -45,30 +38,26 @@ CREATE TABLE IF NOT EXISTS `appartement` (
   `codePostal` varchar(255) NOT NULL,
   `id_typeApt` int(11) NOT NULL,
   `id_userProprio` varchar(255) NOT NULL,
-  `id_nomQuartier` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_appartement_id_typeApt` (`id_typeApt`),
-  KEY `FK_appartement_id_userProprio` (`id_userProprio`),
-  KEY `FK_appartement_id_nomQuartier` (`id_nomQuartier`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+  `id_nomQuartier` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `appartement`
+-- Dumping data for table `appartement`
 --
 
 INSERT INTO `appartement` (`id`, `actif`, `options`, `titre`, `descriptif`, `montantParJour`, `nbPersonnes`, `nbLits`, `nbChambres`, `photoPrincipale`, `noApt`, `noCivique`, `rue`, `ville`, `codePostal`, `id_typeApt`, `id_userProprio`, `id_nomQuartier`) VALUES
-(1, 1, 'wifi=checked&cintres=checked', 'maison de bois', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
-(2, 1, 'wifi=checked&cintres=checked', 'maison en brique', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 2030, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
-(3, 1, 'wifi=checked&cintres=checked', 'maison en paille', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
-(4, 1, 'wifi=checked&cintres=checked', 'maison en carton', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 2030, 'bélanger', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
-(5, 1, 'wifi=checked&cintres=checked', 'maison de bois 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 2030, 'bellechasse', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
-(6, 1, 'wifi=checked&cintres=checked', 'maison en brique 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 4218, 'rudy', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
-(7, 1, 'wifi=checked&cintres=checked', 'maison en paille 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
-(8, 1, 'wifi=checked&cintres=checked', 'maison en carton 2', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
-(9, 1, 'wifi=checked&cintres=checked', 'maison de bois 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
-(10, 1, 'wifi=checked&cintres=checked', 'maison en brique 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 11970, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
-(11, 1, 'wifi=checked&cintres=checked', 'maison en paille 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
-(12, 1, 'wifi=checked&cintres=checked', 'maison en carton 3', 'description de l''appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
+(1, 1, 'wifi=checked&cintres=checked', 'maison de bois', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
+(2, 1, 'wifi=checked&cintres=checked', 'maison en brique', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 2030, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
+(3, 1, 'wifi=checked&cintres=checked', 'maison en paille', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
+(4, 1, 'wifi=checked&cintres=checked', 'maison en carton', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 2030, 'bélanger', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
+(5, 1, 'wifi=checked&cintres=checked', 'maison de bois 2', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 2030, 'bellechasse', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
+(6, 1, 'wifi=checked&cintres=checked', 'maison en brique 2', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 4218, 'rudy', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
+(7, 1, 'wifi=checked&cintres=checked', 'maison en paille 2', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
+(8, 1, 'wifi=checked&cintres=checked', 'maison en carton 2', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
+(9, 1, 'wifi=checked&cintres=checked', 'maison de bois 3', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 200, 2, 1, 1, './images/profil.jpg', '4', 11969, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 1),
+(10, 1, 'wifi=checked&cintres=checked', 'maison en brique 3', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 50, 5, 2, 2, './images/profil.jpg', '300', 11970, 'Pie IX', 'Montréal', 'H1G 3V9', 2, 'yul', 4),
+(11, 1, 'wifi=checked&cintres=checked', 'maison en paille 3', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 50, 2, 1, 6, './images/profil.jpg', '4', 11979, 'rolland', 'Montréal', 'H1G 3V9', 1, 'nat', 3),
+(12, 1, 'wifi=checked&cintres=checked', 'maison en carton 3', 'description de l\'appartement bbbbabbabbababab ffff arrararara ssss.', 100, 5, 6, 1, './images/profil.jpg', '302', 11960, 'rolland', 'Montréal', 'H1G 3V9', 2, 'yul', 2),
 (13, 1, 'wifi=checked&cintres=checked&fer+%C3%A0+repasser=checked', 'Le titre mmmmm', 'oooooo ooooo oo o ', 50, 2, 1, 1, './images/profil.jpg', NULL, 1025, 'DeBellechasse', 'Montréal', 'H2S1Y4', 1, 'salim', 14),
 (14, 1, NULL, 'TTTTTTTTTT', 'oooooo ooo oo o o ', 70, 2, 1, 1, './images/profil.jpg', NULL, 32, 'Beaubien', 'Montréal', 'h2h2h2', 3, 'nat', 17),
 (15, 1, 'Options-Associées', 'Superbe Loft disponible', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 123, 4, 2, 1, './images/apt01-01.png', '501', 51, 'St-Paul', 'Montréal', 'G1Q 1Q9', 1, 'renaud', 7),
@@ -79,17 +68,16 @@ INSERT INTO `appartement` (`id`, `actif`, `options`, `titre`, `descriptif`, `mon
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `communication`
+-- Table structure for table `communication`
 --
 
-CREATE TABLE IF NOT EXISTS `communication` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `moyenComm` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+CREATE TABLE `communication` (
+  `id` int(11) NOT NULL,
+  `moyenComm` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `communication`
+-- Dumping data for table `communication`
 --
 
 INSERT INTO `communication` (`id`, `moyenComm`) VALUES
@@ -101,59 +89,47 @@ INSERT INTO `communication` (`id`, `moyenComm`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `disponibilite`
+-- Table structure for table `disponibilite`
 --
 
-CREATE TABLE IF NOT EXISTS `disponibilite` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `disponibilite` (
+  `id` int(11) NOT NULL,
   `dateDebut` date NOT NULL,
   `dateFin` date NOT NULL,
   `disponibilite` tinyint(1) NOT NULL DEFAULT '1',
-  `id_appartement` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_disponibilite_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=48 ;
+  `id_appartement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `disponibilite`
+-- Dumping data for table `disponibilite`
 --
 
 INSERT INTO `disponibilite` (`id`, `dateDebut`, `dateFin`, `disponibilite`, `id_appartement`) VALUES
 (20, '2018-02-20', '2018-03-31', 0, 16),
 (25, '2018-03-05', '2018-03-31', 1, 18),
-(36, '2018-03-05', '2018-03-06', 0, 16),
-(37, '2018-03-09', '2018-03-31', 0, 16),
-(38, '2018-03-09', '2018-03-30', 0, 16),
-(39, '2018-03-09', '2018-03-09', 1, 16),
-(40, '2018-03-12', '2018-03-30', 0, 16),
-(41, '2018-03-12', '2018-03-13', 1, 16),
-(42, '2018-03-16', '2018-03-30', 1, 16),
-(43, '2018-03-05', '2018-03-31', 0, 15),
+(43, '2018-03-05', '2018-03-31', 1, 15),
 (44, '2018-03-06', '2018-03-31', 1, 14),
 (45, '2018-03-06', '2018-03-31', 1, 1),
-(46, '2018-03-06', '2018-03-07', 1, 15),
-(47, '2018-03-11', '2018-03-31', 1, 15);
+(48, '2018-03-06', '2018-03-07', 1, 16),
+(49, '2018-03-10', '2018-03-31', 1, 16);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `evaluation`
+-- Table structure for table `evaluation`
 --
 
-CREATE TABLE IF NOT EXISTS `evaluation` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `evaluation` (
+  `id` int(11) NOT NULL,
   `rating` int(11) NOT NULL,
   `commentaire` text,
   `dateNotif` date NOT NULL,
   `id_appartement` int(11) NOT NULL,
-  `id_username` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_evaluation_id_appartement` (`id_appartement`),
-  KEY `FK_evaluation_id_username` (`id_username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+  `id_username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `evaluation`
+-- Dumping data for table `evaluation`
 --
 
 INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appartement`, `id_username`) VALUES
@@ -169,11 +145,11 @@ INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appart
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `location`
+-- Table structure for table `location`
 --
 
-CREATE TABLE IF NOT EXISTS `location` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `location` (
+  `id` int(11) NOT NULL,
   `dateDebut` date NOT NULL,
   `dateFin` date NOT NULL,
   `valideParPrestataire` tinyint(1) NOT NULL DEFAULT '0',
@@ -182,49 +158,39 @@ CREATE TABLE IF NOT EXISTS `location` (
   `id_appartement` int(11) NOT NULL,
   `nbPersonnes` int(11) NOT NULL,
   `refuse` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FK_location_id_userClient` (`id_userClient`),
-  KEY `FK_location_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+  `idDispo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `location`
+-- Dumping data for table `location`
 --
 
-INSERT INTO `location` (`id`, `dateDebut`, `dateFin`, `valideParPrestataire`, `validePaiement`, `id_userClient`, `id_appartement`, `nbPersonnes`, `refuse`) VALUES
-(4, '2018-03-05', '2018-03-06', 1, 0, 'Nouveau00', 16, 3, 0),
-(17, '2018-03-07', '2018-03-08', 1, 0, 'yul', 16, 1, 0),
-(18, '2018-03-05', '2018-03-06', 1, 0, 'yul', 16, 1, 0),
-(19, '2018-03-31', '2018-03-31', 1, 0, 'yul', 16, 1, 0),
-(20, '2018-03-10', '2018-03-11', 1, 0, 'salim', 16, 1, 0),
-(21, '2018-03-14', '2018-03-15', 1, 0, 'salim', 16, 2, 0),
-(22, '2018-03-23', '2018-03-25', 0, 0, 'salim', 16, 2, 0),
-(23, '2018-03-07', '2018-03-10', 1, 0, 'yul', 15, 2, 0),
-(24, '2018-03-13', '2018-03-15', 0, 0, 'yul', 15, 2, 1),
-(25, '2018-03-13', '2018-03-15', 0, 0, 'salim', 15, 2, 1),
-(26, '2018-03-17', '2018-03-18', 0, 0, 'salim', 15, 2, 1),
-(27, '2018-03-07', '2018-03-09', 0, 0, 'yul', 14, 2, 0),
-(28, '2018-03-15', '2018-03-17', 0, 0, 'yul', 1, 1, 0);
+INSERT INTO `location` (`id`, `dateDebut`, `dateFin`, `valideParPrestataire`, `validePaiement`, `id_userClient`, `id_appartement`, `nbPersonnes`, `refuse`, `idDispo`) VALUES
+(29, '2018-03-08', '2018-03-09', 0, 0, 'yul', 16, 2, 0, 0),
+(30, '2018-03-08', '2018-03-09', 0, 0, 'salim', 16, 2, 0, 0),
+(31, '2018-03-18', '2018-03-20', 0, 0, 'salim', 16, 1, 0, 0),
+(33, '2018-03-21', '2018-03-23', 1, 0, 'yul', 15, 3, 0, 43),
+(34, '2018-03-18', '2018-03-19', 0, 0, 'yul', 15, 2, 0, 43),
+(35, '2018-03-20', '2018-03-23', 0, 0, 'nat', 15, 3, 0, 43),
+(36, '2018-03-09', '2018-03-10', 0, 0, 'yul', 15, 2, 0, 43);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `message`
+-- Table structure for table `message`
 --
 
-CREATE TABLE IF NOT EXISTS `message` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL,
   `titre` varchar(255) NOT NULL,
   `sujet` varchar(2000) NOT NULL,
   `dateHeure` datetime NOT NULL,
   `id_userEmetteur` varchar(255) NOT NULL,
-  `archive` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FK_message_id_userEmetteur` (`id_userEmetteur`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+  `archive` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `message`
+-- Dumping data for table `message`
 --
 
 INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `archive`) VALUES
@@ -257,20 +223,18 @@ INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `message_user`
+-- Table structure for table `message_user`
 --
 
-CREATE TABLE IF NOT EXISTS `message_user` (
+CREATE TABLE `message_user` (
   `id_message` int(11) NOT NULL,
   `id_username` varchar(255) NOT NULL,
   `statut` tinyint(1) NOT NULL DEFAULT '0',
-  `supprime` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_message`,`id_username`),
-  KEY `FK_message_user_id_username` (`id_username`)
+  `supprime` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `message_user`
+-- Dumping data for table `message_user`
 --
 
 INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) VALUES
@@ -303,17 +267,16 @@ INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) V
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `paiement`
+-- Table structure for table `paiement`
 --
 
-CREATE TABLE IF NOT EXISTS `paiement` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `modePaiement` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+CREATE TABLE `paiement` (
+  `id` int(11) NOT NULL,
+  `modePaiement` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `paiement`
+-- Dumping data for table `paiement`
 --
 
 INSERT INTO `paiement` (`id`, `modePaiement`) VALUES
@@ -324,19 +287,17 @@ INSERT INTO `paiement` (`id`, `modePaiement`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `photo`
+-- Table structure for table `photo`
 --
 
-CREATE TABLE IF NOT EXISTS `photo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `photo` (
+  `id` int(11) NOT NULL,
   `photoSupp` varchar(255) NOT NULL,
-  `id_appartement` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_photo_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+  `id_appartement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `photo`
+-- Dumping data for table `photo`
 --
 
 INSERT INTO `photo` (`id`, `photoSupp`, `id_appartement`) VALUES
@@ -384,17 +345,16 @@ INSERT INTO `photo` (`id`, `photoSupp`, `id_appartement`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `quartier`
+-- Table structure for table `quartier`
 --
 
-CREATE TABLE IF NOT EXISTS `quartier` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nomQuartier` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+CREATE TABLE `quartier` (
+  `id` int(11) NOT NULL,
+  `nomQuartier` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `quartier`
+-- Dumping data for table `quartier`
 --
 
 INSERT INTO `quartier` (`id`, `nomQuartier`) VALUES
@@ -421,17 +381,16 @@ INSERT INTO `quartier` (`id`, `nomQuartier`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `role`
+-- Table structure for table `role`
 --
 
-CREATE TABLE IF NOT EXISTS `role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nomRole` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `nomRole` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `role`
+-- Dumping data for table `role`
 --
 
 INSERT INTO `role` (`id`, `nomRole`) VALUES
@@ -443,18 +402,16 @@ INSERT INTO `role` (`id`, `nomRole`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `role_user`
+-- Table structure for table `role_user`
 --
 
-CREATE TABLE IF NOT EXISTS `role_user` (
+CREATE TABLE `role_user` (
   `id_username` varchar(255) NOT NULL,
-  `id_nomRole` int(11) NOT NULL,
-  PRIMARY KEY (`id_username`,`id_nomRole`),
-  KEY `FK_role_user_id_nomRole` (`id_nomRole`)
+  `id_nomRole` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `role_user`
+-- Dumping data for table `role_user`
 --
 
 INSERT INTO `role_user` (`id_username`, `id_nomRole`) VALUES
@@ -473,17 +430,16 @@ INSERT INTO `role_user` (`id_username`, `id_nomRole`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `type_apt`
+-- Table structure for table `type_apt`
 --
 
-CREATE TABLE IF NOT EXISTS `type_apt` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `typeApt` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+CREATE TABLE `type_apt` (
+  `id` int(11) NOT NULL,
+  `typeApt` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `type_apt`
+-- Dumping data for table `type_apt`
 --
 
 INSERT INTO `type_apt` (`id`, `typeApt`) VALUES
@@ -496,10 +452,10 @@ INSERT INTO `type_apt` (`id`, `typeApt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `usager`
+-- Table structure for table `usager`
 --
 
-CREATE TABLE IF NOT EXISTS `usager` (
+CREATE TABLE `usager` (
   `username` varchar(255) NOT NULL,
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
@@ -513,14 +469,11 @@ CREATE TABLE IF NOT EXISTS `usager` (
   `coor_moyenComm` varchar(255) NOT NULL,
   `id_modePaiement` int(11) DEFAULT NULL,
   `id_adminBan` varchar(255) DEFAULT NULL,
-  `id_adminValid` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`username`),
-  KEY `FK_usager_id_moyenComm` (`id_moyenComm`),
-  KEY `FK_usager_id_modePaiement` (`id_modePaiement`)
+  `id_adminValid` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `usager`
+-- Dumping data for table `usager`
 --
 
 INSERT INTO `usager` (`username`, `nom`, `prenom`, `photo`, `adresse`, `telephone`, `motDePasse`, `valideParAdmin`, `banni`, `id_moyenComm`, `coor_moyenComm`, `id_modePaiement`, `id_adminBan`, `id_adminValid`) VALUES
@@ -531,11 +484,172 @@ INSERT INTO `usager` (`username`, `nom`, `prenom`, `photo`, `adresse`, `telephon
 ('yul', 'Romodina', 'Yuliya', './images/0_yul_3a.jpg', 'Montreal', '514 827 0000', '12345AAA', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
 
 --
--- Ограничения внешнего ключа сохраненных таблиц
+-- Indexes for dumped tables
 --
 
 --
--- Ограничения внешнего ключа таблицы `appartement`
+-- Indexes for table `appartement`
+--
+ALTER TABLE `appartement`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_appartement_id_typeApt` (`id_typeApt`),
+  ADD KEY `FK_appartement_id_userProprio` (`id_userProprio`),
+  ADD KEY `FK_appartement_id_nomQuartier` (`id_nomQuartier`);
+
+--
+-- Indexes for table `communication`
+--
+ALTER TABLE `communication`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `disponibilite`
+--
+ALTER TABLE `disponibilite`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_disponibilite_id_appartement` (`id_appartement`);
+
+--
+-- Indexes for table `evaluation`
+--
+ALTER TABLE `evaluation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_evaluation_id_appartement` (`id_appartement`),
+  ADD KEY `FK_evaluation_id_username` (`id_username`);
+
+--
+-- Indexes for table `location`
+--
+ALTER TABLE `location`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_location_id_userClient` (`id_userClient`),
+  ADD KEY `FK_location_id_appartement` (`id_appartement`);
+
+--
+-- Indexes for table `message`
+--
+ALTER TABLE `message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_message_id_userEmetteur` (`id_userEmetteur`);
+
+--
+-- Indexes for table `message_user`
+--
+ALTER TABLE `message_user`
+  ADD PRIMARY KEY (`id_message`,`id_username`),
+  ADD KEY `FK_message_user_id_username` (`id_username`);
+
+--
+-- Indexes for table `paiement`
+--
+ALTER TABLE `paiement`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `photo`
+--
+ALTER TABLE `photo`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_photo_id_appartement` (`id_appartement`);
+
+--
+-- Indexes for table `quartier`
+--
+ALTER TABLE `quartier`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `role_user`
+--
+ALTER TABLE `role_user`
+  ADD PRIMARY KEY (`id_username`,`id_nomRole`),
+  ADD KEY `FK_role_user_id_nomRole` (`id_nomRole`);
+
+--
+-- Indexes for table `type_apt`
+--
+ALTER TABLE `type_apt`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `usager`
+--
+ALTER TABLE `usager`
+  ADD PRIMARY KEY (`username`),
+  ADD KEY `FK_usager_id_moyenComm` (`id_moyenComm`),
+  ADD KEY `FK_usager_id_modePaiement` (`id_modePaiement`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `appartement`
+--
+ALTER TABLE `appartement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+--
+-- AUTO_INCREMENT for table `communication`
+--
+ALTER TABLE `communication`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `disponibilite`
+--
+ALTER TABLE `disponibilite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+--
+-- AUTO_INCREMENT for table `evaluation`
+--
+ALTER TABLE `evaluation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `location`
+--
+ALTER TABLE `location`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+--
+-- AUTO_INCREMENT for table `message`
+--
+ALTER TABLE `message`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+--
+-- AUTO_INCREMENT for table `paiement`
+--
+ALTER TABLE `paiement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `photo`
+--
+ALTER TABLE `photo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+--
+-- AUTO_INCREMENT for table `quartier`
+--
+ALTER TABLE `quartier`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `type_apt`
+--
+ALTER TABLE `type_apt`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `appartement`
 --
 ALTER TABLE `appartement`
   ADD CONSTRAINT `FK_appartement_id_nomQuartier` FOREIGN KEY (`id_nomQuartier`) REFERENCES `quartier` (`id`),
@@ -543,58 +657,54 @@ ALTER TABLE `appartement`
   ADD CONSTRAINT `FK_appartement_id_userProprio` FOREIGN KEY (`id_userProprio`) REFERENCES `usager` (`username`);
 
 --
--- Ограничения внешнего ключа таблицы `disponibilite`
+-- Constraints for table `disponibilite`
 --
 ALTER TABLE `disponibilite`
   ADD CONSTRAINT `FK_disponibilite_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `evaluation`
+-- Constraints for table `evaluation`
 --
 ALTER TABLE `evaluation`
   ADD CONSTRAINT `FK_evaluation_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`),
   ADD CONSTRAINT `FK_evaluation_id_username` FOREIGN KEY (`id_username`) REFERENCES `usager` (`username`);
 
 --
--- Ограничения внешнего ключа таблицы `location`
+-- Constraints for table `location`
 --
 ALTER TABLE `location`
   ADD CONSTRAINT `FK_location_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`),
   ADD CONSTRAINT `FK_location_id_userClient` FOREIGN KEY (`id_userClient`) REFERENCES `usager` (`username`);
 
 --
--- Ограничения внешнего ключа таблицы `message`
+-- Constraints for table `message`
 --
 ALTER TABLE `message`
   ADD CONSTRAINT `FK_message_id_userEmetteur` FOREIGN KEY (`id_userEmetteur`) REFERENCES `usager` (`username`);
 
 --
--- Ограничения внешнего ключа таблицы `message_user`
+-- Constraints for table `message_user`
 --
 ALTER TABLE `message_user`
   ADD CONSTRAINT `FK_message_user_id_message` FOREIGN KEY (`id_message`) REFERENCES `message` (`id`),
   ADD CONSTRAINT `FK_message_user_id_username` FOREIGN KEY (`id_username`) REFERENCES `usager` (`username`);
 
 --
--- Ограничения внешнего ключа таблицы `photo`
+-- Constraints for table `photo`
 --
 ALTER TABLE `photo`
   ADD CONSTRAINT `FK_photo_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `role_user`
+-- Constraints for table `role_user`
 --
 ALTER TABLE `role_user`
   ADD CONSTRAINT `FK_role_user_id_nomRole` FOREIGN KEY (`id_nomRole`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `FK_role_user_id_username` FOREIGN KEY (`id_username`) REFERENCES `usager` (`username`);
 
 --
--- Ограничения внешнего ключа таблицы `usager`
+-- Constraints for table `usager`
 --
 ALTER TABLE `usager`
   ADD CONSTRAINT `FK_usager_id_modePaiement` FOREIGN KEY (`id_modePaiement`) REFERENCES `paiement` (`id`),
   ADD CONSTRAINT `FK_usager_id_moyenComm` FOREIGN KEY (`id_moyenComm`) REFERENCES `communication` (`id`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

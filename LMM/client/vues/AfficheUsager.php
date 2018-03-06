@@ -27,7 +27,9 @@
         <div class="col-md-4">
             <div class="row">
                 <div id="photoProfilUsager" class="col-md-5">
-                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid" width="100px"> </div>
+
+                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="aptPhotoProprio rounded-circle img-fluid img"> </div>
+
                 </div>
 				<!--On affiche nom d'usager pour les gens pas connectés ou bannis ou non activés, ainsi que
 					pour les connectés; 
@@ -307,6 +309,8 @@
                     <li class="nav-item" id="div_messagerie"></li>
                     <li class="nav-item" id="div_historique"></li>
 				    <li class="nav-item" id="div_reservations"></li>
+				    <li class="nav-item" id="div_demandes_reservations"></li>
+
 				    <li class="nav-item" id="div_mes_appts"></li>
                 </ul>
 			</div>
@@ -379,7 +383,20 @@
                         ?>  
 
                         <!-- si j'ai des réservations comme client -->
-                        <a class="nav-link" href="#" id="reservations">Réservations</a>
+
+                        <a class="nav-link" href="#" id="mesReservations">Mes Réservations</a>
+
+                        <?php 
+                        }
+						
+						
+                        if($data["isProprio"]) 
+                        {
+                        ?>  
+
+                        <!-- si j'ai des réservations comme Proprio -->
+                        <a class="nav-link" href="#" id="demandesReservations">Demandes de Réservations</a>
+
 
                         <?php 
                         }

@@ -23,7 +23,8 @@ $(document).ready(function() {
 		$("#div_action_admin").append($("#action_admin"));       
 		$(".menuProfil").append($("#div_action_admin"));		
 		$("#div_historique").append($("#historique"));		
-		$("#div_reservations").append($("#reservations"));		
+		$("#div_reservations").append($("#mesReservations"));		
+		$("#div_demandes_reservations").append($("#demandesReservations"));		
 		$("#div_mes_appts").append($("#mes_appts"))
     
 		
@@ -206,8 +207,9 @@ $(document).ready(function() {
 				dataType:"html",
 				success:function(reponse) {
 					$('#afficheInfoProfil').empty();
-					$('#afficheInfoProfil').html(reponse);
+
 					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
+					$('#afficheInfoProfil').html(reponse);                 
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -215,7 +217,91 @@ $(document).ready(function() {
 			});
 		});
     
-        
+
+	/**
+		Fonction pour afficher demandes de reservation Proprio
+	*/
+		$(document).on('click', '#demandesReservations', function(e){
+			var idUserProprio = $("#userNom")[0].innerHTML;
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficheDemandesReservations&idProprio="+idUserProprio,
+				dataType:"html",
+				success:function(reponse) {
+					$('#afficheInfoProfil').empty();
+					$('#afficheInfoProfil').html(reponse); 
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour afficher demandes de reservation Client
+	*/
+		$(document).on('click', '#mesReservations', function(e){
+			var idClient = $("#userNom")[0].innerHTML;
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficheDemandesReservations&idClient="+idClient,
+				dataType:"html",
+				success:function(reponse) {
+					$('#afficheInfoProfil').empty();
+					$('#afficheInfoProfil').html(reponse); 
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour valider une demande de reservation
+	*/
+		$(document).on('click', '#confirmerReservation', function(e){
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=validerDemande&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					//vérification côté php, s'il y des erreurs
+					console.log("allo");
+					console.log(reponse.messageErreur);
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
+					}
+					else {
+						//$(this).prop("disabled", true);
+					}
+					
+					
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour refuser une demande de reservation
+	*/
+		$(document).on('click', '#annulerReservation', function(e){
+			var idLocation1 = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
+				dataType:"html",
+				success:function(reponse) {
+					$(this).prop("disabled", true);
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
 
 	/**
 		Action supprimer une disponibilite d'un apprtement
@@ -350,7 +436,7 @@ var funcAjouteDispo = function(e){
 
 		$.ajax({
 			cache: false,
-			url: 'index.php?Appartements&action=creerLocation',
+			url: 'index.php?Appartements&action=demandeReservation',
 			method: 'POST',
 			dataType : 'json',		
 			data: {
@@ -363,26 +449,10 @@ var funcAjouteDispo = function(e){
 			success:function(reponse) {
 				if(reponse.messageErreur) 
 				{ 
-                    $("#erreurReservation").empty();
 					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
 				} 
 				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
-					//$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
-                   console.log(reponse);
-                    $("#erreurReservation").empty();
-                    $(".demandeReservation").load("./vues/recapLocation.php");
-                    
-                    setTimeout(function () {
-                        
-                        $(".recap .arrivee span").html(reponse.arrivee);
-                        $(".recap .depart span").html(reponse.depart);
-                        $(".recap .nbrJours span").html(reponse.nbrJours);
-                        $(".recap .nbrPersonne span").html(reponse.nbrPersonne);
-                        $(".recap .total span").html(reponse.totalLocation);
-
-                         boutonPaypal(reponse.totalLocation); 
-                    
-                    }, 200);
+					$("#erreurReservation").empty().css("display", "block").removeClass("alert alert-warning").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -392,8 +462,9 @@ var funcAjouteDispo = function(e){
     e.stopImmediatePropagation();	
 	}
 
+    
+    /* ============================  function pour le datepicker des disponibilites ============================================== */
 
-/* ============================  function pour le datepicker des disponibilites ============================================== */
 
     $(function() { 
         /*var todayDate = new Date().getDate();
@@ -405,17 +476,15 @@ var funcAjouteDispo = function(e){
         
             format: 'YYYY/MM/DD',
             minDate: moment().add(1, 'days'),
-            maxDate: "03/19/2018",
-            
+            //maxDate: "03/19/2018", 
             showDropdowns: true,
             alwaysShowCalendars: true,
-            startDate: "02/26/2018",
-            endDate: "03/19/2018",
+            //startDate: "02/26/2018",
+           // endDate: "03/19/2018",
             opens: "left"
             
         });
     }); 
-
 
 
 /*////////////////////////////////////////////////////////////////*/
@@ -633,6 +702,7 @@ $(document).ready(function() {
         afficheListeMessages(idUsager, 'afficherListeMessages');
         e.stopImmediatePropagation();
         });
+
         // appel de la fonction pour verifier l'existance de nouveaux message
         // setInterval(notificationMessage, 5000);
         notificationMessage();
@@ -763,7 +833,9 @@ function formulaireNouveauMessage(selecteur)
 {
     $('#'+selecteur).load('vues/ecrireMessage.php');
     setTimeout(function () {
+
         var destinatair = $('#profilUser input[name="idProprio"]').val();
+
         $('#destination').val(destinatair);
         // appel de la fonction ecrireMessage()
         $('button#envoiMessage').click(function(e){
@@ -813,4 +885,48 @@ function afficheMessEnvoyes(){
     $('h6[name="repondreMessage"]').remove();
     $('#envoyes').append($('div.table-responsive'));
     $('#recus').html('');
+}
+
+
+
+
+function CalculerdonneePaiement(idLocation){
+
+       $.ajax({
+        method: "POST",
+        url: "index.php?Appartements",
+           dataType: "json",
+        data:{
+            action: 'payerLocation',
+            idLocation : idLocation,
+           /* dateDebut: dateDebut,
+            dateFin: dateFin,*/
+        },
+// comportement en cas de success ou d'echec
+      success:function(reponse) {
+        
+          
+      $("#recapLocation").load("./vues/recapLocation.php");
+
+        setTimeout(function () {
+
+            $(".recap .arrivee span").html(reponse.dateDebut);
+            $(".recap .depart span").html(reponse.dateFin);
+            $(".recap .nbrJours span").html(reponse.nbrJours);
+            $(".recap .prixJour span").html(reponse.prixJour);
+            $(".recap .total span").html(reponse.totalLocation);
+            $(".modal-header").css({color: "#ffffff", backgroundColor: "#585759"});
+            $(".modal-footer").css({color: "#585759", backgroundColor: "#ffffff"});
+            
+             boutonPaypal(reponse.totalLocation, idLocation); 
+            
+            $("#myModal"+idLocation).modal('show');
+            
+        }, 200);
+          
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
 }
