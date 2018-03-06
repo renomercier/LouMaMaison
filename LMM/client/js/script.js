@@ -376,6 +376,31 @@ var funcAjouteDispo = function(e){
 	}
 
 
+/* ============================  function pour le datepicker des disponibilites ============================================== */
+
+    $(function() { 
+        /*var todayDate = new Date().getDate();
+        var endD= new Date(new Date().setDate(todayDate - 15));*/
+        var currDate = moment().add(1, 'days');
+        
+        
+        $('input[name="daterange"]').daterangepicker({
+        
+            format: 'YYYY/MM/DD',
+            minDate: moment().add(1, 'days'),
+            maxDate: "03/19/2018",
+            
+            showDropdowns: true,
+            alwaysShowCalendars: true,
+            startDate: "02/26/2018",
+            endDate: "03/19/2018",
+            opens: "left"
+            
+        });
+    }); 
+
+
+
 /*////////////////////////////////////////////////////////////////*/
 
 /* filtrer le resultat de la recherche selon des critéres donnés*/
@@ -414,6 +439,90 @@ function naviguer(appartParPage, page) {
         url+="&appartParPage="+appartParPage+"&page="+page+"";
         filtrerAppart(url);
 }
+
+/* ============================  function pour initialiser la google map du Quartier ============================================== */
+
+
+$(document).ready(function() {
+       if($('#carteQuartier').length)
+        {
+            var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
+            $('body').append(scriptGoogle);
+        } 
+});
+
+    // initialiser la catte google du Quartier
+    var carteQuartier;
+    var marqueurs = [];
+    function initMap() {
+      carteQuartier = new google.maps.Map(document.getElementById('carteQuartier'), {
+        zoom: 11.5,
+        center: new google.maps.LatLng(45.51,-73.72) 
+      });
+    }
+
+    // fonction pour placer un marqueur sur la carte du Quartier.
+    function placerSureCarteQuartier(adrAppart, miniature) {
+        Geocoder = new google.maps.Geocoder(); 
+        Geocoder.geocode( { 'address': adrAppart}, function(results, status) {
+            
+        /* Si l'adresse a pu être géolocalisée */
+            if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                var latLng = new google.maps.LatLng(latitude,longitude);
+                
+                // initialisation d'un setTimeOut pour animer les marqueur
+                window.setTimeout(function() {
+                    var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: carteQuartier,
+                    animation: google.maps.Animation.DROP
+                  });
+                    
+                     // creation de l'info bulle
+                  var infowindow = new google.maps.InfoWindow({
+                            content: miniature,
+                            maxWidth: 200
+                              
+                          });
+                    
+                    // ouvrir l'info bulle
+                    google.maps.event.addListener(marker,'mouseover',function() {
+                          infowindow.open(carteQuartier,marker);
+                    });
+                    
+                     // fermer l'info bulle
+                    google.maps.event.addListener(carteQuartier,'click',function() {
+                          setTimeout(function () { infowindow.close(); }, 200);
+                    });
+                    
+                    // ajout du marqueur au tableau
+                    marqueurs.push(marker);
+                }, 300);
+                
+            }
+        });
+    }
+
+    // fonction pour supprimer les marqueurs de la carte du Quartier
+    function clearMarkers() {
+        for(var i=0; i< marqueurs.length; i++)
+        {
+            marqueurs[i].setMap(null);
+        }
+    }
+
+    // boucler dans le tableau des adresses et les placer sur la carte du Quartier.
+     window.onload=function() {    
+        $("div.appart").each(function(){
+            var miniature = $('<div class="miniature">').append($(this).html());
+            placerSureCarteQuartier($(this).attr('name'), miniature.html());
+        });
+     
+     }
+
+
 
 /* ============================  function pour initialiser la google map ============================================== */
 

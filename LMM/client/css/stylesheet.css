@@ -97,54 +97,63 @@ input.slider {
     width: 100%;
     height: auto;
 }
+
+.fa_custom{
+	color: #999;
+}
+
 .img-thumbnail{
     background:none;
     border: none;
 }
+
 /* Opacite des photos lorsque "hovered on" */
-.photoAppartement:hover, .photoSupplementaire:hover {
+.photoAppartement:hover, .aptPhotoSupp:hover {
     opacity: 0.7;
 }
+
 .aptPhotoSupp {
     height: 5em;
     width: 6.5em; 
 }
+
 .aptPhotoModal {
     height: 45em;
     width: 60em; 
 }
-.aptPhotoProprio {
+
+.aptPhotoProprio, .aptPhotoComment {
     height: 5em;
     width: 5em; 
 }
-.aptIcones {
+
+.aptIcones, .aptIconesOptions {
     height: 2em;
     width: 2em;
 }
+
 .imgEval {
     width: 75%;
     height: 75%;
     margin: 0 auto;
 }
 
-/* modalGaleriePhoto  */
-
-/* Modal-Carousel pour photos supplementaires */
-
 /* --------------------------------------------------- Modal */
+
 .modal-header, .modal-footer {  
     color: #ffffff;
     background-color: #014B88;
 }
-#myModalEval .modal-header, #myModalEval .modal-footer {  
+
+.modal-xl {
+    max-height: auto;
+    max-width: 55%;
+}
+
+#myModalEval, #myModalEval {  
     background-color: white;
     color: black;
 }
-.modal-xl {
-    max-height: auto;
-    max-width: 66%;
-}
-
 
 /* --------------------------------------------------- vue Evaluation Apt  */
 .titreEval {
@@ -171,19 +180,13 @@ input.slider {
     padding=0;
     /*border: 1px solid #000000; */ 
 }
-.aptReservation, .aptDisponibilites {
+
+.aptReservation, .aptModification {
+    position: sticky;
+    top: 2em;
     padding: 20px;
     border: 1px solid #585759;
 }
-.aptDisponibilites {
-    padding: 10px;
-    height: 165px;
-    width: auto;
-    overflow-y: scroll;
-    border: 1px solid #585759;
-}
-
-
 
 /* ---------------------------------------------------  vue message usager  */
 .filtre_usager a.nav-link, p.nav-link{

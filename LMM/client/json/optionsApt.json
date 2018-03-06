@@ -1,16 +1,21 @@
 {
- "options" : [ 	{ "id" : 1, "option" : "Stationnement", "icone" : "./images/profil.jpg" },
- 				{ "id" : 2, "option" : "Wifi", "icone" : "./images/profil.jpg" }, 
- 				{ "id" : 3, "option" : "Télévision", "icone" : "./images/profil.jpg" },
- 				{ "id" : 4, "option" : "Cintres", "icone" : "./images/profil.jpg" },
- 				{ "id" : 5, "option" : "Fer à repasser", "icone" : "./images/profil.jpg" },
- 				{ "id" : 6, "option" : "Climatisation", "icone" : "./images/profil.jpg" },
- 				{ "id" : 7, "option" : "Laveuse", "icone" : "./images/profil.jpg" },
- 				{ "id" : 8, "option" : "Sécheuse", "icone" : "./images/profil.jpg" },
- 				{ "id" : 9, "option" : "Cuisine tout equipée", "icone" : "./images/profil.jpg" },
- 				{ "id" : 10, "option" : "Sèche-cheveux", "icone" : "./images/profil.jpg" },
- 				{ "id" : 11, "option" : "Draps et couvertures", "icone" : "./images/profil.jpg" },
- 				{ "id" : 12, "option" : "Produits de base pour salle de bain", "icone" : "./images/profil.jpg" },
- 				{ "id" : 13, "option" : "Chaise haute", "icone" : "./images/profil.jpg" }
- 			]
-} 
+ "options" : [ 	{ "id" : 1, "option" : "Stationnement", "icone" : "./icones/parking.svg" },
+ 				{ "id" : 2, "option" : "Ascenseur", "icone" : "./icones/elevator.svg" },
+				{ "id" : 3, "option" : "Personne handicapée", "icone" : "./icones/handicap.svg" },				
+ 				{ "id" : 4, "option" : "Non fumeur", "icone" : "./icones/no-smoking.svg" },
+ 				{ "id" : 5, "option" : "Wifi", "icone" : "./icones/wifi.svg" },
+ 				{ "id" : 6, "option" : "Téléviseur", "icone" : "./icones/television.svg" },
+ 				{ "id" : 7, "option" : "Climatisation", "icone" : "./icones/air-conditioner.svg" },
+ 				{ "id" : 8, "option" : "Cintres", "icone" : "./icones/hanger.svg" },
+ 				{ "id" : 9, "option" : "Fer à repasser", "icone" : "./icones/iron.svg" },
+ 				{ "id" : 10, "option" : "Sèche-cheveux", "icone" : "./icones/hairdryer.svg" },
+ 				{ "id" : 11, "option" : "Salle de bain complète", "icone" : "./icones/bathtub.svg" },
+                { "id" : 12, "option" : "Serviettes", "icone" : "./icones/towel.svg" },
+ 				{ "id" : 13, "option" : "Cuisine tout équipée", "icone" : "./icones/oven.svg" },
+ 				{ "id" : 14, "option" : "Vaisselle et couverts", "icone" : "./icones/restaurant.svg" },
+                { "id" : 15, "option" : "Cafetière espresso", "icone" : "./icones/coffee-machine.svg" },
+ 				{ "id" : 16, "option" : "Laveuse-sécheuse", "icone" : "./icones/washing-machine.svg" },
+                { "id" : 17, "option" : "Extincteur", "icone" : "./icones/fire-extinguisher.svg" },
+                { "id" : 18, "option" : "BBQ", "icone" : "./icones/bbq.svg" }
+			 ]
+}
