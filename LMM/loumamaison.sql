@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 03 2018 г., 22:05
+-- Время создания: Мар 06 2018 г., 08:59
 -- Версия сервера: 5.6.15-log
 -- Версия PHP: 5.5.8
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `appartement` (
   `nbPersonnes` int(11) NOT NULL,
   `nbLits` int(11) NOT NULL,
   `nbChambres` int(11) NOT NULL,
-  `photoPrincipale` varchar(255) NOT NULL,
+  `photoPrincipale` varchar(255) DEFAULT NULL,
   `noApt` varchar(25) DEFAULT NULL,
   `noCivique` int(11) NOT NULL,
   `rue` varchar(255) NOT NULL,
@@ -111,17 +111,27 @@ CREATE TABLE IF NOT EXISTS `disponibilite` (
   `id_appartement` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_disponibilite_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=48 ;
 
 --
 -- Дамп данных таблицы `disponibilite`
 --
 
 INSERT INTO `disponibilite` (`id`, `dateDebut`, `dateFin`, `disponibilite`, `id_appartement`) VALUES
-(1, '2018-02-23', '2018-03-04', 1, 18),
-(2, '2018-02-23', '2018-03-31', 1, 17),
-(3, '2018-02-23', '2018-03-31', 1, 16),
-(4, '2018-02-23', '2018-03-31', 1, 15);
+(20, '2018-02-20', '2018-03-31', 0, 16),
+(25, '2018-03-05', '2018-03-31', 1, 18),
+(36, '2018-03-05', '2018-03-06', 0, 16),
+(37, '2018-03-09', '2018-03-31', 0, 16),
+(38, '2018-03-09', '2018-03-30', 0, 16),
+(39, '2018-03-09', '2018-03-09', 1, 16),
+(40, '2018-03-12', '2018-03-30', 0, 16),
+(41, '2018-03-12', '2018-03-13', 1, 16),
+(42, '2018-03-16', '2018-03-30', 1, 16),
+(43, '2018-03-05', '2018-03-31', 0, 15),
+(44, '2018-03-06', '2018-03-31', 1, 14),
+(45, '2018-03-06', '2018-03-31', 1, 1),
+(46, '2018-03-06', '2018-03-07', 1, 15),
+(47, '2018-03-11', '2018-03-31', 1, 15);
 
 -- --------------------------------------------------------
 
@@ -170,10 +180,30 @@ CREATE TABLE IF NOT EXISTS `location` (
   `id_userClient` varchar(255) NOT NULL,
   `id_appartement` int(11) NOT NULL,
   `nbPersonnes` int(11) NOT NULL,
+  `refuse` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_location_id_userClient` (`id_userClient`),
   KEY `FK_location_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+
+--
+-- Дамп данных таблицы `location`
+--
+
+INSERT INTO `location` (`id`, `dateDebut`, `dateFin`, `valideParPrestataire`, `validePaiement`, `id_userClient`, `id_appartement`, `nbPersonnes`, `refuse`) VALUES
+(4, '2018-03-05', '2018-03-06', 1, 0, 'Nouveau00', 16, 3, 0),
+(17, '2018-03-07', '2018-03-08', 1, 0, 'yul', 16, 1, 0),
+(18, '2018-03-05', '2018-03-06', 1, 0, 'yul', 16, 1, 0),
+(19, '2018-03-31', '2018-03-31', 1, 0, 'yul', 16, 1, 0),
+(20, '2018-03-10', '2018-03-11', 1, 0, 'salim', 16, 1, 0),
+(21, '2018-03-14', '2018-03-15', 1, 0, 'salim', 16, 2, 0),
+(22, '2018-03-23', '2018-03-25', 0, 0, 'salim', 16, 2, 0),
+(23, '2018-03-07', '2018-03-10', 1, 0, 'yul', 15, 2, 0),
+(24, '2018-03-13', '2018-03-15', 0, 0, 'yul', 15, 2, 1),
+(25, '2018-03-13', '2018-03-15', 0, 0, 'salim', 15, 2, 1),
+(26, '2018-03-17', '2018-03-18', 0, 0, 'salim', 15, 2, 1),
+(27, '2018-03-07', '2018-03-09', 0, 0, 'yul', 14, 2, 0),
+(28, '2018-03-15', '2018-03-17', 0, 0, 'yul', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -190,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   `archive` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_message_id_userEmetteur` (`id_userEmetteur`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
 
 --
 -- Дамп данных таблицы `message`
@@ -216,7 +246,12 @@ INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `
 (47, 'dgdgdg', 'dgdgdgdgdg', '2018-03-03 02:07:18', 'salim', 0),
 (48, 'rrrrrrrrrrrrrr', 'cxvsxvxvxv', '2018-03-03 02:08:02', 'salim', 0),
 (49, 'teeeest', 'teessst', '2018-03-03 11:16:21', 'salim', 0),
-(50, 'salut', 'salut le terrien', '2018-03-03 11:25:43', 'salim', 0);
+(50, 'salut', 'salut le terrien', '2018-03-03 11:25:43', 'salim', 0),
+(51, 'test de pull', 'lalala', '2018-03-03 23:43:27', 'salim', 0),
+(52, 'lol', 'tout est brise', '2018-03-03 23:47:53', 'yul', 1),
+(53, 'allo Renaud', 'test', '2018-03-03 23:52:31', 'yul', 0),
+(54, 'test de message', 'allo', '2018-03-03 23:54:30', 'renaud', 0),
+(55, 'test de formulaire de reponse', 'test', '2018-03-04 00:05:10', 'renaud', 0);
 
 -- --------------------------------------------------------
 
@@ -245,19 +280,24 @@ INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) V
 (31, 'salim', 1, 0),
 (32, 'salim', 1, 1),
 (33, 'salim', 1, 0),
-(35, 'yul', 0, 0),
+(35, 'yul', 1, 0),
 (39, 'yul', 0, 0),
 (40, 'salim', 0, 1),
-(41, 'salim', 0, 0),
+(41, 'salim', 1, 0),
 (42, 'salim', 1, 0),
 (43, 'yul', 0, 0),
 (44, 'yul', 0, 0),
 (45, 'yul', 0, 0),
-(46, 'yul', 0, 0),
-(47, 'yul', 0, 0),
-(48, 'yul', 0, 0),
+(46, 'yul', 1, 0),
+(47, 'yul', 1, 0),
+(48, 'yul', 1, 1),
 (49, 'renaud', 0, 0),
-(50, 'renaud', 0, 0);
+(50, 'renaud', 0, 0),
+(51, 'yul', 1, 1),
+(52, 'salim', 0, 0),
+(53, 'renaud', 1, 0),
+(54, 'salim', 0, 0),
+(55, 'yul', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -425,6 +465,8 @@ INSERT INTO `role_user` (`id_username`, `id_nomRole`) VALUES
 ('salim', 3),
 ('nat', 4),
 ('Nouveau00', 4),
+('renaud', 4),
+('salim', 4),
 ('yul', 4);
 
 -- --------------------------------------------------------
@@ -484,8 +526,8 @@ INSERT INTO `usager` (`username`, `nom`, `prenom`, `photo`, `adresse`, `telephon
 ('nat', 'nat', 'nat', './images/profilN.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
 ('Nouveau00', 'no', 'no', 'profil.jpg', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, 'salim', 'salim'),
 ('renaud', 'renaud', 'renaud', './images/profilR.png', 'renaud', '778787', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
-('salim', 'salim', 'Salim', './images/profilS.png', 'Montreal', '514 055 5050', '12345', 1, 0, 1, 'coordonnée MC', 1, NULL, NULL),
-('yul', 'Romodina', 'Yuliya', './images/profilY.png', 'Montreal', '514 827 0000', '12345AAA', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
+('salim', 'salim', 'Salim', './images/profilS.png', 'Montreal', '514 055 5050', '12345', 1, 0, 4, 'coordonnée MC', 2, NULL, NULL),
+('yul', 'Romodina', 'Yuliya', './images/0_yul_3a.jpg', 'Montreal', '514 827 0000', '12345AAA', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
