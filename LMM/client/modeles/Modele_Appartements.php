@@ -166,6 +166,7 @@
             {
                 $query.= " AND a.id_typeApt = '" . $filtre['id_typeApt'] ."'";
             }
+
             $query.= " GROUP BY a.id LIMIT " . $premiereEntree .", ".$appartParPage."";
 
 			$resultat = $this->requete($query);

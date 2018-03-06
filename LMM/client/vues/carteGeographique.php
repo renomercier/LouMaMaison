@@ -6,6 +6,6 @@
 * @version      v.1 | fevrier 2018
 -->
  	</div>
-        <div class="col-md-4 absolut" id="carte"></div>
+        <div class="col-md-4" id="carte"></div>
      </div>
 </div>

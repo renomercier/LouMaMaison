@@ -1,11 +1,11 @@
-﻿<?php
+<?php
 /**
 * @file         /Modele_Evaluations.php
 * @brief        Projet WEB 2
 * @details                              
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018  
-*/
+
 
 	/**
 	* @class 	Modele_Evaluations - herite de BaseDao
@@ -52,6 +52,21 @@
 			$query = $this->lireTous();
 			$resultat = $query->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Evaluation');
 			return $resultat;
+		}
+        
+        /**  
+		* @brief     	Lecture des commentaires aux evaluations d'un appartement inscrites a la BD
+		* @details   	Exécute la lecture de tous les commentaires liés  à une evaluations d'un appartement de la BD 
+		* @param   		$id 		Identifiant de l'appartement
+		* @return    	Résultat de la requête SQL
+		 */
+		public function obtenir_tous_non_null($id) {
+            $query = "SELECT * FROM evaluation e
+                      JOIN usager u ON e.id_username = u.username 
+                      WHERE commentaire is not null and e.id_appartement = ?";
+			$donnees = array($id);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetchAll();
 		}
 
 		/**

@@ -349,8 +349,10 @@
 				
                 <!-- Le proprio du profil peux le voir avec toute l'info et Admin et SuperAdmin aussi (connectes, actives, pas bannis)-->  
                 <?php
+
                 if(isset($_SESSION["username"])) 
                 {
+
                     if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"] && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0))  
                     {
                     ?>
@@ -391,6 +393,7 @@
 
 					<?php
                     }
+
                 }
                 
                 $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
