@@ -21,13 +21,16 @@
   <link rel="stylesheet" target=_blank href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <link href="css/stylesheet.css" rel="stylesheet">
+  <link href="css/daterangepicker.css" rel="stylesheet">
 
   <!-- src script js -->
     
   <script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://use.fontawesome.com/e58c171d55.js"></script> 
   <script src="js/formEvt.js"></script>   
-  <script src="js/fonctions.js"></script> 
+  <script src="js/fonctions.js"></script>
+  <script src="js/moment.min.js"></script>
+  <script src="js/daterangepicker.js"></script>
   <!-- Tether, ensuite Bootstrap JS. -->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>

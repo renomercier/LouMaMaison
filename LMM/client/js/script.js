@@ -457,6 +457,29 @@ var funcAjouteDispo = function(e){
 		});
     e.stopImmediatePropagation();	
 	}
+    
+    /* ============================  function pour le datepicker des disponibilites ============================================== */
+
+    $(function() { 
+        /*var todayDate = new Date().getDate();
+        var endD= new Date(new Date().setDate(todayDate - 15));*/
+        var currDate = moment().add(1, 'days');
+        
+        
+        $('input[name="daterange"]').daterangepicker({
+        
+            format: 'YYYY/MM/DD',
+            minDate: moment().add(1, 'days'),
+            //maxDate: "03/19/2018",
+            
+            showDropdowns: true,
+            alwaysShowCalendars: true,
+            //startDate: "02/26/2018",
+           // endDate: "03/19/2018",
+            opens: "left"
+            
+        });
+    }); 
 
 
 /*////////////////////////////////////////////////////////////////*/

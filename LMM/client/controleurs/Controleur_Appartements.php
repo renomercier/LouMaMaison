@@ -72,39 +72,50 @@
 						break;
                            
                     // Case d'affichage du detail d'un appartement
-                    case "afficherAppartement" :
-
-                        if(isset($params['id_appart']) && filter_var($params['id_appart'], FILTER_VALIDATE_INT)) {   
-
-                            // si params message, message a l'usager concernant des actions sur son appartement
-                            if(isset($params['message'])) {
-                                $data['succes'] = "<p class='alert alert-success'>". $params['message'] . "</p>";
-                            }
-                            // chargement du modele Appartement
-                            $modeleApts = $this->getDAO("Appartements");
-                            // Recuperer le detail de l'appartement               
-                            $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);
-                            // Recuperer les photos de l'appartement
-                            $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
-                            // Recuperer le quartier de l'appartement
-                            $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
-                            // Recuperer le type de l'appartement
-                            $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
-                            // Recuperer la moyenne de l'appartement
-                            $data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
-                            // Recuperer les disponibilites de l'appartement
-                            $modeleDisponibilites = $this->getDAO("Disponibilites");
-                            $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
-                            // Recuperer le proprietaire de l'appartement
-                            $modeleUsagers = $this->getDAO("Usagers");
-                            $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
-                            
-                            // Affichage du detail d'un appartement
-    						$this->afficheVue("header",$data);
-                            $this->afficheVue("AfficheAppartement", $data);
-    						$this->afficheVue("footer");
-                        }
+                    case "afficherAppartement" :    
+                        // chargement du modele Appartement
+                        $modeleApts = $this->getDAO("Appartements");
+                        
+                        // Recuperer le detail de l'appartement               
+                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);                      
+                        
+                        // json_decode des options de l'appartement
+                        $data['tab_options'] = $this->prepareTabOptionsPourAffichage($data['appartement']->getOptions());                        
+                        
+                        // Recuperer les photos de l'appartement
+                        $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
+                        
+                        // Recuperer le quartier de l'appartement
+                        $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
+                        
+                        // Recuperer le type de l'appartement
+                        $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                        
+                        // Reconstituer l'adresse pour la localisation sur la carte google du Quartier
+                        $data['adresse'] = $data['appartement']->getNoCivique()." ".$data['appartement']->getRue()." ".$data['appartement']->getVille();
+                        
+                        // Recuperer la moyenne de l'appartement
+                        //$data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
+                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($params['id_appart']);
+                        
+                        // Recuperer les disponibilites de l'appartement
+                        $modeleDisponibilites = $this->getDAO("Disponibilites");
+                        $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
+                        
+                        // Recuperer les commentaires d'évaluations de l'appartement
+                        $modeleEvaluations = $this->getDAO("Evaluations");
+                        $data['tab_evals'] = $modeleEvaluations->obtenir_tous_non_null($params['id_appart']);
+                        
+                        // Recuperer le proprietaire de l'appartement
+                        $modeleUsagers = $this->getDAO("Usagers");
+                        $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
+                        
+                        // Affichage du detail d'un appartement
+						$this->afficheVue("header",$data);
+                        $this->afficheVue("AfficheAppartement", $data);
+						$this->afficheVue("footer");
                         break;
+
 					
                     // case d'affichage d'un appartement par proprio
 					case "afficheAptsProprio" :
