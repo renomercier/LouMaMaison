@@ -29,6 +29,7 @@
                 et ses droits sur le site
             */
             $data= $this->initialiseMessages();
+			$today = Date("Y-m-d");
             //si le paramètre action existe
             if(isset($params["action"]))
             {
@@ -114,6 +115,7 @@
                         $this->afficheVue("AfficheAppartement", $data);
 						$this->afficheVue("footer");
                         break;
+
 					
                     // case d'affichage d'un appartement par proprio
 					case "afficheAptsProprio" :
@@ -231,8 +233,7 @@
                         if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
                             $modeleDispo = $this->getDAO("Disponibilites");
 							//verification de dates
-							$today = Date("Y-m-d");
-	
+								
 							if($obj['dateDebut'] >= $today && $obj['dateFin']>= $obj['dateDebut'])
 							{	
 								$datesAnciens = $modeleDispo->afficheDisponibilite($obj['id_apt']);
@@ -304,38 +305,21 @@
                         }
                         break;
 					
-					//case de creation de location
-					case "creerLocation" :
+					//case de demande de reservation
+					case "demandeReservation" :
 						$message_reservation="";
-						$today = Date("Y-m-d");
 						if(isset($params['id_appart']) && isset($params['dateDebut']) && isset($params['dateFin']) && isset($params['nbPersonnes']) && !empty($params['id_appart']) && !empty($params['dateDebut']) && !empty($params['dateFin']) && !empty($params['nbPersonnes']) && is_numeric($params['nbPersonnes']))
 						{
-							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
+							if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
 								if($_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) {
 									if($params['dateFin']>=$params['dateDebut'] && $params['dateDebut']>=$today) {
 										$modeleDisponibilites = $this->getDAO("Disponibilites");
 										$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($params['dateDebut'],$params['dateFin'],$params['id_appart']);
 										if($data['idDispo']) {
 											$idDispo = $data['idDispo']->getId();								
-											$dateDebutAncien=$data['idDispo']->getDateDebut();
-											$dateFinAncien=$data['idDispo']->getDateFin();	
-
-											$dateBeginNew = $modeleDisponibilites->newDateBegin($params['dateFin']);
-											$dateFinNew = $modeleDisponibilites->newDateEnd($params['dateDebut']);
-
-											if($dateDebutAncien<=$dateFinNew)
-											{	
-												$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $params['id_appart']);			
-											}
-											if($dateBeginNew<=$dateFinAncien)
-											{	
-												$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $params['id_appart']);					
-											}
 											
-											//réserver un apt à cette date
-											$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
 											//creer un objet location
-											$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $params['id_userClient'], $params['nbPersonnes']);
+											$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $_SESSION['username'], $params['nbPersonnes'],0,$idDispo);
 											//chargement du modele Location 
 											$modeleLocation = $this->getDAO("Locations");
 											//creation de location
@@ -371,7 +355,82 @@
 							echo $message_reservation;	
 						}
 					   break;
-
+					   
+					//case afficher demandes de reservation chez proprio et client  
+					case "afficheDemandesReservations":
+						$modeleApt = $this->getDAO("Appartements");
+						
+						$modeleLocation = $this->getDAO("Locations");
+						if(isset($_SESSION["username"]) && isset($params["idProprio"])) {
+                           $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
+							foreach($data['appartements'] as $apt) {
+								$data['apts'] = $modeleLocation->afficheLocation($today, $params["idProprio"]);    
+							}   
+                            $this->afficheVue("AfficheReservationsProprio", $data); 
+                        }
+						if(isset($_SESSION["username"]) && isset($params["idClient"])) {
+                        
+							$data['appartements'] = $modeleLocation->afficheLocationClient($today, $params["idClient"]);
+                            $this->afficheVue("AfficheReservationsClient", $data); 
+                        }
+					break;
+					
+					//case valider une demande de reservation par proprio
+					case "validerDemande" :
+						$message_demande="";
+						if(isset($params['idLocation'])) {
+							//on cherche les dates reserves dans location
+							$modeleLocation = $this->getDAO("Locations");
+							$res = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+							if($res->getRefuse() == 0) 
+							{
+								$idApt = $res->getIdAppartement();
+								$idLocation = $res->getId();
+								$dateDebutLocation = $res->getDateDebut();
+								$dateFinLocation = $res->getDateFin();
+								//on calcule les nouveaux dates de disponibilite
+								$modeleDisponibilites = $this->getDAO("Disponibilites");
+								$dateBeginNew = $modeleDisponibilites->newDateBegin($dateFinLocation);
+								$dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
+								//on cherche dans quelle disponibilite rentrent les dates de reservation
+								$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
+								$idDispo = $data['idDispo']->getId(); 				
+								$dateDebutAncien=$data['idDispo']->getDateDebut();
+								//mis a jour les dates de debut qui sont en passe maintenant
+								if($dateDebutAncien < $today) {
+									$dateDebutAncien = $today;
+								}
+								$dateFinAncien=$data['idDispo']->getDateFin();							
+								//creation de nouvelles dispos
+								if($dateDebutAncien<=$dateFinNew && $dateFinNew >= $today)
+								{	
+									$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $idApt);			
+								}
+								if($dateBeginNew<=$dateFinAncien)
+								{	
+									$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $idApt);					
+								}
+								//enlever disponibilite qui coresponde a la reservation
+								$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+								//validation par proprio
+								$modeleLocation->misAjourChampUnique('valideParPrestataire', 1, $idLocation);
+							}
+							else 
+							{
+								header('Content-type: application/json'); 
+								$message_demande = json_encode(array("messageErreur"=>"Déjà refusé!"));
+								echo $message_demande;
+							}
+						}	
+					break;
+					
+					case "refuserDemande" :
+						if(isset($params['idLocation'])) {
+							$modeleLocation = $this->getDAO("Locations");
+							$modeleLocation->misAjourChampUnique('refuse', 1, $params['idLocation']);
+						}
+					break;
+					
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
                         
@@ -877,5 +936,4 @@
             return $data;
         }
     }
-
 ?>

@@ -23,7 +23,8 @@ $(document).ready(function() {
 		$("#div_action_admin").append($("#action_admin"));       
 		$(".menuProfil").append($("#div_action_admin"));		
 		$("#div_historique").append($("#historique"));		
-		$("#div_reservations").append($("#reservations"));		
+		$("#div_reservations").append($("#mesReservations"));		
+		$("#div_demandes_reservations").append($("#demandesReservations"));		
 		$("#div_mes_appts").append($("#mes_appts"))
     
 		
@@ -206,8 +207,7 @@ $(document).ready(function() {
 				dataType:"html",
 				success:function(reponse) {
 					$('#afficheInfoProfil').empty();
-					$('#afficheInfoProfil').html(reponse);
-					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
+					$('#afficheInfoProfil').html(reponse);                 
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -215,7 +215,90 @@ $(document).ready(function() {
 			});
 		});
     
-        
+	/**
+		Fonction pour afficher demandes de reservation Proprio
+	*/
+		$(document).on('click', '#demandesReservations', function(e){
+			var idUserProprio = $("#userNom")[0].innerHTML;
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficheDemandesReservations&idProprio="+idUserProprio,
+				dataType:"html",
+				success:function(reponse) {
+					$('#afficheInfoProfil').empty();
+					$('#afficheInfoProfil').html(reponse); 
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour afficher demandes de reservation Client
+	*/
+		$(document).on('click', '#mesReservations', function(e){
+			var idClient = $("#userNom")[0].innerHTML;
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficheDemandesReservations&idClient="+idClient,
+				dataType:"html",
+				success:function(reponse) {
+					$('#afficheInfoProfil').empty();
+					$('#afficheInfoProfil').html(reponse); 
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour valider une demande de reservation
+	*/
+		$(document).on('click', '#confirmerReservation', function(e){
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=validerDemande&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					//vérification côté php, s'il y des erreurs
+					console.log("allo");
+					console.log(reponse.messageErreur);
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
+					}
+					else {
+						//$(this).prop("disabled", true);
+					}
+					
+					
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour refuser une demande de reservation
+	*/
+		$(document).on('click', '#annulerReservation', function(e){
+			var idLocation1 = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
+				dataType:"html",
+				success:function(reponse) {
+					$(this).prop("disabled", true);
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
 
 	/**
 		Action supprimer une disponibilite d'un apprtement
@@ -349,7 +432,7 @@ var funcAjouteDispo = function(e){
 		var nbPersonnes = $('option:selected').val();
 		$.ajax({
 			cache: false,
-			url: 'index.php?Appartements&action=creerLocation',
+			url: 'index.php?Appartements&action=demandeReservation',
 			method: 'POST',
 			dataType : 'json',		
 			data: {
@@ -365,7 +448,7 @@ var funcAjouteDispo = function(e){
 					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
 				} 
 				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
-					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
+					$("#erreurReservation").empty().css("display", "block").removeClass("alert alert-warning").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -374,9 +457,8 @@ var funcAjouteDispo = function(e){
 		});
     e.stopImmediatePropagation();	
 	}
-
-
-/* ============================  function pour le datepicker des disponibilites ============================================== */
+    
+    /* ============================  function pour le datepicker des disponibilites ============================================== */
 
     $(function() { 
         /*var todayDate = new Date().getDate();
@@ -388,17 +470,16 @@ var funcAjouteDispo = function(e){
         
             format: 'YYYY/MM/DD',
             minDate: moment().add(1, 'days'),
-            maxDate: "03/19/2018",
+            //maxDate: "03/19/2018",
             
             showDropdowns: true,
             alwaysShowCalendars: true,
-            startDate: "02/26/2018",
-            endDate: "03/19/2018",
+            //startDate: "02/26/2018",
+           // endDate: "03/19/2018",
             opens: "left"
             
         });
     }); 
-
 
 
 /*////////////////////////////////////////////////////////////////*/
@@ -439,90 +520,6 @@ function naviguer(appartParPage, page) {
         url+="&appartParPage="+appartParPage+"&page="+page+"";
         filtrerAppart(url);
 }
-
-/* ============================  function pour initialiser la google map du Quartier ============================================== */
-
-
-$(document).ready(function() {
-       if($('#carteQuartier').length)
-        {
-            var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
-            $('body').append(scriptGoogle);
-        } 
-});
-
-    // initialiser la catte google du Quartier
-    var carteQuartier;
-    var marqueurs = [];
-    function initMap() {
-      carteQuartier = new google.maps.Map(document.getElementById('carteQuartier'), {
-        zoom: 11.5,
-        center: new google.maps.LatLng(45.51,-73.72) 
-      });
-    }
-
-    // fonction pour placer un marqueur sur la carte du Quartier.
-    function placerSureCarteQuartier(adrAppart, miniature) {
-        Geocoder = new google.maps.Geocoder(); 
-        Geocoder.geocode( { 'address': adrAppart}, function(results, status) {
-            
-        /* Si l'adresse a pu être géolocalisée */
-            if (status == google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat();
-                var longitude = results[0].geometry.location.lng();
-                var latLng = new google.maps.LatLng(latitude,longitude);
-                
-                // initialisation d'un setTimeOut pour animer les marqueur
-                window.setTimeout(function() {
-                    var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: carteQuartier,
-                    animation: google.maps.Animation.DROP
-                  });
-                    
-                     // creation de l'info bulle
-                  var infowindow = new google.maps.InfoWindow({
-                            content: miniature,
-                            maxWidth: 200
-                              
-                          });
-                    
-                    // ouvrir l'info bulle
-                    google.maps.event.addListener(marker,'mouseover',function() {
-                          infowindow.open(carteQuartier,marker);
-                    });
-                    
-                     // fermer l'info bulle
-                    google.maps.event.addListener(carteQuartier,'click',function() {
-                          setTimeout(function () { infowindow.close(); }, 200);
-                    });
-                    
-                    // ajout du marqueur au tableau
-                    marqueurs.push(marker);
-                }, 300);
-                
-            }
-        });
-    }
-
-    // fonction pour supprimer les marqueurs de la carte du Quartier
-    function clearMarkers() {
-        for(var i=0; i< marqueurs.length; i++)
-        {
-            marqueurs[i].setMap(null);
-        }
-    }
-
-    // boucler dans le tableau des adresses et les placer sur la carte du Quartier.
-     window.onload=function() {    
-        $("div.appart").each(function(){
-            var miniature = $('<div class="miniature">').append($(this).html());
-            placerSureCarteQuartier($(this).attr('name'), miniature.html());
-        });
-     
-     }
-
-
 
 /* ============================  function pour initialiser la google map ============================================== */
 
