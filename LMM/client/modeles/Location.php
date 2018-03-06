@@ -25,6 +25,7 @@
 		private $id_userClient;
 		private $nbPersonnes;
 		private $refuse;
+        private $idDispo;
 		
 		/**
         *   constructeur de la classe Location
@@ -39,7 +40,7 @@
         *   @param <int>        	$nbPersonnes            le nombre de personnes pour la location    
         *   @param <int>        	$refuse            		statut de demande    
         */
-		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="", $refuse = 0)
+		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="", $refuse = 0, $idDispo = "")
 		{
 			$this->setId($id);
 			$this->setDateDebut($dateDebut);
@@ -49,7 +50,8 @@
 			$this->setIdAppartement($id_appartement);
 			$this->setIdUserClient($id_userClient);
 			$this->setNbPersonnes($nbPersonnes);
-			$this->setRefuse($refuse);
+			$this->setRefuse($refuse); 
+            $this->setIdDispo($idDispo);
 		}
 		
 		//getters 
@@ -97,7 +99,12 @@
 		{
 			return $this->refuse;
 		}
-		
+       
+        public function getIdDispo() 
+		{
+			return $this->idDispo;
+		}
+        
 		//setters
 		public function setId($id)
 		{
@@ -147,5 +154,11 @@
 		{
 			$this->refuse = $refuse;
 		}
+         
+        public function setIdDispo($idDispo)
+		{
+			$this->idDispo = $idDispo;
+		}
+             
 	}
 ?>

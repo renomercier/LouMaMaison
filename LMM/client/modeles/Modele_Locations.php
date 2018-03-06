@@ -37,8 +37,8 @@
 		public function creerLocation(Location $Location)
 
 		{
-			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement, id_userClient,  nbPersonnes) VALUES (?, ?, ?, ?, ?)";
-			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getIdAppartement(), $Location->getIdUserClient(),  $Location->getNbPersonnes());
+			$query = "INSERT INTO " . $this->getTableName() . " (dateDebut, dateFin, id_appartement, id_userClient,  nbPersonnes, idDispo) VALUES (?, ?, ?, ?, ?, ?)";
+			$data = array($Location->getDateDebut(), $Location->getDateFin(), $Location->getIdAppartement(), $Location->getIdUserClient(),  $Location->getNbPersonnes(), $Location->getIdDispo());
 			return $this->requete($query, $data);
 		}
 				
@@ -129,6 +129,21 @@
 			$resultat = $this->requete($query, $donnees);
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
 			return $resultat->fetchAll();
+		}
+        
+        /**  
+		* @brief     	Chercher location d'un appartement par l'id de disponibilite
+		* @details   	
+		* @param   		<int>    $idDispo : id de disponibilite     	
+		* @param   		<int>    $id : id de location     	
+		* @return    	Résultat de la requête SQL
+		 */ 
+		public function obtenir_location_par_dispo($idDispo, $id)
+
+		{
+			$query = "SELECT * FROM " . $this->getTableName() . " WHERE idDispo = ? AND id != ?";
+			$data = array($idDispo, $id);
+			return $this->requete($query, $data);
 		}
 		
 		/**  

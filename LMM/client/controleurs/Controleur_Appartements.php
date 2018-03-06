@@ -299,7 +299,7 @@
 						$message_reservation="";
 						if(isset($params['id_appart']) && isset($params['dateDebut']) && isset($params['dateFin']) && isset($params['nbPersonnes']) && !empty($params['id_appart']) && !empty($params['dateDebut']) && !empty($params['dateFin']) && !empty($params['nbPersonnes']) && is_numeric($params['nbPersonnes']))
 						{
-							if(isset($params['id_userClient']) && !empty($params['id_userClient'])) {
+							if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
 								if($_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) {
 									if($params['dateFin']>=$params['dateDebut'] && $params['dateDebut']>=$today) {
 										$modeleDisponibilites = $this->getDAO("Disponibilites");
@@ -308,7 +308,7 @@
 											$idDispo = $data['idDispo']->getId();								
 											
 											//creer un objet location
-											$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $params['id_userClient'], $params['nbPersonnes']);
+											$location = new Location(0, $params['dateDebut'],  $params['dateFin'], 0, 0, $params['id_appart'], $_SESSION['username'], $params['nbPersonnes'],0,$idDispo);
 											//chargement du modele Location 
 											$modeleLocation = $this->getDAO("Locations");
 											//creation de location
