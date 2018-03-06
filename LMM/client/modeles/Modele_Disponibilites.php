@@ -11,7 +11,8 @@
 	* @class 	Modele_Disponibilites - herite de BaseDao
 	* @details  
 	*
-	* @methodes		getTableName(), afficheDisponibilite(), supprimeDisponibilite(), ajouteDisponibilite()
+***	* 	... 9 methodes	|	getTableName(), afficheDisponibilite(), supprimeDisponibilite(), supprimeDispoParApt(), ajouteDisponibilite(),
+	*						obtenirIdDispo(), newDateBegin(), newDateEnd(), misAjourChampUnique()
 	*/
 	class Modele_Disponibilites extends BaseDAO
 	{
@@ -40,20 +41,32 @@
         }
         
         /**  
-		* @brief     	Supprimer une disponibilite d'un appartement
-		* @param   		<int>   	$id_dispo 		Identifiant de disponibilite
+		* @brief     	Supprimer une disponibilite d'un appartement par id de disponibilite
+		* @param   		<int>   	$id_dispo  		Identifiant de la table disponibilite 
 		* @return    	<boolean>   ( resultat de la requete ou false )
 		*/
         public function supprimeDisponibilite($id_dispo) 
         {
             return $this->supprimer($id_dispo);
         }
+
+        /**  
+		* @brief     	Supprimer les disponibilites d'un appartement par id d'appartement
+		* @param   		<int>   	$id  	Identifiant de l'appartement
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function supprimeDispoParApt($idApt) 
+        {
+            $query = "DELETE FROM " . $this->getTableName() . " WHERE id_appartement = ?";
+			$donnees = array($idApt);
+			return $this->requete($query, $donnees);
+        }
         
         /**  
-		* @brief     	Ajouter une disponibilite d'un appartement
+		* @brief     	Ajouter une disponibilite a un appartement
+		* @param   		<date>   	$dateDebut 	Date de debut de la disponobilite
+		* @param   		<date>   	$dateFin 	Date de fin de la disponibilite
 		* @param   		<int>   	$id_apt 	Identifiant d'un appartement
-		* @param   		<int>   	$dateDebut Date de debut
-		* @param   		<int>   	$dateFin Identifiant d'un appartement
 		* @return    	<boolean>  	( resultat de la requete ou false )
 		*/
         public function ajouteDisponibilite($dateDebut, $dateFin, $id_apt) 
@@ -64,9 +77,10 @@
         }      
 		 
         /**
-		* @brief		
-		* @details		
-		* @param 		
+		* @brief		Recupere la disponibilite associee a un apparteement selon un filtre de dates 			
+		* @param   		<date>   	$dateDebut 	Date de debut recherche
+		* @param   		<date>   	$dateFin 	Date de fin recherche
+		* @param   		<int>   	$id_apt 	Identifiant d'un appartement		
 		* @return    	
 		*/
         public function obtenirIdDispo($dateDebut, $dateFin, $id_apt)
@@ -81,11 +95,11 @@
 		}
 		
 		/**  
-		* @brief      Calculer la date de début de la nouvelle location
-		* @details    Dans le cas de location qu'est au mileu de disponibilité, 
-		* on créer la date de début de la nouvelle location 
-		* @param    dateEnd   date de fin de location cherchée par un client 
-		* @return	  la date de début de la nouvelle location   
+		* @brief      	Calcule la date de début de la nouvelle location
+		* @details    	Dans le cas d'une location qui est au milieu d'une disponibilité, 
+		* 				on crée la date de début de la nouvelle location 
+		* @param    	<date>		$dateEnd   		date de fin de location recherchée par un client 
+		* @return	  	la date de début de la nouvelle location   
 		*/ 	
 		public function newDateBegin($dateEnd)
 		{
@@ -96,11 +110,11 @@
 		}
 		
 		/**  
-		* @brief      Calculer la date de fin de la nouvelle location
-		* @details    Dans le cas de location qu'est au mileu de disponibilité, 
-		* on créer la date de fin de la nouvelle location 
-		* @param    dateBegin  date de début de location cherchée par un client 
-		* @return	  la date de fin de la nouvelle location   
+		* @brief      	Calcule la date de fin de la nouvelle location
+		* @details    	Dans le cas d'une location qu'est au mileu de disponibilité, 
+		* 				on crée la date de fin de la nouvelle location 
+		* @param    	<date>		$dateBegin  		date de début de location recherchée par un client 
+		* @return	  	la date de fin de la nouvelle location   
 		*/ 		
 		public function newDateEnd($dateBegin)
 		{
@@ -110,7 +124,7 @@
 			return $newDateEnd;		
 		}
 		
-		 /**
+		/**
 		* @brief		Fonction pour réserver un appartement
 		* @details		Permet de changer le statut de champ: disponibilité
 		* @param 		<VAR>		$leChamp		Le champ à modifier (disponibilite)

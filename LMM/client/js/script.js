@@ -347,6 +347,7 @@ var funcAjouteDispo = function(e){
 		var dateFin = $('input[name="dateFin"]').val();
 		var id_userClient = $('input[name="id_userClient"]').val();
 		var nbPersonnes = $('option:selected').val();
+
 		$.ajax({
 			cache: false,
 			url: 'index.php?Appartements&action=creerLocation',
@@ -362,11 +363,26 @@ var funcAjouteDispo = function(e){
 			success:function(reponse) {
 				if(reponse.messageErreur) 
 				{ 
+                    $("#erreurReservation").empty();
 					$("#erreurReservation").empty().css("display", "block").addClass("alert alert-warning").html("<p>"+reponse.messageErreur + "</p>");
 				} 
 				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
 					//$("#erreurReservation").empty().css("display", "block").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
-                    boutonPaypal();
+                   console.log(reponse);
+                    $("#erreurReservation").empty();
+                    $(".demandeReservation").load("./vues/recapLocation.php");
+                    
+                    setTimeout(function () {
+                        
+                        $(".recap .arrivee span").html(reponse.arrivee);
+                        $(".recap .depart span").html(reponse.depart);
+                        $(".recap .nbrJours span").html(reponse.nbrJours);
+                        $(".recap .nbrPersonne span").html(reponse.nbrPersonne);
+                        $(".recap .total span").html(reponse.totalLocation);
+
+                         boutonPaypal(reponse.totalLocation); 
+                    
+                    }, 200);
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -435,9 +451,11 @@ $(document).ready(function() {
         var scroll = $(window).scrollTop();
         if (scroll >= window.innerHeight-300) {
             carte.addClass("carte_fixe");
+            carte.removeClass("absolut");
         
         } else {
             carte.removeClass("carte_fixe");
+            carte.addClass("absolut");
         }
     });
 });

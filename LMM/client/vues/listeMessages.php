@@ -18,9 +18,9 @@
         <a class="nav-link" data-toggle="tab" href="#nouveau" role="tab" onclick="formulaireNouveauMessage('nouveau')">Nouveau message</a>
       </li>
     </ul>
-    <?php
-        $DirectioMessage = $data['recus'] == true ? 'De' : 'À';
-    ?>
+        <?php
+            $DirectioMessage = $data['recus'] == true ? 'De' : 'À';
+        ?>
         <!-- Tab panes -->
         <div class="tab-content">
           <div class="tab-pane active" id="recus" role="tabpanel">

@@ -11,7 +11,7 @@
     * @class    Usager 
     * @details  Instancie un object de type Usager
     *
-    *   1 constructeur  |   getters & setters
+    *   1 constructeur  |   getters & setters   |   Interface JsonSerializable - jsonSerialize()  
     */
 	class Usager implements JsonSerializable	{
 		
@@ -59,7 +59,6 @@
 			$this->setIdMoyenComm($iMC);
 			$this->setCoorMoyenComm($coorMC);
 			$this->setIdModePaiement($iMP);
-
 			$this->setValideParAdmin($vA);
 			$this->setBanni($b);
 			$this->setAdminBan($iAB);
@@ -231,5 +230,4 @@
 			];
 		}
 	}
-
 ?>

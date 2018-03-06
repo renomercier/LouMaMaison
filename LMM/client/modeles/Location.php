@@ -25,8 +25,6 @@
 		private $id_userClient;
 		private $nbPersonnes;
 		
-
-
 		/**
         *   constructeur de la classe Location
         *       
@@ -37,9 +35,8 @@
         *   @param <tinyint>        $validePaiement         bool si paiement valide  
         *   @param <int>        	$idAppartement          l'id de l'appartement  
         *   @param <string>        	$idUserClient           l'id de l'utilisateur    
+        *   @param <int>        	$nbPersonnes            le nombre de personnes pour la location    
         */
-		
-		//constructeur
 		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="")
 		{
 			$this->setId($id);

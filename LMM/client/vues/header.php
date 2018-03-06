@@ -8,7 +8,6 @@
 -->
 <html lang="fr">  
 <head>
-
     <!-- meta tags requis -->
     <meta charset="UTF-8">
     <meta name="description" content="ProjetWEB2">
@@ -37,7 +36,6 @@
     <script src="js/script.js" ></script>
     <script src="js/paiement.js" ></script>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-
 </head>
 
 <header>

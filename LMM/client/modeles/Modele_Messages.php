@@ -12,7 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Message a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 2 methodes	|	getTableName(), creerMessage()
+***	* 	... 9 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
+	*						obtenir_par_id(), obtenir_messages_recus(), obtenir_messages_envoyes(), definir_messages_lu(),
+	*						misAjourChampUnique()
 	*/
 	class Modele_Messages extends BaseDAO
 	{
@@ -30,13 +32,9 @@
 		/**  
 		* @brief     	Créer un message
 		* @details   	Insérer un message et le relier avec un expediteur 
-		* @param   		$titre      	titre du message
-		* @param   		$sujet        	le contenu du message
-		* @param		$dateHeure 	    la date et l'heure de la création du message
-		* @param 		$id_userEmetteur	id de l'emetteur du message
-		* @return    	Array :  		'message'
-		 */ 
- 
+		* @param   		<objet>		$leMessage     	objet de type Message
+		* @return    	L'id de l'insertion du message ou false
+		*/ 
 		public function creerMessage(Message $leMessage) {
 				// Sauvegarde de l'ajout du message
 				$query = "INSERT INTO " . $this->getTableName() . "(id, titre, sujet, dateHeure, id_userEmetteur, archive) VALUES (?, ?, ?, ?, ?, ?)";
@@ -48,13 +46,10 @@
         /**  
 		* @brief     	Créer une liaison entre un message et le ou les utilsateurs déstinataires
 		* @details   	Insérer un message et le relier avec un ou plusieurs recepteurs
-		* @param   		$titre      	titre du message
-		* @param   		$sujet        	le contenu du message
-		* @param		$dateHeure 	    la date et l'heure de la création du message
-		* @param 		$id_userEmetteur	id de l'emetteur du message
-		* @return    	Array :  		'message'
-		 */ 
- 
+		* @param		<int>			$idMessage 	    		id du message
+		* @param 		<string>		$idDestinataire			id du destinataire du message
+		* @return    	Resultat de la requete 
+		*/ 
 		public function lier_message_destinatair($idMessage, $idDestinataire) {
 				// Sauvegarde de l'ajout de la liaison
 				$query = "INSERT INTO message_user (id_message, id_username) VALUES (?, ?)";
@@ -62,12 +57,11 @@
 				return $this->requete($query, $donnees);
 		}
         
-
 		/**  
 		* @brief     	Supprimer la relation entre un usager et un message de la BD
 		* @details   	Exécute la suppression d'une relation usager-message de la BD 
 		* @param   		<int>		$id_message 		Identifiant du message
-        * @param   		<string>	$idUsager 		Identifiant du message
+        * @param   		<string>	$idUsager 			Identifiant de l'usager
 		* @return    	<bool>		résultat de la requete SQL
 		*/
 		public function suppression_logique($id_message, $idUsager) {
@@ -75,13 +69,12 @@
 			$donnees = array($id_message, $idUsager);
 			$resultat = $this->requete($query, $donnees);
             return $resultat;
-
 		}
 
         /**  
 		* @brief     	Lecture d'un message de la BD
 		* @details   	Exécute la lecture d'un message de la BD à l'aide de son identifiant 
-		* @param   		<int> 	$id_message 		Identifiant du message
+		* @param   		<int> 		$id_message 		Identifiant du message
 		* @return    	<objet> 	Résultat de la requête SQL
 		*/
         public function obtenir_par_id($id_message) {
@@ -123,8 +116,8 @@
         /**  
 		* @brief     	Definir un message comme etant Déja lu
 		* @param   		<int>		$id_message 		Identifiant du message
-        * @param   		<string>	$idUsager 		Identifiant du message
-		* @return    	<bool> 	Résultat de la requête SQL
+        * @param   		<string>	$idUsager 			Identifiant du message
+		* @return    	<bool> 		Résultat de la requête SQL
 		*/
         public function definir_messages_lu($id_message, $idUsager) {
 			$query = "UPDATE message_user SET statut = 1 WHERE id_message =? AND id_username =?";

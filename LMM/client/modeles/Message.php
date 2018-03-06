@@ -23,7 +23,16 @@
 		private $id_userEmetteur;
         private $archive;
 		
-		//constructeur
+		/**
+        *   constructeur de la classe Message
+        *       
+        *   @param <int>           	$id                     l'id du message 
+        *   @param <string>         $titre   				titre du message
+        *   @param <string>         $sujet         			sujet du message
+        *   @param <date>        	$dateHeure          	la date et l'heure du message
+        *   @param <string>        	$id_userEmetteur        l'id de l'emetteur du message    
+        *   @param <bool>        	$archive            	bool (message lu ou non lu)    
+        */
 		public function __construct($id = "", $titre = "", $sujet = "", $dateHeure = "", $id_userEmetteur = "", $archive=0)
 		{
 			$this->setId($id);

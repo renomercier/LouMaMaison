@@ -18,7 +18,7 @@
 		* @brief      methode traite - methode abstraite redéfinie par les classes heritant de BaseControleur
 		* @details    gere les actions (switch case) ainsi que les parametres envoyes
 		* @param      <array>  		$params 	les parametres envoyes
-		* @return     <...>  	( tout depend du case )
+		* @return     <...>  		( tout depend du case )
 		*/	
 		public function traite(array $params)
 		{

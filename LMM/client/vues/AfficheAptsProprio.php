@@ -5,6 +5,12 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
+<!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
+<div class="row">
+  <div id="resultatModifApt" class="col-sm-12">     
+  </div>
+</div> <!-- fin div row -->
+
 <div class="resultat">
     <div class="row">        
         <?php 
@@ -20,7 +26,9 @@
 						} else {
 							$photoApt = "./images/profil.jpg";
 						}
-					 ?>    
+												
+					?> 
+					<input type="hidden" value="<?=$appartement->username;?>" id="nomHote"/>  
 					<!--<img src="./images/profil.jpg" alt="mon appart">-->
 					<div class="thumbnail">
 						<a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getId() ?>" >
@@ -72,8 +80,13 @@
 					{
 				?>
 						<p class="card-text">
+<!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?=$appartement->getId()?>" role="button">Modifier ce logis</a></p> 
+<!-- @ replacer -->         <p><a value="<?=$appartement->getId()?>" class="btn btn-primary btnSuppressionApt" href="#" role="button">Supprimer ce logis</a></p> 
+<!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherFormulaireImage&id=<?= $appartement->getId(); ?>" role="button">Ajout de photos</a></p> 
+
 							<form>
 								<input type="hidden" value="<?=$appartement->getId_userProprio()?>">
+								<input classe="idAptSuppression" type="hidden" value="<?=$appartement->getId()?>">
 								<button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>"  class="btn btn-primary mb-2" >Disponibilite</button>
 							</form>
 						</p>
