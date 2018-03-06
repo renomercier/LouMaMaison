@@ -687,21 +687,19 @@
                             <!-- Date d'arrivée -->
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="dateArrivee">Date arrivée &nbsp | &nbsp Date départ</label>
-                                    <input type="text" name="daterange" id="dateArrivee" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateArrivee">
-                                    <small class="form-text text-muted" id="aideDateArrivee"></small>
+                                    <label for="dateDebut">Date arrivée</label>
+                                    <input type="date" name="dateDebut" id="dateDebut" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateDebut">
+                                    <small class="form-text text-muted" id="aideDateDebut"></small>
                                 </div>
                             </div>
                             <!-- Date de départ -->
-                            <!--
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="dateDepart">Date de départ</label>
-                                    <input type="date" name="dateDepart" id="dateDepart" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateDepart">
-                                    <small class="form-text text-muted" id="aideDateDepart"></small>
+                                    <label for="dateFin">Date de départ</label>
+                                    <input type="date" name="dateFin" id="dateFin" size="8" class="col-sm-12 form-control text-muted" aria-describedby="aideDateFin">
+                                    <small class="form-text text-muted" id="aideDateFin"></small>
                                 </div>
                             </div>
-                            -->
                             <!-- Nombre de personnes -->
                             <div class="form-group">
                                 <div class="row">
