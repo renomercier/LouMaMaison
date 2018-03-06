@@ -32,12 +32,23 @@
 						} else {
 							$photoApt = "./images/profil_resize.jpg";
 						}
-						
-						if($appartement->getValideParPrestataire() == 0 || $appartement->getValidePaiement() == 1) {
+						//client ne peut pas payer si le proprio n'a pas encore valide la demande/s'il déjà paié/si la demande est refusé
+						if($appartement->getValideParPrestataire() == 0 || $appartement->getValidePaiement() == 1 || $appartement->getRefuse() == 1) {
 							$disabled='disabled';
 						}
 						else {
 							$disabled='';
+						}
+						
+						if($appartement->getValideParPrestataire() == 0) {
+							$confirmation = "En attente de confirmation";
+						}
+						else {
+							$confirmation = "Confirmé";
+						}
+						
+						if($appartement->getRefuse() == 1) {
+							$confirmation = "Refusé";
 						}
 												
 					?> 
@@ -50,7 +61,7 @@
 							<td id="dateDebut"><?=$appartement->getDateDebut();?></td>
 							<td id="dateFin"><?=$appartement->getDateFin();?></td>
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
-							<td><?=$appartement->getValideParPrestataire();?></td>
+							<td><?=$confirmation ?></td>
 							<td><?=$appartement->getValidePaiement();?></td>
 							<td id="payer"><button type="button" value="" class="btn btn-success" <?=$disabled?>>Payer</button></td>
 						</tr>

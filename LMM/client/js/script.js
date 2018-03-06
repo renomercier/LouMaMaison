@@ -261,9 +261,38 @@ $(document).ready(function() {
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=validerDemande&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					//vérification côté php, s'il y des erreurs
+					console.log("allo");
+					console.log(reponse.messageErreur);
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
+					}
+					else {
+						//$(this).prop("disabled", true);
+					}
+					
+					
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour refuser une demande de reservation
+	*/
+		$(document).on('click', '#annulerReservation', function(e){
+			var idLocation1 = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
 				dataType:"html",
 				success:function(reponse) {
-					//$(this).attr("disabled", true);
+					$(this).prop("disabled", true);
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

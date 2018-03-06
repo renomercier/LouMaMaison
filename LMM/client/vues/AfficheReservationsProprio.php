@@ -20,6 +20,7 @@
 					<th>Paiement</th>
 					<th>Confirmer</th>
 					<th>Annuler</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,7 +35,7 @@
 							$photoApt = "./images/profil_resize.jpg";
 						}
 						
-						if($appartement->getValideParPrestataire() == 1 || $appartement->getValidePaiement() == 1) {
+						if($appartement->getValideParPrestataire() == 1 || $appartement->getValidePaiement() == 1 || $appartement->getRefuse() == 1) {
 							$disabled='disabled';
 						}
 						else {
@@ -53,8 +54,9 @@
 										<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 										<td><?=$appartement->getValideParPrestataire();?></td>
 										<td><?=$appartement->getValidePaiement();?></td>
-										<td><button id="confirmerReservation" type="button" value="<?=$appartement->getId()?>" class="btn btn-success" <?=$disabled?>>Confirmer</button><span id="messageConfirm"></span></td>
-										<td id="annuler"><button type="button" value="" <?=$disabled?> class="btn btn-danger">Réfuser</button></td>
+										<td><button id="confirmerReservation" type="button" value="<?=$appartement->getId()?>" class="btn btn-success" <?=$disabled?>>Confirmer</button></td>
+										<td><button  id="annulerReservation" type="button" value="<?=$appartement->getId()?>" <?=$disabled?> class="btn btn-danger">Refuser</button></td>
+										<td id="erreur_demande<?=$appartement->getId()?>"></td>
 									</tr>
 								
 

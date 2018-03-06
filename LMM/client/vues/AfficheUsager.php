@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <div class="row">
                 <div id="photoProfilUsager" class="col-md-5">
-                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="img img-fluid" width="100px"> </div>
+                    <div id="photo"> <img src="<?=$data["usager"]->getPhoto() ?>" class="aptPhotoProprio rounded-circle img-fluid img"> </div>
                 </div>
 				<!--On affiche nom d'usager pour les gens pas connectés ou bannis ou non activés, ainsi que
 					pour les connectés; 

@@ -54,7 +54,8 @@
 					JOIN 
 					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
-					WHERE dateDebut >= ? AND id_userProprio = ?";
+					WHERE dateDebut >= ? AND id_userProprio = ?
+					ORDER BY titre, dateDebut ASC";
             $donnees = array($dateNow, $idProprio);
             $resultat = $this->requete($query, $donnees);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
@@ -73,7 +74,8 @@
 					JOIN 
 					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
-					WHERE dateDebut >= ? AND id_userClient=?";
+					WHERE dateDebut >= ? AND id_userClient=?
+					ORDER BY titre, dateDebut ASC";
             $donnees = array($dateNow, $idClient);
             $resultat = $this->requete($query, $donnees);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
@@ -128,6 +130,16 @@
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
 			return $resultat->fetchAll();
 		}
+		
+		/**  
+		* @brief     	Supprimer une location d'un appartement par id 
+		* @param   		<int>   	$id_location 		Identifiant de la table location
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function supprimeLocation($id_location) 
+        {
+            return $this->supprimer($id_location);
+        }
 	}
 
 ?>
