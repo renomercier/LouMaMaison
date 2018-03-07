@@ -83,12 +83,12 @@
         */
          protected function initialiseMessages()
         {
-            $data['message'] = (isset($_SESSION["username"])) ? "<p class='alert alert-success'>Bienvenue ".$_SESSION['prenom']. " " .$_SESSION['nom'] ."</p>" : "<p class='alert alert-warning'>Vous n'êtes pas connecté. Vos privilèges seront limités!</p>";
+            $data['message'] = (isset($_SESSION["username"])) ? "Bienvenue ".$_SESSION['prenom']. " " .$_SESSION['nom'] ."" : "Vous n'êtes pas connecté. Vos privilèges seront limités!";
             //
-            $data['banni'] = (isset($_SESSION["username"]) && $_SESSION["isBanned"]==1) ? "<p class='alert alert-danger'>Vous êtes banni ! prenez contact avec l'administrateur</p>" : "";
+            $data['banni'] = (isset($_SESSION["username"]) && $_SESSION["isBanned"]==1) ? "Vous êtes banni ! prenez contact avec l'administrateur" : "";
             //
             $data['log'] = (isset($_SESSION["username"])) ? "Déconnexion" : "Connexion";
-            
+             
             return $data;
         }
 	}

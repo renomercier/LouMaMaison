@@ -54,7 +54,7 @@
 					JOIN 
 					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
-					WHERE dateDebut >= ? AND id_userProprio = ?
+					WHERE dateFin >= ? AND id_userProprio = ?
 					ORDER BY titre, dateDebut ASC";
             $donnees = array($dateNow, $idProprio);
             $resultat = $this->requete($query, $donnees);
@@ -92,7 +92,7 @@
         {
             $query = "SELECT * FROM " . $this->getTableName() . " l 
 					JOIN 
-					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
+					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio, montantParJour FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
 					WHERE dateDebut >= ? AND id = ?";
             $donnees = array($dateNow, $idLocation);

@@ -60,17 +60,19 @@
 							<td id="dateFin"><?=$appartement->getDateFin();?></td>
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 							<td><?=$confirmation ?></td>
+
                             <!--client ne peut pas payer si le proprio n'a pas encore valide la demande/s'il déjà paié/si la demande est refusé-->
-                            <td id="payer">
+                            <td>
 						<?php
                         if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
                         {
                         ?>
-							<button type="button" value="" class="btn btn-success">Payer</button>
+							<button id="payer" type="button" onclick="CalculerdonneePaiement(<?=$appartement->getId();?>)" class="btn btn-success">Payer</button>
                          <?php
                         }
                         ?>
                             </td>
+
 						</tr>
 								
 
@@ -84,4 +86,23 @@
 		}
 		?>
 	</div>
+    
+     <!-- Afficher lerésumé d'une location avant de passer au paiement -->
+    <!-- Modal -->
+    <div class="modal fade" data-animation="false" id="myModal<?=$appartement->getId();?>" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title text-white">Résumé de la location</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <div id="recapLocation"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>

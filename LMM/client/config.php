@@ -28,7 +28,6 @@
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison_v_dim/LouMaMaison/LMM/client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison/LouMaMaison/LMM/client/");
 
-
 	//déclaration des infos de connexion
 	define("HOST", "localhost");
 	//define("HOST", "127.0.0.1");

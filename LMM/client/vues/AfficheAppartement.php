@@ -268,13 +268,12 @@
                 </div>
             
                 <?php
-
                     if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
                   {
                   ?>
 
                     <div class="d-block">
-                        <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                       <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                     </div>
 
                 <?php
@@ -282,7 +281,7 @@
                 ?>
 
                     <div class="d-block">
-                        <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                        <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                     </div>  
 
                 <?php
@@ -290,7 +289,11 @@
                 ?>
             
             </div>
-            
+                <!-- formulare de redaction d'un message -->
+                <div id="profilUser">
+                    <input type="hidden" name="idProprio" value="<?= $data['appartement']->getId_userProprio() ?>">
+                    <div class="row" id="afficheInfoProfil"></div>
+                </div> 
             <hr>
             
             <!-- affichage des equipements de l'appartememnt -->
@@ -299,7 +302,6 @@
                 <div class="row">
                     
                     <?php
-
                         foreach($data["tab_options"] as $option) {
                             if  ($option['id'] > 4) {
                     ?>
@@ -330,7 +332,6 @@
                 <div class="row">
                     
                     <?php
-
                         foreach($data["tab_options"] as $option) {
                             
                             if  ($option['id'] == 4) {
@@ -376,7 +377,6 @@
                 <div class="row">
                     
                     <?php
-
                         foreach($data["tab_options"] as $option) {
                             
                             if  ($option['id'] <= 3) {
@@ -447,26 +447,29 @@
                 <div class="row align-middle">
                     <div class="d-inline col-sm-12 text-left">
                         <?php
-
                             if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
                         {
                         ?>
                                 <div class="d-block">
-                                    <button type='button' disabled id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                                    <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                                 </div>
                         <?php
                             } else {
                         ?>
                                 <div class="d-block">
-                                    <button type='button' id='btnContactProprio' onclick='???' class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                                    <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                                 </div>  
                         <?php
                             }
                         ?>
                     </div>
-                </div>                      
-            </div>
-            
+                    <!-- formulare de redaction d'un message -->                     
+                </div>
+                    <div>
+                        <input type="hidden" name="idProprio" value="<?= $data['appartement']->getId_userProprio() ?>">
+                        <div class="row" id="afficheInfoProfil2"></div>
+                    </div> 
+                </div> 
             <hr>
             
             <!-- affichage des politique de communication de l'appartememnt -->
@@ -724,7 +727,6 @@
                         </form>
                         <div id="erreurReservation"></div>
                     </div>
-                    <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
                     <hr>
                     <br>
                 </div>
