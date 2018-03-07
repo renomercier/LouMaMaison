@@ -61,7 +61,7 @@
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 							<td><?=$confirmation ?></td>
                             <!--client ne peut pas payer si le proprio n'a pas encore valide la demande/s'il déjà paié/si la demande est refusé-->
-                            <td id="payer">
+                            <td>
 						<?php
                         if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
                         {

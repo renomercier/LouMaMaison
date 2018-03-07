@@ -424,10 +424,14 @@
 											$autresDemandes = $modeleLocation->obtenir_location_par_dispo($idDispo, $idLocation); 
 											if($autresDemandes)
 											{
-												//refuser toutes les autres demandes dans la meme disponibilite
+                                               
+												//refuser toutes les autres demandes qui se chevauchent dans la meme disponibilite
 												foreach($autresDemandes as $autre) 
 												{
-													$autre = $modeleLocation->refuserDemandes('refuse', 1, $idDispo);
+                                                    if(($autre->getDateDebut() < $dateDebutLocation && $autre->getDateFin() < $dateFinLocation && $autre->getDateFin() > $dateDebutLocation) || ($autre->getDateDebut() > $dateDebutLocation && $autre->getDateDebut() < $dateFinLocation) || ($autre->getDateFin() > $dateDebutLocation && $autre->getDateFin() < $dateFinLocation))
+                                                    {
+													   $autre = $modeleLocation->refuserDemandes($autre->getId());
+                                                    }
 												}
 											}
 											
