@@ -120,7 +120,7 @@
                     // case d'affichage d'un appartement par proprio
 					case "afficheAptsProprio" :
 						
-						if(isset($_SESSION["username"]) && isset($params["idProprio"])) {
+						if(isset($_SESSION["username"]) && isset($params["idProprio"]) && !empty($_SESSION["username"]) && !empty($params["idProprio"])) {
                             $modeleApt = $this->getDAO("Appartements");
                             $data['appartements'] = $modeleApt->obtenirAptProprio($params["idProprio"]);
 							$modeleDispo = $this->getDAO("Disponibilites");
@@ -378,57 +378,143 @@
 					//case valider une demande de reservation par proprio
 					case "validerDemande" :
 						$message_demande="";
-						if(isset($params['idLocation'])) {
+						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
 							//on cherche les dates reserves dans location
 							$modeleLocation = $this->getDAO("Locations");
-							$res = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
-							if($res->getRefuse() == 0) 
+							$location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+							if($location)
 							{
-								$idApt = $res->getIdAppartement();
-								$idLocation = $res->getId();
-								$dateDebutLocation = $res->getDateDebut();
-								$dateFinLocation = $res->getDateFin();
-								//on calcule les nouveaux dates de disponibilite
-								$modeleDisponibilites = $this->getDAO("Disponibilites");
-								$dateBeginNew = $modeleDisponibilites->newDateBegin($dateFinLocation);
-								$dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
-								//on cherche dans quelle disponibilite rentrent les dates de reservation
-								$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
-								$idDispo = $data['idDispo']->getId(); 				
-								$dateDebutAncien=$data['idDispo']->getDateDebut();
-								//mis a jour les dates de debut qui sont en passe maintenant
-								if($dateDebutAncien < $today) {
-									$dateDebutAncien = $today;
+								//si cette demande n'est pas deja refuse
+								if($location->getRefuse() == 0) 
+								{
+									//si cette demande n'est pas encore valide	
+									if($location->getValideParPrestataire() == 0)
+									{
+										$idLocation = $location->getId();
+										//validation de cette demande par proprio
+										$validation = $modeleLocation->misAjourChampUnique('valideParPrestataire', 1, $idLocation);
+										if($validation)
+										{
+											//on cherche dans quelle disponibilite rentrent les dates de reservation
+											$idApt = $location->getIdAppartement();
+											$dateDebutLocation = $location->getDateDebut();
+											$dateFinLocation = $location->getDateFin();
+											$modeleDisponibilites = $this->getDAO("Disponibilites");
+											$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
+											$idDispo = $data['idDispo']->getId(); 
+											
+											//trouver les autres demandes dans la meme disponibilite
+											$autresDemandes = $modeleLocation->obtenir_location_par_dispo($idDispo, $idLocation); 
+											if($autresDemandes)
+											{
+												//refuser toutes les autres demandes dans la meme disponibilite
+												foreach($autresDemandes as $autre) 
+												{
+													$autre = $modeleLocation->refuserDemandes('refuse', 1, $idDispo);
+												}
+											}
+											
+											$message_demande = json_encode(array("messageSucces"=>"Validé!"));
+											echo $message_demande;
+										}
+										
+										/*
+										//on calcule les nouveaux dates de disponibilite
+										$modeleDisponibilites = $this->getDAO("Disponibilites");
+										$dateBeginNew = $modeleDisponibilites->newDateBegin($dateFinLocation);
+										$dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
+										
+										$dateDebutAncien=$data['idDispo']->getDateDebut();
+										//mis a jour les dates de debut qui sont en passe maintenant
+										if($dateDebutAncien < $today) {
+											$dateDebutAncien = $today;
+										}
+										$dateFinAncien=$data['idDispo']->getDateFin();							
+										//creation de nouvelles dispos
+										if($dateDebutAncien<=$dateFinNew && $dateFinNew >= $today)
+										{	
+											$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $idApt);			
+										}
+										if($dateBeginNew<=$dateFinAncien)
+										{	
+											$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $idApt);					
+										}
+										//enlever disponibilite qui coresponde a la reservation
+										$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+										*/
+									}
+									else 
+									{
+										$message_demande = json_encode(array("messageErreur"=>"Déjà validé!"));
+										echo $message_demande;
+									}
 								}
-								$dateFinAncien=$data['idDispo']->getDateFin();							
-								//creation de nouvelles dispos
-								if($dateDebutAncien<=$dateFinNew && $dateFinNew >= $today)
-								{	
-									$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $idApt);			
+								else 
+								{
+									$message_demande = json_encode(array("messageErreur"=>"Déjà refusé!"));
+									echo $message_demande;
 								}
-								if($dateBeginNew<=$dateFinAncien)
-								{	
-									$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $idApt);					
-								}
-								//enlever disponibilite qui coresponde a la reservation
-								$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
-								//validation par proprio
-								$modeleLocation->misAjourChampUnique('valideParPrestataire', 1, $idLocation);
 							}
 							else 
 							{
-								header('Content-type: application/json'); 
-								$message_demande = json_encode(array("messageErreur"=>"Déjà refusé!"));
+								$message_demande = json_encode(array("messageErreur"=>"Demande n'existe pas!"));
 								echo $message_demande;
 							}
-						}	
+						}
+						else 
+						{
+							$message_demande = json_encode(array("messageErreur"=>"Pas de location!"));
+							echo $message_demande;
+						}						
 					break;
 					
 					case "refuserDemande" :
-						if(isset($params['idLocation'])) {
+						$message_refuse = "";
+						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
 							$modeleLocation = $this->getDAO("Locations");
-							$modeleLocation->misAjourChampUnique('refuse', 1, $params['idLocation']);
+							$location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+							if($location)
+							{
+								if($location->getRefuse() == 0)
+								{
+									if($location->getValideParPrestataire() == 0) 
+									{
+										$location = $modeleLocation->misAjourChampUnique('refuse', 1, $params['idLocation']);
+										$reponse = array("messageSucces"=>"Demande refusé!");
+										$reponse1 = array($location);
+										$tempData = [];
+										$tempData = ([$reponse, $reponse1]);
+										echo json_encode($tempData);
+									}
+									else 
+									{
+										$message_refuse = json_encode(array("messageErreur"=>"Déjà validé!"));
+										echo $message_refuse;
+									}
+								}
+								else 
+								{
+									$message_refuse = json_encode(array("messageErreur"=>"Déjà refusé!"));
+									echo $message_refuse;
+								}
+							}
+							else 
+							{
+								$message_refuse = json_encode(array("messageErreur"=>"Demande n'existe pas!"));
+								echo $message_refuse;
+							}
+							
 						}
+						else 
+						{
+							$message_refuse = json_encode(array("messageErreur"=>"Pas de location!"));
+							echo $message_refuse;
+						}	
+					break;
+					
+					case "validerPaiement" :
+						$message_paiement = "";
+						
 					break;
 					
                     // case d'affichage du formulaire d'inscription d'un appartement 

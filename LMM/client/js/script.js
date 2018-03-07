@@ -264,8 +264,6 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					console.log("allo");
-					console.log(reponse.messageErreur);
 					if(reponse.messageErreur) {
 						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
 						
@@ -290,9 +288,16 @@ $(document).ready(function() {
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
-				dataType:"html",
+				dataType:"json",
 				success:function(reponse) {
-					$(this).prop("disabled", true);
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse[0].messageSucces)
+					{
+						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
+						//$(this).prop("disabled", true);
+					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
