@@ -68,21 +68,11 @@
                                                 if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
                                                 {
                                             ?>
-                                                    <button id="confirmerReservation" type="button" value="<?=$appartement->getId()?>" class="btn btn-success">Confirmer</button>
+                                                    <button id="" type="button" value="<?=$appartement->getId()?>" class="btn btn-success confirmerReservation">Confirmer</button>
+                                                    <button  id="refuserReservation" type="button" value="<?=$appartement->getId()?>" class="btn btn-danger">Refuser</button>
                                             <?php
                                                 }
-                                            ?>
-                                        </td>
-										
-										<td>
-                                            <?php
-                                                if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
-                                                {
-                                            ?>
-                                                <button  id="refuserReservation" type="button" value="<?=$appartement->getId()?>" class="btn btn-danger">Refuser</button>
-                                             <?php
-                                                }
-                                            
+                                             
                                                 if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
                                                 {
                                             ?>

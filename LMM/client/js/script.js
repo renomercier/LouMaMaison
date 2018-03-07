@@ -255,16 +255,16 @@ $(document).ready(function() {
 				}
 			});
 		});
-		
+
 	/**
 		Fonction pour valider une demande de reservation
 	*/
-		$(document).on('click', '#confirmerReservation', function(e){
+		$(document).on('click', '.confirmerReservation', function(e){
 			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=validerDemande&idLocation="+idLocation,
-				dataType:"json",
+
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
 					if(reponse){
@@ -956,7 +956,7 @@ function CalculerdonneePaiement(idLocation){
             
              boutonPaypal(reponse.totalLocation, idLocation); 
             
-            $("#myModal"+idLocation).modal('show');
+            $("#modalPaiement").modal('show');
             
         }, 200);
           
