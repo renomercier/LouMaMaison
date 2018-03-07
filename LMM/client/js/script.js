@@ -267,14 +267,12 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					console.log("allo");
-					console.log(reponse.messageErreur);
-					if(reponse.messageErreur) {
-						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
-						
+					if(reponse){
+                        $('#demandesReservations').click();
 					}
-					else {
-						//$(this).prop("disabled", true);
+                    else if(reponse.messageErreur) {
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
 					}
 					
 					
@@ -288,14 +286,46 @@ $(document).ready(function() {
 	/**
 		Fonction pour refuser une demande de reservation
 	*/
-		$(document).on('click', '#annulerReservation', function(e){
-			var idLocation1 = $(this).val();
+		$(document).on('click', '#refuserReservation', function(e){
+			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
-				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
-				dataType:"html",
+				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation,
+				dataType:"json",
 				success:function(reponse) {
-					$(this).prop("disabled", true);
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse[0].messageSucces)
+					{
+						 $('#demandesReservations').click();
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour valider paiement et créer location finale 
+	*/
+		$(document).on('click', '#validerLocation', function(e){
+			alert("allo");
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=validerPaiement&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse[0].messageSucces)
+					{
+						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
+						
+					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -907,8 +937,6 @@ function CalculerdonneePaiement(idLocation){
         data:{
             action: 'payerLocation',
             idLocation : idLocation,
-           /* dateDebut: dateDebut,
-            dateFin: dateFin,*/
         },
 // comportement en cas de success ou d'echec
       success:function(reponse) {

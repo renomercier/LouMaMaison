@@ -54,7 +54,7 @@
 					JOIN 
 					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
-					WHERE dateDebut >= ? AND id_userProprio = ?
+					WHERE dateFin >= ? AND id_userProprio = ?
 					ORDER BY titre, dateDebut ASC";
             $donnees = array($dateNow, $idProprio);
             $resultat = $this->requete($query, $donnees);
@@ -113,6 +113,21 @@
 		public function misAjourChampUnique($leChamp, $laValeur, $id)
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
+		}
+		
+		/**
+		* @brief		Fonction pour refuser les demandes de reservation
+		* @details		Permet de refuser les demandes qui rentrent dans la disponibilite qu'est confirme
+		* @param 		<VAR>		$refuse		Le champ refuse à modifier 
+		* @param 		<VAR>		$laValeur	La nouvelle valeur de ce champ
+		* @param 		<VAR>		$idDispo 	id de disponibilite dans la base de données
+		* @return    	<bool>		résultat de la requete
+		*/
+		public function refuserDemandes($refuse, $laValeur, $idDispo)
+		{
+			$query = "UPDATE " . $this->getTableName() . " SET ".$refuse." = ".$laValeur." WHERE idDispo = ? AND valideParPrestataire = 0";
+			$donnees = array($idDispo);
+			return $this->requete($query, $donnees);
 		}
 
 		/**  

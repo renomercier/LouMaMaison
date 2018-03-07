@@ -64,7 +64,25 @@
                             },
                     // comportement en cas de success ou d'echec
                           success:function(reponse) {
-                            console.log(reponse);
+                           
+                                $.ajax({
+                                    method: "POST",
+                                    url: "index.php?Appartements",
+                                    dataType: "json",
+                                    data:{
+                                        action: 'validerPaiement',
+                                        idLocation: idLocation,
+                                        infoPaiement: payment,
+                                    },
+                            // comportement en cas de success ou d'echec
+                                  success:function(reponse) {
+
+                                  },
+                                  error: function(xhr, ajaxOptions, thrownError) {
+                                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                  }
+                                });
+                              
                           },
                           error: function(xhr, ajaxOptions, thrownError) {
                             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -85,4 +103,3 @@
         }, '#paypal-button');
         
     }
-

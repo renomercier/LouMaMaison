@@ -148,18 +148,41 @@
                         
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
+                        $flag = false;
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
-                        {   
-                            // si on a un message (succes) a afficher a l'usager
-/* ajout */                 if(isset($params['message']) && is_string($params['message']) && (trim($params['message'] != ""))) {
-                                $data['succes'] = $params['message'];
+                        {  
+                            //charge le modele d'Usagers
+                            $modeleUsagers = $this->getDAO("Usagers");
+                            $usagers = $modeleUsagers->obtenir_tous();
+                            foreach ($usagers as $u)
+                            {
+                                if($params["idUsager"] == $u->getUsername()) 
+                                {
+                                    $flag = true;
+                                }
+                                
                             }
-                            // si on a un message (erreur) a afficher a l'usager
-/* ajout */                 if(isset($params['message_e']) && is_string($params['message_e']) && (trim($params['message_e'] != ""))) {
-                                $data['erreurs'] = $params['message'];
-                            }
-                            $this->afficheProfil($params["idUsager"], $data);
-                            $this->afficheVue('footer');
+                            
+                            if($flag) 
+                            {
+                               // si on a un message (succes) a afficher a l'usager
+        /* ajout */                 if(isset($params['message']) && is_string($params['message']) && (trim($params['message'] != ""))) {
+                                        $data['succes'] = $params['message'];
+                                    }
+                                    // si on a un message (erreur) a afficher a l'usager
+        /* ajout */                 if(isset($params['message_e']) && is_string($params['message_e']) && (trim($params['message_e'] != ""))) {
+                                        $data['erreurs'] = $params['message'];
+                                    }
+                                    $this->afficheProfil($params["idUsager"], $data);
+                                    $this->afficheVue('footer');
+                                }
+                                else 
+                                {
+                                     $data= $this->initialiseMessages();
+                                    $this->afficheVue("header",$data);
+                                    $this->afficheVue("404");
+                                    $this->afficheVue('footer');
+                                }   
                         }
                         else
                         {
