@@ -8,7 +8,7 @@
 
 <div class="resultat">
     <div class="row">
-		<div><?=isset($data['demande']) ? $data['demande'] : ""?></div>
+		<div class="text-warning"><?=isset($data['demande']) ? $data['demande'] : ""?></div>
 		<?php
 		if(!isset($data['demande']))
 		{
@@ -16,14 +16,12 @@
 		<table class="table table-responsive table-bordered">
 			<thead class="thead-default">
 				<tr>
-					<th>Appartement</th>
+					<th>Logement</th>
 					<th>Hôte</th>
-					<th>Date d'arrivée</th>
-					<th>Date de départ</th>
-					<th>Nombre hôtes</th>
-					<th>Confirmation</th>
-					<th>Refus</th>
-					<th>Paiement</th>
+					<th>Arrivée</th>
+					<th>Départ</th>
+					<th>Hôtes</th>
+					<th>Statut</th>
 					<th>Payer</th>
 				</tr>
 			</thead>
@@ -38,36 +36,19 @@
 						} else {
 							$photoApt = "./images/profil_resize.jpg";
 						}
-						//client ne peut pas payer si le proprio n'a pas encore valide la demande/s'il déjà paié/si la demande est refusé
-						if($appartement->getValideParPrestataire() == 0 || $appartement->getValidePaiement() == 1 || $appartement->getRefuse() == 1) {
-							$disabled='disabled';
-						}
-						else {
-							$disabled='';
-						}
-						
-						if($appartement->getValideParPrestataire() == 0) {
+												
+						if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) {
 							$confirmation = "En attente";
 						}
-						else {
+						else if ($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0){
 							$confirmation = "Confirmé";
 						}
-						
-						if($appartement->getValidePaiement() == 0) {
-							$paiement = "Non";
+						else if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 1) {
+							$confirmation = "Payé";
 						}
-						else {
-							$paiement = "Oui";
-						}
-						
-						if($appartement->getRefuse() == 1) {
-							$refus = "Refusé";
-						}
-						else
-						{
-							$refus = "";
-						}
-												
+						else if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 1) {
+							$confirmation = "Refusé";
+						}							
 					?> 
 							
 						<tr>
@@ -79,9 +60,17 @@
 							<td id="dateFin"><?=$appartement->getDateFin();?></td>
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 							<td><?=$confirmation ?></td>
-							<td><?=$refus?></td>
-							<td><?=$paiement?></td>
-							<td id="payer"><button type="button" value="" class="btn btn-success" <?=$disabled?>>Payer</button></td>
+                            <!--client ne peut pas payer si le proprio n'a pas encore valide la demande/s'il déjà paié/si la demande est refusé-->
+                            <td id="payer">
+						<?php
+                        if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
+                        {
+                        ?>
+							<button type="button" value="" class="btn btn-success">Payer</button>
+                         <?php
+                        }
+                        ?>
+                            </td>
 						</tr>
 								
 

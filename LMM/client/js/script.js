@@ -264,12 +264,12 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					if(reponse.messageErreur) {
-						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
-						
+					if(reponse){
+                        $('#demandesReservations').click();
 					}
-					else {
-						//$(this).prop("disabled", true);
+                    else if(reponse.messageErreur) {
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
 					}
 					
 					
@@ -295,8 +295,7 @@ $(document).ready(function() {
 					}
 					else if(reponse[0].messageSucces)
 					{
-						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
-						//$(this).prop("disabled", true);
+						 $('#demandesReservations').click();
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
@@ -322,7 +321,7 @@ $(document).ready(function() {
 					else if(reponse[0].messageSucces)
 					{
 						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
-						//$(this).prop("disabled", true);
+						
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {

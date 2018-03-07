@@ -457,7 +457,7 @@
 						{
 							$message_demande = json_encode(array("messageErreur"=>"Pas de location!"));
 							echo $message_demande;
-						}						
+						}	
 					break;
 					
 					case "refuserDemande" :
@@ -501,7 +501,7 @@
 						{
 							$message_refuse = json_encode(array("messageErreur"=>"Pas de location!"));
 							echo $message_refuse;
-						}	
+						}
 					break;
 					
 					case "validerPaiement" :
