@@ -8,15 +8,21 @@
 
 <div class="resultat">
     <div class="row">
-		<table class="table">
-			<thead>
+		<div><?=isset($data['demande']) ? $data['demande'] : ""?></div>
+		<?php
+		if(!isset($data['demande']))
+		{
+		?>
+		<table class="table table-responsive table-bordered">
+			<thead class="thead-default">
 				<tr>
 					<th>Appartement</th>
 					<th>Hôte</th>
 					<th>Date d'arrivée</th>
 					<th>Date de départ</th>
-					<th>Nombre personnes</th>
+					<th>Nombre hôtes</th>
 					<th>Confirmation</th>
+					<th>Refus</th>
 					<th>Paiement</th>
 					<th>Payer</th>
 				</tr>
@@ -41,14 +47,25 @@
 						}
 						
 						if($appartement->getValideParPrestataire() == 0) {
-							$confirmation = "En attente de confirmation";
+							$confirmation = "En attente";
 						}
 						else {
 							$confirmation = "Confirmé";
 						}
 						
+						if($appartement->getValidePaiement() == 0) {
+							$paiement = "Non";
+						}
+						else {
+							$paiement = "Oui";
+						}
+						
 						if($appartement->getRefuse() == 1) {
-							$confirmation = "Refusé";
+							$refus = "Refusé";
+						}
+						else
+						{
+							$refus = "";
 						}
 												
 					?> 
@@ -57,12 +74,13 @@
 							<td id="apt"><a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getIdAppartement() ?>" >
 			<!--<img src="<?=$photoApt?>" class="img" width="20%">--><?=$appartement->titre?>
 			</a></td>
-							<td id="username"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->id_userProprio?>"><?=$appartement->id_userProprio?></a></td>
+							<td id="username"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->id_userProprio?>" target="_blank"><?=$appartement->id_userProprio?></a></td>
 							<td id="dateDebut"><?=$appartement->getDateDebut();?></td>
 							<td id="dateFin"><?=$appartement->getDateFin();?></td>
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 							<td><?=$confirmation ?></td>
-							<td><?=$appartement->getValidePaiement();?></td>
+							<td><?=$refus?></td>
+							<td><?=$paiement?></td>
 							<td id="payer"><button type="button" value="" class="btn btn-success" <?=$disabled?>>Payer</button></td>
 						</tr>
 								
@@ -73,5 +91,8 @@
 				?>
 			</tbody>
 		</table>
+		<?php
+		}
+		?>
 	</div>
 </div>

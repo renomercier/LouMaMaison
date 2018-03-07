@@ -283,11 +283,37 @@ $(document).ready(function() {
 	/**
 		Fonction pour refuser une demande de reservation
 	*/
-		$(document).on('click', '#annulerReservation', function(e){
-			var idLocation1 = $(this).val();
+		$(document).on('click', '#refuserReservation', function(e){
+			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
-				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
+				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse[0].messageSucces)
+					{
+						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
+						//$(this).prop("disabled", true);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour valider paiement et créer location finale 
+	*/
+		$(document).on('click', '#validerLocation', function(e){
+			alert("allo");
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=validerPaiement&idLocation="+idLocation,
 				dataType:"json",
 				success:function(reponse) {
 					if(reponse.messageErreur) {
