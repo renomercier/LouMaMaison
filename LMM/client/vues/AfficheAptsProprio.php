@@ -83,6 +83,7 @@
 <!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherInscriptionApt&id=<?=$appartement->getId()?>" role="button">Modifier ce logis</a></p> 
 <!-- @ replacer -->         <p><a value="<?=$appartement->getId()?>" class="btn btn-primary btnSuppressionApt" href="#" role="button">Supprimer ce logis</a></p> 
 <!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=afficherFormulaireImage&id=<?= $appartement->getId(); ?>" role="button">Ajout de photos</a></p> 
+<!-- @ replacer -->         <p><a class="btn btn-primary" href="index.php?Appartements&action=afficheSuppressionPhotos&id=<?= $appartement->getId(); ?>" role="button">Suppression de photos</a></p> 
 
 							<form>
 								<input type="hidden" value="<?=$appartement->getId_userProprio()?>">

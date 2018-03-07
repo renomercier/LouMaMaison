@@ -145,14 +145,26 @@
                                 $this->afficheVue("404");
                             }
                             break;
-                        
+                     
+                    case "afficheMessageUsager" :
+
+                        echo $this->afficheVue("afficheUsager");
+                        break;
+
                     // case d'affichage le profil du client 
                     case "afficheUsager" :
+
                         if(isset($params["idUsager"]) && !empty($params["idUsager"]))
                         {   
                             // si on a un message (succes) a afficher a l'usager
 /* ajout */                 if(isset($params['message']) && is_string($params['message']) && (trim($params['message'] != ""))) {
-                                $data['succes'] = $params['message'];
+
+                                if($params['message'] == 'nouvelUsager') {
+                                    $data['succes'] = 'Votre profil est maintenant complet. Vous pourrez consulter votre profil et utiliser le site dès votre confirmation par l\'administration';
+                                }
+                                else {
+                                   $data['succes'] = $params['message']; 
+                                }
                             }
                             // si on a un message (erreur) a afficher a l'usager
 /* ajout */                 if(isset($params['message_e']) && is_string($params['message_e']) && (trim($params['message_e'] != ""))) {
@@ -404,8 +416,10 @@
 									// attribution du ou des roles choisis par l'usager
 									$roles = (isset($params['client']) && isset($params['prestataire'])) ? [ $params['client'], $params['prestataire'] ] : (isset($params['prestataire']) ? [ $params['prestataire'] ] : [ $params['client'] ]);
 /* verif si role avant success*/	$nouveauxRoles = $this->attribution_role($usager->getUsername(), $roles);
+                                    // recuperation du username pour l'ajout de photo profil usager
+                                    $data['idPhotoUsager'] = $usager->getUsername();
 									// message à l'usager - success de l'insertion dans la BD
-									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Vous pouvez maintenant ajouter une photo pour votre profil usager. Nous communiquerons avec vous par messagerie LMM dès que vos informations auront été vérifiées";
+									$data['succes'] = "<p class='alert alert-success'>Votre inscription a été effectuée avec succès. Vous pouvez maintenant ajouter une photo à votre profil usager si désiré.";
                 					$this->afficheVue("header", $data);
 /* affichage @temps */				$this->afficheVue("AjoutImage", $data);
 									$this->afficheVue('footer');									
@@ -532,10 +546,10 @@
 		*/
         private function afficheProfil($id, $data)
         { 
-/* ajout */ if(isset($data['succes'])) {
+            if(isset($data['succes'])) {
                 $data['succes'] = "<p class='alert alert-success'>". $data['succes'] . "</p>";
             }
-/* ajout */ if(isset($data['erreurs'])) {
+            if(isset($data['erreurs'])) {
                 $data['erreurs'] = "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
             }
 
@@ -575,7 +589,6 @@
                     $data["isSuperAdmin"] = true;
                 }
             }
-
             $this->afficheVue("header",$data);
             $this->afficheVue("AfficheUsager", $data); 
         }

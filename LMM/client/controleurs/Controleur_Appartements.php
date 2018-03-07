@@ -489,7 +489,10 @@
 
                         // declaration du bool pour differencier une telechargement de photo usager ou appartement
                         $photoApt = (isset($params['idApt']) && !empty($params['idApt'])) ? true : false;
-
+                        // recuperation de l'id usager
+                        $idUsager = (isset($_SESSION['username'])) ? $_SESSION['username'] : $params['id_usager'];
+                        $modifPhotoPrincipale = (isset($params['modifPP']) && ($params['modifPP'] == 'true')) ? true : false;
+                        
                         // ref: https://www.formget.com/ajax-image-upload-php/
                         if(isset($_FILES["file"]["type"]))
                         {
@@ -498,7 +501,7 @@
                             $data['succes'] = "";
                             // on boucle dans le tableau de fichiers
                             for($i=0; $i<count($_FILES["file"]['name']); $i++) {
-                           
+                                
                                 // validation si l'image est d'un type valide
                                 $validextensions = array("jpeg", "jpg", "png");
                                 $temporary = explode(".", $_FILES["file"]["name"][$i]);
@@ -513,21 +516,39 @@
                                     // sinon on verifie si l'image existe dans le fichier images
                                     else {
                                         // si elle existe, message à l'usager
-                                        if (file_exists("images/" . $_SESSION['username'] . "_" . $_FILES["file"]["name"][$i])) {
+                                        if (file_exists("images/" . $idUsager . "_" . $_FILES["file"]["name"][$i])) {
                                             $data['erreurs'] .= "La photo nommée " . $_FILES["file"]["name"][$i] . " existe déjà<br/>";
                                         }
                                         // si l'image n'existe pas, on procede a la sauvegarde et au telechargement
-                                        else {   
-                                            $fileName = $i . "_" . $_SESSION['username'] . "_" . $_FILES['file']['name'][$i];
+                                        else { 
+                                        /*    
+                                            if($photoApt) {
+                                                $derniererPhoto = $modeleApts->obtenir_dernierePhotoParIdApt($params['idApt']);
+                                                if($derniererPhoto) {  
+                                                    $nomPhoto = $derniererPhoto['photoSupp'];
+                                                    $numFichierPhoto = $this->prepareNomPhoto($nomPhoto);
+                                                    $fileName = $idUsager . "_" . $numFichierPhoto;
+                                                }
+                                                else {
+                                                    $fileName = $idUsager . "_" . $i;
+                                                }
+
+                                            }
+                                            else {
+
+                                            }
+                                        */    
+
+                                            $fileName = $idUsager . "_" . $i . "_" . $_FILES['file']['name'][$i];
                                             // chargement de la src dans une variable temporaire
                                             $sourcePath = $_FILES['file']['tmp_name'][$i]; 
                                             // adresse de l'image
                                             $targetPath = "images/" . $fileName; 
                                             // on charge la photo dans le dossier images
                                             move_uploaded_file($sourcePath, $targetPath) ; 
-
-                                            $fileName = "./images/" . $i . "_" . $_SESSION['username'] . "_" . $_FILES['file']['name'][$i];
-
+                                            // on renomme correctement l'image avant insertion dans la BD
+                                            $fileName = "./images/" . $fileName;
+                                            
                                             // chargement des modeles Appartements et Usagers
                                             $modeleApts = $this->getDAO("Appartements");
                                             $modeleUsagers = $this->getDAO("Usagers");
@@ -535,7 +556,7 @@
                                             // bool pour differencier photo profil de photo apt
                                             $flag = false;
                                             // si la photo est une photo principale
-                                            if($i == 0) {
+                                            if($i == 0 && $modifPhotoPrincipale) {
                                                 // si on a un id d'apt, on modifie le champ photoPrincipale de l'appartement
                                                 if($photoApt) {
                                                     // misa a jour du champ photo principale                                               
@@ -544,9 +565,9 @@
                                                 // sinon on modifie le champ photo du profil usager
                                                 else {
                                                     // mise a jour du champ photo 
-                                                    $resultat = $modeleUsagers->editerChampProfil("photo", $fileName, $_SESSION['username']);
+                                                    $resultat = $modeleUsagers->editerChampProfil("photo", $fileName, $idUsager);
                                                     $modeleUsagers = $this->getDAO("Usagers");
-                                                    $usager = $modeleUsagers->obtenir_par_id($_SESSION['username']);
+                                                    $usager = $modeleUsagers->obtenir_par_id($idUsager);
                                                     $photoProfil = $usager->getPhoto();
                                                     $flag = true;
                                                 }  
@@ -566,11 +587,27 @@
                                                 }
                                             } 
                                             // sinon, messages success a l'usager
-                                            // photo appartement
                                             else {
+                                                
                                                 if($flag) {
-                                                    echo '<div id="photo"><img src="' . $photoProfil . '" class="img img-fluid" width="100px"> </div>';
+                                                    if(isset($_SESSION['username'])) {
+                                                        header('Content-type: application/json');
+                                                        $data['img'] = '<div id="photo"><img src="' . $photoProfil . '" class="img img-fluid" width="100px"> </div>';
+                                                        $reponse = ([ 'img' => $data['img'] ]);
+                                                        echo json_encode($reponse);
+                                                    }
+                                                    else {
+                                                        $data['succes'] = "L'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès. Votre profil est maintenant complet. Vous pourrez consulter votre profil et utiliser le site dès votre confirmation par l'administration";
+                                                        //echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $idUsager . "&message=" . $data['succes'] . "'</script>";
+                                                        
+                                                        header('Content-type: application/json'); 
+                                                        $data['idUsager'] = $idUsager;
+                                                        $reponse = ([ 'message' => $data['succes'], 'idUsager' => $data['idUsager'] ]);
+                                                        echo json_encode($reponse);
+                                                        
+                                                    }
                                                 }
+                                                // photo
                                                 else {
                                                     $data['succes'] .= "L\'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès<br/>";
                                                 }
@@ -597,6 +634,45 @@
                                 }
                             //  $data['succes'] = "<p class='alert alert-success'>" . $data['succes'] . "</p>";
                             }
+                        }
+                        break;
+
+                    // affichage de photos pour suppression
+                    case "afficheSuppressionPhotos" :
+                        // verificationsi id d'apt et si l'usager est connecte
+                        if(isset($params['id']) && filter_var($params['id'], FILTER_VALIDATE_INT) && isset($_SESSION['username'])) {
+
+                            // chargement des modeles Appartements et Usagers
+                            $modeleApts = $this->getDAO("Appartements");
+                            $apt = $modeleApts->obtenir_par_id($params['id']);
+                            $photosApt = $modeleApts->getPhotos_par_id($params['id']);
+                            // on s'assure que l'usager est bien proprietaire de l'appartement duquel supprimer des photos
+                            if($_SESSION['username'] == $apt->getId_userProprio()) {
+                                // chargement du data photos supplementaires
+                                $data['photosApt'] = $photosApt;
+                                // affichage
+                                $this->afficheVue("header", $data);
+                                $this->afficheVue("SuppressionImage", $data);
+                                $this->afficheVue("footer");
+                            }
+                        }
+                        break;
+
+                    // case de suppression d'une photo
+                    case "supprimerPhoto" :
+                        // verificationsi id d'apt et si l'usager est connecte
+                        if(isset($params['id']) && filter_var($params['id'], FILTER_VALIDATE_INT) && isset($_SESSION['username'])
+                            && isset($params['idApt']) && filter_var($params['idApt'], FILTER_VALIDATE_INT)) {
+                            // chargement du modele appartements
+                            $modeleApts = $this->getDAO("Appartements");
+                            $suppressionPhoto = $modeleApts->supprimePhotoParId($params['id']);
+                            if($suppressionPhoto) {
+                                $this->affichePhotos($params['idApt']);
+                            }
+                            else {
+                                echo "<p class='alert alert-warning'>Un problème est survenu, la photo n'a pu être supprimée</p>"; 
+                            }
+                            
                         }
                         break;
 
@@ -818,6 +894,22 @@
         }
 
         /**
+         * @brief      fonction de preparation du nom de photo a inserer dans la table
+         * @details    
+         * @params     <string>     $nomPhoto           nom de la derniere photo
+         * @return     <number>     le nom (numero) pour la nouvelle photo
+         */
+/*      public function prepareNomPhoto($nomPhoto) {
+            
+            $nom = preg_replace('/\.\/images\//', '', $nomPhoto);  
+            $nom = explode('.', $nom);
+            array_splice($nom, -1);
+            $nom = explode('_', implode($nom));
+            $numPhoto = $nom[count($nom) -1];           
+            return +$numPhoto + 1;
+        }
+*/
+        /**
         * @brief        Affichage d'un nombre d'appartements selon une limite définie
         * @param        <int>       $page               numero de la page sur laquelle on se trouve
         * @param        <int>       $appartParPage      le nombre d'appart à afficher par page
@@ -865,6 +957,33 @@
                 $appartement->adresse = $appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();
             }
             return $data;
+        }
+
+        /**
+         * @brief      fonction d'affichage de photos
+         * @details    rafraîchie l'affichage des photos lors de suppression
+         * @params     <int>        $idApt           id de l'appartement
+         * @return     echo de la vue a afficher
+         */
+        public function affichePhotos($idApt) {
+
+            // chargement du modele 
+            $modeleApts = $this->getDAO("Appartements");
+            $photosApt = $modeleApts->getPhotos_par_id($idApt);
+            // declaration de la string d'affichage
+            $result = "";
+            // on boucle dans chaque photo pour les afficher                
+            foreach($photosApt AS $p) { 
+
+                $result .=   '<hr>';
+                $result .=  '<div class="col">';
+                $result .=      '<div class="text-center col-6"><img id="" src="' . $p['photoSupp'] . '" width="200"/>';
+                $result .=      '<button class="suppressionImg" type="button" value="' . $p['id'] . '">Supprimer cette image</button></div>';
+                $result .=      '<input type="hidden" name="idApt" value="' . $p['id_appartement'] . '"/>';
+                $result .=  '</div>';
+                $result .=  '<hr>';
+            }
+            echo $result;
         }
     }
 ?>

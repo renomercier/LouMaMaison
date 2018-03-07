@@ -16,6 +16,9 @@ h6, .filtre_usager a.nav-link{
     color: #0275d8 !important;
     cursor: pointer;
 }
+.invisible {
+  visibility: hidden;
+}
 
 /* --------------------------------------------------- Icones   */
 .fa-star, .fa-star-half{
