@@ -727,7 +727,6 @@
                         </form>
                         <div id="erreurReservation"></div>
                     </div>
-                    <p class="text-center"><small>Vous ne serez débité que si vous confirmez</small></p>
                     <hr>
                     <br>
                 </div>

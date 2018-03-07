@@ -432,7 +432,12 @@ var funcAjouteDispo = function(e){
 		var dateDebut = $('input[name="dateDebut"]').val();
 		var dateFin = $('input[name="dateFin"]').val();
 		var id_userClient = $('input[name="id_userClient"]').val();
+        var idProprio = $('input[name="idProprio"]').val();
 		var nbPersonnes = $('option:selected').val();
+        var objetClient = "Accusé reception";
+        var texteClient = "Nous avons enregistré votre demande de location pour la période du: "+dateDebut+" au "+dateFin+" pour "+nbPersonnes+" personnes.<br> Le proprietaire va vous donner ou non son approbation dans les heures qui suiveront.<br><a class='text-primary' href='#' id='mesReservations'>Veuillez consulter ce lien pour suivre l'évolution de votre demande</a>";
+        var objetProprio = "Demande de location";
+        var texteProprio = "Vous venez de recevoir une demande de réservation pour un de vos appartements. <br><a class='text-primary' href='#' id='demandesReservations'>Veuillez consulter ce lien pour l'approuver</a>";
 
 		$.ajax({
 			cache: false,
@@ -453,6 +458,9 @@ var funcAjouteDispo = function(e){
 				} 
 				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
 					$("#erreurReservation").empty().css("display", "block").removeClass("alert alert-warning").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
+                    
+                    ecrireMessage(id_userClient, objetClient, texteClient);
+                    ecrireMessage(idProprio, objetProprio, texteProprio);
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {

@@ -334,7 +334,7 @@
 											if($resultat) {
                                                 
                                                 //creer une message de success avec les données de la location
-												$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Veuillez vous attendre une confirmation de propriètaire.")); 
+												$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Vous venez de recevoir un message contenant les instructions à suive.")); 
 
 												echo $message_reservation;
 											}
@@ -444,27 +444,29 @@
                     case "payerLocation" :
 						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
 							
-                            $modeleLocation = $this->getDAO("Locations");
-							$location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
-                            if($location)
-                            {
-                                // calculer le nombre de jours de la location ----------------------------
-                                $dateDebut= strtotime($location->getDateDebut());
-                                $dateFin =strtotime($location->getDateFin());
-                                $diff = $dateFin - $dateDebut;
-                                $nbrJours = ($diff/86400)+1;
-                                
-                                // calculer le total de la location -----------------------------------------
-                                $totalLocation = $nbrJours * $location->montantParJour;
-                                
-                                $donneesPaiement = json_encode(array("idLocation"=>$params['idLocation'], 
-                                                                     "dateDebut"=>$location->getDateDebut(), 
-                                                                     "dateFin"=>$location->getDateFin(), 
-                                                                     "prixJour"=>$location->montantParJour,
-                                                                     "nbrJours"=>$nbrJours,
-                                                                     "totalLocation"=>$totalLocation));
-                                echo $donneesPaiement;
-                            }
+
+                                $modeleLocation = $this->getDAO("Locations");
+                                $location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+                                if($location)
+                                {
+                                    // calculer le nombre de jours de la location ----------------------------
+                                    $dateDebut= strtotime($location->getDateDebut());
+                                    $dateFin =strtotime($location->getDateFin());
+                                    $diff = $dateFin - $dateDebut;
+                                    $nbrJours = ceil (($diff/86400)+1);
+
+                                    // calculer le total de la location -----------------------------------------
+                                    $totalLocation = round($nbrJours * $location->montantParJour);
+
+                                    $donneesPaiement = json_encode(array("idLocation"=>$params['idLocation'], 
+                                                                         "dateDebut"=>$location->getDateDebut(), 
+                                                                         "dateFin"=>$location->getDateFin(), 
+                                                                         "prixJour"=>$location->montantParJour,
+                                                                         "nbrJours"=>$nbrJours,
+                                                                         "totalLocation"=>1));
+                                    echo $donneesPaiement;
+                                }
+                        
 
 						}
 					break;

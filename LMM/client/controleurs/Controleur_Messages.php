@@ -97,7 +97,13 @@
                         {
                             $modeleMessages = $this->getDAO("Messages");
                             $message = new Message;
-                            $message->setId(0); $message->setTitre($params['objet']); $message->setSujet($params['texte']); $message->setDateHeure(0); $message->setId_userEmetteur($_SESSION['username']); $message->setArchive(0);
+                            $message->setId(0); 
+                            $message->setTitre(stripslashes ($params['objet'])); 
+                            $message->setSujet(stripslashes ($params['texte'])); 
+                            $message->setDateHeure(0); 
+                            $message->setId_userEmetteur($_SESSION['username']); 
+                            $message->setArchive(0);
+                            
                             $dernierID = $modeleMessages->creerMessage($message);
                             $modeleMessages->lier_message_destinatair($dernierID, $params['idDestination']);
                         }
