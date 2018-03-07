@@ -147,6 +147,7 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
 
 INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appartement`, `id_username`) VALUES
 (1, 10, NULL, '2018-02-28', 1, 'nat'),
+<<<<<<< HEAD
 (2, 10, NULL, '2018-02-27', 18, 'renaud'),
 (3, 7, NULL, '2018-02-25', 2, 'salim'),
 (4, 1, NULL, '2018-02-28', 3, 'salim'),
@@ -154,6 +155,22 @@ INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appart
 (6, 5, NULL, '2018-02-24', 4, 'yul'),
 (9, 4, NULL, '2018-02-23', 5, 'salim'),
 (10, 7, NULL, '2018-02-24', 15, 'renaud');
+=======
+(2, 10, 'Nunc at augue vel ligula tristique scelerisque a id urna. Nulla eget nunc et orci vehicula tempor at non augue. Quisque leo erat, semper ac vehicula sed, vulputate vitae quam. Curabitur sed mauris id tellus ultrices euismod. Cras pharetra eros a massa faucibus malesuada. Proin hendrerit ultricies enim, et vulputate ligula sodales luctus.', '2018-02-27', 18, 'renaud'),
+(3, 7, 'Fusce faucibus accumsan feugiat. Sed porttitor suscipit tincidunt. Sed et felis nec lorem luctus aliquam eget et erat. Interdum et malesuada fames ac ante ipsum primis in faucibus.', '2018-02-27', 18, 'nat'),
+(4, 7, NULL, '2018-02-25', 2, 'salim'),
+(5, 1, NULL, '2018-02-28', 3, 'salim'),
+(6, 8, 'Quisque sit amet ligula vel dolor gravida venenatis non at nunc. Ut porttitor eu nisl eget semper. Aenean tempus neque et orci congue, ac finibus magna commodo.', '2018-02-18', 17, 'renaud'),
+(7, 9, 'Vestibulum feugiat facilisis ipsum, quis tincidunt dolor aliquet sed. Duis sed bibendum nibh, vitae hendrerit libero. Donec vel fringilla mi, quis iaculis mi. Nam a suscipit neque. Integer id euismod enim.', '2018-02-18', 17, 'yul'),
+(8, 5, NULL, '2018-02-24', 4, 'yul'),
+(9, 4, NULL, '2018-02-23', 5, 'salim'),
+(10, 3, NULL, '2018-02-22', 6, 'nat'),
+(11, 9, 'Phasellus porta, neque at fringilla mattis, nisi sapien laoreet ipsum, tincidunt aliquet nisl justo eu nisl. Donec consequat est dui, ut porta quam scelerisque non.', '2018-02-23', 16, 'renaud'),
+(12, 6, 'Fusce ligula nisi, porta quis tincidunt quis, porttitor ac lacus. In hac habitasse platea dictumst. Maecenas ligula lorem, varius sit amet orci vestibulum, lacinia consequat libero.', '2018-02-23', 16, 'salim'),
+(13, 7, 'Curabitur ligula mauris, fermentum at sodales a, tempor non felis. Integer lacus metus, feugiat sed augue nec, sodales maximus velit. Integer ullamcorper consequat tortor, at euismod erat dictum vel. Integer eget commodo dolor. Vivamus vehicula metus nisi, sed rhoncus felis ullamcorper sit amet.', '2018-02-24', 15, 'renaud'),
+(14, 10, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis cursus felis, eget lobortis mi dictum eu. Mauris et efficitur tellus, in tempor odio. Sed pretium viverra metus sit amet pretium.', '2018-02-24', 15, 'yul');
+
+>>>>>>> 2e8b4a9191e3b9f6f5d7a3b3fd4328bc5f1e4e99
 
 -- --------------------------------------------------------
 
@@ -186,10 +203,43 @@ CREATE TABLE IF NOT EXISTS `message` (
   `sujet` varchar(2000) NOT NULL,
   `dateHeure` datetime NOT NULL,
   `id_userEmetteur` varchar(255) NOT NULL,
+<<<<<<< HEAD
+=======
+  `archive` tinyint(1) NOT NULL DEFAULT '0',
+>>>>>>> 2e8b4a9191e3b9f6f5d7a3b3fd4328bc5f1e4e99
   PRIMARY KEY (`id`),
   KEY `FK_message_id_userEmetteur` (`id_userEmetteur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Contenu de la table `message`
+--
+
+INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `archive`) VALUES
+(1, '1111111', '1111111', '2018-03-01 00:00:00', 'nat', 0),
+(2, '222222222222222', '222222222222222', '2018-03-09 00:00:00', 'Nouveau00', 0),
+(29, 're: 1111111', 'zzzzzzzzzz', '2018-03-02 14:39:27', 'salim', 1),
+(30, 're: 1111111', 'wwwwwwwwwww', '2018-03-02 14:41:58', 'salim', 1),
+(31, 're: 1111111', '22222222222222222222', '2018-03-02 14:42:25', 'salim', 1),
+(32, 'rrrrrrrrrrrrrr', '333333333', '2018-03-02 14:43:14', 'salim', 0),
+(33, 'sadaddd', 'rrrrrrrrrrrrrrrrrrr', '2018-03-02 14:46:13', 'salim', 1),
+(35, 'rien', 'rienssssssssss', '2018-03-02 20:00:18', 'salim', 0),
+(39, 'gggggg', 'rrrrrggggg', '2018-03-03 01:26:03', 'salim', 1),
+(40, 're: re: 1111111', 'ssssssssssssssssssssssssss', '2018-03-03 01:26:32', 'salim', 1),
+(41, 're: sadaddd', 'assssssssssss', '2018-03-03 01:27:08', 'salim', 1),
+(42, 're: re: 1111111', 'hhhhhhhhhhhh', '2018-03-03 01:40:25', 'salim', 1),
+(43, '54', 'asssasas', '2018-03-03 01:40:53', 'salim', 1),
+(44, 'trien', 'trien', '2018-03-03 01:51:58', 'salim', 0),
+(45, 'sadaddd', 'rhrfhfh', '2018-03-03 02:03:56', 'salim', 0),
+(46, 'rrrrrrrrrrrrrr', 'sfsfsfsfsfsf', '2018-03-03 02:05:48', 'salim', 0),
+(47, 'dgdgdg', 'dgdgdgdgdg', '2018-03-03 02:07:18', 'salim', 0),
+(48, 'rrrrrrrrrrrrrr', 'cxvsxvxvxv', '2018-03-03 02:08:02', 'salim', 0),
+(49, 'teeeest', 'teessst', '2018-03-03 11:16:21', 'salim', 0),
+(50, 'salut', 'salut le terrien', '2018-03-03 11:25:43', 'salim', 0);
+
+>>>>>>> 2e8b4a9191e3b9f6f5d7a3b3fd4328bc5f1e4e99
 -- --------------------------------------------------------
 
 --
@@ -199,10 +249,44 @@ CREATE TABLE IF NOT EXISTS `message` (
 CREATE TABLE IF NOT EXISTS `message_user` (
   `id_message` int(11) NOT NULL,
   `id_username` varchar(255) NOT NULL,
+<<<<<<< HEAD
+=======
+  `statut` tinyint(1) NOT NULL DEFAULT '0',
+  `supprime` tinyint(1) NOT NULL DEFAULT '0',
+>>>>>>> 2e8b4a9191e3b9f6f5d7a3b3fd4328bc5f1e4e99
   PRIMARY KEY (`id_message`,`id_username`),
   KEY `FK_message_user_id_username` (`id_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Contenu de la table `message_user`
+--
+
+INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) VALUES
+(1, 'salim', 0, 0),
+(2, 'salim', 0, 0),
+(29, 'salim', 1, 1),
+(30, 'salim', 0, 1),
+(31, 'salim', 1, 0),
+(32, 'salim', 1, 1),
+(33, 'salim', 1, 0),
+(35, 'yul', 0, 0),
+(39, 'yul', 0, 0),
+(40, 'salim', 0, 1),
+(41, 'salim', 0, 0),
+(42, 'salim', 1, 0),
+(43, 'yul', 0, 0),
+(44, 'yul', 0, 0),
+(45, 'yul', 0, 0),
+(46, 'yul', 0, 0),
+(47, 'yul', 0, 0),
+(48, 'yul', 0, 0),
+(49, 'renaud', 0, 0),
+(50, 'renaud', 0, 0);
+
+>>>>>>> 2e8b4a9191e3b9f6f5d7a3b3fd4328bc5f1e4e99
 -- --------------------------------------------------------
 
 --
@@ -420,11 +504,19 @@ CREATE TABLE IF NOT EXISTS `usager` (
 --
 
 INSERT INTO `usager` (`username`, `nom`, `prenom`, `photo`, `adresse`, `telephone`, `motDePasse`, `valideParAdmin`, `banni`, `id_moyenComm`, `coor_moyenComm`, `id_modePaiement`, `id_adminBan`, `id_adminValid`) VALUES
+<<<<<<< HEAD
 ('nat', 'nat', 'nat', 'Wall-E6.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
 ('Nouveau00', 'no', 'no', 'profil.jpg', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, NULL, 'salim'),
 ('renaud', 'renaud', 'renaud', NULL, 'renaud', '778787', '12345', 0, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
 ('salim', 'salim', 'salim', 'Wall-E4.png', 'salim', '44', '12345', 1, 0, 1, 'coordonnée MC', 1, NULL, NULL),
 ('yul', 'yul', 'yul', NULL, 'yul', '5454', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
+=======
+('nat', 'nat', 'nat', './images/minion-03.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
+('Nouveau00', 'no', 'no', './images/new-user-01.png', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, NULL, 'salim'),
+('renaud', 'renaud', 'renaud', './images/minion-09.png', 'renaud', '778787', '12345', 0, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
+('salim', 'salim', 'salim', './images/minion-04.png', 'salim', '44', '12345', 1, 0, 1, 'coordonnée MC', 1, NULL, NULL),
+('yul', 'yul', 'yul', './images/minion-02.png', 'yul', '5454', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
+>>>>>>> 2e8b4a9191e3b9f6f5d7a3b3fd4328bc5f1e4e99
 
 --
 -- Contraintes pour les tables exportées
