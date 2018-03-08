@@ -402,7 +402,11 @@
             
             <!-- affichage des commentaires de l'appartememnt -->
             <div class="aptCommentaires d-block">
-                <h3 class="row"><?= $data['moyenneApt']['nbr_votant'] ;?> commentaire(s) &nbsp&nbsp<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i></h3>
+                
+                <div class="row">
+                    <h3 class="d-inline"><?= $data['moyenneApt']['nbr_votant'] ;?> Commentaire(s) &nbsp&nbsp</h3>
+                    <h3><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i></h3>
+                </div>
                 
                 <?php
                     foreach($data["tab_evals"] as $eval) {
@@ -643,11 +647,11 @@
                 <div class="aptModification col-sm-12">
             
                     <div class="">                     
-                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier l'appartement</a></p> 
+                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier</a></p> 
                     </div>
                     <hr>
                     <div class="">
-                        <button type="button" data-toggle="modal" data-target="#modal<?= $data['appartement']->getId() ;?>"  class="btn btn-block btn-primary btn-lg" >Gérer les disponibilités</button>
+                        <button type="button" data-toggle="modal" data-target="#modal<?= $data['appartement']->getId() ;?>"  class="btn btn-block btn-primary btn-lg" >Disponibilités</button>
                     </div>
                     
                 </div>
