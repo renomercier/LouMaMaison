@@ -37,6 +37,13 @@ h6, .filtre_usager a.nav-link{
     color: #682b28!important;
 }
 
+/* --------------------------------------------------- Tables   */
+
+.tabDetail {
+    /*font-size: 0.9em;*/
+    font-size: 1em;
+}
+
 /* --------------------------------------------------- Inputs	*/
 /* ref: https://stackoverflow.com/questions/2610497 */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
@@ -440,4 +447,30 @@ footer {
     background-color: #585759;
     position: relative;
     bottom: -10em;
+}
+
+/* --------------------------------------------------- @media queries   */
+
+@media screen and (max-width: 1170px) {
+    
+    .confirmerReservation, .refuserReservation, .annulerReservation, .payerMaintenant {
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    
+    .tabDetail {
+        /*font-size: 0.7em;*/
+    }
+    
+    .tabToHide {
+        display: none;
+    }
+    
+    .confirmerReservation, .refuserReservation, .annulerReservation {
+        width: 100%;
+    }
+
 }
