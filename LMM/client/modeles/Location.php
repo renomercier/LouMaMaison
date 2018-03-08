@@ -38,7 +38,8 @@
         *   @param <int>        	$idAppartement          l'id de l'appartement  
         *   @param <string>        	$idUserClient           l'id de l'utilisateur    
         *   @param <int>        	$nbPersonnes            le nombre de personnes pour la location    
-        *   @param <int>        	$refuse            		statut de demande    
+        *   @param <tinyint>        $refuse            		statut de demande    
+        *   @param <int>        	$idDispo            	id de la disponibilite     
         */
 		public function __construct($id = 0, $dateDebut = "", $dateFin = "", $valideParPrestataire =0, $validePaiement = 0, $id_appartement = "", $id_userClient = "", $nbPersonnes="", $refuse = 0, $idDispo = "")
 		{

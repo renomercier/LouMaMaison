@@ -11,7 +11,7 @@
 	* @class 	Modele_Disponibilites - herite de BaseDao
 	* @details  
 	*
-***	* 	... 9 methodes	|	getTableName(), afficheDisponibilite(), supprimeDisponibilite(), supprimeDispoParApt(), ajouteDisponibilite(),
+	* 	... 9 methodes	|	getTableName(), afficheDisponibilite(), supprimeDisponibilite(), supprimeDispoParApt(), ajouteDisponibilite(),
 	*						obtenirIdDispo(), newDateBegin(), newDateEnd(), misAjourChampUnique()
 	*/
 	class Modele_Disponibilites extends BaseDAO

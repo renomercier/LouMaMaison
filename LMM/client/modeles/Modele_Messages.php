@@ -12,9 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Message a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 9 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
+	* 	... 10 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
 	*						obtenir_par_id(), obtenir_messages_recus(), obtenir_messages_envoyes(), definir_messages_lu(),
-	*						misAjourChampUnique()
+	*						misAjourChampUnique(), obtenir_nombre_messages_nonLus()
 	*/
 	class Modele_Messages extends BaseDAO
 	{

@@ -12,9 +12,9 @@
     * @details  lie les requetes d'objets Appartement a la BD
     *                   - definit les requetes specifiques a la classe
     *
-*** *   ...18 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
-	* 						supprimerAppartement(), supprimePhotosParApt(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
-	* 						getTypeApt_par_id(), getQuartier(), getQuartier_par_id(), getPhotos_par_id(),
+    *   ...20 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
+	* 						supprimerAppartement(), supprimePhotosParApt(), supprimePhotoParId(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
+	* 						getTypeApt_par_id(), getQuartier(), getQuartier_par_id(), getPhotos_par_id(), obtenir_dernierePhotoParIdApt(),
 	* 						obtenirAptProprio(), obtenir_apt_avec_type(), obtenir_apt_avec_nb_notes(), sauvegarderPhoto()
     */
     class Modele_Appartements extends BaseDAO {
@@ -113,6 +113,18 @@
 			$donnees = array($idApt);
 			return $this->requete($query, $donnees);
         }
+
+        /**  
+		* @brief     	Supprimer un photo par son id
+		* @param   		<int>   	$idPhoto  	Identifiant de la photo
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function supprimePhotoParId($idPhoto) 
+        {
+            $query = "DELETE FROM photo WHERE id = ?";
+			$donnees = array($idPhoto);
+			return $this->requete($query, $donnees);
+        }
         
         /**
 		* @brief      	Selectionne la liste d'appartements selon la page affichee et le nb d'appartements par page
@@ -133,7 +145,6 @@
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
                                 ON note.Apparteval = a.id
                     	WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
-
             if(!empty($filtre['priMin']))
             {
                 $query.= " AND a.montantParJour >= " . $filtre['priMin'] ."";
@@ -166,9 +177,7 @@
             {
                 $query.= " AND a.id_typeApt = '" . $filtre['id_typeApt'] ."'";
             }
-
             $query.= " GROUP BY a.id LIMIT " . $premiereEntree .", ".$appartParPage."";
-
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
    
@@ -246,7 +255,7 @@
         /**
 		* @brief		Lecture de toutes les photos d'un appartement de la BD
 		* @details		Permet de recuperer toutes les photos d'un appartement dans la table photo
-		* @param      	<varchar>  		$id     	L'identifiant de l'appartement
+		* @param      	<int>  		$id     	L'identifiant de l'appartement
 		* @return    	<type> 		toutes les rangées concernees de la table photo ou false 
 		*/
 		public function getPhotos_par_id($id_appart) {
@@ -255,6 +264,20 @@
             $donnees = array($id_appart);
 			$resultat = $this->requete($query, $donnees);
             return $resultat->fetchAll();  
+        }
+
+        /**
+		* @brief		Lecture de la dernière photo associée a un appartement d
+		* @details		Permet de recuperer les infos sur la dernière photo inseree pour un appartement
+		* @param      	<int>  		$id     	L'identifiant de l'appartement
+		* @return    	<type> 		resultat de la requete ou false 
+		*/
+		public function obtenir_dernierePhotoParIdApt($id_appart) {
+
+			$query = "SELECT * FROM photo WHERE id_appartement = ? GROUP BY id ORDER BY id DESC LIMIT 1";
+            $donnees = array($id_appart);
+			$resultat = $this->requete($query, $donnees);
+            return $resultat->fetch();  
         }
 
         /**

@@ -15,11 +15,10 @@
 
 	  		<!-- div header du modal -->
 		    <div class="modal-header">
-		    	<div class="row">
+		    	<div class="row col-12 modalEval">
 		    		<div class="titreEval">
-			    		<button type="button" class="btn pull-right mr-3" data-dismiss="modal" aria-label="Close">
-							<small>Fermer&nbsp;</small>
-						</button>
+		    			<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+          				<span aria-hidden="true">&times;</span>
 					</div>
 		    		<div class="text-center titreEval">
 						<h5 class="modal-title"><?= isset($data['appartement']) ? $data['appartement']->getTitre() : '' ?></h5>

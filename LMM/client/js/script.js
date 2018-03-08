@@ -3,6 +3,7 @@ $(document).ready(function() {
     /*chercher les apparts avec les filtres remplis*/
 
     $( "#filtrer" ).on( "click", function( e ) {
+    	console.log("allo");
         event.preventDefault();
         var url = $('#formFiltrer').serialize();
         filtrerAppart(url);
@@ -544,8 +545,8 @@ var funcAjouteDispo = function(e){
             dataType:"html",
            // comportement en cas de success ou d'echec
           success:function(reponse) {
-              $('.accueil .col-md-6').html('');
-              $('.accueil .col-md-6').append(reponse);
+              $('.accueil .listeApt').html('');
+              $('.accueil .listeApt').append(reponse);
               
               //effacer les marqueurs existant
               clearMarkers();
