@@ -188,6 +188,66 @@ input.slider {
     border: 1px solid #585759;
 }
 
+.aptDisponibilites {
+    padding: 10px;
+    height: 165px;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid #585759;
+}
+
+
+.aptPhotoProprio {
+    height: 5em;
+    width: 5em; 
+}
+
+.aptIcones {
+    height: 2em;
+    width: 2em;
+}
+
+/* --------------------------------------------------- google carte   */
+#carte{
+    height: 100vh;
+}
+
+.absolut{
+    position: absolute;
+    overflow: hidden;
+    right: 0em;
+    top: 0em; 
+}
+
+.carte_fixe{
+    position: fixed !important;
+    right: 1em;
+    top: 1em;
+    margin-left: 1em;
+}
+
+@media only screen and (max-width: 768px) {
+    #carte{
+        position: relative!important;
+        right: 0em;
+    }
+}
+.appart, .gm-style-iw{
+    line-height: 1em;
+}
+
+.appart p, .gm-style-iw p{
+    margin: .3em auto;
+}
+
+.card-block{
+    padding: .1em;
+}
+
+.gm-style-iw{
+    left: 25px !important;
+}
+
 /* ---------------------------------------------------  vue message usager  */
 .filtre_usager a.nav-link, p.nav-link{
     color: #0275d8 ;
@@ -265,31 +325,64 @@ td[name='contenuMessage']{
     padding: 20px;
 }
 
-/* --------------------------------------------------- google carte   */
-#carte{
-    height: 100vh;
-    position: fixed !important;
-    overflow: hidden;
-    right: 1em;
-    top: 3em;
+.img-thumbnail{
+    background:none;
+    border: none;
 }
-@media only screen and (max-width: 768px) {
-    #carte{
-        position: relative!important;
-        right: 0em;
-    }
+
+.badge-notify{
+    background:red;
+    position:relative;
+    bottom: 1em;
 }
-.appart, .gm-style-iw{
-    line-height: 1em;
+
+.badge{
+    font-size: .8em;
+    border-radius: 1rem;
 }
-.appart p, .gm-style-iw p{
-    margin: .3em auto;
+
+.row .accueil{
+    position: relative;
 }
-.card-block{
-    padding: .1em;
+
+#image-entete img{
+    min-width: 100vw;
+    height: auto;
+    object-fit: cover;
 }
-.gm-style-iw{
-    left: 25px !important;
+
+.navbar-brand img{
+    width: 4em;
+}
+
+.navigation-logo{
+    position: relative;
+    z-index: 122;
+}
+
+.navigation{
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: #f7f7f9;
+    padding-bottom: .55rem;   
+}
+
+.logo-entete{
+    position: fixed;
+    top: 0;
+    background: #f7f7f9;
+}
+
+.bg-secondary{
+    background: #585759;
+}
+
+.slogan{
+    font-family: 'Waiting for the Sunrise', cursive;
+    font-size: 9em;
+    font-weight: 800;
+    line-height: 97%;
 }
 
 

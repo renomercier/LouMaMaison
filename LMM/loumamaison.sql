@@ -2,10 +2,10 @@
 -- version 4.1.4
 -- http://www.phpmyadmin.net
 --
--- Client :  127.0.0.1
--- Généré le :  Mer 21 Février 2018 à 10:45
--- Version du serveur :  5.6.15-log
--- Version de PHP :  5.4.24
+-- Хост: 127.0.0.1
+-- Время создания: Мар 08 2018 г., 01:18
+-- Версия сервера: 5.6.15-log
+-- Версия PHP: 5.5.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `loumamaison`
+-- База данных: `loumamaison`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `appartement`
+-- Структура таблицы `appartement`
 --
 
 CREATE TABLE IF NOT EXISTS `appartement` (
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `appartement` (
   `nbPersonnes` int(11) NOT NULL,
   `nbLits` int(11) NOT NULL,
   `nbChambres` int(11) NOT NULL,
-  `photoPrincipale` varchar(255) NOT NULL,
+  `photoPrincipale` varchar(255) DEFAULT NULL,
   `noApt` varchar(25) DEFAULT NULL,
   `noCivique` int(11) NOT NULL,
   `rue` varchar(255) NOT NULL,
@@ -49,10 +49,10 @@ CREATE TABLE IF NOT EXISTS `appartement` (
   KEY `FK_appartement_id_typeApt` (`id_typeApt`),
   KEY `FK_appartement_id_userProprio` (`id_userProprio`),
   KEY `FK_appartement_id_nomQuartier` (`id_nomQuartier`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
--- Contenu de la table `appartement`
+-- Дамп данных таблицы `appartement`
 --
 
 INSERT INTO `appartement` (`id`, `actif`, `options`, `titre`, `descriptif`, `montantParJour`, `nbPersonnes`, `nbLits`, `nbChambres`, `photoPrincipale`, `noApt`, `noCivique`, `rue`, `ville`, `codePostal`, `id_typeApt`, `id_userProprio`, `id_nomQuartier`) VALUES
@@ -75,11 +75,10 @@ INSERT INTO `appartement` (`id`, `actif`, `options`, `titre`, `descriptif`, `mon
 (17, 1, 'Options-Associées', 'Loft affordant', 'Nam tincidunt ex turpis, in molestie ipsum pretium sed.', 87, 4, 2, 2, './images/apt03-01.png', '32', 448, 'Place Jacques-Cartier', 'Montréal', 'H1G 4L8', 1, 'yul', 7),
 (18, 1, 'Options-Associées', 'Magnifique Condo', 'Quisque finibus, odio ac congue malesuada, mi lectus tempus mi, in condimentum sem justo feugiat lorem.', 63, 4, 2, 2, './images/apt04-01.png', '107', 3745, 'Rue Masson', 'Montréal', 'H1G 4L8', 1, 'salim', 14);
 
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `communication`
+-- Структура таблицы `communication`
 --
 
 CREATE TABLE IF NOT EXISTS `communication` (
@@ -89,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `communication` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Contenu de la table `communication`
+-- Дамп данных таблицы `communication`
 --
 
 INSERT INTO `communication` (`id`, `moyenComm`) VALUES
@@ -101,7 +100,7 @@ INSERT INTO `communication` (`id`, `moyenComm`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `disponibilite`
+-- Структура таблицы `disponibilite`
 --
 
 CREATE TABLE IF NOT EXISTS `disponibilite` (
@@ -112,21 +111,23 @@ CREATE TABLE IF NOT EXISTS `disponibilite` (
   `id_appartement` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_disponibilite_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=52 ;
+
+--
+-- Дамп данных таблицы `disponibilite`
+--
 
 INSERT INTO `disponibilite` (`id`, `dateDebut`, `dateFin`, `disponibilite`, `id_appartement`) VALUES
-(1, '2018-02-23', '2018-03-04', 1, '18'),
-(2, '2018-02-23', '2018-03-31', 1, '17'),
-(3, '2018-02-23', '2018-03-31', 1, '16'),
-(4, '2018-02-23', '2018-03-31', 1, '15'),
-(5, '2018-03-09', '2018-03-11', 1, '18'),
-(6, '2018-03-16', '2018-03-18', 1, '18'),
-(7, '2018-03-23', '2018-03-25', 1, '18');
+(25, '2018-03-05', '2018-03-31', 1, 18),
+(43, '2018-03-05', '2018-03-31', 1, 15),
+(44, '2018-03-06', '2018-03-31', 1, 14),
+(45, '2018-03-06', '2018-03-31', 1, 1),
+(49, '2018-03-10', '2018-03-31', 1, 16);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `evaluation`
+-- Структура таблицы `evaluation`
 --
 
 CREATE TABLE IF NOT EXISTS `evaluation` (
@@ -142,30 +143,23 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
--- Contenu de la table `evaluation`
+-- Дамп данных таблицы `evaluation`
 --
 
 INSERT INTO `evaluation` (`id`, `rating`, `commentaire`, `dateNotif`, `id_appartement`, `id_username`) VALUES
 (1, 10, NULL, '2018-02-28', 1, 'nat'),
-(2, 10, 'Nunc at augue vel ligula tristique scelerisque a id urna. Nulla eget nunc et orci vehicula tempor at non augue. Quisque leo erat, semper ac vehicula sed, vulputate vitae quam. Curabitur sed mauris id tellus ultrices euismod. Cras pharetra eros a massa faucibus malesuada. Proin hendrerit ultricies enim, et vulputate ligula sodales luctus.', '2018-02-27', 18, 'renaud'),
-(3, 7, 'Fusce faucibus accumsan feugiat. Sed porttitor suscipit tincidunt. Sed et felis nec lorem luctus aliquam eget et erat. Interdum et malesuada fames ac ante ipsum primis in faucibus.', '2018-02-27', 18, 'nat'),
-(4, 7, NULL, '2018-02-25', 2, 'salim'),
-(5, 1, NULL, '2018-02-28', 3, 'salim'),
-(6, 8, 'Quisque sit amet ligula vel dolor gravida venenatis non at nunc. Ut porttitor eu nisl eget semper. Aenean tempus neque et orci congue, ac finibus magna commodo.', '2018-02-18', 17, 'renaud'),
-(7, 9, 'Vestibulum feugiat facilisis ipsum, quis tincidunt dolor aliquet sed. Duis sed bibendum nibh, vitae hendrerit libero. Donec vel fringilla mi, quis iaculis mi. Nam a suscipit neque. Integer id euismod enim.', '2018-02-18', 17, 'yul'),
-(8, 5, NULL, '2018-02-24', 4, 'yul'),
+(2, 10, NULL, '2018-02-27', 18, 'renaud'),
+(3, 7, NULL, '2018-02-25', 2, 'salim'),
+(4, 1, NULL, '2018-02-28', 3, 'salim'),
+(5, 8, NULL, '2018-02-18', 17, 'renaud'),
+(6, 5, NULL, '2018-02-24', 4, 'yul'),
 (9, 4, NULL, '2018-02-23', 5, 'salim'),
-(10, 3, NULL, '2018-02-22', 6, 'nat'),
-(11, 9, 'Phasellus porta, neque at fringilla mattis, nisi sapien laoreet ipsum, tincidunt aliquet nisl justo eu nisl. Donec consequat est dui, ut porta quam scelerisque non.', '2018-02-23', 16, 'renaud'),
-(12, 6, 'Fusce ligula nisi, porta quis tincidunt quis, porttitor ac lacus. In hac habitasse platea dictumst. Maecenas ligula lorem, varius sit amet orci vestibulum, lacinia consequat libero.', '2018-02-23', 16, 'salim'),
-(13, 7, 'Curabitur ligula mauris, fermentum at sodales a, tempor non felis. Integer lacus metus, feugiat sed augue nec, sodales maximus velit. Integer ullamcorper consequat tortor, at euismod erat dictum vel. Integer eget commodo dolor. Vivamus vehicula metus nisi, sed rhoncus felis ullamcorper sit amet.', '2018-02-24', 15, 'renaud'),
-(14, 10, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis cursus felis, eget lobortis mi dictum eu. Mauris et efficitur tellus, in tempor odio. Sed pretium viverra metus sit amet pretium.', '2018-02-24', 15, 'yul');
-
+(10, 7, NULL, '2018-02-24', 15, 'renaud');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `location`
+-- Структура таблицы `location`
 --
 
 CREATE TABLE IF NOT EXISTS `location` (
@@ -176,15 +170,36 @@ CREATE TABLE IF NOT EXISTS `location` (
   `validePaiement` tinyint(1) NOT NULL DEFAULT '0',
   `id_userClient` varchar(255) NOT NULL,
   `id_appartement` int(11) NOT NULL,
+  `nbPersonnes` int(11) NOT NULL,
+  `refuse` tinyint(1) NOT NULL DEFAULT '0',
+  `idDispo` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_location_id_userClient` (`id_userClient`),
   KEY `FK_location_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=48 ;
+
+--
+-- Дамп данных таблицы `location`
+--
+
+INSERT INTO `location` (`id`, `dateDebut`, `dateFin`, `valideParPrestataire`, `validePaiement`, `id_userClient`, `id_appartement`, `nbPersonnes`, `refuse`, `idDispo`) VALUES
+(33, '2018-03-20', '2018-03-24', 0, 0, 'yul', 15, 3, 0, 43),
+(34, '2018-03-22', '2018-03-23', 0, 0, 'Nouveau00', 15, 2, 0, 43),
+(36, '2018-03-17', '2018-03-22', 0, 0, 'yul', 15, 2, 0, 43),
+(37, '2018-03-13', '2018-03-13', 0, 0, 'yul', 16, 1, 0, 49),
+(38, '2018-03-23', '2018-03-26', 0, 0, 'nat', 15, 3, 0, 43),
+(39, '2018-03-08', '2018-03-10', 0, 0, 'salim', 15, 1, 0, 43),
+(40, '2018-03-25', '2018-03-27', 0, 0, 'renaud', 15, 2, 0, 43),
+(43, '2018-03-17', '2018-03-20', 0, 0, 'renaud', 15, 2, 0, 43),
+(44, '2018-03-24', '2018-03-30', 0, 0, 'salim', 15, 1, 0, 43),
+(45, '2018-03-20', '2018-03-26', 0, 0, 'Nouveau00', 15, 1, 0, 43),
+(46, '2018-03-18', '2018-03-24', 0, 0, 'salim', 15, 2, 0, 43),
+(47, '2018-03-20', '2018-03-24', 0, 0, 'yul', 15, 2, 0, 43);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `message`
+-- Структура таблицы `message`
 --
 
 CREATE TABLE IF NOT EXISTS `message` (
@@ -196,10 +211,10 @@ CREATE TABLE IF NOT EXISTS `message` (
   `archive` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_message_id_userEmetteur` (`id_userEmetteur`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
 
 --
--- Contenu de la table `message`
+-- Дамп данных таблицы `message`
 --
 
 INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `archive`) VALUES
@@ -222,12 +237,17 @@ INSERT INTO `message` (`id`, `titre`, `sujet`, `dateHeure`, `id_userEmetteur`, `
 (47, 'dgdgdg', 'dgdgdgdgdg', '2018-03-03 02:07:18', 'salim', 0),
 (48, 'rrrrrrrrrrrrrr', 'cxvsxvxvxv', '2018-03-03 02:08:02', 'salim', 0),
 (49, 'teeeest', 'teessst', '2018-03-03 11:16:21', 'salim', 0),
-(50, 'salut', 'salut le terrien', '2018-03-03 11:25:43', 'salim', 0);
+(50, 'salut', 'salut le terrien', '2018-03-03 11:25:43', 'salim', 0),
+(51, 'test de pull', 'lalala', '2018-03-03 23:43:27', 'salim', 0),
+(52, 'lol', 'tout est brise', '2018-03-03 23:47:53', 'yul', 1),
+(53, 'allo Renaud', 'test', '2018-03-03 23:52:31', 'yul', 0),
+(54, 'test de message', 'allo', '2018-03-03 23:54:30', 'renaud', 0),
+(55, 'test de formulaire de reponse', 'test', '2018-03-04 00:05:10', 'renaud', 0);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `message_user`
+-- Структура таблицы `message_user`
 --
 
 CREATE TABLE IF NOT EXISTS `message_user` (
@@ -240,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `message_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `message_user`
+-- Дамп данных таблицы `message_user`
 --
 
 INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) VALUES
@@ -251,24 +271,29 @@ INSERT INTO `message_user` (`id_message`, `id_username`, `statut`, `supprime`) V
 (31, 'salim', 1, 0),
 (32, 'salim', 1, 1),
 (33, 'salim', 1, 0),
-(35, 'yul', 0, 0),
+(35, 'yul', 1, 0),
 (39, 'yul', 0, 0),
 (40, 'salim', 0, 1),
-(41, 'salim', 0, 0),
+(41, 'salim', 1, 0),
 (42, 'salim', 1, 0),
 (43, 'yul', 0, 0),
 (44, 'yul', 0, 0),
 (45, 'yul', 0, 0),
-(46, 'yul', 0, 0),
-(47, 'yul', 0, 0),
-(48, 'yul', 0, 0),
+(46, 'yul', 1, 0),
+(47, 'yul', 1, 0),
+(48, 'yul', 1, 1),
 (49, 'renaud', 0, 0),
-(50, 'renaud', 0, 0);
+(50, 'renaud', 0, 0),
+(51, 'yul', 1, 1),
+(52, 'salim', 0, 0),
+(53, 'renaud', 1, 0),
+(54, 'salim', 0, 0),
+(55, 'yul', 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `paiement`
+-- Структура таблицы `paiement`
 --
 
 CREATE TABLE IF NOT EXISTS `paiement` (
@@ -278,7 +303,7 @@ CREATE TABLE IF NOT EXISTS `paiement` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Contenu de la table `paiement`
+-- Дамп данных таблицы `paiement`
 --
 
 INSERT INTO `paiement` (`id`, `modePaiement`) VALUES
@@ -289,7 +314,7 @@ INSERT INTO `paiement` (`id`, `modePaiement`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `photo`
+-- Структура таблицы `photo`
 --
 
 CREATE TABLE IF NOT EXISTS `photo` (
@@ -298,7 +323,11 @@ CREATE TABLE IF NOT EXISTS `photo` (
   `id_appartement` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_photo_id_appartement` (`id_appartement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+
+--
+-- Дамп данных таблицы `photo`
+--
 
 INSERT INTO `photo` (`id`, `photoSupp`, `id_appartement`) VALUES
 (1, './images/apt01-01.png', 15),
@@ -345,7 +374,7 @@ INSERT INTO `photo` (`id`, `photoSupp`, `id_appartement`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `quartier`
+-- Структура таблицы `quartier`
 --
 
 CREATE TABLE IF NOT EXISTS `quartier` (
@@ -355,7 +384,7 @@ CREATE TABLE IF NOT EXISTS `quartier` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
--- Contenu de la table `quartier`
+-- Дамп данных таблицы `quartier`
 --
 
 INSERT INTO `quartier` (`id`, `nomQuartier`) VALUES
@@ -382,7 +411,7 @@ INSERT INTO `quartier` (`id`, `nomQuartier`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `role`
+-- Структура таблицы `role`
 --
 
 CREATE TABLE IF NOT EXISTS `role` (
@@ -392,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Contenu de la table `role`
+-- Дамп данных таблицы `role`
 --
 
 INSERT INTO `role` (`id`, `nomRole`) VALUES
@@ -404,7 +433,7 @@ INSERT INTO `role` (`id`, `nomRole`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `role_user`
+-- Структура таблицы `role_user`
 --
 
 CREATE TABLE IF NOT EXISTS `role_user` (
@@ -415,23 +444,26 @@ CREATE TABLE IF NOT EXISTS `role_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `role_user`
+-- Дамп данных таблицы `role_user`
 --
 
 INSERT INTO `role_user` (`id_username`, `id_nomRole`) VALUES
 ('salim', 1),
 ('nat', 2),
 ('renaud', 2),
+('nat', 3),
 ('renaud', 3),
 ('salim', 3),
 ('nat', 4),
 ('Nouveau00', 4),
+('renaud', 4),
+('salim', 4),
 ('yul', 4);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `type_apt`
+-- Структура таблицы `type_apt`
 --
 
 CREATE TABLE IF NOT EXISTS `type_apt` (
@@ -441,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `type_apt` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Contenu de la table `type_apt`
+-- Дамп данных таблицы `type_apt`
 --
 
 INSERT INTO `type_apt` (`id`, `typeApt`) VALUES
@@ -454,7 +486,7 @@ INSERT INTO `type_apt` (`id`, `typeApt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `usager`
+-- Структура таблицы `usager`
 --
 
 CREATE TABLE IF NOT EXISTS `usager` (
@@ -478,22 +510,22 @@ CREATE TABLE IF NOT EXISTS `usager` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `usager`
+-- Дамп данных таблицы `usager`
 --
 
 INSERT INTO `usager` (`username`, `nom`, `prenom`, `photo`, `adresse`, `telephone`, `motDePasse`, `valideParAdmin`, `banni`, `id_moyenComm`, `coor_moyenComm`, `id_modePaiement`, `id_adminBan`, `id_adminValid`) VALUES
-('nat', 'nat', 'nat', './images/minion-03.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
-('Nouveau00', 'no', 'no', './images/new-user-01.png', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, NULL, 'salim'),
-('renaud', 'renaud', 'renaud', './images/minion-09.png', 'renaud', '778787', '12345', 0, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
-('salim', 'salim', 'salim', './images/minion-04.png', 'salim', '44', '12345', 1, 0, 1, 'coordonnée MC', 1, NULL, NULL),
-('yul', 'yul', 'yul', './images/minion-02.png', 'yul', '5454', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
+('nat', 'nat', 'nat', './images/profilN.png', 'nat', '55', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
+('Nouveau00', 'no', 'no', 'profil.jpg', '32 rue du Moulin, Mtl', '222-222-2222', 'AAAAaaaa', 1, 0, 1, 'skss', 3, 'salim', 'salim'),
+('renaud', 'renaud', 'renaud', './images/profilR.png', 'renaud', '778787', '12345', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim'),
+('salim', 'salim', 'Salim', './images/profilS.png', 'Montreal', '514 055 5050', '12345', 1, 0, 4, 'coordonnée MC', 2, NULL, NULL),
+('yul', 'Romodina', 'Yuliya', './images/0_yul_3a.jpg', 'Montreal', '514 827 0000', '12345AAA', 1, 0, 1, 'coordonnée MC', 1, 'salim', 'salim');
 
 --
--- Contraintes pour les tables exportées
+-- Ограничения внешнего ключа сохраненных таблиц
 --
 
 --
--- Contraintes pour la table `appartement`
+-- Ограничения внешнего ключа таблицы `appartement`
 --
 ALTER TABLE `appartement`
   ADD CONSTRAINT `FK_appartement_id_nomQuartier` FOREIGN KEY (`id_nomQuartier`) REFERENCES `quartier` (`id`),
@@ -501,53 +533,53 @@ ALTER TABLE `appartement`
   ADD CONSTRAINT `FK_appartement_id_userProprio` FOREIGN KEY (`id_userProprio`) REFERENCES `usager` (`username`);
 
 --
--- Contraintes pour la table `disponibilite`
+-- Ограничения внешнего ключа таблицы `disponibilite`
 --
 ALTER TABLE `disponibilite`
   ADD CONSTRAINT `FK_disponibilite_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`);
 
 --
--- Contraintes pour la table `evaluation`
+-- Ограничения внешнего ключа таблицы `evaluation`
 --
 ALTER TABLE `evaluation`
   ADD CONSTRAINT `FK_evaluation_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`),
   ADD CONSTRAINT `FK_evaluation_id_username` FOREIGN KEY (`id_username`) REFERENCES `usager` (`username`);
 
 --
--- Contraintes pour la table `location`
+-- Ограничения внешнего ключа таблицы `location`
 --
 ALTER TABLE `location`
   ADD CONSTRAINT `FK_location_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`),
   ADD CONSTRAINT `FK_location_id_userClient` FOREIGN KEY (`id_userClient`) REFERENCES `usager` (`username`);
 
 --
--- Contraintes pour la table `message`
+-- Ограничения внешнего ключа таблицы `message`
 --
 ALTER TABLE `message`
   ADD CONSTRAINT `FK_message_id_userEmetteur` FOREIGN KEY (`id_userEmetteur`) REFERENCES `usager` (`username`);
 
 --
--- Contraintes pour la table `message_user`
+-- Ограничения внешнего ключа таблицы `message_user`
 --
 ALTER TABLE `message_user`
   ADD CONSTRAINT `FK_message_user_id_message` FOREIGN KEY (`id_message`) REFERENCES `message` (`id`),
   ADD CONSTRAINT `FK_message_user_id_username` FOREIGN KEY (`id_username`) REFERENCES `usager` (`username`);
 
 --
--- Contraintes pour la table `photo`
+-- Ограничения внешнего ключа таблицы `photo`
 --
 ALTER TABLE `photo`
   ADD CONSTRAINT `FK_photo_id_appartement` FOREIGN KEY (`id_appartement`) REFERENCES `appartement` (`id`);
 
 --
--- Contraintes pour la table `role_user`
+-- Ограничения внешнего ключа таблицы `role_user`
 --
 ALTER TABLE `role_user`
   ADD CONSTRAINT `FK_role_user_id_nomRole` FOREIGN KEY (`id_nomRole`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `FK_role_user_id_username` FOREIGN KEY (`id_username`) REFERENCES `usager` (`username`);
 
 --
--- Contraintes pour la table `usager`
+-- Ограничения внешнего ключа таблицы `usager`
 --
 ALTER TABLE `usager`
   ADD CONSTRAINT `FK_usager_id_modePaiement` FOREIGN KEY (`id_modePaiement`) REFERENCES `paiement` (`id`),
