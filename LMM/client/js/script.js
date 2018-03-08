@@ -256,7 +256,7 @@ $(document).ready(function() {
 	/**
 		Fonction pour valider une demande de reservation
 	*/
-		$(document).on('click', '#confirmerReservation', function(e){
+		$(document).on('click', '.confirmerReservation', function(e){
 			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
@@ -264,12 +264,12 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					if(reponse){
-                        $('#demandesReservations').click();
+					if(reponse.messageSucces){
+                       $('#demandesReservations').click();
+					   $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
 					}
                     else if(reponse.messageErreur) {
 						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
-						
 					}
 					
 					
@@ -283,7 +283,7 @@ $(document).ready(function() {
 	/**
 		Fonction pour refuser une demande de reservation
 	*/
-		$(document).on('click', '#refuserReservation', function(e){
+		$(document).on('click', '.refuserReservation', function(e){
 			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
@@ -291,11 +291,37 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					if(reponse.messageErreur) {
-						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
 					}
-					else if(reponse[0].messageSucces)
+					else if(reponse.messageSucces)
 					{
 						 $('#demandesReservations').click();
+						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour annuler une demande de reservation (validée par proprio mais pas payée par client)
+	*/
+		$(document).on('click', '.annulerReservation', function(e){
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=annulerDemande&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					if(reponse.messageErreur) {
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse.messageSucces)
+					{
+						 $('#demandesReservations').click();
+						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
