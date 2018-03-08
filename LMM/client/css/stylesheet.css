@@ -175,6 +175,17 @@ input.slider {
     z-index: 1;
 } 
 
+/* --------------------------------------------------- page AfficheAptsProprio */
+
+.profil-appartementsProprio {
+    margin: 1em;
+}
+
+.profil-aptProprio, .profil-aptProprio-opt {
+    padding: 1em;
+    /*border: 1px solid #000000;*/ 
+}
+
 /* --------------------------------------------------- page AfficheAppartement */
 .sectionAptDetail-g, .sectionAptDetail-d {
     padding=0;
@@ -183,7 +194,7 @@ input.slider {
 
 .aptReservation, .aptModification {
     position: sticky;
-    top: 2em;
+    top: 5em;
     padding: 20px;
     border: 1px solid #585759;
 }
