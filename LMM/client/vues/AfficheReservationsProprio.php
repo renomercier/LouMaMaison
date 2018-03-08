@@ -58,7 +58,7 @@
 										<td id="apt"><a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getIdAppartement() ?>" target="_blank">
 						<!--<img src="<?=$photoApt?>" class="img" width="20%">--><?=$appartement->titre?>
 						</a></td>
-										<td id="username"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->getIdUserClient()?>" target="_blank"><?=$appartement->getIdUserClient()?></a></td>
+										<td id="username" name="<?=$appartement->getIdUserClient()?>"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->getIdUserClient()?>" target="_blank"><?=$appartement->getIdUserClient()?></a></td>
 										<td id="dateDebut"><?=$appartement->getDateDebut();?></td>
 										<td id="dateFin"><?=$appartement->getDateFin();?></td>
 										<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>

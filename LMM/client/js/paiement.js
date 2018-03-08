@@ -1,4 +1,5 @@
-/* paypal*/
+/* Fonction qui initialise et execute un paiement paypal*/
+/* SOURCE: https://developer.paypal.com */
     
     /* initialiser la div qui contiendra le bouton paypal*/
     function boutonPaypal(total, idLocation){
@@ -76,7 +77,11 @@
                                     },
                             // comportement en cas de success ou d'echec
                                   success:function(reponse) {
-
+                                      
+                                      $("#recapLocation").html("Votre paiement est enregistré.<br> Profitez de votre séjour.");
+                                      setTimeout(function(){$("#modalPaiement").modal('hide');},2000);
+                                      setTimeout(function(){$("#mesReservations").click();},2500);
+                                      
                                   },
                                   error: function(xhr, ajaxOptions, thrownError) {
                                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
