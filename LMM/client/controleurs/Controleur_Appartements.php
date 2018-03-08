@@ -60,9 +60,14 @@
                     
                         // quartier
                         $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
+
+                        
+                        // type appartement
+                        $filtre['id_typeApt'] = isset($params['id_typeApt'])? $params['id_typeApt'] : 0;
                     
                         // date d'arrivée
-                        $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0;
+                        $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0; 
+
                     
                         // date de départ
                         $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
@@ -72,6 +77,7 @@
 						break;
                            
                     // Case d'affichage du detail d'un appartement
+
                     case "afficherAppartement" :    
                         // chargement du modele Appartement
                         $modeleApts = $this->getDAO("Appartements");
@@ -114,6 +120,7 @@
 						$this->afficheVue("header",$data);
                         $this->afficheVue("AfficheAppartement", $data);
 						$this->afficheVue("footer");
+
                         break;
 
 					
@@ -325,7 +332,10 @@
 											//creation de location
 											$resultat = $modeleLocation->creerLocation($location);
 											if($resultat) {
-												$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Veuillez vous attendre une confirmation de propriètaire."));//creer une message de success 
+                                                
+                                                //creer une message de success avec les données de la location
+												$message_reservation = json_encode(array("messageSucces"=>"Vous avez faites une demande de réservation! Vous venez de recevoir un message contenant les instructions à suive.")); 
+
 												echo $message_reservation;
 											}
 										}
@@ -502,62 +512,96 @@
 							echo $message_refuse;
 						}
 					break;
+                        
+                    case "payerLocation" :
+						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
+							
+
+                                $modeleLocation = $this->getDAO("Locations");
+                                $location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+                                if($location)
+                                {
+                                    // calculer le nombre de jours de la location ----------------------------
+                                    $dateDebut= strtotime($location->getDateDebut());
+                                    $dateFin =strtotime($location->getDateFin());
+                                    $diff = $dateFin - $dateDebut;
+                                    $nbrJours = ceil (($diff/86400)+1);
+
+                                    // calculer le total de la location -----------------------------------------
+                                    $totalLocation = round($nbrJours * $location->montantParJour);
+
+                                    $donneesPaiement = json_encode(array("idLocation"=>$params['idLocation'], 
+                                                                         "dateDebut"=>$location->getDateDebut(), 
+                                                                         "dateFin"=>$location->getDateFin(), 
+                                                                         "prixJour"=>$location->montantParJour,
+                                                                         "nbrJours"=>$nbrJours,
+                                                                         "totalLocation"=>$totalLocation));
+                                    echo $donneesPaiement;
+                                }
+                        
+
+						}
+					break;
 					
 					case "validerPaiement" :
 						$message_paiement = "";
 						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
-							//on cherche les dates reserves dans location
-							$modeleLocation = $this->getDAO("Locations");
-							$modeleDisponibilites = $this->getDAO("Disponibilites");
-							$location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
-							if($location)
-							{
-								//si cette demande est paye
-								if($location->getValidePaiement() == 1) 
-								{
-									//on cherche dans quelle disponibilite rentrent les dates de reservation
-									$idApt = $location->getIdAppartement();
-									$dateDebutLocation = $location->getDateDebut();
-									$dateFinLocation = $location->getDateFin();
-									$modeleDisponibilites = $this->getDAO("Disponibilites");
-									$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
-									$idDispo = $data['idDispo']->getId(); 
-									//on calcule les nouveaux dates de disponibilite
-									
-									$dateBeginNew = $modeleDisponibilites->newDateBegin($dateFinLocation);
-									$dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
-									
-									$dateDebutAncien=$data['idDispo']->getDateDebut();
-									//mis a jour les dates de debut qui sont en passe maintenant
-									if($dateDebutAncien < $today) {
-										$dateDebutAncien = $today;
-									}
-									$dateFinAncien=$data['idDispo']->getDateFin();							
-									//creation de nouvelles dispos
-									if($dateDebutAncien<=$dateFinNew && $dateFinNew >= $today)
-									{	
-										$modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $idApt);			
-									}
-									if($dateBeginNew<=$dateFinAncien)
-									{	
-										$modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $idApt);					
-									}
-									//enlever disponibilite qui coresponde a la reservation
-									$modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
-									$message_paiement = json_encode(array("messageSucces"=>"Votre appartement est réservé!"));
-									echo $message_paiement;
-								}
-								else
-								{
-									$message_paiement = json_encode(array("messageErreur"=>"Oups! Pas encore payé!"));
-									echo $message_paiement;
-								}
-							}
-							else
-							{
-								$message_paiement = json_encode(array("messageErreur"=>"Pas de location!"));
-								echo $message_paiement;
-							}	
+                            if(isset($params['infoPaiement']) && $params['infoPaiement']["state"] == "approved" )
+                            {
+                                //on cherche les dates reserves dans location
+                                $modeleLocation = $this->getDAO("Locations");
+                                $modeleDisponibilites = $this->getDAO("Disponibilites");
+                                $modeleLocation->misAjourChampUnique('validePaiement', 1, $params['idLocation']);
+                                $location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+                                if($location)
+                                {
+                                    //si cette demande est paye
+                                    if($location->getValidePaiement() == 1) 
+                                    {
+                                        //on cherche dans quelle disponibilite rentrent les dates de reservation
+                                        $idApt = $location->getIdAppartement();
+                                        $dateDebutLocation = $location->getDateDebut();
+                                        $dateFinLocation = $location->getDateFin();
+                                        $modeleDisponibilites = $this->getDAO("Disponibilites");
+                                        $data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
+                                        $idDispo = $data['idDispo']->getId(); 
+                                        //on calcule les nouveaux dates de disponibilite
+
+                                        $dateBeginNew = $modeleDisponibilites->newDateBegin($dateFinLocation);
+                                        $dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
+
+                                        $dateDebutAncien=$data['idDispo']->getDateDebut();
+                                        //mis a jour les dates de debut qui sont en passe maintenant
+                                        if($dateDebutAncien < $today) {
+                                            $dateDebutAncien = $today;
+                                        }
+                                        $dateFinAncien=$data['idDispo']->getDateFin();							
+                                        //creation de nouvelles dispos
+                                        if($dateDebutAncien<=$dateFinNew && $dateFinNew >= $today)
+                                        {	
+                                            $modeleDisponibilites->ajouteDisponibilite($dateDebutAncien, $dateFinNew, $idApt);			
+                                        }
+                                        if($dateBeginNew<=$dateFinAncien)
+                                        {	
+                                            $modeleDisponibilites->ajouteDisponibilite($dateBeginNew, $dateFinAncien, $idApt);					
+                                        }
+                                        //enlever disponibilite qui coresponde a la reservation
+                                        $modeleDisponibilites->misAjourChampUnique('disponibilite', 0, $idDispo);
+                                        $message_paiement = json_encode(array("messageSucces"=>"Votre appartement est réservé!"));
+                                        echo $message_paiement;
+                                    }
+                                    else
+                                    {
+                                        $message_paiement = json_encode(array("messageErreur"=>"Oups! Pas encore payé!"));
+                                        echo $message_paiement;
+                                    }
+                                }
+                                else
+                                {
+                                    $message_paiement = json_encode(array("messageErreur"=>"Pas de location!"));
+                                    echo $message_paiement;
+                                }
+                            }
 						}
 					break;
 					

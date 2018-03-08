@@ -35,7 +35,7 @@
                 </div>
               </div>
 
-              <!-- prix min -->
+                <!-- prix min -->
               <div class="form-group">
                   <label for="prixMin" class="form-control-label ">Minimum</label>
                   <div class="row">
@@ -58,10 +58,11 @@
               <select class="col-sm-12 custom-select my-1 mr-sm-2 text-muted" name="id_typeApt" id="typeApt" aria-describedby="aideTypeApt">
               <option value="0">-- Choisir un type de logis --</option>
             <?php foreach($data['tab_typeApt'] AS $t) 
-                    { ?>
+                    {
+                ?>
                       <option value=<?= $t['id'] ?>><?= $t['typeApt'] ?></option>
             <?php   }
-                   ?>
+                ?>
               </select>
               <small class="form-text text-muted" id="aideTypeApt"></small>
               </div>
