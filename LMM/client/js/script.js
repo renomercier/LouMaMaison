@@ -255,19 +255,24 @@ $(document).ready(function() {
 				}
 			});
 		});
-		
+
 	/**
 		Fonction pour valider une demande de reservation
 	*/
-		$(document).on('click', '#confirmerReservation', function(e){
+		$(document).on('click', '.confirmerReservation', function(e){
 			var idLocation = $(this).val();
+            var id_userClient = $('#username').attr('name');
+            var objetClient = "Approbation de location";
+            var texteClient = "Votre demande de location est approuvée par le proprietaire.<br> <p class='nav-link' id='mesReservations'>Veuillez consulter ce lien pour payer et finaliser la transaction</p>"
+            
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=validerDemande&idLocation="+idLocation,
-				dataType:"json",
+
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
 					if(reponse){
+                        ecrireMessage(id_userClient, objetClient, texteClient);
                         $('#demandesReservations').click();
 					}
                     else if(reponse.messageErreur) {
@@ -465,9 +470,9 @@ var funcAjouteDispo = function(e){
         var idProprio = $('input[name="idProprio"]').val();
 		var nbPersonnes = $('option:selected').val();
         var objetClient = "Accusé reception";
-        var texteClient = "Nous avons enregistré votre demande de location pour la période du: "+dateDebut+" au "+dateFin+" pour "+nbPersonnes+" personnes.<br> Le proprietaire va vous donner ou non son approbation dans les heures qui suiveront.<br><a class='text-primary' href='#' id='mesReservations'>Veuillez consulter ce lien pour suivre l'évolution de votre demande</a>";
+        var texteClient = "Nous avons enregistré votre demande de location pour la période du: "+dateDebut+" au "+dateFin+" pour "+nbPersonnes+" personnes.<br> Le proprietaire va vous donner ou non son approbation dans les heures qui suiveront.<br><p class='nav-link' id='mesReservations'>Veuillez consulter ce lien pour suivre l'évolution de votre demande</p>";
         var objetProprio = "Demande de location";
-        var texteProprio = "Vous venez de recevoir une demande de réservation pour un de vos appartements. <br><a class='text-primary' href='#' id='demandesReservations'>Veuillez consulter ce lien pour l'approuver</a>";
+        var texteProprio = "Vous venez de recevoir une demande de réservation pour un de vos appartements. <br><p class='nav-link' id='demandesReservations'>Veuillez consulter ce lien pour l'approuver</p>";
 
 		$.ajax({
 			cache: false,
@@ -956,7 +961,7 @@ function CalculerdonneePaiement(idLocation){
             
              boutonPaypal(reponse.totalLocation, idLocation); 
             
-            $("#myModal"+idLocation).modal('show');
+            $("#modalPaiement").modal('show');
             
         }, 200);
           

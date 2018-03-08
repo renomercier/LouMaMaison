@@ -428,21 +428,24 @@
 											$dateFinLocation = $location->getDateFin();
 											$modeleDisponibilites = $this->getDAO("Disponibilites");
 											$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
-											$idDispo = $data['idDispo']->getId(); 
+                                            if($data['idDispo'])
+                                            {
+											     $idDispo = $data['idDispo']->getId(); 
 											
-											//trouver les autres demandes dans la meme disponibilite
-											$autresDemandes = $modeleLocation->obtenir_location_par_dispo($idDispo, $idLocation); 
-											if($autresDemandes)
-											{
-												//refuser toutes les autres demandes dans la meme disponibilite
-												foreach($autresDemandes as $autre) 
-												{
-													$autre = $modeleLocation->refuserDemandes('refuse', 1, $idDispo);
-												}
-											}
-											
-											$message_demande = json_encode(array("messageSucces"=>"Validé!"));
-											echo $message_demande;
+                                                //trouver les autres demandes dans la meme disponibilite
+                                                $autresDemandes = $modeleLocation->obtenir_location_par_dispo($idDispo, $idLocation); 
+                                                if($autresDemandes)
+                                                {
+                                                    //refuser toutes les autres demandes dans la meme disponibilite
+                                                    foreach($autresDemandes as $autre) 
+                                                    {
+                                                        $autre = $modeleLocation->refuserDemandes('refuse', 1, $idDispo);
+                                                    }
+                                                }
+
+                                                $message_demande = json_encode(array("messageSucces"=>"Validé!"));
+                                                echo $message_demande;
+                                            }
 										}
 									}
 									else 

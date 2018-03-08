@@ -6,7 +6,7 @@
 * @version      v.1 | fevrier 2018
 -->
 
-<div class="resultat">
+<div class="resultat col-md-12">
     <div class="row">
 		<div class="text-warning"><?=isset($data['demande']) ? $data['demande'] : ""?></div>
 		<?php
@@ -22,7 +22,7 @@
 					<th>Départ</th>
 					<th>Hôtes</th>
 					<th>Statut</th>
-					<th>Payer</th>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -40,38 +40,28 @@
 						if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) {
 							$confirmation = "En attente";
 						}
-						else if ($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0){
-							$confirmation = "Confirmé";
-						}
+
 						else if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 1) {
 							$confirmation = "Payé";
 						}
 						else if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 1) {
 							$confirmation = "Refusé";
-						}							
+						}
+                        else if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0)
+                        {
+                            $confirmation = '<button id="payer" type="button" onclick="CalculerdonneePaiement('.$appartement->getId().')" class="btn btn-success">Payer maintenant</button>';
+                        }
 					?> 
 							
 						<tr>
-							<td id="apt"><a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getIdAppartement() ?>" >
-			<!--<img src="<?=$photoApt?>" class="img" width="20%">--><?=$appartement->titre?>
-			</a></td>
+							<td id="apt"><a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getIdAppartement() ?>" ><?=$appartement->titre?></a></td>
 							<td id="username"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->id_userProprio?>" target="_blank"><?=$appartement->id_userProprio?></a></td>
 							<td id="dateDebut"><?=$appartement->getDateDebut();?></td>
 							<td id="dateFin"><?=$appartement->getDateFin();?></td>
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 							<td><?=$confirmation ?></td>
 
-                            <!--client ne peut pas payer si le proprio n'a pas encore valide la demande/s'il déjà paié/si la demande est refusé-->
-                            <td>
-						<?php
-                        if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0) 
-                        {
-                        ?>
-							<button id="payer" type="button" onclick="CalculerdonneePaiement(<?=$appartement->getId();?>)" class="btn btn-success">Payer</button>
-                         <?php
-                        }
-                        ?>
-                            </td>
+
 
 						</tr>
 								
@@ -89,7 +79,7 @@
     
      <!-- Afficher lerésumé d'une location avant de passer au paiement -->
     <!-- Modal -->
-    <div class="modal fade" data-animation="false" id="myModal<?=$appartement->getId();?>" role="dialog">
+    <div class="modal fade" data-animation="false" id="modalPaiement" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
