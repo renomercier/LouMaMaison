@@ -10,8 +10,8 @@
     * @class    Controleur_Appartement - herite de la classe BaseController
     * @details  
     *
-    *   7 methodes  |   traite(), afficheFormAppartement(), validerPermissionApt(), validerAppartement(),
-    *                   prepareTabOptions(), prepareTabOptionsPourAffichage(), afficheListeAppartements()
+    *   8 methodes  |   traite(), afficheFormAppartement(), validerPermissionApt(), validerAppartement(),
+    *                   prepareTabOptions(), prepareTabOptionsPourAffichage(), afficheListeAppartements(), affichePhotos()
     */
     class Controleur_Appartements extends BaseControleur
     {   
@@ -30,6 +30,7 @@
             */
             $data= $this->initialiseMessages();
 			$today = Date("Y-m-d");
+
             //si le paramètre action existe
             if(isset($params["action"]))
             {
@@ -37,7 +38,7 @@
                 //ce switch détermine la vue et obtient le modèle
                 switch($params["action"])
                 {
-                    // case de gestion des filtres pour affichage des appartements
+          // case de gestion des filtres pour affichage des appartements
                     case "filtrer":
                     
                         // numero de la page actuelle
@@ -60,67 +61,70 @@
                     
                         // quartier
                         $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
-
                         
                         // type appartement
                         $filtre['id_typeApt'] = isset($params['id_typeApt'])? $params['id_typeApt'] : 0;
                     
                         // date d'arrivée
                         $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0; 
-
                     
                         // date de départ
                         $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
-
                         $data = $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
                         $this->afficheVue("listeAppartements", $data);
-						break;
+                        break;
                            
                     // Case d'affichage du detail d'un appartement
+                    case "afficherAppartement" :  
 
-                    case "afficherAppartement" :    
-                        // chargement du modele Appartement
-                        $modeleApts = $this->getDAO("Appartements");
-                        
-                        // Recuperer le detail de l'appartement               
-                        $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);                      
-                        
-                        // json_decode des options de l'appartement
-                        $data['tab_options'] = $this->prepareTabOptionsPourAffichage($data['appartement']->getOptions());                        
-                        
-                        // Recuperer les photos de l'appartement
-                        $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
-                        
-                        // Recuperer le quartier de l'appartement
-                        $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
-                        
-                        // Recuperer le type de l'appartement
-                        $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
-                        
-                        // Reconstituer l'adresse pour la localisation sur la carte google du Quartier
-                        $data['adresse'] = $data['appartement']->getNoCivique()." ".$data['appartement']->getRue()." ".$data['appartement']->getVille();
-                        
-                        // Recuperer la moyenne de l'appartement
-                        //$data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
-                        $data['moyenneApt'] = $modeleApts->obtenir_moyenne($params['id_appart']);
-                        
-                        // Recuperer les disponibilites de l'appartement
-                        $modeleDisponibilites = $this->getDAO("Disponibilites");
-                        $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
-                        
-                        // Recuperer les commentaires d'évaluations de l'appartement
-                        $modeleEvaluations = $this->getDAO("Evaluations");
-                        $data['tab_evals'] = $modeleEvaluations->obtenir_tous_non_null($params['id_appart']);
-                        
-                        // Recuperer le proprietaire de l'appartement
-                        $modeleUsagers = $this->getDAO("Usagers");
-                        $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
-                        
-                        // Affichage du detail d'un appartement
-						$this->afficheVue("header",$data);
-                        $this->afficheVue("AfficheAppartement", $data);
-						$this->afficheVue("footer");
+                        if(isset($params['id_appart']) && filter_var($params['id_appart'], FILTER_VALIDATE_INT)) {   
 
+                            // si params message, message a l'usager concernant des actions sur son appartement
+                            if(isset($params['message'])) {
+                                $data['succes'] = "<p class='alert alert-success'>". $params['message'] . "</p>";
+                            }
+                            // chargement du modele Appartement
+                            $modeleApts = $this->getDAO("Appartements");
+                            
+                            // Recuperer le detail de l'appartement               
+                            $data['appartement'] = $modeleApts->obtenir_par_id($params['id_appart']);                      
+                            
+                            // json_decode des options de l'appartement
+                            $data['tab_options'] = $this->prepareTabOptionsPourAffichage($data['appartement']->getOptions());                        
+                            
+                            // Recuperer les photos de l'appartement
+                            $data['tab_photos'] = $modeleApts->getPhotos_par_id($params['id_appart']);
+                            
+                            // Recuperer le quartier de l'appartement
+                            $data['quartier'] = $modeleApts->getQuartier_par_id($data['appartement']->getId_nomQuartier());
+                            
+                            // Recuperer le type de l'appartement
+                            $data['typeApt'] = $modeleApts->getTypeApt_par_id($data['appartement']->getId_typeApt());
+                            
+                            // Reconstituer l'adresse pour la localisation sur la carte google du Quartier
+                            $data['adresse'] = $data['appartement']->getNoCivique()." ".$data['appartement']->getRue()." ".$data['appartement']->getVille();
+                            
+                            // Recuperer la moyenne de l'appartement
+                            //$data['moyenneApt'] = $modeleApts->obtenir_moyenne($data['appartement']->getId_typeApt());
+                            $data['moyenneApt'] = $modeleApts->obtenir_moyenne($params['id_appart']);
+                            
+                            // Recuperer les disponibilites de l'appartement
+                            $modeleDisponibilites = $this->getDAO("Disponibilites");
+                            $data['tab_dispos'] = $modeleDisponibilites->afficheDisponibilite($params['id_appart']);
+                            
+                            // Recuperer les commentaires d'évaluations de l'appartement
+                            $modeleEvaluations = $this->getDAO("Evaluations");
+                            $data['tab_evals'] = $modeleEvaluations->obtenir_tous_non_null($params['id_appart']);
+                            
+                            // Recuperer le proprietaire de l'appartement
+                            $modeleUsagers = $this->getDAO("Usagers");
+                            $data['proprietaire'] = $modeleUsagers->obtenir_par_id($data['appartement']->getId_userProprio());
+                            
+                            // Affichage du detail d'un appartement
+    						$this->afficheVue("header",$data);
+                            $this->afficheVue("AfficheAppartement", $data);
+    						$this->afficheVue("footer");
+                        } 
                         break;
 
 					
@@ -140,11 +144,11 @@
                                 }
                             $this->afficheVue("AfficheAptsProprio", $data); 
                             }
-					break;
+					    break;
 					
                     // case de suppression d'un appartement
                     case "supprimerAppartement" :
-
+               
                         if(isset($params['id']) && !empty($params['id']) && $_SESSION['username']) {
 
                             // chargement des modeles requis
@@ -215,7 +219,7 @@
                                 echo "<p class='alert alert-warning'>" . $data['erreurs'] . "</p>";
                             }
                         } 
-                        break;   
+                        break;     
 
                     // case de suppression d'une disponibilite (d'un appartement)
 					case "supprimeDisponibilite":
@@ -231,10 +235,10 @@
 							$reponse = json_encode(array("messageErreur"=>"Choisissez une disponibilité!"));//creer une message d'échec
 							echo $reponse;		
 						}
-					   break;
+					    break;
                     
                     // case d'ajout d'une disponibilite pour un appartement                        
-                   case "ajouteDisponibilite" :
+                    case "ajouteDisponibilite" :
 						$message_dispo="";
 						$obj = json_decode($_REQUEST['dataJson'],true); 
                         if(isset($params['id_apt']) && isset($params['dateDebut']) && isset($params['dateFin']) && !empty($params['id_apt']) && !empty($params['dateDebut']) && !empty($params['dateFin'])) {
@@ -364,7 +368,7 @@
 							$message_reservation = json_encode(array("messageErreur"=>"Veuillez vous assurer de remplir tous les champs requis!"));//creer une message d'échec
 							echo $message_reservation;	
 						}
-					   break;
+					    break;
 					   
 					//case afficher demandes de reservation chez proprio et client  
 					case "afficheDemandesReservations":
@@ -400,7 +404,7 @@
 								$this->afficheVue("AfficheReservationsClient", $data); 
 							} 
                         }
-					break;
+					    break;
 					
 					//case valider une demande de reservation par proprio
 					case "validerDemande" :
@@ -470,7 +474,7 @@
 							$message_demande = json_encode(array("messageErreur"=>"Pas de location!"));
 							echo $message_demande;
 						}	
-					break;
+					    break;
 					
 					case "refuserDemande" :
 						$message_refuse = "";
@@ -511,7 +515,7 @@
 							$message_refuse = json_encode(array("messageErreur"=>"Pas de location!"));
 							echo $message_refuse;
 						}
-					break;
+					    break;
                         
                     case "payerLocation" :
 						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
@@ -603,7 +607,7 @@
                                 }
                             }
 						}
-					break;
+					   break;
 					
 					case "annulerDemande" :
 						$message_annule = "";
@@ -651,7 +655,7 @@
 							$message_annule = json_encode(array("messageErreur"=>"Pas de location!"));
 							echo $message_annule;
 						}
-					break;
+					   break;
 					
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :
@@ -780,7 +784,10 @@
 
                         // declaration du bool pour differencier une telechargement de photo usager ou appartement
                         $photoApt = (isset($params['idApt']) && !empty($params['idApt'])) ? true : false;
-
+                        // recuperation de l'id usager
+                        $idUsager = (isset($_SESSION['username'])) ? $_SESSION['username'] : $params['id_usager'];
+                        $modifPhotoPrincipale = (isset($params['modifPP']) && ($params['modifPP'] == 'true')) ? true : false;
+                        
                         // ref: https://www.formget.com/ajax-image-upload-php/
                         if(isset($_FILES["file"]["type"]))
                         {
@@ -789,7 +796,7 @@
                             $data['succes'] = "";
                             // on boucle dans le tableau de fichiers
                             for($i=0; $i<count($_FILES["file"]['name']); $i++) {
-                           
+                                
                                 // validation si l'image est d'un type valide
                                 $validextensions = array("jpeg", "jpg", "png");
                                 $temporary = explode(".", $_FILES["file"]["name"][$i]);
@@ -804,21 +811,22 @@
                                     // sinon on verifie si l'image existe dans le fichier images
                                     else {
                                         // si elle existe, message à l'usager
-                                        if (file_exists("images/" . $_SESSION['username'] . "_" . $_FILES["file"]["name"][$i])) {
+                                        if (file_exists("images/" . $idUsager . "_" . $_FILES["file"]["name"][$i])) {
                                             $data['erreurs'] .= "La photo nommée " . $_FILES["file"]["name"][$i] . " existe déjà<br/>";
                                         }
                                         // si l'image n'existe pas, on procede a la sauvegarde et au telechargement
-                                        else {   
-                                            $fileName = $i . "_" . $_SESSION['username'] . "_" . $_FILES['file']['name'][$i];
+                                        else { 
+
+                                            $fileName = $idUsager . "_" . $i . "_" . $_FILES['file']['name'][$i];
                                             // chargement de la src dans une variable temporaire
                                             $sourcePath = $_FILES['file']['tmp_name'][$i]; 
                                             // adresse de l'image
                                             $targetPath = "images/" . $fileName; 
                                             // on charge la photo dans le dossier images
                                             move_uploaded_file($sourcePath, $targetPath) ; 
-
-                                            $fileName = "./images/" . $i . "_" . $_SESSION['username'] . "_" . $_FILES['file']['name'][$i];
-
+                                            // on renomme correctement l'image avant insertion dans la BD
+                                            $fileName = "./images/" . $fileName;
+                                            
                                             // chargement des modeles Appartements et Usagers
                                             $modeleApts = $this->getDAO("Appartements");
                                             $modeleUsagers = $this->getDAO("Usagers");
@@ -826,7 +834,7 @@
                                             // bool pour differencier photo profil de photo apt
                                             $flag = false;
                                             // si la photo est une photo principale
-                                            if($i == 0) {
+                                            if($i == 0 && $modifPhotoPrincipale) {
                                                 // si on a un id d'apt, on modifie le champ photoPrincipale de l'appartement
                                                 if($photoApt) {
                                                     // misa a jour du champ photo principale                                               
@@ -835,9 +843,9 @@
                                                 // sinon on modifie le champ photo du profil usager
                                                 else {
                                                     // mise a jour du champ photo 
-                                                    $resultat = $modeleUsagers->editerChampProfil("photo", $fileName, $_SESSION['username']);
+                                                    $resultat = $modeleUsagers->editerChampProfil("photo", $fileName, $idUsager);
                                                     $modeleUsagers = $this->getDAO("Usagers");
-                                                    $usager = $modeleUsagers->obtenir_par_id($_SESSION['username']);
+                                                    $usager = $modeleUsagers->obtenir_par_id($idUsager);
                                                     $photoProfil = $usager->getPhoto();
                                                     $flag = true;
                                                 }  
@@ -857,11 +865,27 @@
                                                 }
                                             } 
                                             // sinon, messages success a l'usager
-                                            // photo appartement
                                             else {
+                                                
                                                 if($flag) {
-                                                    echo '<div id="photo"><img src="' . $photoProfil . '" class="img img-fluid" width="100px"> </div>';
+                                                    if(isset($_SESSION['username'])) {
+                                                        header('Content-type: application/json');
+                                                        $data['img'] = '<div id="photo"><img src="' . $photoProfil . '" class="img img-fluid" width="100px"> </div>';
+                                                        $reponse = ([ 'img' => $data['img'] ]);
+                                                        echo json_encode($reponse);
+                                                    }
+                                                    else {
+                                                        $data['succes'] = "L'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès. Votre profil est maintenant complet. Vous pourrez consulter votre profil et utiliser le site dès votre confirmation par l'administration";
+                                                        //echo "<script>window.location='./index.php?Usagers&action=afficheUsager&idUsager=" . $idUsager . "&message=" . $data['succes'] . "'</script>";
+                                                        
+                                                        header('Content-type: application/json'); 
+                                                        $data['idUsager'] = $idUsager;
+                                                        $reponse = ([ 'message' => $data['succes'], 'idUsager' => $data['idUsager'] ]);
+                                                        echo json_encode($reponse);
+                                                        
+                                                    }
                                                 }
+                                                // photo
                                                 else {
                                                     $data['succes'] .= "L\'image " . $_FILES['file']['name'][$i] . " a été sauvegardée avec succès<br/>";
                                                 }
@@ -891,6 +915,45 @@
                         }
                         break;
 
+                    // affichage de photos pour suppression
+                    case "afficheSuppressionPhotos" :
+                        // verificationsi id d'apt et si l'usager est connecte
+                        if(isset($params['id']) && filter_var($params['id'], FILTER_VALIDATE_INT) && isset($_SESSION['username'])) {
+
+                            // chargement des modeles Appartements et Usagers
+                            $modeleApts = $this->getDAO("Appartements");
+                            $apt = $modeleApts->obtenir_par_id($params['id']);
+                            $photosApt = $modeleApts->getPhotos_par_id($params['id']);
+                            // on s'assure que l'usager est bien proprietaire de l'appartement duquel supprimer des photos
+                            if($_SESSION['username'] == $apt->getId_userProprio()) {
+                                // chargement du data photos supplementaires
+                                $data['photosApt'] = $photosApt;
+                                // affichage
+                                $this->afficheVue("header", $data);
+                                $this->afficheVue("SuppressionImage", $data);
+                                $this->afficheVue("footer");
+                            }
+                        }
+                        break;
+
+                    // case de suppression d'une photo
+                    case "supprimerPhoto" :
+                        // verificationsi id d'apt et si l'usager est connecte
+                        if(isset($params['id']) && filter_var($params['id'], FILTER_VALIDATE_INT) && isset($_SESSION['username'])
+                            && isset($params['idApt']) && filter_var($params['idApt'], FILTER_VALIDATE_INT)) {
+                            // chargement du modele appartements
+                            $modeleApts = $this->getDAO("Appartements");
+                            $suppressionPhoto = $modeleApts->supprimePhotoParId($params['id']);
+                            if($suppressionPhoto) {
+                                $this->affichePhotos($params['idApt']);
+                            }
+                            else {
+                                echo "<p class='alert alert-warning'>Un problème est survenu, la photo n'a pu être supprimée</p>"; 
+                            }
+                            
+                        }
+                        break;
+
                     default :
                         trigger_error("Action invalide.");      
                 } // fin du switch              
@@ -899,6 +962,7 @@
             else{ 
                 $data= $this->initialiseMessages();
                 $this->afficheVue("header",$data);
+                $this->afficheVue("AfficheImageHeader");
                 $numPage = isset($params['page'])? $params['page'] : 1;
                 // nombre d'appartements à afficher par page
                 $data['appartParPage'] = isset($params['appartParPage']) && is_numeric($params['appartParPage']) ? $params['appartParPage'] : 4;
@@ -910,7 +974,7 @@
                 $this->afficheVue("footer");
             }            
 
-        }
+        } // fin de la fonction traite()
         
         /**
         * @brief        Affichage du formulaire d'inscription d'un appartement
@@ -919,8 +983,8 @@
         * @param        <array>     $data       tableau d'erreurs s'il y a lieu
         * @return       charge la vue avec le tableau de donnees
         */  
-        private function afficheFormAppartement($data = "")
-        {
+        private function afficheFormAppartement($data = "") {
+
             // chargement du modele Appartement
             $modeleApts = $this->getDAO("Appartements");
 
@@ -937,7 +1001,7 @@
             $data['tab_quartier'] = $modeleApts->getQuartiers();
             $data['tab_typeApt'] = $modeleApts->getTypesApt();
             // affichage du formulaire d'inscription d'un appartement avec tableau de data rempli
-/**/        $this->afficheVue("afficheInscriptionApt", $data);
+            $this->afficheVue("afficheInscriptionApt", $data);
         }
 
         /**
@@ -1020,11 +1084,6 @@
                 // si le resultat n'est pas vide, verifications supplementaires 
                 if($resultat != "") {
                     if($n == 'Le montant du logement') {
-                    /*  if(preg_match(',', $valeur)) {
-                            $valeur = preg_replace(',', '.', $valeur);
-                            var_dump($valeur);
-                            die;
-                        }   */
                         $erreurs .= (!is_float(floatval($valeur))) ? $n . " est invalide<br>" : "";
                     }
                     else { 
@@ -1157,5 +1216,34 @@
             }
             return $data;
         }
+
+        /**
+         * @brief      fonction d'affichage de photos
+         * @details    rafraîchie l'affichage des photos lors de suppression
+         * @params     <int>        $idApt           id de l'appartement
+         * @return     echo de la vue a afficher
+         */
+        public function affichePhotos($idApt) {
+
+            // chargement du modele 
+            $modeleApts = $this->getDAO("Appartements");
+            $photosApt = $modeleApts->getPhotos_par_id($idApt);
+            // declaration de la string d'affichage
+            $result = "";
+            // on boucle dans chaque photo pour les afficher                
+            foreach($photosApt AS $p) { 
+
+                $result .=  '<hr>';
+                $result .=  '<div class="col">';
+                $result .=      '<div class="text-center col-6"><img id="" src="' . $p['photoSupp'] . '" width="200"/>';
+                $result .=      '<button class="suppressionImg" type="button" value="' . $p['id'] . '">Supprimer cette image</button></div>';
+                $result .=      '<input type="hidden" name="idApt" value="' . $p['id_appartement'] . '"/>';
+                $result .=  '</div>';
+                $result .=  '<hr>';
+            }
+            echo $result;
+        }
+
     }
+
 ?>

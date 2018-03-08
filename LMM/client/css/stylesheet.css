@@ -1,8 +1,9 @@
 /* --------------------------------------------------- Reset */
 html, body {
     height: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0!important;
+    padding: 0!important;
+    box-sizing: border-box;
 }
 
 /* --------------------------------------------------- H1-h6, li, a, p etc. */
@@ -15,6 +16,81 @@ a, a:hover{
 h6, .filtre_usager a.nav-link{
     color: #0275d8 !important;
     cursor: pointer;
+}
+.invisible {
+  visibility: hidden;
+}
+
+/* --------------------------------------------------- header   */
+.badge-notify{
+    background: #F8941E;
+    position: relative;
+    bottom: 1em;
+}
+.badge{
+    font-size: .8em;
+    border-radius: 1rem;
+}
+.row .accueil{
+    position: relative;
+    margin: 0!important;
+    padding: 0!important;
+}
+#image-entete img{
+    min-width: 100vw;
+    height: auto;
+    object-fit: cover;
+}
+.navbar-brand {
+    margin: 0!important;
+    padding-left: 13px;
+}
+.navbar-brand img{
+    width: 4em;
+    z-index: 125;
+    top: 0;
+}
+.navigation-logo{
+    position: relative;
+    z-index: 125;
+    margin: 0!important;
+}
+.navigation{
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: #f7f7f9;  
+    margin: 0!important;
+    padding: 0!important; 
+    padding-bottom: .55rem;  
+    height: 65px;
+}
+.logo-entete{
+    position: fixed;
+    top: 0;
+    background: #f7f7f9;
+    margin: 0!important;
+    padding: 0!important;
+    z-index: 10000;
+    height: 65px;
+}
+#navbarNavDropdown {
+  
+}
+.navbar-toggleable {
+    height: 65px;
+}
+.bg-secondary{
+    background: #585759;
+}
+.messageHeader {
+    font-size: 0.7em;
+}
+.slogan{
+    font-family: 'Waiting for the Sunrise', cursive;
+    font-size: 5em;
+    font-weight: 800;
+    line-height: 97%;
 }
 
 /* --------------------------------------------------- Icones   */
@@ -77,9 +153,6 @@ input.slider {
     background: url(btn-choose-file.gif) 0 0 no-repeat;
     cursor: pointer;    */
 }
-#file {
-
-}
 
 /* --------------------------------------------------- vue Ajout Image  */
 #image_preview, .imgSupp {
@@ -89,54 +162,68 @@ input.slider {
 
 
 /* --------------------------------------------------- Images   */
-.thumbnail{
+.thumbnail {
     width: 100%;
     overflow: hidden;
 }
-.thumbnail img{
+.thumbnail img {
     width: 100%;
     height: auto;
 }
-
-.fa_custom{
-	color: #999;
-}
-
 .img-thumbnail{
     background:none;
     border: none;
+}
+.imgEval {
+    width: 75%;
+    height: 75%;
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------- page AfficheAppartement */
+.sectionAptDetail-g, .sectionAptDetail-d {
+    padding=0;
+    /*border: 1px solid #000000; */ 
+}
+.aptReservation, .aptModification {
+    position: sticky;
+    top: 2em;
+    padding: 20px;
+    border: 1px solid #585759;
+}
+.aptDisponibilites {
+    padding: 10px;
+    height: 165px;
+    width: auto;
+    overflow-y: scroll;
+    border: 1px solid #585759;
+}
+.aptPhotoProprio {
+    height: 5em;
+    width: 5em; 
 }
 
 /* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .aptPhotoSupp:hover {
     opacity: 0.7;
 }
-
 .aptPhotoSupp {
     height: 5em;
     width: 6.5em; 
 }
-
 .aptPhotoModal {
     height: 45em;
     width: 60em; 
 }
-
 .aptPhotoProprio, .aptPhotoComment {
     height: 5em;
     width: 5em; 
 }
-
 .aptIcones, .aptIconesOptions {
     height: 2em;
     width: 2em;
 }
 
-.imgEval {
-    width: 75%;
-    height: 75%;
-    margin: 0 auto;
-}
 
 .profilAptIcone p a, .dropdown-menu li a {
     color: #000000;
@@ -150,18 +237,18 @@ input.slider {
 /* --------------------------------------------------- Modal */
 
 .modal-header, .modal-footer {  
-    color: #ffffff;
-    background-color: #014B88;
+ 
 }
-
 .modal-xl {
     max-height: auto;
     max-width: 55%;
 }
-
 #myModalEval, #myModalEval {  
     background-color: white;
     color: black;
+}
+.modalEval {
+    padding: 0;
 }
 
 /* --------------------------------------------------- vue Evaluation Apt  */
@@ -184,8 +271,14 @@ input.slider {
     z-index: 1;
 } 
 
-/* --------------------------------------------------- page AfficheAptsProprio */
+/* --------------------------------------------------- page Recherche appartement   */
 
+.listeApt, .resultatListeApt, .recherche, .inputListeApt  {
+    margin: 0!important;
+    padding: 0!important;
+}
+
+/* --------------------------------------------------- page AfficheAptsProprio */
 .profil-appartementsProprio {
     margin: 1em;
 }
@@ -211,24 +304,10 @@ input.slider {
     padding: 20px;
     border: 1px solid #585759;
 }
-
-.aptDisponibilites {
-    padding: 10px;
-    height: 165px;
-    width: auto;
-    overflow-y: scroll;
-    border: 1px solid #585759;
-}
-
-
-.aptPhotoProprio {
-    height: 5em;
-    width: 5em; 
-}
-
-.aptIcones {
-    height: 2em;
-    width: 2em;
+.recherche  {
+    box-sizing: border-box;
+    margin-left: 15px!important;
+    margin-left: 15px!important;  
 }
 
 /* --------------------------------------------------- google carte   */
@@ -236,20 +315,18 @@ input.slider {
     height: 100vh;
 }
 
-.absolut{
+.absolut {
     position: absolute;
     overflow: hidden;
     right: 0em;
     top: 0em; 
 }
-
 .carte_fixe{
     position: fixed !important;
-    right: 1em;
+    right: 1em;   
     top: 1em;
-    margin-left: 1em;
+    margin-left: 1em; 
 }
-
 @media only screen and (max-width: 768px) {
     #carte{
         position: relative!important;
@@ -259,15 +336,12 @@ input.slider {
 .appart, .gm-style-iw{
     line-height: 1em;
 }
-
 .appart p, .gm-style-iw p{
     margin: .3em auto;
 }
-
 .card-block{
     padding: .1em;
 }
-
 .gm-style-iw{
     left: 25px !important;
 }
@@ -349,66 +423,6 @@ td[name='contenuMessage']{
     padding: 20px;
 }
 
-.img-thumbnail{
-    background:none;
-    border: none;
-}
-
-.badge-notify{
-    background:red;
-    position:relative;
-    bottom: 1em;
-}
-
-.badge{
-    font-size: .8em;
-    border-radius: 1rem;
-}
-
-.row .accueil{
-    position: relative;
-}
-
-#image-entete img{
-    min-width: 100vw;
-    height: auto;
-    object-fit: cover;
-}
-
-.navbar-brand img{
-    width: 4em;
-}
-
-.navigation-logo{
-    position: relative;
-    z-index: 122;
-}
-
-.navigation{
-    position: fixed;
-    top: 0;
-    right: 0;
-    background: #f7f7f9;
-    padding-bottom: .55rem;   
-}
-
-.logo-entete{
-    position: fixed;
-    top: 0;
-    background: #f7f7f9;
-}
-
-.bg-secondary{
-    background: #585759;
-}
-
-.slogan{
-    font-family: 'Waiting for the Sunrise', cursive;
-    font-size: 9em;
-    font-weight: 800;
-    line-height: 97%;
-}
-
 
 /* --------------------------------------------------- footer   */
 
@@ -419,6 +433,7 @@ footer hr {
     padding: 0;
     text-decoration: none;
     list-style-type: none;
+    font-size: 0.8em;
 }
 .footer-list ul a {
     color: #ffffff;
@@ -433,7 +448,15 @@ footer hr {
     color: #ffffff;
 }
 .footer-media-item a:hover {
-    color: #014B88;
+    color: #F8941E;
+}
+footer h5 {
+    font-size: 1em;
+}
+@media screen and (max-width: 575px) {
+    footer img {
+        width: 50%;
+    }
 }
 footer {
     color: #ffffff;

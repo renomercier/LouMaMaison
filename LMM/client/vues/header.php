@@ -24,7 +24,6 @@
     <link href="https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise" rel="stylesheet">
     
     <!-- src script js -->
-
     <script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://use.fontawesome.com/e58c171d55.js"></script> 
     <script src="js/formEvt.js"></script>   
@@ -45,20 +44,20 @@
 <body class="container-fluid">
 
     <div class="row navigation-logo">
-        <div class="col-md-2 logo-entete">
+        <div class="col-3 logo-entete">
              <a class="navbar-brand" href="index.php"><img src="./images/logo_sur_blanc.svg" alt="loumamaison"></a>
         </div>
 
-        <div class="col-md-10 navigation">
+        <div class="col-lg-12 navigation">
             
-              <nav class="navbar navbar-toggleable-md navbar-light bg-faded ">
+              <nav class="navbar navbar-toggleable-sm navbar-light bg-faded col-12 pull-right">
                   
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler navbar-toggler-right mt-1" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                  <ul class="navbar-nav ml-auto">
+                <div class="collapse navbar-collapse mt-1 ml-3" id="navbarNavDropdown">
+                  <ul class="navbar-nav mt-1 ml-auto">
                       <li class="nav-item active">
                           <a class="nav-link" href="index.php?Appartements">Accueil</a>
                       </li>
@@ -89,6 +88,9 @@
                       }
                           ?>
                         <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
+
+
+
                     </ul>
                 </div>
               </nav>   
@@ -98,19 +100,7 @@
 
         </div>
     </div>
- 
-    <div id="image-entete" class="carousel slide " data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="./images/entete.jpg" alt="Montreal">
-          <div class="carousel-caption">
-            <p class="slogan">Un jour, ça marchera</p>
-            <p>louer tout simplement</p>
-          </div>   
-        </div>
-      </div>
-    </div>
-    <ul class="navbar-nav mr-auto mb-5 bg-secondary text-white p-2">
-        <li class="nav-item "><?=$data['message']?></li>
-        <li class="nav-item "><?=$data['banni']?></li>
+    <ul class="navbar-nav mr-auto bg-secondary text-white p-2 pt-4 mt-5">
+        <li class="nav-item messageHeader ml-3"><?=$data['message']?></li>
+        <li class="nav-item messageHeader ml-3"><?=$data['banni']?></li>
     </ul>

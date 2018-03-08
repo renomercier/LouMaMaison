@@ -217,9 +217,6 @@ $(document).ready(function() {
             $('#checkbox').empty()
         }
 
-        console.log(valMontantParJour);
-        console.log($('#montantParJour')[0]);
-
         if(valTitre  && valDescriptif && valTypeApt && valNoCivique && valRue && ((valNoApt != undefined) ? valNoApt : (valNoApt == undefined)) && valCodePostal 
             && valNomQuartier && valNbPersonnes && valNbChambres && valNbLits && valMontantParJour && ((valOptions) ? valOptions : (!valOptions)) ) {
 
@@ -232,10 +229,9 @@ $(document).ready(function() {
     *   code a executer lorsque le modal d'evaluation d'un Apt est ouvert
     */
     if($('#myModalEval')[0]) {
-
+        console.log("uuuuuu");
         // affichage de l'evaluation par defaut (5 etoiles grises)
         document.getElementById("etoilesGrises").innerHTML = setNbEtoiles(0);
-
         /*
         *   ecouteur d'evenement sur l'input d'evaluation (nb d'etoiles)
         */
@@ -244,24 +240,18 @@ $(document).ready(function() {
             document.getElementById("etoiles").innerHTML = setNbEtoiles(this.value);
             document.querySelector('.divEvaluation span').innerHTML = (this.value/2);
         });
-
-        $('#myModalEval').on('change', function() {
-            
-        });
     }
-
-/*   *********************************************   */
 
     /**
     *   requete de suppression d'un appartement
     */
     $(document).on('click', '.btnSuppressionApt', function(e) {
 
-        console.log("aloo");
-        var idApt = e.target.attributes[0].nodeValue;
+       /* console.log(e.target);
+        var idApt = e.target.attributes[0].nodeValue;*/
+        var idApt = e.currentTarget.id;
         var idUser = $('#nomHote')[0].attributes[1].nodeValue
-
-       
+      
         // requete de suppression d'un appartement
         $.ajax({
             url: 'index.php?Appartements&action=supprimerAppartement&id='+idApt, 
@@ -288,7 +278,6 @@ $(document).ready(function() {
     */  
     var afficherAptProprio = function() {
 
-
         var idUserProprio = $('input[name="idUser"]').val();
         //var idUserProprio = $("#userNom")[0].innerHTML;
         $.ajax({
@@ -307,19 +296,23 @@ $(document).ready(function() {
 
     }
 
-/*   *********************************************   */
-
-
     // declaration du tableau de 'files' (pour les images)
     var tabFiles = [];
 
+    /**
+    *   Ecouteur d'evenement ('submit') attache a l'element #uploadimageProfil 
+    *   (formulaire d'ajout d'une photo au profil usager)
+    */
     // ref: https://www.formget.com/ajax-image-upload-php/
     $("#uploadimageProfil").on('submit',(function(e) {
 
         e.preventDefault();
-        console.log("ici");
+
         // instanciation du tableau a envoyer par ajax
         var ajaxData = new FormData();  
+        // on ajoute l'id de l'usager dans le tableau ainsi que la valeur de modif photo principale 
+        ajaxData.append('id_usager', $('input[name="idPhotoUsager"]').val());
+        ajaxData.append('modifPP', 'true');
         // ensuite on ajoute chaque files d'image dans le tableau (tableau 'file')
         for(var i=0; i<tabFiles.length; i++) {
             ajaxData.append('file['+i+']', tabFiles[i]);
@@ -331,23 +324,63 @@ $(document).ready(function() {
             data: ajaxData,
             contentType: false,       
             cache: false,             
-            processData:false,        
+            processData:false,  
+            dataType: 'json',      
             success: function(data)   
             {
-                $("#photoProfilUsager").empty().html(data);
+                if(data.img) {
+                     $('#photo').empty().append(data.img);
+                }
+                if(data.idUsager) {
+                    afficherMessageUsager(data.message, data.idUsager)  
+                }
             }
         });
     }));
 
+    /**
+    *   Fonction de redirection pour affichage du resultat d'inscription usager, dans le profil usager
+    */
+    var afficherMessageUsager = function(messsage, idUsager) {
+
+        // envoi de la requete 
+        $.ajax({
+            url: "index.php?Usagers&action=afficheUsager&idUsager="+idUsager+"&message="+messsage, 
+            type: "POST", 
+            dataType : 'html',
+            success: function(data)   
+            {   
+                // affichage de la vue du profil usager avec message
+                $('body').empty().html(data);
+            }
+        });             
+    }
+
+    /**
+    *   Ecouteur d'evenement ('click') attache a un element input name=modifPP
+    *   (Indique a l'usager si la photo ajoutee est une phto principale ou supplementaire)
+    */
+    $('input[name="modifPP"]').on('click', function() {
+
+        ($('#modifPP').is(':checked')) ? $('.titrePhotoPrincipale').text('Photo principlale de l\'appartement') : $('.titrePhotoPrincipale').text('Photo supplémentaire') ;
+    }); 
+    
+
+    /**
+    *   Ecouteur d'evenement ('submit') attache a l'element #uploadimage 
+    *   (formulaire d'ajout de photos a un appartement)
+    */
     // ref: https://www.formget.com/ajax-image-upload-php/
     $("#uploadimage").on('submit',(function(e) {
 
         e.preventDefault();
-
+        // on recupere la valeur bool si modif photo principale ou non
+        var modifPP = $('#modifPP').is(':checked');
         // instanciation du tableau a envoyer par ajax
         var ajaxData = new FormData();
-        // on ajoute l'id de l'apt dans le tableau (tableau idApt) 
+        // on ajoute l'id de l'apt dans le tableau (tableau idApt), ainsi que la valeur de modif photo principale 
         ajaxData.append('idApt', $('#idApt')[0].value);
+        ajaxData.append('modifPP', modifPP);
         // ensuite on ajoute chaque files d'image dans le tableau (tableau 'file')
         for(var i=0; i<tabFiles.length; i++) {
             ajaxData.append('file['+i+']', tabFiles[i]);
@@ -359,10 +392,11 @@ $(document).ready(function() {
             data: ajaxData,
             contentType: false,       
             cache: false,             
-            processData:false,        
+            processData:false,  
             success: function(data)   
             {
                 $("#message").empty().html(data);
+                tabFiles = [];
             }
         });
     }));
@@ -376,6 +410,9 @@ $(document).ready(function() {
     $("#btnAjoutImage").on('click',(function(e) {
         // creation de la div principale pour la nouvelle image
         var divPrincipale = document.getElementById('ajoutImage');
+        var h5 = addElement('h5', ["text-center"]);
+        var h5Texte = addText(h5, 'Photo supplémentaire');
+            divPrincipale.appendChild(h5Texte);
         var hr = document.createElement('hr');
             divPrincipale.appendChild(hr);
         // creation de la divImg
@@ -502,6 +539,29 @@ $(document).ready(function() {
             $('#previewing').attr('src', e.target.result);
             $('#previewing').attr('height', '100px');      
         };
+    });
+
+    /**
+    *   Ecouteur d'evenement ('submit') attache a l'element #formApt 
+    *   (formulaire d'ajout et de modification d'un appartement)
+    */
+    $(document).on('click', '.suppressionImg', function(e) {
+
+        // recuperation du formulaire
+        var id = e.target.value;
+        var idApt = $('input[name="idApt"]').val()
+
+        // envoi de la requete 
+        $.ajax({
+            url: "index.php?Appartements&action=supprimerPhoto&id="+id+"&idApt="+idApt, 
+            type: 'POST', 
+            dataType : 'html',        
+            success: function(data)   
+            {
+                $('#suppImg').empty().html(data);
+            }
+        });
+
     });
 
 }); // fin du document.ready

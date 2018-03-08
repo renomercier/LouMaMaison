@@ -12,12 +12,12 @@
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 5 methodes	|	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique(), 
-	*						obtenir_par_idApt()
+	* 	... 10 methodes	|	getTableName(), creerLocation(), afficheLocation(), afficheLocationClient(), 
+	* 						obtenir_location_par_id(), misAjourChampUnique(), refuserDemandes(), obtenir_par_idApt(),
+	*						obtenir_location_par_dispo(), supprimeLocation()
 	*/
 	class Modele_Locations extends BaseDAO
 	{
-
 		/**  
 		* @brief     	Renvoie le nom de la table location
 		* @param   		Aucun
@@ -33,7 +33,7 @@
 		* @details   	Inscrire la création d'une location à la BD
 		* @param   		<object>      	Location
 		* @return    	Résultat de la requête SQL
-		 */ 
+		*/ 
 		public function creerLocation(Location $Location)
 
 		{
@@ -64,9 +64,9 @@
 		
 		/**  
 		* @brief     	Afficher des locations du client avec status différents
-		* @param   		<int>   $idClient : 
-		* @param   		<int>   $dateNow : date d'aujourd'hui
-		* @return    	<...> 	Résultat de la requête SQL
+		* @param   		<string>   	$idClient 	 	l'id de l'usager
+		* @param   		<date>   	$dateNow  		date d'aujourd'hui
+		* @return    	<...> 		Résultat de la requête SQL
 		*/
         public function afficheLocationClient($dateNow, $idClient) 
         {
@@ -84,9 +84,9 @@
 		
 		/**  
 		* @brief     	Afficher des locations par son ID
-		* @param   		<int>   $idLocation : 
-		* @param   		<int>   $dateNow : date d'aujourd'hui
-		* @return    	<...> 	Résultat de la requête SQL
+		* @param   		<int>   	$idLocation 	l'id de la location 
+		* @param   		<date>   	$dateNow  		date d'aujourd'hui
+		* @return    	<...> 		Résultat de la requête SQL
 		*/
         public function obtenir_location_par_id($dateNow, $idLocation) 
         {
@@ -117,7 +117,7 @@
 		
 		/**
 		* @brief		Fonction pour refuser les demandes de reservation
-		* @details		Permet de refuser les demandes qui rentrent dans la disponibilite qu'est confirme
+		* @details		Permet de refuser les demandes qui rentrent dans la disponibilite qui est confirmee
 		* @param 		<VAR>		$refuse		Le champ refuse à modifier 
 		* @param 		<VAR>		$laValeur	La nouvelle valeur de ce champ
 		* @param 		<VAR>		$idDispo 	id de disponibilite dans la base de données
@@ -148,8 +148,8 @@
         /**  
 		* @brief     	Chercher location d'un appartement par l'id de disponibilite
 		* @details   	
-		* @param   		<int>    $idDispo : id de disponibilite     	
-		* @param   		<int>    $id : id de location     	
+		* @param   		<int>    $idDispo  	id de disponibilite     	
+		* @param   		<int>    $id  		id de location     	
 		* @return    	Résultat de la requête SQL
 		 */ 
 		public function obtenir_location_par_dispo($idDispo, $id)
@@ -172,5 +172,4 @@
             return $this->supprimer($id_location);
         }
 	}
-
 ?>

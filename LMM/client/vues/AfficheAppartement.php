@@ -10,8 +10,7 @@
     //$messagerie = (isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) ? "Messagerie" : "Contacter";
  ?>
 
-
-<div class="container detailAppartement">
+<div class="container detailAppartement mt-5">
     
     <!-- affichage des messages a l'usager connecte concernant ses actions -->
     <div class="row">

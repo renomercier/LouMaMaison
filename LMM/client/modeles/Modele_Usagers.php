@@ -153,7 +153,6 @@
 		* @param 		<objet>		$usager	 		une instance d'usager	
 		* @return    	<...> 		les rangées correspondant à un usager donné
 		*/
-/**/ 	// fonction incomplete, à completer les jointures a mesure que le projet avance
 		public function obtenir_avec_role($usager)
         {
             $query = "SELECT * from role_user JOIN role ON id_nomRole = id WHERE id_username = ?";
