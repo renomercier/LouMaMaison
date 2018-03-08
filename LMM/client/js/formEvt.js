@@ -229,7 +229,7 @@ $(document).ready(function() {
     *   code a executer lorsque le modal d'evaluation d'un Apt est ouvert
     */
     if($('#myModalEval')[0]) {
-
+        console.log("uuuuuu");
         // affichage de l'evaluation par defaut (5 etoiles grises)
         document.getElementById("etoilesGrises").innerHTML = setNbEtoiles(0);
         /*
@@ -354,12 +354,14 @@ $(document).ready(function() {
         });             
     }
 
- //   if($('#modifPP')) {
-        $('input[name="modifPP"]').on('click', function() {
-            console.log('hello!');
-            ($('#modifPP').is(':checked')) ? $('.titrePhotoPrincipale').text('Photo principlale de l\'appartement') : $('.titrePhotoPrincipale').text('Photo supplémentaire') ;
-        }); 
- //   }
+    /**
+    *   Ecouteur d'evenement ('click') attache a un element input name=modifPP
+    *   (Indique a l'usager si la photo ajoutee est une phto principale ou supplementaire)
+    */
+    $('input[name="modifPP"]').on('click', function() {
+
+        ($('#modifPP').is(':checked')) ? $('.titrePhotoPrincipale').text('Photo principlale de l\'appartement') : $('.titrePhotoPrincipale').text('Photo supplémentaire') ;
+    }); 
     
 
     /**

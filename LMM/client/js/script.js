@@ -207,6 +207,8 @@ $(document).ready(function() {
 				dataType:"html",
 				success:function(reponse) {
 					$('#afficheInfoProfil').empty();
+
+					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
 					$('#afficheInfoProfil').html(reponse);                 
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
@@ -215,6 +217,7 @@ $(document).ready(function() {
 			});
 		});
     
+
 	/**
 		Fonction pour afficher demandes de reservation Proprio
 	*/
@@ -264,14 +267,12 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					console.log("allo");
-					console.log(reponse.messageErreur);
-					if(reponse.messageErreur) {
-						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
-						
+					if(reponse){
+                        $('#demandesReservations').click();
 					}
-					else {
-						//$(this).prop("disabled", true);
+                    else if(reponse.messageErreur) {
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
 					}
 					
 					
@@ -285,14 +286,46 @@ $(document).ready(function() {
 	/**
 		Fonction pour refuser une demande de reservation
 	*/
-		$(document).on('click', '#annulerReservation', function(e){
-			var idLocation1 = $(this).val();
+		$(document).on('click', '#refuserReservation', function(e){
+			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
-				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation1,
-				dataType:"html",
+				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation,
+				dataType:"json",
 				success:function(reponse) {
-					$(this).prop("disabled", true);
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse[0].messageSucces)
+					{
+						 $('#demandesReservations').click();
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour valider paiement et créer location finale 
+	*/
+		$(document).on('click', '#validerLocation', function(e){
+			alert("allo");
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=validerPaiement&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					if(reponse.messageErreur) {
+						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse[0].messageSucces)
+					{
+						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
+						
+					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -429,7 +462,13 @@ var funcAjouteDispo = function(e){
 		var dateDebut = $('input[name="dateDebut"]').val();
 		var dateFin = $('input[name="dateFin"]').val();
 		var id_userClient = $('input[name="id_userClient"]').val();
+        var idProprio = $('input[name="idProprio"]').val();
 		var nbPersonnes = $('option:selected').val();
+        var objetClient = "Accusé reception";
+        var texteClient = "Nous avons enregistré votre demande de location pour la période du: "+dateDebut+" au "+dateFin+" pour "+nbPersonnes+" personnes.<br> Le proprietaire va vous donner ou non son approbation dans les heures qui suiveront.<br><a class='text-primary' href='#' id='mesReservations'>Veuillez consulter ce lien pour suivre l'évolution de votre demande</a>";
+        var objetProprio = "Demande de location";
+        var texteProprio = "Vous venez de recevoir une demande de réservation pour un de vos appartements. <br><a class='text-primary' href='#' id='demandesReservations'>Veuillez consulter ce lien pour l'approuver</a>";
+
 		$.ajax({
 			cache: false,
 			url: 'index.php?Appartements&action=demandeReservation',
@@ -449,6 +488,9 @@ var funcAjouteDispo = function(e){
 				} 
 				else if(reponse.messageSucces){ //s'on n'as pas des erreurs côté php
 					$("#erreurReservation").empty().css("display", "block").removeClass("alert alert-warning").addClass("alert alert-success").html("<p>"+reponse.messageSucces + "</p>");
+                    
+                    ecrireMessage(id_userClient, objetClient, texteClient);
+                    ecrireMessage(idProprio, objetProprio, texteProprio);
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -457,8 +499,10 @@ var funcAjouteDispo = function(e){
 		});
     e.stopImmediatePropagation();	
 	}
+
     
     /* ============================  function pour le datepicker des disponibilites ============================================== */
+
 
     $(function() { 
         /*var todayDate = new Date().getDate();
@@ -470,8 +514,7 @@ var funcAjouteDispo = function(e){
         
             format: 'YYYY/MM/DD',
             minDate: moment().add(1, 'days'),
-            //maxDate: "03/19/2018",
-            
+            //maxDate: "03/19/2018", 
             showDropdowns: true,
             alwaysShowCalendars: true,
             //startDate: "02/26/2018",
@@ -526,11 +569,27 @@ function naviguer(appartParPage, page) {
 /* sila div #carte estchargée, inclure le script de la carte google */
 
 $(document).ready(function() {
-       if($('#carte').length)
-        {
-            var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
-            $('body').append(scriptGoogle);
-        } 
+    
+    // charger le script de la carte google
+   if($('#carte').length)
+    {
+        var scriptGoogle = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACwL7adHNKo6veif0FtD6axaWGx23TTLw&callback=initMap"></script>';
+        $('body').append(scriptGoogle);
+    } 
+
+    var carte = $("#carte");
+
+    $(window).scroll(function() {    
+        var scroll = $(window).scrollTop();
+        if (scroll >= window.innerHeight-300) {
+            carte.addClass("carte_fixe");
+            carte.removeClass("absolut");
+        
+        } else {
+            carte.removeClass("carte_fixe");
+            carte.addClass("absolut");
+        }
+    });
 });
 
 
@@ -653,7 +712,6 @@ function actionAdmin(idUser, action) {
         });
 }
 
-
 /*//////////////////////////////////////////////////////////////////////////////////////////////*/
 
 /* //////////////////////////////  ACTIONS SUR LES MESSAGES ////////////////////////////////////*/
@@ -682,7 +740,31 @@ $(document).ready(function() {
         afficheListeMessages(idUsager, 'afficherListeMessages');
         e.stopImmediatePropagation();
         });
+
+        // appel de la fonction pour verifier l'existance de nouveaux message
+        // setInterval(notificationMessage, 5000);
+        notificationMessage();
 });
+
+/* recuperer les notification pour les nouveaux messages non lus*/
+function notificationMessage(){
+    
+           $.ajax({
+            method: "POST",
+            url: "index.php?Messages",
+            //dataType:"html",
+            data:{
+                action: 'notification',
+            },
+    // comportement en cas de success ou d'echec
+          success:function(reponse) {
+            $('.badge-notify').html(reponse);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+}
 
 /* fonction pour afficher tout les messages reçus par un usagers */
 function afficheListeMessages(idUser, action){
@@ -789,7 +871,9 @@ function formulaireNouveauMessage(selecteur)
 {
     $('#'+selecteur).load('vues/ecrireMessage.php');
     setTimeout(function () {
-        var destinatair = $('#profilUser input[name="usernameProp"]').val();
+
+        var destinatair = $('#profilUser input[name="idProprio"]').val();
+
         $('#destination').val(destinatair);
         // appel de la fonction ecrireMessage()
         $('button#envoiMessage').click(function(e){
@@ -839,4 +923,46 @@ function afficheMessEnvoyes(){
     $('h6[name="repondreMessage"]').remove();
     $('#envoyes').append($('div.table-responsive'));
     $('#recus').html('');
+}
+
+
+
+
+function CalculerdonneePaiement(idLocation){
+
+       $.ajax({
+        method: "POST",
+        url: "index.php?Appartements",
+           dataType: "json",
+        data:{
+            action: 'payerLocation',
+            idLocation : idLocation,
+        },
+// comportement en cas de success ou d'echec
+      success:function(reponse) {
+        
+          
+      $("#recapLocation").load("./vues/recapLocation.php");
+
+        setTimeout(function () {
+
+            $(".recap .arrivee span").html(reponse.dateDebut);
+            $(".recap .depart span").html(reponse.dateFin);
+            $(".recap .nbrJours span").html(reponse.nbrJours);
+            $(".recap .prixJour span").html(reponse.prixJour);
+            $(".recap .total span").html(reponse.totalLocation);
+            $(".modal-header").css({color: "#ffffff", backgroundColor: "#585759"});
+            $(".modal-footer").css({color: "#585759", backgroundColor: "#ffffff"});
+            
+             boutonPaypal(reponse.totalLocation, idLocation); 
+            
+            $("#myModal"+idLocation).modal('show');
+            
+        }, 200);
+          
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
 }

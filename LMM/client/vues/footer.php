@@ -8,15 +8,15 @@
     </div>
         <footer>
             
-            <section class="container">
+            <section class="container-fluid">
                                 
                 <br>
                 
                 <div class="row">                    
-                    <div class="footer-logo col-sm-3">
+                    <div class="footer-logo col-sm-3 col-md-2 text-center">
                         <a href="#"><img src="./images/logo_sur_noir.svg"  class="footerLogo img-thumbnail img-fluid" alt="Logo"></a>
                     </div>
-                    <div class="footer-text col-sm-3">
+                    <div class="footer-text col-sm-3 offset-md-1">
                         <h5>LouMaMaison</h5>
                         <div class="footer-list">
                             <ul>
@@ -57,14 +57,14 @@
                 
                 <div class="row">                 
                     <div class="col-sm-2 d-flex justify-content-start">
-                        <p>LouMaMaison &copy 2018</p>
+                        <small>LouMaMaison&nbsp;&copy&nbsp;2018</small>
                     </div>                    
                     <div class="col-sm-10 d-flex justify-content-end">
                         <div class="footer-list">
                             <ul>
                                 <a href="#"><li class="footer-list-xtra d-inline">Conditions</li></a>
-                                <a href="#"><li class="footer-list-xtra d-inline">Politique de confidentialité</li></a>
-                                <a href="#"><li class="footer-list-xtra d-inline">Plan du site</li></a>
+                                <a href="#"><li class="footer-list-xtra d-inline">Politique&nbsp;de&nbsp;confidentialité</li></a>
+                                <a href="#"><li class="footer-list-xtra d-inline">Plan&nbsp;du&nbsp;site</li></a>
                             </ul>
                         </div>
                         <div>

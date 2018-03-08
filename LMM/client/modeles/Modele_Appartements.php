@@ -12,7 +12,7 @@
     * @details  lie les requetes d'objets Appartement a la BD
     *                   - definit les requetes specifiques a la classe
     *
-*** *   ...19 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
+    *   ...20 methodes  |   getTableName(), obtenir_par_id(), obtenir_tous(), sauvegarderAppartement(), editerChampUnique(), 
 	* 						supprimerAppartement(), supprimePhotosParApt(), supprimePhotoParId(), obtenir_avec_Limit(), obtenir_moyenne(), getTypesApt(), 
 	* 						getTypeApt_par_id(), getQuartier(), getQuartier_par_id(), getPhotos_par_id(), obtenir_dernierePhotoParIdApt(),
 	* 						obtenirAptProprio(), obtenir_apt_avec_type(), obtenir_apt_avec_nb_notes(), sauvegarderPhoto()

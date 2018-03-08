@@ -12,12 +12,12 @@
 	* @details  Classe qui lie les requetes d'objects Location a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 5 methodes	|	getTableName(), creerLocation(), afficheLocation(), misAjourChampUnique(), 
-	*						obtenir_par_idApt()
+	* 	... 10 methodes	|	getTableName(), creerLocation(), afficheLocation(), afficheLocationClient(), 
+	* 						obtenir_location_par_id(), misAjourChampUnique(), refuserDemandes(), obtenir_par_idApt(),
+	*						obtenir_location_par_dispo(), supprimeLocation()
 	*/
 	class Modele_Locations extends BaseDAO
 	{
-
 		/**  
 		* @brief     	Renvoie le nom de la table location
 		* @param   		Aucun
@@ -33,7 +33,7 @@
 		* @details   	Inscrire la création d'une location à la BD
 		* @param   		<object>      	Location
 		* @return    	Résultat de la requête SQL
-		 */ 
+		*/ 
 		public function creerLocation(Location $Location)
 
 		{
@@ -54,7 +54,7 @@
 					JOIN 
 					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
-					WHERE dateDebut >= ? AND id_userProprio = ?
+					WHERE dateFin >= ? AND id_userProprio = ?
 					ORDER BY titre, dateDebut ASC";
             $donnees = array($dateNow, $idProprio);
             $resultat = $this->requete($query, $donnees);
@@ -64,9 +64,9 @@
 		
 		/**  
 		* @brief     	Afficher des locations du client avec status différents
-		* @param   		<int>   $idClient : 
-		* @param   		<int>   $dateNow : date d'aujourd'hui
-		* @return    	<...> 	Résultat de la requête SQL
+		* @param   		<string>   	$idClient 	 	l'id de l'usager
+		* @param   		<date>   	$dateNow  		date d'aujourd'hui
+		* @return    	<...> 		Résultat de la requête SQL
 		*/
         public function afficheLocationClient($dateNow, $idClient) 
         {
@@ -84,15 +84,15 @@
 		
 		/**  
 		* @brief     	Afficher des locations par son ID
-		* @param   		<int>   $idLocation : 
-		* @param   		<int>   $dateNow : date d'aujourd'hui
-		* @return    	<...> 	Résultat de la requête SQL
+		* @param   		<int>   	$idLocation 	l'id de la location 
+		* @param   		<date>   	$dateNow  		date d'aujourd'hui
+		* @return    	<...> 		Résultat de la requête SQL
 		*/
         public function obtenir_location_par_id($dateNow, $idLocation) 
         {
             $query = "SELECT * FROM " . $this->getTableName() . " l 
 					JOIN 
-					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio FROM appartement) a ON l.id_appartement = a.idApt
+					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio, montantParJour FROM appartement) a ON l.id_appartement = a.idApt
 					JOIN usager u ON l.id_userClient = u.username
 					WHERE dateDebut >= ? AND id = ?";
             $donnees = array($dateNow, $idLocation);
@@ -114,6 +114,21 @@
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
 		}
+		
+		/**
+		* @brief		Fonction pour refuser les demandes de reservation
+		* @details		Permet de refuser les demandes qui rentrent dans la disponibilite qui est confirmee
+		* @param 		<VAR>		$refuse		Le champ refuse à modifier 
+		* @param 		<VAR>		$laValeur	La nouvelle valeur de ce champ
+		* @param 		<VAR>		$idDispo 	id de disponibilite dans la base de données
+		* @return    	<bool>		résultat de la requete
+		*/
+		public function refuserDemandes($refuse, $laValeur, $idDispo)
+		{
+			$query = "UPDATE " . $this->getTableName() . " SET ".$refuse." = ".$laValeur." WHERE idDispo = ? AND valideParPrestataire = 0";
+			$donnees = array($idDispo);
+			return $this->requete($query, $donnees);
+		}
 
 		/**  
 		* @brief     	Fonction de recherche d'une location par appartement
@@ -134,8 +149,8 @@
         /**  
 		* @brief     	Chercher location d'un appartement par l'id de disponibilite
 		* @details   	
-		* @param   		<int>    $idDispo : id de disponibilite     	
-		* @param   		<int>    $id : id de location     	
+		* @param   		<int>    $idDispo  	id de disponibilite     	
+		* @param   		<int>    $id  		id de location     	
 		* @return    	Résultat de la requête SQL
 		 */ 
 		public function obtenir_location_par_dispo($idDispo, $id)
@@ -156,5 +171,4 @@
             return $this->supprimer($id_location);
         }
 	}
-
 ?>

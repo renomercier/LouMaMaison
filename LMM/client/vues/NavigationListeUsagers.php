@@ -5,7 +5,7 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-<h1>Liste de tous les usagers</h1>
+
 <div class="container">
     <div class="filtre_usager">
         <ul class="nav nav-tabs">

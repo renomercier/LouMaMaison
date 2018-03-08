@@ -12,9 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Message a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 9 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
+	* 	... 10 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
 	*						obtenir_par_id(), obtenir_messages_recus(), obtenir_messages_envoyes(), definir_messages_lu(),
-	*						misAjourChampUnique()
+	*						misAjourChampUnique(), obtenir_nombre_messages_nonLus()
 	*/
 	class Modele_Messages extends BaseDAO
 	{
@@ -112,6 +112,7 @@
 			return $resultat->fetchAll();
 		}
         
+        
         /**  
 		* @brief     	Definir un message comme etant Déja lu
 		* @param   		<int>		$id_message 		Identifiant du message
@@ -134,6 +135,19 @@
 		public function misAjourChampUnique($leChamp, $laValeur, $id)
 		{
 			return $this->miseAjourChamp($leChamp, $laValeur, $id);	 
+		}
+        
+        /**  
+		* @brief     	nombre de messages non lus
+		* @details   	Exécute la lecture du nombre de messages reçus et pas encore consultés 
+		* @param   		<string> 	$id_usager 		Identifiant de l'usager
+		* @return    	<objet> 	Résultat de la requête SQL
+		*/
+        public function obtenir_nombre_messages_nonLus($id_usager) {
+            $query = "select COUNT(id_message) as nonLus from  message_user mu  where mu.supprime = 0 AND mu.statut = 0 AND mu.id_username = ?";
+            $donnees = array($id_usager);
+            $resultat = $this->requete($query, $donnees);
+			return $resultat->fetch();
 		}
 	}
 ?>
