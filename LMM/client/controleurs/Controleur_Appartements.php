@@ -563,19 +563,19 @@
                                         $dateDebutLocation = $location->getDateDebut();
                                         $dateFinLocation = $location->getDateFin();
                                         $modeleDisponibilites = $this->getDAO("Disponibilites");
-                                        $data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
-                                        $idDispo = $data['idDispo']->getId(); 
+                                        $disponibilite = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
+                                        $idDispo = $disponibilite->getId(); 
                                         //on calcule les nouveaux dates de disponibilite
 
                                         $dateBeginNew = $modeleDisponibilites->newDateBegin($dateFinLocation);
                                         $dateFinNew = $modeleDisponibilites->newDateEnd($dateDebutLocation);
 
-                                        $dateDebutAncien=$data['idDispo']->getDateDebut();
+                                        $dateDebutAncien=$disponibilite->getDateDebut();
                                         //mis a jour les dates de debut qui sont en passe maintenant
                                         if($dateDebutAncien < $today) {
                                             $dateDebutAncien = $today;
                                         }
-                                        $dateFinAncien=$data['idDispo']->getDateFin();							
+                                        $dateFinAncien=$disponibilite->getDateFin();							
                                         //creation de nouvelles dispos
                                         if($dateDebutAncien<=$dateFinNew && $dateFinNew >= $today)
                                         {	
@@ -652,6 +652,16 @@
 							echo $message_annule;
 						}
 					break;
+                        
+                    //case d'affichage d'historique du client
+                    case "afficherVoyages" :
+                        if(isset($_SESSION['username']) AND $_SESSION['username'] == $params['id_userClient'])
+                        {
+                            $modeleLocation = $this->getDAO("Locations");
+                            $data['appartement'] = $modeleLocation->afficherVoyages($params['id_userClient']);
+                            $this->afficheVue("AfficheVoyages", $data); 
+                        }
+                    break;
 					
                     // case d'affichage du formulaire d'inscription d'un appartement 
                     case "afficherInscriptionApt" :

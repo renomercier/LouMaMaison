@@ -150,36 +150,3 @@
 		?> 
 	</div>
 </div>
-
-
-<!--
-<div class="row mt-5">
-        <ul class="pagination mx-auto">
-   
-			 <?php /*
-               // $numPage = isset($params['page'])? $params['page'] : 1;
-			  
-                    if($data['pageActuelle']-1 > 0)
-                    {
-                    ?>
-                        <li class="page-item"><a class="page-link" href="index.php?Appartements&page=<?=$data['pageActuelle']-1?>">precedent</a></li>
-                    <?php 
-                    }
-                        for($i=1; $i<=$data['nbrPage']; $i++) //On fait notre boucle
-                    {
-                           $active = ($i == $data['pageActuelle'])?  'active' : '';
-                    ?>
-                        <li class="page-item <?=$active?>"><a class="page-link" href="index.php?Appartements&page=<?=$i?>"><?=$i?></a></li>
-                    <?php
-                    }
-                        if($data['pageActuelle']+1 <= $data['nbrPage'])
-                    {
-                    ?>
-                        <li class="page-item"><a class="page-link" href="index.php?Appartements&page=<?=$data['pageActuelle']+1?>">suivant</a></li>
-                    <?php
-                    }
-			*/
-            ?>
-        </ul>
-</div>
--->

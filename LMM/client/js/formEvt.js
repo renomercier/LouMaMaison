@@ -228,27 +228,7 @@ $(document).ready(function() {
         } 
     });
 
-    /*
-    *   code a executer lorsque le modal d'evaluation d'un Apt est ouvert
-    */
-    if($('#myModalEval')[0]) {
-
-        // affichage de l'evaluation par defaut (5 etoiles grises)
-        document.getElementById("etoilesGrises").innerHTML = setNbEtoiles(0);
-
-        /*
-        *   ecouteur d'evenement sur l'input d'evaluation (nb d'etoiles)
-        */
-        $("#echelleEval").on('input', function() {
-            // affichage du nb d'etoiles defini par l'usager
-            document.getElementById("etoiles").innerHTML = setNbEtoiles(this.value);
-            document.querySelector('.divEvaluation span').innerHTML = (this.value/2);
-        });
-
-        $('#myModalEval').on('change', function() {
-            
-        });
-    }
+    
 
 /*   *********************************************   */
 
