@@ -8,7 +8,7 @@
 
 <div class="container">
     <div class="filtre_usager">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs flex-column flex-md-row">
           <li class="nav-item">
             <a class="nav-link active" onclick="filtrerUsagers('', '')" name="" value="">Tous</a>
           </li>

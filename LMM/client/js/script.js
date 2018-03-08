@@ -271,12 +271,13 @@ $(document).ready(function() {
 
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					if(reponse.messageSucces){
-						setTimeout(function(){$('#demandesReservations').click();}, 1500)
-					   $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
+					if(reponse){
+                        ecrireMessage(id_userClient, objetClient, texteClient);
+                        $('#demandesReservations').click();
 					}
                     else if(reponse.messageErreur) {
 						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
@@ -290,6 +291,9 @@ $(document).ready(function() {
 	*/
 		$(document).on('click', '.refuserReservation', function(e){
 			var idLocation = $(this).val();
+            var id_userClient = $('#username').attr('name');
+            var objetClient = "Refus de location";
+            var texteClient = "Votre demande de location viens d'être refusée !";
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=refuserDemande&idLocation="+idLocation,
@@ -300,7 +304,8 @@ $(document).ready(function() {
 					}
 					else if(reponse.messageSucces)
 					{
-						 setTimeout(function(){$('#demandesReservations').click();}, 1500)
+						ecrireMessage(id_userClient, objetClient, texteClient); 
+                        setTimeout(function(){$('#demandesReservations').click();}, 1500)
 						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
 					}
 				},
@@ -315,6 +320,9 @@ $(document).ready(function() {
 	*/
 		$(document).on('click', '.annulerReservation', function(e){
 			var idLocation = $(this).val();
+            var id_userClient = $('#username').attr('name');
+            var objetClient = "annulation d'approbation";
+            var texteClient = "Votre demande de location viens d'être désapprouvée pour defaut de paiement !";
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=annulerDemande&idLocation="+idLocation,
@@ -325,8 +333,9 @@ $(document).ready(function() {
 					}
 					else if(reponse.messageSucces)
 					{
-						 setTimeout(function(){$('#demandesReservations').click();}, 1500)
-						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
+                        ecrireMessage(id_userClient, objetClient, texteClient);
+                        setTimeout(function(){$('#demandesReservations').click();}, 1500)
+                        $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {

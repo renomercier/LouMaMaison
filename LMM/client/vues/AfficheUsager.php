@@ -304,8 +304,8 @@
 		?>
     </div>
         <div class="col-md-8" >
-			<div class="row  justify-content-end" >
-                <ul class="nav menuProfil">
+			<div class="row  justify-content-start" >
+                <ul class="nav menuProfil flex-column flex-sm-row">
                     <li class="nav-item" id="div_messagerie"></li>
                     <li class="nav-item" id="div_historique"></li>
 				    <li class="nav-item" id="div_reservations"></li>
@@ -411,34 +411,6 @@
 					<?php
                     }
 
-                }
-                
-                $etatBann = ($data["usager"]->getBanni()=="0") ? 'Bannir' : 'Réhabiliter';
-                $etatActiv = ($data["usager"]->getValideParAdmin()=="0") ? 'Activer' : 'Désactiver';
-                $etatAdmin = ($data["isAdmin"]) ? 'Déchoir' : 'Promouvoir';
-				?>
-				
-				<?php
-                if(!$data["isSuperAdmin"])
-                {
-                    if((isset($_SESSION["username"]) && in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1) || (isset($_SESSION["username"]) && in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0 && !$data["isAdmin"] && !$data["isSuperAdmin"]))
-                    {
-                    ?>	  
-                        <li class="dropdown nav-item col-md-6" id="div_action_admin">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Actions Admin
-                          </button>
-                        </li>
-                        <div id="action_admin" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            
-                            <li><button class="btn btn-default actionAdmin" name="inversBan" id="<?=$data["usager"]->getUsername()?>"><?=$etatBann?></button></li>
-                            <li><button class="btn btn-default actionAdmin" name="inversActiv" id="<?=$data["usager"]->getUsername()?>"><?=$etatActiv?></button> </li>
-                            <li><button class="btn btn-default actionAdmin" name="inversAdmin" id="<?=$data["usager"]->getUsername()?>"><?=$etatAdmin?></button> </li>
-
-                        </div>
-						
-                    <?php
-                    }    
                 }
             }
         ?> 
