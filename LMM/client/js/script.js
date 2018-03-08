@@ -271,13 +271,15 @@ $(document).ready(function() {
 
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					if(reponse.messageSucces){
-						setTimeout(function(){$('#demandesReservations').click();}, 1500)
-					   $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
-					}
-                    else if(reponse.messageErreur) {
+					if(reponse.messageErreur) {
 						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
 					}
+					else if(reponse.messageSucces)
+					{
+						 setTimeout(function(){$('#demandesReservations').click();}, 1500)
+						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
+					}
+					//$('#demandesReservations').click();
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
