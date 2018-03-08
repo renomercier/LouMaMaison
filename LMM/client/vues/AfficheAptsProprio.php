@@ -38,22 +38,9 @@
 						</a>
 				 
                         <div class="card-block">			
-                            
-                            <!--
-                            <p class="card-text">Propriétaire: <?=$appartement->username;?></p>
-                            -->
+
                             <h5><?=$appartement->getNoCivique()." ".$appartement->getRue()." ".$appartement->getVille();?> </h5>
-                            <!--
-                            <p class="card-text">                            
-                                  <small><?= $appartement->getNbPersonnes(); ?>&nbsp<i class="fa fa-male fa-lg"></i>                        
-                                    <?= $appartement->getNbChambres(); ?>&nbsp<i class="fa fa-square-o fa-lg"></i>            
-                                    <?= $appartement->getNbLits(); ?>&nbsp<i class="fa fa-bed fa-lg"></i> </small>    
-                            </p>
-                            
-                            <h5 class="card-title">Titre: <?=$appartement->getTitre();?></h5>
-                            
-                            <p class="card-text">$<?=$appartement->getMontantParJour();?> par nuit</p>
-                            -->
+
                             <h5 class="card-text">Évalué à 
                                 <?php
                                 for($i=1; $i<=$appartement->moyenne/2; $i++)
@@ -94,23 +81,25 @@
                         
                         <!-- Options de gestion d'un appartement -->
                         <div class="profil-aptProprio-opt row justify-content-around">
-				            <div class="d-inline">
-<!-- @ replacer -->             <p><a class="" href="index.php?Appartements&action=afficherInscriptionApt&id=<?=$appartement->getId()?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></p>
+				            <div class="profilAptIcone d-inline">
+                                <p><a class="" href="index.php?Appartements&action=afficherInscriptionApt&id=<?=$appartement->getId()?>"><i class="fa fa-pencil-square-o fa-2x"></i></a></p>
                             </div>
-                            <div class="d-inline">
-<!-- @ replacer -->             <p><a value="<?=$appartement->getId()?>" class="btnSuppressionApt" href="#" ><i class="fa fa-trash-o fa-2x"></i></a></p>
+                            <div class="profilAptIcone d-inline">
+                                <p><a value="<?=$appartement->getId()?>" class="btnSuppressionApt" href="#" ><i class="fa fa-trash-o fa-2x"></i></a></p>
                             </div>
-                            <div class="d-inline">
-<!-- @ replacer -->             <p><a class="" href="index.php?Appartements&action=afficherFormulaireImage&id=<?= $appartement->getId(); ?>"><i class="fa fa-picture-o fa-2x"></i></a></p>
+                            <div class="d-inline">                        
+                                <div class="profil-aptIcone dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-picture-o fa-2x"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="" href="index.php?Appartements&action=afficherFormulaireImage&id=<?= $appartement->getId(); ?>">Ajouter une photo</a></li>
+                                        <li><a class="" href="index.php?Appartements&action=afficherFormulaireImage&id=<?= $appartement->getId(); ?>">Retirer une photo</a></li>
+                                    </ul>
+                                </div>
+                                
                             </div>
-                            <div class="d-inline">
-                                <!--
-                                <form>
-                                    <input type="hidden" value="<?=$appartement->getId_userProprio()?>">
-                                    <input classe="idAptSuppression" type="hidden" value="<?=$appartement->getId()?>">
-                                    <button type="button" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>"  class="" ><i class="fa fa-calendar-check-o fa-2x"></i></button>
-                                </form>
-                                -->
+                            <div class="profilAptIcone d-inline">
                                 <p><a value="<?=$appartement->getId()?>" class="" data-toggle="modal" data-target="#modal<?=$appartement->getId();?>" href="#" ><i class="fa fa-calendar fa-2x"></i></a></p>
                             </div>
                         </div>

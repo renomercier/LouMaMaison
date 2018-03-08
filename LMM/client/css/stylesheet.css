@@ -138,6 +138,15 @@ input.slider {
     margin: 0 auto;
 }
 
+.profilAptIcone p a, .dropdown-menu li a {
+    color: #000000;
+}
+
+.profilAptIcone p a:hover, .profilAptIcone button i:hover {
+    /*color: #edefed;*/
+    color: grey;
+}
+
 /* --------------------------------------------------- Modal */
 
 .modal-header, .modal-footer {  
@@ -184,6 +193,10 @@ input.slider {
 .profil-aptProprio, .profil-aptProprio-opt {
     padding: 1em;
     /*border: 1px solid #000000;*/ 
+}
+
+#dropdownMenuButton {
+    border: none;
 }
 
 /* --------------------------------------------------- page AfficheAppartement */
