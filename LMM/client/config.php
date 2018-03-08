@@ -22,11 +22,11 @@
 
 
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/Projet2/LouMaMaison/LMM/client/");
-	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/loumamaison-V2\LouMaMaison-1\LMM\client/");
+	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/loumamaison-V2\LouMaMaison-1\LMM\client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/originLocal/LouMaMaison/LMM/client/");
 	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison_v_dim/LouMaMaison/LMM/client/");
-	//define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison/LouMaMaison/LMM/client/");
+	define("RACINE", $_SERVER["DOCUMENT_ROOT"] . "/LouMaMaison/LouMaMaison/LMM/client/");
 
 	//déclaration des infos de connexion
 	//define("HOST", "localhost");

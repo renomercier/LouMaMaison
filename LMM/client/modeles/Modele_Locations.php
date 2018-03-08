@@ -123,11 +123,10 @@
 		* @param 		<VAR>		$idDispo 	id de disponibilite dans la base de données
 		* @return    	<bool>		résultat de la requete
 		*/
-		public function refuserDemandes($refuse, $laValeur, $idDispo)
+		public function refuserDemandes($id)
 		{
-			$query = "UPDATE " . $this->getTableName() . " SET ".$refuse." = ".$laValeur." WHERE idDispo = ? AND valideParPrestataire = 0";
-			$donnees = array($idDispo);
-			return $this->requete($query, $donnees);
+			$query = "UPDATE " . $this->getTableName() . " SET refuse = 1 WHERE id = ".$id."";
+			return $this->requete($query);
 		}
 
 		/**  
@@ -158,7 +157,9 @@
 		{
 			$query = "SELECT * FROM " . $this->getTableName() . " WHERE idDispo = ? AND id != ?";
 			$data = array($idDispo, $id);
-			return $this->requete($query, $data);
+			$resultat = $this->requete($query, $data);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+			return $resultat->fetchAll();
 		}
 		
 		/**  

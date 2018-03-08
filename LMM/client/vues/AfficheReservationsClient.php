@@ -60,12 +60,7 @@
 							<td id="dateFin"><?=$appartement->getDateFin();?></td>
 							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
 							<td><?=$confirmation ?></td>
-
-
-
 						</tr>
-								
-
 				<?php
 					}
 				}
