@@ -125,5 +125,3 @@
             </form>
         </div>
 <div class="listeApt col-lg-6 col-md-5">
-
-

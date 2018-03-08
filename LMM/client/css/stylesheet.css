@@ -225,6 +225,15 @@ input.slider {
 }
 
 
+.profilAptIcone p a, .dropdown-menu li a {
+    color: #000000;
+}
+
+.profilAptIcone p a:hover, .profilAptIcone button i:hover {
+    /*color: #edefed;*/
+    color: grey;
+}
+
 /* --------------------------------------------------- Modal */
 
 .modal-header, .modal-footer {  
@@ -267,6 +276,33 @@ input.slider {
 .listeApt, .resultatListeApt, .recherche, .inputListeApt  {
     margin: 0!important;
     padding: 0!important;
+}
+
+/* --------------------------------------------------- page AfficheAptsProprio */
+.profil-appartementsProprio {
+    margin: 1em;
+}
+
+.profil-aptProprio, .profil-aptProprio-opt {
+    padding: 1em;
+    /*border: 1px solid #000000;*/ 
+}
+
+#dropdownMenuButton {
+    border: none;
+}
+
+/* --------------------------------------------------- page AfficheAppartement */
+.sectionAptDetail-g, .sectionAptDetail-d {
+    padding=0;
+    /*border: 1px solid #000000; */ 
+}
+
+.aptReservation, .aptModification {
+    position: sticky;
+    top: 5em;
+    padding: 20px;
+    border: 1px solid #585759;
 }
 .recherche  {
     box-sizing: border-box;

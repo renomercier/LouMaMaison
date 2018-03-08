@@ -247,7 +247,9 @@ $(document).ready(function() {
     */
     $(document).on('click', '.btnSuppressionApt', function(e) {
 
-        var idApt = e.target.attributes[0].nodeValue;
+       /* console.log(e.target);
+        var idApt = e.target.attributes[0].nodeValue;*/
+        var idApt = e.currentTarget.id;
         var idUser = $('#nomHote')[0].attributes[1].nodeValue
       
         // requete de suppression d'un appartement

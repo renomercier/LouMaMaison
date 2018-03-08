@@ -3,6 +3,7 @@ $(document).ready(function() {
     /*chercher les apparts avec les filtres remplis*/
 
     $( "#filtrer" ).on( "click", function( e ) {
+    	console.log("allo");
         event.preventDefault();
         var url = $('#formFiltrer').serialize();
         filtrerAppart(url);
@@ -255,27 +256,29 @@ $(document).ready(function() {
 				}
 			});
 		});
-		
+
 	/**
 		Fonction pour valider une demande de reservation
 	*/
-		$(document).on('click', '#confirmerReservation', function(e){
+		$(document).on('click', '.confirmerReservation', function(e){
 			var idLocation = $(this).val();
+            var id_userClient = $('#username').attr('name');
+            var objetClient = "Approbation de location";
+            var texteClient = "Votre demande de location est approuvée par le proprietaire.<br> <p class='nav-link' id='mesReservations'>Veuillez consulter ce lien pour payer et finaliser la transaction</p>"
+            
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=validerDemande&idLocation="+idLocation,
-				dataType:"json",
+
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
-					if(reponse){
-                        $('#demandesReservations').click();
+					if(reponse.messageSucces){
+						setTimeout(function(){$('#demandesReservations').click();}, 1500)
+					   $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
 					}
                     else if(reponse.messageErreur) {
 						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
-						
 					}
-					
-					
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -286,7 +289,7 @@ $(document).ready(function() {
 	/**
 		Fonction pour refuser une demande de reservation
 	*/
-		$(document).on('click', '#refuserReservation', function(e){
+		$(document).on('click', '.refuserReservation', function(e){
 			var idLocation = $(this).val();
 			$.ajax({
 				method: "GET",
@@ -294,11 +297,37 @@ $(document).ready(function() {
 				dataType:"json",
 				success:function(reponse) {
 					if(reponse.messageErreur) {
-						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
 					}
-					else if(reponse[0].messageSucces)
+					else if(reponse.messageSucces)
 					{
-						 $('#demandesReservations').click();
+						 setTimeout(function(){$('#demandesReservations').click();}, 1500)
+						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+		
+	/**
+		Fonction pour annuler une demande de reservation (validée par proprio mais pas payée par client)
+	*/
+		$(document).on('click', '.annulerReservation', function(e){
+			var idLocation = $(this).val();
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=annulerDemande&idLocation="+idLocation,
+				dataType:"json",
+				success:function(reponse) {
+					if(reponse.messageErreur) {
+						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
+					}
+					else if(reponse.messageSucces)
+					{
+						 setTimeout(function(){$('#demandesReservations').click();}, 1500)
+						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageSucces);
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
@@ -465,9 +494,9 @@ var funcAjouteDispo = function(e){
         var idProprio = $('input[name="idProprio"]').val();
 		var nbPersonnes = $('option:selected').val();
         var objetClient = "Accusé reception";
-        var texteClient = "Nous avons enregistré votre demande de location pour la période du: "+dateDebut+" au "+dateFin+" pour "+nbPersonnes+" personnes.<br> Le proprietaire va vous donner ou non son approbation dans les heures qui suiveront.<br><a class='text-primary' href='#' id='mesReservations'>Veuillez consulter ce lien pour suivre l'évolution de votre demande</a>";
+        var texteClient = "Nous avons enregistré votre demande de location pour la période du: "+dateDebut+" au "+dateFin+" pour "+nbPersonnes+" personnes.<br> Le proprietaire va vous donner ou non son approbation dans les heures qui suiveront.<br><p class='nav-link' id='mesReservations'>Veuillez consulter ce lien pour suivre l'évolution de votre demande</p>";
         var objetProprio = "Demande de location";
-        var texteProprio = "Vous venez de recevoir une demande de réservation pour un de vos appartements. <br><a class='text-primary' href='#' id='demandesReservations'>Veuillez consulter ce lien pour l'approuver</a>";
+        var texteProprio = "Vous venez de recevoir une demande de réservation pour un de vos appartements. <br><p class='nav-link' id='demandesReservations'>Veuillez consulter ce lien pour l'approuver</p>";
 
 		$.ajax({
 			cache: false,
@@ -501,28 +530,6 @@ var funcAjouteDispo = function(e){
 	}
 
     
-    /* ============================  function pour le datepicker des disponibilites ============================================== */
-
-
-    $(function() { 
-        /*var todayDate = new Date().getDate();
-        var endD= new Date(new Date().setDate(todayDate - 15));*/
-        var currDate = moment().add(1, 'days');
-        
-        
-        $('input[name="daterange"]').daterangepicker({
-        
-            format: 'YYYY/MM/DD',
-            minDate: moment().add(1, 'days'),
-            //maxDate: "03/19/2018", 
-            showDropdowns: true,
-            alwaysShowCalendars: true,
-            //startDate: "02/26/2018",
-           // endDate: "03/19/2018",
-            opens: "left"
-            
-        });
-    }); 
 
 
 /*////////////////////////////////////////////////////////////////*/
@@ -538,8 +545,8 @@ var funcAjouteDispo = function(e){
             dataType:"html",
            // comportement en cas de success ou d'echec
           success:function(reponse) {
-              $('.accueil .col-md-6').html('');
-              $('.accueil .col-md-6').append(reponse);
+              $('.accueil .listeApt').html('');
+              $('.accueil .listeApt').append(reponse);
               
               //effacer les marqueurs existant
               clearMarkers();
@@ -956,7 +963,7 @@ function CalculerdonneePaiement(idLocation){
             
              boutonPaypal(reponse.totalLocation, idLocation); 
             
-            $("#myModal"+idLocation).modal('show');
+            $("#modalPaiement").modal('show');
             
         }, 200);
           

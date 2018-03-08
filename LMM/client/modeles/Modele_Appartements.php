@@ -145,7 +145,6 @@
                                 JOIN appartement a2 ON e.id_appartement = a2.id group by a2.id) note 
                                 ON note.Apparteval = a.id
                     	WHERE d.disponibilite = 1 AND d.dateFin > NOW()";
-
             if(!empty($filtre['priMin']))
             {
                 $query.= " AND a.montantParJour >= " . $filtre['priMin'] ."";
@@ -178,9 +177,7 @@
             {
                 $query.= " AND a.id_typeApt = '" . $filtre['id_typeApt'] ."'";
             }
-
             $query.= " GROUP BY a.id LIMIT " . $premiereEntree .", ".$appartParPage."";
-
 			$resultat = $this->requete($query);
             $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Appartement");
    

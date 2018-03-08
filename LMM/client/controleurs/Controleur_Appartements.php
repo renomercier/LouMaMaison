@@ -38,7 +38,7 @@
                 //ce switch détermine la vue et obtient le modèle
                 switch($params["action"])
                 {
-                    // case de gestion des filtres pour affichage des appartements
+          // case de gestion des filtres pour affichage des appartements
                     case "filtrer":
                     
                         // numero de la page actuelle
@@ -61,19 +61,18 @@
                     
                         // quartier
                         $filtre['quartier'] = isset($params['quartier'])? $params['quartier'] : 0;
-
+                        
                         // type appartement
                         $filtre['id_typeApt'] = isset($params['id_typeApt'])? $params['id_typeApt'] : 0;
                     
                         // date d'arrivée
                         $filtre['dateArrive'] = isset($params['arrivee'])? $params['arrivee'] : 0; 
-                   
+                    
                         // date de départ
                         $filtre['dateDepart'] = isset($params['depart'])? $params['depart'] : 0;
-
                         $data = $this->afficheListeAppartements($numPage, $data['appartParPage'],$filtre);
                         $this->afficheVue("listeAppartements", $data);
-						break;
+                        break;
                            
                     // Case d'affichage du detail d'un appartement
                     case "afficherAppartement" :  
@@ -149,7 +148,7 @@
 					
                     // case de suppression d'un appartement
                     case "supprimerAppartement" :
-
+               
                         if(isset($params['id']) && !empty($params['id']) && $_SESSION['username']) {
 
                             // chargement des modeles requis
@@ -432,20 +431,22 @@
 											$dateDebutLocation = $location->getDateDebut();
 											$dateFinLocation = $location->getDateFin();
 											$modeleDisponibilites = $this->getDAO("Disponibilites");
-											$data['idDispo'] = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
-											$idDispo = $data['idDispo']->getId(); 
+											$dispo = $modeleDisponibilites->obtenirIdDispo($dateDebutLocation,$dateFinLocation,$idApt);
+											$idDispo = $dispo->getId(); 
 											
 											//trouver les autres demandes dans la meme disponibilite
 											$autresDemandes = $modeleLocation->obtenir_location_par_dispo($idDispo, $idLocation); 
 											if($autresDemandes)
 											{
-												//refuser toutes les autres demandes dans la meme disponibilite
+												//refuser toutes les autres demandes qui se chevauchent dans la meme disponibilite
 												foreach($autresDemandes as $autre) 
 												{
-													$autre = $modeleLocation->refuserDemandes('refuse', 1, $idDispo);
+                                                    if(($autre->getDateDebut() < $dateDebutLocation && $autre->getDateFin() < $dateFinLocation && $autre->getDateFin() > $dateDebutLocation) || ($autre->getDateDebut() >= $dateDebutLocation && $autre->getDateDebut() < $dateFinLocation) || ($autre->getDateFin() > $dateDebutLocation && $autre->getDateFin() <= $dateFinLocation))
+                                                    {
+													   $autre = $modeleLocation->refuserDemandes($autre->getId());
+                                                    }
 												}
 											}
-											
 											$message_demande = json_encode(array("messageSucces"=>"Validé!"));
 											echo $message_demande;
 										}
@@ -487,11 +488,8 @@
 									if($location->getValideParPrestataire() == 0) 
 									{
 										$location = $modeleLocation->misAjourChampUnique('refuse', 1, $params['idLocation']);
-										$reponse = array("messageSucces"=>"Demande refusé!");
-										$reponse1 = array($location);
-										$tempData = [];
-										$tempData = ([$reponse, $reponse1]);
-										echo json_encode($tempData);
+										$message_refuse =  json_encode(array("messageSucces"=>"Demande refusée!"));
+										echo $message_refuse;
 									}
 									else 
 									{
@@ -611,8 +609,52 @@
 						}
 					   break;
 					
-				    case "annulerLocation" :
-						$message_location = "";
+					case "annulerDemande" :
+						$message_annule = "";
+						if(isset($params['idLocation']) && !empty($params['idLocation'])) {
+							$modeleLocation = $this->getDAO("Locations");
+							$location = $modeleLocation->obtenir_location_par_id($today, $params['idLocation']);
+							if($location)
+							{
+								if($location->getRefuse() == 0)
+								{
+									if($location->getValideParPrestataire() == 1)
+									{
+										if($location->getValidePaiement() == 0) 
+										{
+											$location = $modeleLocation->misAjourChampUnique('refuse', 1, $params['idLocation']);
+											$message_annule =  json_encode(array("messageSucces"=>"Demande refusée!"));
+											echo $message_annule;
+										}
+										else 
+										{
+											$message_annule = json_encode(array("messageErreur"=>"Déjà payé!"));
+											echo $message_annule;
+										}
+									}
+									else 
+									{
+										$message_annule = json_encode(array("messageErreur"=>"Pas encore validé!"));
+										echo $message_annule;
+									}
+								}
+								else 
+								{
+									$message_annule = json_encode(array("messageErreur"=>"Déjà refusé!"));
+									echo $message_annule;
+								}
+							}
+							else 
+							{
+								$message_annule = json_encode(array("messageErreur"=>"Demande n'existe pas!"));
+								echo $message_annule;
+							}	
+						}
+						else 
+						{
+							$message_annule = json_encode(array("messageErreur"=>"Pas de location!"));
+							echo $message_annule;
+						}
 					   break;
 					
                     // case d'affichage du formulaire d'inscription d'un appartement 

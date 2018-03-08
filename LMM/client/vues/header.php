@@ -22,15 +22,12 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise" rel="stylesheet">
-    <link href="css/daterangepicker.css" rel="stylesheet">
     
     <!-- src script js -->
     <script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://use.fontawesome.com/e58c171d55.js"></script> 
     <script src="js/formEvt.js"></script>   
     <script src="js/fonctions.js"></script>
-    <script src="js/moment.min.js"></script>
-    <script src="js/daterangepicker.js"></script>
     
     <!-- Tether, ensuite Bootstrap JS. -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

@@ -384,7 +384,7 @@
 
                         <!-- si j'ai des réservations comme client -->
 
-                        <a class="nav-link" href="#" id="mesReservations">Mes Réservations</a>
+                        <p class="nav-link" id="mesReservations">Mes Réservations</p>
 
                         <?php 
                         }
@@ -395,7 +395,7 @@
                         ?>  
 
                         <!-- si j'ai des réservations comme Proprio -->
-                        <a class="nav-link" href="#" id="demandesReservations">Demandes de Réservations</a>
+                        <p class="nav-link" id="demandesReservations">Demandes de Réservations</p>
 
 
                         <?php 
