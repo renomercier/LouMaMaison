@@ -10,8 +10,7 @@
     //$messagerie = (isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) ? "Messagerie" : "Contacter";
  ?>
 
-
-<div class="container detailAppartement">
+<div class="container detailAppartement mt-5">
     
     <!-- affichage des messages a l'usager connecte concernant ses actions -->
     <div class="row">
@@ -277,7 +276,7 @@
                     </div>
 
                 <?php
-                    } else {
+                    } else if (isset($_SESSION["username"])) {
                 ?>
 
                     <div class="d-block">
@@ -402,7 +401,11 @@
             
             <!-- affichage des commentaires de l'appartememnt -->
             <div class="aptCommentaires d-block">
-                <h3 class="row"><?= $data['moyenneApt']['nbr_votant'] ;?> commentaire(s) &nbsp&nbsp<i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i></h3>
+                
+                <div class="row">
+                    <h3 class="d-inline"><?= $data['moyenneApt']['nbr_votant'] ;?> Commentaire(s) &nbsp&nbsp</h3>
+                    <h3><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i><i class="fa fa-star fa_custom"></i></h3>
+                </div>
                 
                 <?php
                     foreach($data["tab_evals"] as $eval) {
@@ -454,7 +457,7 @@
                                     <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                                 </div>
                         <?php
-                            } else {
+                            } else if (isset($_SESSION["username"])){
                         ?>
                                 <div class="d-block">
                                     <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
@@ -643,11 +646,11 @@
                 <div class="aptModification col-sm-12">
             
                     <div class="">                     
-                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier l'appartement</a></p> 
+                        <p><a class="btn btn-block btn-primary btn-lg" href="index.php?Appartements&action=afficherInscriptionApt&id=<?= $data['appartement']->getId(); ?>" role="button">Modifier</a></p> 
                     </div>
                     <hr>
                     <div class="">
-                        <button type="button" data-toggle="modal" data-target="#modal<?= $data['appartement']->getId() ;?>"  class="btn btn-block btn-primary btn-lg" >Gérer les disponibilités</button>
+                        <button type="button" data-toggle="modal" data-target="#modal<?= $data['appartement']->getId() ;?>"  class="btn btn-block btn-primary btn-lg" >Disponibilités</button>
                     </div>
                     
                 </div>
@@ -741,4 +744,4 @@
     </section>
     
     <!-- Fin container -->
-</div> 
+</div>

@@ -12,9 +12,9 @@
 	* @details  Classe qui lie les requetes d'objects Message a la BD
 	*					- definit les requetes specifiques a la classe
 	*
-***	* 	... 9 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
+	* 	... 10 methodes	|	getTableName(), creerMessage(), lier_message_destinatair(), suppression_logique(),
 	*						obtenir_par_id(), obtenir_messages_recus(), obtenir_messages_envoyes(), definir_messages_lu(),
-	*						misAjourChampUnique()
+	*						misAjourChampUnique(), obtenir_nombre_messages_nonLus()
 	*/
 	class Modele_Messages extends BaseDAO
 	{
@@ -91,7 +91,7 @@
 		* @return    	<objet> 	Résultat de la requête SQL
 		*/
         public function obtenir_messages_recus($id_usager) {
-            $query = "select * from message_user mu join message m on mu.id_message = m.id where mu.supprime = 0 AND mu.id_username = ?";
+            $query = "select * from message_user mu join message m on mu.id_message = m.id where mu.supprime = 0 AND mu.id_username = ? ORDER BY id DESC";
             $donnees = array($id_usager);
             $resultat = $this->requete($query, $donnees);
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Message");
@@ -105,7 +105,7 @@
 		* @return    	<objet> 	Résultat de la requête SQL
 		*/
         public function obtenir_messages_envoyes($id_usager) {
-            $query = "select * from message m left JOIN message_user mu on m.id = mu.id_message where m.archive = 0 AND id_userEmetteur = ?";
+            $query = "select * from message m left JOIN message_user mu on m.id = mu.id_message where m.archive = 0 AND id_userEmetteur = ? ORDER BY id DESC";
             $donnees = array($id_usager);
             $resultat = $this->requete($query, $donnees);
 			$resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Message");

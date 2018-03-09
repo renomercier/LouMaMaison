@@ -13,15 +13,15 @@
 		if(!isset($data['demande']))
 		{
 		?>
-		<table class="table table-responsive table-bordered">
+		<table class="table table-sm table-responsive-sm table-bordered">
 			<thead class="thead-default">
 				<tr>
-					<th>Logement</th>
-					<th>Hôte</th>
-					<th>Arrivée</th>
-					<th>Départ</th>
-					<th>Hôtes</th>
-					<th>Statut</th>
+					<th class="th-sm tabDetail">Logement</th>
+					<th class="th-sm tabDetail">Hôte</th>
+					<th class="th-sm tabDetail tabToHide">Arrivée</th>
+					<th class="th-sm tabDetail tabToHide">Départ</th>
+					<th class="th-sm tabDetail tabToHide">Hôtes</th>
+					<th class="th-sm tabDetail">Statut</th>
 
 				</tr>
 			</thead>
@@ -52,17 +52,17 @@
 						}
                         else if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0)
                         {
-                            $confirmation = '<button id="payer" type="button" onclick="CalculerdonneePaiement('.$appartement->getId().')" class="btn btn-success">Payer maintenant</button>';
+                            $confirmation = '<button id="payer" type="button" onclick="CalculerdonneePaiement('.$appartement->getId().')" class="btn btn-success btn-sm payerMaintenant">Payer maintenant</button>';
                         }
 					?> 
 							
 						<tr>
-							<td id="apt"><a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getIdAppartement() ?>" ><?=$appartement->titre?></a></td>
-							<td id="username"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->id_userProprio?>" target="_blank"><?=$appartement->id_userProprio?></a></td>
-							<td id="dateDebut"><?=$appartement->getDateDebut();?></td>
-							<td id="dateFin"><?=$appartement->getDateFin();?></td>
-							<td id="nbPersonnes"><?=$appartement->getNbPersonnes();?></td>
-							<td><?=$confirmation ?></td>
+							<td id="apt" class="tabDetail"><a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->getIdAppartement() ?>" ><?=$appartement->titre?></a></td>
+							<td id="username" class="tabDetail"><a href="index.php?Usagers&action=afficheUsager&idUsager=<?=$appartement->id_userProprio?>" target="_blank"><?=$appartement->id_userProprio?></a></td>
+							<td id="dateDebut" class="tabDetail tabToHide"><?=$appartement->getDateDebut();?></td>
+							<td id="dateFin" class="tabDetail tabToHide"><?=$appartement->getDateFin();?></td>
+							<td id="nbPersonnes" class="tabDetail tabToHide"><?=$appartement->getNbPersonnes();?></td>
+							<td class="tabDetail"><?=$confirmation ?></td>
 						</tr>
 				<?php
 					}

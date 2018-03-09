@@ -47,6 +47,7 @@
 						}
 					}
 					?>
+                    <input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
 					<h5 id="userNom">		
 						<?=$data["usager"]->getUsername();?>
 					</h5>
@@ -58,60 +59,25 @@
 			if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
 			{
 			?>
-            <div class="mb-3">
-                <div class="mb-3">                   
-                   <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
-                  Changer la photo
-                   </button>
-                </div>
-                <div class="collapse" id="collapsePhoto">
-
-                    <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
-                    <div class="container ajoutImg">    
-                        <form id="uploadimageProfil" action="" method="post" enctype="multipart/form-data">
-                            <div class="panel">
-                                <div class="panel-header">Choisissez votre photo</div>
-                                <div class="panel-body pb-0">
-                                  
-                                        <div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
-                                 
-                                    <div class="panel-footer">
-                                        <div id="selectImage">
-                                            <div id="ajoutImage">
-                                                <label id="inputFile"><input type="file" name="file[]" id="file" required /></label>
-                                            </div>
-                                            <input type="hidden" name="action" value="ajouterPhoto" required />
-                                        </div>
-
-                                        <div class="text-right">
-                                            <input  type="submit" value="Upload" class="submit" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
+  
             
 			<?php
 			}
-			/* if(isset($_SESSION["username"])) 
+			 if(isset($_SESSION["username"])) 
             {
                 if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
-            {*/
+            {
 			?>
             <div class="mb-3">
                 <div class="mb-3">
-                    <button id="btn-profil" type="button" >
+                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseProfil" aria-expanded="true" aria-controls="collapseProfil" >
                    Profil
                     </button>
                 </div>
-               
-                    <div id="profilUser" class="col-md-12 col-lg-12 col-xl-6">
+                <div class="collapse show" id="collapseProfil">
+                    <div id="profilUser" class="col-md-12 col-lg-12 col-xl-12">
 
-                                                <form class="form">
+                        <form class="form">
 							<div class="panel">
 								<div class="panel-header">Profil</div>
 								<div class="panel-body pb-0">					
@@ -256,11 +222,11 @@
                       </div>
                     </div>
                 </div>
-
+                </div>    
             </div>
-			<?php /*
+			<?php 
 				}
-			}*/
+			}
 		?>
 		<!--Juste le proprio du profil qu'est connecte, active et pas banni peut changer son mot de passe		
 			-->
@@ -268,6 +234,42 @@
 		if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
 		{
 		?>
+                  <div class="mb-3">
+                <div class="mb-3">                   
+                   <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
+                  Changer la photo
+                   </button>
+                </div>
+                <div class="collapse" id="collapsePhoto">
+
+                    <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
+                    <div class="container ajoutImg">    
+                        <form id="uploadimageProfil" action="" method="post" enctype="multipart/form-data">
+                            <div class="panel">
+                                <div class="panel-header">Choisissez votre photo</div>
+                                <div class="panel-body pb-0">
+                                  
+                                        <div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
+                                 
+                                    <div class="panel-footer">
+                                        <div id="selectImage">
+                                            <div id="ajoutImage">
+                                                <label id="inputFile"><input type="file" name="file[]" id="file" required /></label>
+                                            </div>
+                                            <input type="hidden" name="action" value="ajouterPhoto" required />
+                                        </div>
+
+                                        <div class="text-right">
+                                            <input  type="submit" value="Upload" class="submit" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
         <div class="mb-3">
             <div class="mb-3">
                 <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseMDP" aria-expanded="false" aria-controls="collapseMDP">
@@ -332,7 +334,38 @@
 </div>
 
  <!-- Les gens connectes -->           
-        <?php                                    
+        <?php 
+
+
+        if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 0 && $_SESSION["isBanned"] == 0) 
+        {
+        ?>
+             <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
+                       <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
+                       <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
+                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "n/a" ?></p> 
+					   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
+					   <p id="data_role">
+						<?php
+						foreach($data["usager"]->roles as $role)
+						{
+						?> 
+						   <span class="mr-1"><?=$role->nomRole?></span>
+						<?php
+						}
+						?>
+						</p>
+        <?php
+        }
+
+
+
+
+
+
+
+
+
             if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
             {
         ?>
@@ -375,7 +408,7 @@
                        <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
                        <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
                        <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
-                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></p> 
+                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "n/a" ?></p> 
 					   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
 					   <p id="data_role">
 						<?php

@@ -13,8 +13,6 @@
     *
     *   1 constructeur  |   getters & setters
     */
-
-
 	class Evaluation 
 	{
 		//attributs prives
@@ -95,7 +93,5 @@
 				$this->id_username = $id;
 			}
 		}
-
 	}
-
 ?>

@@ -1,5 +1,5 @@
 <!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
-<div class="row">
+<div class="row mt-5">
   <div class="col-sm-12">
      <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
      <?= isset($data['succes']) ? $data['succes'] : '' ?>

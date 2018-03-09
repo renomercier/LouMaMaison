@@ -5,7 +5,7 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-<div class="container">
+<div class="container mt-5">
     
     <div class="row">
       <div class="col-sm-12">

@@ -165,7 +165,7 @@
     function isPhoneNumber(elm) {
 
         // prend tout caractere sauf les lettres (entre 10 et 20 - 9+1 et 19+1)
-        var regEx = /^\S(?!.*[A-Z]).*.{9,19}\S$/gi;
+        var regEx = /^\S(?!.*[A-Z]).*.{8,19}\S$/gi;
     //  var regEx = /^1?[-\s.]?(\d{3})[-\s.]?(\d{3})[-\s.](\d{4})$/g;
         var result = elm.match(regEx);
         
@@ -222,7 +222,7 @@
                 resultat += '<i class="fa fa-star-half"></i>';
             }
         }
-        return resultat ;
+        return resultat;
     }
 
     /**

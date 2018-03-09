@@ -133,6 +133,5 @@
             $nbrNonLus = $resultat[0];
             return $nbrNonLus;
         }
-
 	}
 ?>

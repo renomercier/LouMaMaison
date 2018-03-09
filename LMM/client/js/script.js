@@ -3,6 +3,7 @@ $(document).ready(function() {
     /*chercher les apparts avec les filtres remplis*/
 
     $( "#filtrer" ).on( "click", function( e ) {
+    	console.log("allo");
         event.preventDefault();
         var url = $('#formFiltrer').serialize();
         filtrerAppart(url);
@@ -19,19 +20,13 @@ $(document).ready(function() {
 		$("#div_role").append($("#data_role"));
 		$("#div_modif_profil").append($(".btn-modifier"));
     
-        $("#afficheInfoProfil").append($("#profilUser"));
-        $('#affiche-profil').on('click', function() {
-            $('#afficheInfoProfil').load('./vues/AfficheProfil.php');
-            console.log($('#afficheInfoProfil'));
-        })
-		
 		$("#div_messagerie").append($("#messagerie"));		
 		$("#div_action_admin").append($("#action_admin"));       
 		$(".menuProfil").append($("#div_action_admin"));		
 		$("#div_historique").append($("#historique"));		
 		$("#div_reservations").append($("#mesReservations"));		
 		$("#div_demandes_reservations").append($("#demandesReservations"));		
-		$("#div_mes_appts").append($("#mes_appts"))
+		$("#div_mes_appts").append($("#mes_appts"));
     
 		
 	/**
@@ -205,8 +200,9 @@ $(document).ready(function() {
 		Fonction pour afficher des apts du proprio
 	*/	
 		$(document).on('click', '#mes_appts', function(e){
-			var idUserProprio =$('input[name="idUser"]').val();
-			//var idUserProprio = $("#userNom")[0].innerHTML;
+			//var idUserProprio =$('input[name="idUser"]').val();
+			var idUserProprio = $("#userNom")[0].innerHTML; 
+           
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
@@ -553,28 +549,6 @@ var funcAjouteDispo = function(e){
 	}
 
     
-    /* ============================  function pour le datepicker des disponibilites ============================================== */
-
-
-    $(function() { 
-        /*var todayDate = new Date().getDate();
-        var endD= new Date(new Date().setDate(todayDate - 15));*/
-        var currDate = moment().add(1, 'days');
-        
-        
-        $('input[name="daterange"]').daterangepicker({
-        
-            format: 'YYYY/MM/DD',
-            minDate: moment().add(1, 'days'),
-            //maxDate: "03/19/2018", 
-            showDropdowns: true,
-            alwaysShowCalendars: true,
-            //startDate: "02/26/2018",
-           // endDate: "03/19/2018",
-            opens: "left"
-            
-        });
-    }); 
 
 
 /*////////////////////////////////////////////////////////////////*/
@@ -590,8 +564,8 @@ var funcAjouteDispo = function(e){
             dataType:"html",
            // comportement en cas de success ou d'echec
           success:function(reponse) {
-              $('.accueil .col-md-6').html('');
-              $('.accueil .col-md-6').append(reponse);
+              $('.accueil .listeApt').html('');
+              $('.accueil .listeApt').append(reponse);
               
               //effacer les marqueurs existant
               clearMarkers();

@@ -33,7 +33,7 @@
                             <div class="col-md-12 mx-auto mt-5">
                                 <div class="error-template text-center">
                                     <h3>Oops!</h3>
-                                    <p>Votre boite est vide!</p>
+                                    <p>Votre boite de reception est vide!</p>
                                 </div>
                             </div>
                         <?php
