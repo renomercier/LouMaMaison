@@ -267,24 +267,16 @@
                 </div>
             
                 <?php
-                    if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
+                    if( (isset($_SESSION["username"])) && (($_SESSION["username"]) != $data['proprietaire']->getUsername()) )
                   {
                   ?>
 
                     <div class="d-block">
-                       <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                       <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                     </div>
 
                 <?php
-                    } else {
-                ?>
-
-                    <div class="d-block">
-                        <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
-                    </div>  
-
-                <?php
-                    }
+                    } 
                 ?>
             
             </div>
@@ -449,22 +441,18 @@
                 
                 <div class="row align-middle">
                     <div class="d-inline col-sm-12 text-left">
-                        <?php
-                            if( (isset($_SESSION["username"])) && (($_SESSION["username"]) == $data['proprietaire']->getUsername()) )
-                        {
-                        ?>
-                                <div class="d-block">
-                                    <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
-                                </div>
-                        <?php
-                            } else {
-                        ?>
-                                <div class="d-block">
-                                    <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
-                                </div>  
-                        <?php
-                            }
-                        ?>
+                <?php
+                    if( (isset($_SESSION["username"])) && (($_SESSION["username"]) != $data['proprietaire']->getUsername()) )
+                  {
+                  ?>
+
+                    <div class="d-block">
+                       <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
+                    </div>
+
+                <?php
+                    } 
+                ?>
                     </div>
                     <!-- formulare de redaction d'un message -->                     
                 </div>
@@ -744,4 +732,4 @@
     </section>
     
     <!-- Fin container -->
-</div> 
+</div>

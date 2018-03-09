@@ -18,14 +18,14 @@ $(document).ready(function() {
 		$("#div_contact").append($("#data_contact"));
 		$("#div_role").append($("#data_role"));
 		$("#div_modif_profil").append($(".btn-modifier"));
-		
+    
 		$("#div_messagerie").append($("#messagerie"));		
 		$("#div_action_admin").append($("#action_admin"));       
 		$(".menuProfil").append($("#div_action_admin"));		
 		$("#div_historique").append($("#historique"));		
 		$("#div_reservations").append($("#mesReservations"));		
 		$("#div_demandes_reservations").append($("#demandesReservations"));		
-		$("#div_mes_appts").append($("#mes_appts"))
+		$("#div_mes_appts").append($("#mes_appts"));
     
 		
 	/**
@@ -71,7 +71,7 @@ $(document).ready(function() {
                             $("#div_telephone").empty();
                             $("#div_paiment").empty();
                             $("#div_contact").empty();
-                            $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3>");               
+                            $("#div_info_nom").html("<h3>" + response[0][0].nom +" "+ response[0][0].prenom + "</h3><h5 id='userNom'>" + response[0][0].username + "</h5>");               
                             $("#div_user_nom").html(idUser); 
                             $("#div_adresse").html(response[0][0].adresse);
                             $("#div_telephone").html(response[0][0].telephone);
@@ -199,8 +199,9 @@ $(document).ready(function() {
 		Fonction pour afficher des apts du proprio
 	*/	
 		$(document).on('click', '#mes_appts', function(e){
-			var idUserProprio =$('input[name="idUser"]').val();
-			//var idUserProprio = $("#userNom")[0].innerHTML;
+			//var idUserProprio =$('input[name="idUser"]').val();
+			var idUserProprio = $("#userNom")[0].innerHTML; 
+           
 			$.ajax({
 				method: "GET",
 				url: "index.php?Appartements&action=afficheAptsProprio&idProprio="+idUserProprio,
@@ -210,6 +211,48 @@ $(document).ready(function() {
 
 					$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
 					$('#afficheInfoProfil').html(reponse);                 
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+    
+    /**
+		Fonction pour afficher l'historique du client
+	*/	
+		$(document).on('click', '#historique', function(e){
+			var idUserClient =$("#userNom")[0].innerHTML;
+
+			$.ajax({
+				method: "GET",
+				url: "index.php?Appartements&action=afficherVoyages&id_userClient="+idUserClient,
+				dataType:"html",
+				success:function(reponse) {
+					$('#afficheInfoProfil').empty();
+					//$('.resultat .row div.col-md-3').removeClass("col-md-3").addClass("col-md-6");                  
+					$('#afficheInfoProfil').html(reponse); 
+                    /*
+    *   code a executer lorsque le modal d'evaluation d'un Apt est ouvert
+    */
+  
+    if($('#myModalEval')[0]) {
+        
+        // affichage de l'evaluation par defaut (5 etoiles grises)
+        document.getElementById("etoilesGrises").innerHTML = setNbEtoiles(0);
+
+        /*
+        *   ecouteur d'evenement sur l'input d'evaluation (nb d'etoiles)
+        */
+        $("#echelleEval").on('input', function() {
+            
+            // affichage du nb d'etoiles defini par l'usager
+            document.getElementById("etoiles").innerHTML = setNbEtoiles(this.value);
+            document.querySelector('.divEvaluation span').innerHTML = (this.value/2);
+        });
+
+     
+    }
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -272,13 +315,14 @@ $(document).ready(function() {
 				success:function(reponse) {
 					//vérification côté php, s'il y des erreurs
 					if(reponse){
-                        ecrireMessage(id_userClient, objetClient, texteClient);
-                        $('#demandesReservations').click();
++                        ecrireMessage(id_userClient, objetClient, texteClient);
+                         $('#demandesReservations').click();
+ 					}
+                     else if(reponse.messageErreur) 
+					{
+						 $("#erreur_demande").empty().addClass("alert alert-success").html(reponse.messageErreur);
 					}
-                    else if(reponse.messageErreur) {
-						$("#erreur_demande").empty().addClass("alert alert-warning").html(reponse.messageErreur);
-						
-					}
+					//$('#demandesReservations').click();
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -344,32 +388,6 @@ $(document).ready(function() {
 			});
 		});
 		
-	/**
-		Fonction pour valider paiement et créer location finale 
-	*/
-		$(document).on('click', '#validerLocation', function(e){
-			alert("allo");
-			var idLocation = $(this).val();
-			$.ajax({
-				method: "GET",
-				url: "index.php?Appartements&action=validerPaiement&idLocation="+idLocation,
-				dataType:"json",
-				success:function(reponse) {
-					if(reponse.messageErreur) {
-						$("#erreur_demande"+idLocation).empty().addClass("alert alert-warning").html(reponse.messageErreur);
-					}
-					else if(reponse[0].messageSucces)
-					{
-						$("#erreur_demande"+idLocation).empty().removeClass("alert alert-warning").addClass("alert alert-success").html(reponse[0].messageSucces);
-						
-					}
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-		});
-
 	/**
 		Action supprimer une disponibilite d'un apprtement
 	*/
@@ -982,7 +1000,7 @@ function CalculerdonneePaiement(idLocation){
     });
 }
 
-/* fonction pour selectionner un nombre d'étoiles */
+/* fonction pour selectionner un nombre d'étoiles pour la recherche par note*/
 
 window.onload=function(){
   $(function () {

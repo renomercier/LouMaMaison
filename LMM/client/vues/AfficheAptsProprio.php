@@ -18,7 +18,6 @@
 		if($data["appartements"]){
 			foreach($data["appartements"] as $appartement)
 			{ 
-				var_dump($appartement->getId());
 		?>
 				<div class="profil-aptProprio d-inline col-sm-4 appart">
 
@@ -26,7 +25,7 @@
 						if ($appartement->getPhotoPrincipale() != "") {
 							$photoApt = $appartement->getPhotoPrincipale();
 						} else {
-							$photoApt = "./images/profil.jpg";
+							$photoApt = "./images/profil.png";
 						}
 												
 					?> 
@@ -169,5 +168,4 @@
 		}
 		?> 
 	</div>
-
 </div>

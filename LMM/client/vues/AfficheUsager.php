@@ -47,9 +47,10 @@
 						}
 					}
 					?>
-					<h3 id="userNom">		
+                    <input type="hidden" name="idUser" value="<?=$_SESSION["username"]?>">
+					<h5 id="userNom">		
 						<?=$data["usager"]->getUsername();?>
-					</h3>
+					</h5>
                 </div>
             </div>
 			<!-- Juste le proprio du profil qu'est connecte, active et pas banni peut changer sa photo			
@@ -58,109 +59,84 @@
 			if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
 			{
 			?>
-            <div class="mb-3">
-                <div class="mb-3">                   
-                   <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
-                  Changer la photo
-                   </button>
-                </div>
-                <div class="collapse" id="collapsePhoto">
-
-                    <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
-                    <div class="container ajoutImg">    
-                        <form id="uploadimageProfil" action="" method="post" enctype="multipart/form-data">
-                            <hr>
-                                <div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
-                            <hr>
-                                <div id="selectImage">
-                                    <div id="ajoutImage">
-                                        <label id="inputFile"><input type="file" name="file[]" id="file" required /></label>
-                                    </div>
-                                    <input type="hidden" name="action" value="ajouterPhoto" required />
-                                </div>
-                            
-                            <div>
-                                <input class="pull-right" type="submit" value="Upload" class="submit" />
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
+  
+            
 			<?php
 			}
-			/* if(isset($_SESSION["username"])) 
+			 if(isset($_SESSION["username"])) 
             {
                 if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"]) )  
-            {*/
+            {
 			?>
             <div class="mb-3">
                 <div class="mb-3">
-                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseProfil" aria-expanded="false" aria-controls="collapseProfil">
+                    <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseProfil" aria-expanded="true" aria-controls="collapseProfil" >
                    Profil
                     </button>
                 </div>
-                <div class="collapse" id="collapseProfil">
-                    <div id="profilUser" class="">
+                <div class="collapse show" id="collapseProfil">
+                    <div id="profilUser" class="col-md-12 col-lg-12 col-xl-12">
+
                         <form class="form">
 							<div class="panel">
 								<div class="panel-header">Profil</div>
 								<div class="panel-body pb-0">					
                                     <div class="row mb-2">
-                                        <div class="col-sm-4 col-md-5 text-right">
-                                            <small><label>Nom d'usager</label></small>
+                                        <div class="col text-left">
+                                            <label>Nom d'usager</label>
                                         </div>
-                                        <div class="col-sm-8 col-md-7" id="div_user_nom"></div>
+                                        <div class="col" id="div_user_nom"></div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-sm-4 col-md-5 text-right">
-                                            <small><label>Adresse</label></small>
+                                        <div class="col text-left">
+                                            <label>Adresse</label>
                                         </div>
-                                        <div class="col-sm-8 col-md-7" id="div_adresse">
+                                        <div class="col" id="div_adresse">
                                         </div>    
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-sm-4 col-md-5 text-right">
-                                            <small><label>Téléphone</label></small>
+                                        <div class="col text-left">
+                                            <label>Téléphone</label>
                                         </div>
-                                        <div class="col-sm-8 col-md-7" id="div_telephone">
+                                        <div class="col" id="div_telephone">
                                         </div>    
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-sm-4 col-md-5 text-right">
-                                            <small><label>Mode de paiement</label></small>
+                                        <div class="col text-left">
+                                            <label>Mode de paiement</label>
                                         </div>
-                                        <div class="col-sm-8 col-md-7" id="div_paiement">
+                                        <div class="col" id="div_paiement">
                                         </div>    
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-sm-4 col-md-5 text-right">
-                                            <small><label>Moyen de contact</label></small>
+                                        <div class="col text-left">
+                                            <label>Moyen de contact</label>
                                         </div>
-                                        <div class="col-sm-8 col-md-7" id="div_contact">
+                                        <div class="col" id="div_contact">
                                         </div>    
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-sm-4 col-md-5 text-right">
-                                            <small><label>Vous êtes</label></small>
+                                        <div class="col text-left">
+                                           <label>Vous êtes</label>
                                         </div>
-                                        <div class="col-sm-8 col-md-7" id="div_role">
+                                        <div class="col" id="div_role">
                                         </div>    
                                     </div>
                                     <div class="panel-footer text-right" id="div_modif_profil">
                                          <input type="hidden" name="usernameProp" value="<?=$data["usager"]->getUsername();?>">
+     
                                     </div>     
 								</div>
 							</div>
                         </form>
-                    </div>
+            
 
                     <!-- Modal -->
                     <div class="modal fade" data-animation="false" id="myModal<?=$_SESSION["username"]?>" role="dialog">
                       <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-header bg-primary">
-                            <h3 class="modal-title text-white">Modifier votre profil</h3>
+                          <div class="modal-header panel-header">
+                            <h3 class="modal-title">Modifier votre profil</h3>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>
                           <div class="modal-body">
@@ -238,7 +214,7 @@
                                     <button type="button" id="submit_form<?=$_SESSION["username"]?>" class="btn btn-success sauvegarderForm">Sauvegarder</button>
                                 </form>
                           </div>
-                          <div class="modal-footer bg-primary">
+                          <div class="modal-footer panel-header">
                               <div class="erreurModif"></div>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                           </div>
@@ -246,10 +222,11 @@
                       </div>
                     </div>
                 </div>
+                </div>    
             </div>
-			<?php /*
+			<?php 
 				}
-			}*/
+			}
 		?>
 		<!--Juste le proprio du profil qu'est connecte, active et pas banni peut changer son mot de passe		
 			-->
@@ -257,6 +234,42 @@
 		if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0 && $_SESSION["username"] == $_REQUEST["idUsager"]) 
 		{
 		?>
+                  <div class="mb-3">
+                <div class="mb-3">                   
+                   <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
+                  Changer la photo
+                   </button>
+                </div>
+                <div class="collapse" id="collapsePhoto">
+
+                    <!-- ref: https://www.formget.com/ajax-image-upload-php/ -->
+                    <div class="container ajoutImg">    
+                        <form id="uploadimageProfil" action="" method="post" enctype="multipart/form-data">
+                            <div class="panel">
+                                <div class="panel-header">Choisissez votre photo</div>
+                                <div class="panel-body pb-0">
+                                  
+                                        <div id="image_preview" class="text-center"><img id="previewing" src="" /><br><small></small></div>
+                                 
+                                    <div class="panel-footer">
+                                        <div id="selectImage">
+                                            <div id="ajoutImage">
+                                                <label id="inputFile"><input type="file" name="file[]" id="file" required /></label>
+                                            </div>
+                                            <input type="hidden" name="action" value="ajouterPhoto" required />
+                                        </div>
+
+                                        <div class="text-right">
+                                            <input  type="submit" value="Upload" class="submit" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
         <div class="mb-3">
             <div class="mb-3">
                 <button id="btn-profil" type="button" data-toggle="collapse" data-target="#collapseMDP" aria-expanded="false" aria-controls="collapseMDP">
@@ -321,12 +334,35 @@
 </div>
 
  <!-- Les gens connectes -->           
-            <?php                                    
-                if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
-                {
-            ?>
+        <?php 
 
-                <p class="nav-link" href="#" id="historique">Voyages</p>
+
+        if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 0 && $_SESSION["isBanned"] == 0) 
+        {
+        ?>
+             <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
+                       <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
+                       <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
+                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "n/a" ?></p> 
+					   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
+					   <p id="data_role">
+						<?php
+						foreach($data["usager"]->roles as $role)
+						{
+						?> 
+						   <span class="mr-1"><?=$role->nomRole?></span>
+						<?php
+						}
+						?>
+						</p>
+        <?php
+        }
+
+            if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
+            {
+        ?>
+
+                <p class="nav-link" id="historique">Voyages</p>
 
             <?php                                    
                 if(isset($_SESSION["username"]) && $_SESSION["username"] == $data["usager"]->getUsername()) 
@@ -357,14 +393,14 @@
                 if(isset($_SESSION["username"])) 
                 {
 
-                    if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"] && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0))  
+                    if((in_array(1,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 || in_array(2,$_SESSION["role"]) && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) || ($_SESSION["username"] == $_REQUEST["idUsager"] && $_SESSION["isBanned"] ==0))  
                     {
                     ?>
                         
                        <p id="data_user_nom"><?=$data["usager"]->getUsername();?></p> 
                        <p id="data_adresse"><?=$data["usager"]->getAdresse();?></p> 
                        <p id="data_telephone"><?=$data["usager"]->getTelephone();?></p> 
-                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "" ?></p> 
+                       <p id="data_paiement"><?=isset($data["modePaiement"][0]->modePaiement) ? $data["modePaiement"][0]->modePaiement : "n/a" ?></p> 
 					   <p id="data_contact"> <?=$data["modeCommunication"][0]->moyenComm;?></p>
 					   <p id="data_role">
 						<?php
@@ -402,15 +438,14 @@
                         }
                     }
 					/*Seulement le proprio du profil active, pas banni et connecte peut modifier son profil*/
-                    if($_SESSION["username"] == $_REQUEST["idUsager"]) 
+                    if($_SESSION["username"] == $_REQUEST["idUsager"] && $_SESSION["isActiv"] ==1 && $_SESSION["isBanned"] ==0) 
                     {
                     ?>
                      <button type="button" class="btn btn-primary btn-modifier" data-toggle="modal" data-target="#myModal<?=$_SESSION["username"]?>"  id="ModifierProfil<?=$_SESSION["username"]?>">Modifier le profil</button>
-                     <button type="button" class="btn btn-info mb-2 btn-modifier"><a href="index.php?Usagers&action=afficherFormulaireImageProfil" >Modifier votre photo</a></button>
-
 					<?php
                     }
 
                 }
+
             }
         ?> 

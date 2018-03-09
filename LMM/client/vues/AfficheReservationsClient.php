@@ -47,6 +47,9 @@
 						else if($appartement->getValideParPrestataire() == 0 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 1) {
 							$confirmation = "Refusé";
 						}
+                        else if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 1) {
+							$confirmation = "Annulé";
+						}
                         else if($appartement->getValideParPrestataire() == 1 && $appartement->getValidePaiement() == 0 && $appartement->getRefuse() == 0)
                         {
                             $confirmation = '<button id="payer" type="button" onclick="CalculerdonneePaiement('.$appartement->getId().')" class="btn btn-success btn-sm payerMaintenant">Payer maintenant</button>';
