@@ -117,10 +117,8 @@
 		
 		/**
 		* @brief		Fonction pour refuser les demandes de reservation
-		* @details		Permet de refuser les demandes qui rentrent dans la disponibilite qui est confirmee
-		* @param 		<VAR>		$refuse		Le champ refuse à modifier 
-		* @param 		<VAR>		$laValeur	La nouvelle valeur de ce champ
-		* @param 		<VAR>		$idDispo 	id de disponibilite dans la base de données
+		* @details		Permet de refuser les demandes qui rentrent dans la disponibilite qu'est confirme
+		* @param 		<VAR>		$id 	id de disponibilite dans la base de données
 		* @return    	<bool>		résultat de la requete
 		*/
 		public function refuserDemandes($id)
@@ -171,5 +169,23 @@
         {
             return $this->supprimer($id_location);
         }
+        
+        /**  
+		* @brief     	Afficher historique d'un client
+		* @param   		<int>   	$id_user		
+		* @return    	<boolean>   ( resultat de la requete ou false )
+		*/
+        public function afficherVoyages($id_user)
+        {
+            $query = "SELECT * FROM " . $this->getTableName() . " l 
+				    JOIN 
+					(SELECT (id) as idApt, photoPrincipale, titre, id_userProprio, rue, noCivique, noApt, ville FROM appartement) a ON l.id_appartement = a.idApt 
+                    WHERE valideParPrestataire = 1 AND validePaiement = 1 AND dateFin < DATE(NOW()) AND id_userClient = ?";
+            $donnees = array($id_user);
+            $resultat = $this->requete($query, $donnees);
+            $resultat->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Location');
+			return $resultat->fetchAll();
+        }
+        
 	}
 ?>

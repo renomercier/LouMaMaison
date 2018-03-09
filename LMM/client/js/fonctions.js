@@ -222,7 +222,7 @@
                 resultat += '<i class="fa fa-star-half"></i>';
             }
         }
-        return '<p>' + resultat + '</p>';
+        return resultat;
     }
 
     /**

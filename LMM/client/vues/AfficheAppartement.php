@@ -276,7 +276,7 @@
                     </div>
 
                 <?php
-                    } else {
+                    } else if (isset($_SESSION["username"])) {
                 ?>
 
                     <div class="d-block">
@@ -457,7 +457,7 @@
                                     <button type='button' disabled id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
                                 </div>
                         <?php
-                            } else {
+                            } else if (isset($_SESSION["username"])){
                         ?>
                                 <div class="d-block">
                                     <button type='button' id='btnContactProprio' onclick="formulaireNouveauMessage('afficheInfoProfil2')" class='btnContactProprio btn btn-primary btn-lg'>Contacter l'hôte</button>
@@ -744,4 +744,4 @@
     </section>
     
     <!-- Fin container -->
-</div> 
+</div>

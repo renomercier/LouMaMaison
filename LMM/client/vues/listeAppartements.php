@@ -14,7 +14,7 @@
                 if ($appartement->getPhotoPrincipale() != "") {
                     $photoApt = $appartement->getPhotoPrincipale();
                 } else {
-                    $photoApt = "./images/profil.jpg";
+                    $photoApt = "./images/profil.png";
                 }
             ?>
             <div class="col-12 col-lg-6 appart" id="appart<?=$appartement->id_appartement;?>" name="<?=$appartement->adresse;?>">
