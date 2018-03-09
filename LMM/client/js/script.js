@@ -3,7 +3,6 @@ $(document).ready(function() {
     /*chercher les apparts avec les filtres remplis*/
 
     $( "#filtrer" ).on( "click", function( e ) {
-    	console.log("allo");
         event.preventDefault();
         var url = $('#formFiltrer').serialize();
         filtrerAppart(url);
@@ -981,4 +980,24 @@ function CalculerdonneePaiement(idLocation){
         alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
       }
     });
+}
+
+/* fonction pour selectionner un nombre d'étoiles */
+
+window.onload=function(){
+  $(function () {
+
+        $(".rateyo").rateYo();
+
+        $(".rateyo-readonly-widg").rateYo({
+
+          rating: 1,
+          numStars: 5,
+          precision: 0,
+          minValue: 1,
+          maxValue: 10
+        }).on("rateyo.change", function (e, data) {
+            $('#laNote').val(data.rating);
+        });
+  });
 }

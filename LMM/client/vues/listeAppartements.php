@@ -5,7 +5,7 @@
 * @author       Bourihane Salim, Massicotte Natasha, Mercier Renaud, Romodina Yuliya - 15612
 * @version      v.1 | fevrier 2018
 -->
-<div class="resultat">
+<div class="resultat col-md-12 pl-3 pr-3">
     <div class="row resultatListeApt">       
         <?php
         if($data["appartements"]){
@@ -17,7 +17,7 @@
                     $photoApt = "./images/profil.jpg";
                 }
             ?>
-            <div class="col-12 col-lg-6 appart" id="appart<?=$appartement->id_appartement;?>" name="<?=$appartement->adresse;?>">
+            <div class="col-12 col-lg-6 appart mb-3" id="appart<?=$appartement->id_appartement;?>" name="<?=$appartement->adresse;?>">
 
                 <div class="thumbnail">
                     <a href="index.php?Appartements&action=afficherAppartement&id_appart=<?=$appartement->id_appartement;?>">
@@ -50,7 +50,6 @@
                     }
                 ?>
     				</p>
-                      <p class="card-text">debut: <?=$appartement->dateDebut;?></p><p>fin: <?=$appartement->dateFin;?></p>
                     <p class="card-text">rate                                
                 <?php
                     for($i=1; $i<=$appartement->moyenne/2; $i++)
@@ -73,8 +72,6 @@
     					}
     					?>
                         <small class="text-muted">(<?=$appartement->nbr_votant;?>) évaluation<?= ($appartement->nbr_votant > 1) ? 's' : '' ?></small></p> 
-                        <!-- liens temporaire pour modifier un appartement -->
-    <!-- @temp -->      <p><a class="btn btn-primary" href="index.php?Evaluations&action=ajouterEvaluationApt&id=<?= $appartement->id_appartement; ?>" role="button">Evaluer ce logis</a></p> 
                     </div> <!-- div .card-block -->
               </div> <!-- div .thumbnail -->
         </div> <!-- div .appart -->

@@ -7,7 +7,7 @@
 -->
 <div class="container-fluid">
     <div class="row accueil">
-        <div class="col-md-3 col-lg-2 recherche">
+        <div class="col-md-2 col-lg-2 recherche">
 
             <form id="formFiltrer" method="POST" action="index.php?Appartements&action=filtrer">
 
@@ -83,45 +83,12 @@
                 </select>
                 </div>
               </div>
-
+                <input type="hidden" name="note" id="laNote" value="" class="form-check-input">
               <!-- Notes -->
                 <div class="py-3">
-                    <label class="form-control-label ">Note</label>
-                    <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="10" class="form-check-input"><?php for($i=0; $i<5; $i++){echo '<i class="fa fa-star"></i>';} ?>
-                    </label>
-                    </div>
-                    <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="8" class="form-check-input"><?php for($i=0; $i<4; $i++){echo '<i class="fa fa-star"></i>';} ?>
-                    </label>
-                    </div>
-                    <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="6" class="form-check-input"><?php for($i=0; $i<3; $i++){echo '<i class="fa fa-star"></i>';} ?>
-                    </label>
-                    </div>
-                    <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="4" class="form-check-input"><?php for($i=0; $i<2; $i++){echo '<i class="fa fa-star"></i>';} ?>
-                    </label>
-                    </div>
-                    <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" name="note" id="cinq" value="2" class="form-check-input"><i class="fa fa-star"></i>
-                    </label>
-                    </div>
-                    
-                    <!-- nbre de personnes -->
-                    <div class="form-group">
-                        <label for="appartParPage" class="form-control-label ">Nombre de resultat par page</label>
-                        <div class="row inputListeApt">
-                          <input type="number" min="0" name="appartParPage" class="col-sm-12 form-control" id="appartParPage">
-                      </div>
-                    </div>
-                    <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
-                </div>						
+                    <div class="rateyo-readonly-widg"></div>
+                </div>
+                <input type="submit" class="btn btn-primary btn-block btn-lg" id="filtrer" value="Chercher">
             </form>
         </div>
-<div class="listeApt col-lg-6 col-md-5">
+<div class="listeApt col-lg-6 col-md-6">

@@ -56,7 +56,7 @@
                 <hr>
                 
                 <div class="row">                 
-                    <div class="col-sm-2 d-flex justify-content-start">
+                    <div class="col-sm-2 d-flex justify-content-center">
                         <small>LouMaMaison&nbsp;&copy&nbsp;2018</small>
                     </div>                    
                     <div class="col-sm-10 d-flex justify-content-end">
