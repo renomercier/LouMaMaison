@@ -21,11 +21,13 @@
     <link rel="stylesheet" target=_blank href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.rateyo.css"/>
     <link href="https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise" rel="stylesheet">
     
     <!-- src script js -->
     <script type= "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://use.fontawesome.com/e58c171d55.js"></script> 
+    <script src="https://use.fontawesome.com/e58c171d55.js"></script>
+    <script type="text/javascript" src="./js/jquery.rateyo.js"></script>
     <script src="js/formEvt.js"></script>   
     <script src="js/fonctions.js"></script>
     
@@ -44,20 +46,20 @@
 <body class="container-fluid">
 
     <div class="row navigation-logo">
-        <div class="col-3 logo-entete">
+        <div class="col-1 logo-entete">
              <a class="navbar-brand" href="index.php"><img src="./images/logo_sur_blanc.svg" alt="loumamaison"></a>
         </div>
 
-        <div class="col-lg-12 navigation">
+        <div class="col-lg-11 offset-3 navigation">
             
-              <nav class="navbar navbar-toggleable-sm navbar-light bg-faded col-12 pull-right">
+              <nav class="navbar navbar-toggleable-sm navbar-light bg-faded col-12">
                   
                 <button class="navbar-toggler navbar-toggler-right mt-1" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse mt-1 ml-3" id="navbarNavDropdown">
-                  <ul class="navbar-nav mt-1 ml-auto">
+                  <ul class="navbar-nav mt-1 mr-auto">
                       <li class="nav-item active">
                           <a class="nav-link" href="index.php?Appartements">Accueil</a>
                       </li>
@@ -72,13 +74,12 @@
                         <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheListeUsagers">Usagers</a></li>
                             <?php
                           }
-                      ?>
-                        <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>">Profil</a></li>
-                        <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><i class="fa fa-envelope"></i><span class="badge badge-notify"></span></a></li>
-                      <!-- actions disponibles pour usager de type admin ou prestataire, valide par admin et non-banni -->
-                      <?php if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) { ?> 
+                          if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1) && ( in_array(1 ,$_SESSION["role"]) || in_array(2 ,$_SESSION["role"]) || in_array(3 ,$_SESSION["role"])) ) 
+                          { 
+                      ?> 
                         <li class="nav-item"><a class="nav-link" id="aModalApt" href="index.php?Appartements&action=afficherInscriptionApt">Inscrire un appartement</a></li>
-                      <?php } 
+                      <?php 
+                          } 
                       }
                       else{
                       ?>
@@ -88,10 +89,24 @@
                       }
                           ?>
                         <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=<?=$data['log']?>"><?=$data['log']?></a></li>
-
-
-
                     </ul>
+                    
+                      <?php
+                      if(isset($_SESSION["username"])) 
+                      {
+                          // actions disponibles pour usager de type admin et valide par superadmin
+                          if((isset($_SESSION["isBanned"]) && $_SESSION["isBanned"] == 0) && (isset($_SESSION["isActiv"]) && $_SESSION["isActiv"] == 1))
+                          {
+                      ?>
+                        <ul class="navbar-nav mt-1 ml-auto">
+                            <li class="nav-item connexion"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION["username"]?>&messages=ok"><span class="badge badge-notify"></span><i class="fa fa-envelope"></i></a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.php?Usagers&action=afficheUsager&idUsager=<?=$_SESSION['username']?>"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+                        </ul>
+                        <?php
+                          }
+                      }
+                      ?>
+                    
                 </div>
               </nav>   
         </div>

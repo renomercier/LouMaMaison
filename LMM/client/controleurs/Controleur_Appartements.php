@@ -529,7 +529,11 @@
                                     $dateDebut= strtotime($location->getDateDebut());
                                     $dateFin =strtotime($location->getDateFin());
                                     $diff = $dateFin - $dateDebut;
-                                    $nbrJours = ceil (($diff/86400)+1);
+                                    $nbrJours = ceil (($diff/86400));
+                                    if($nbrJours<=0)
+                                    {
+                                        $nbrJours +=1;
+                                    }
 
                                     // calculer le total de la location -----------------------------------------
                                     $totalLocation = round($nbrJours * $location->montantParJour);

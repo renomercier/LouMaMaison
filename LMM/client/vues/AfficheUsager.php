@@ -6,7 +6,7 @@
 * @version      v.1 | fevrier 2018
 -->
 <!-- affichage des messages d'erreur a l'usager (temporaire) - concernant ses actions -->
-<div class="row">
+<div class="row mt-5">
     <div id="message" class="col-sm-12">
        <?= isset($data['erreurs']) ? $data['erreurs'] : '' ?>
        <?= isset($data['succes']) ? $data['succes'] : '' ?>
@@ -317,8 +317,8 @@
 		?>
     </div>
         <div class="col-md-8" >
-			<div class="row  justify-content-end" >
-                <ul class="nav menuProfil">
+			<div class="row  justify-content-start" >
+                <ul class="nav menuProfil flex-column flex-sm-row">
                     <li class="nav-item" id="div_messagerie"></li>
                     <li class="nav-item" id="div_historique"></li>
 				    <li class="nav-item" id="div_reservations"></li>
@@ -357,14 +357,6 @@
 						</p>
         <?php
         }
-
-
-
-
-
-
-
-
 
             if(isset($_SESSION["username"]) && $_SESSION["isActiv"] == 1 && $_SESSION["isBanned"] == 0) 
             {
@@ -454,6 +446,6 @@
                     }
 
                 }
-                
+
             }
         ?> 

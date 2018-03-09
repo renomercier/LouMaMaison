@@ -23,7 +23,7 @@ h6, .filtre_usager a.nav-link{
 
 /* --------------------------------------------------- header   */
 .badge-notify{
-    background: #F8941E;
+    background: #ff0000;
     position: relative;
     bottom: 1em;
 }
@@ -205,10 +205,6 @@ input.slider {
     overflow-y: scroll;
     border: 1px solid #585759;
 }
-.aptPhotoProprio {
-    height: 5em;
-    width: 5em; 
-}
 
 /* Opacite des photos lorsque "hovered on" */
 .photoAppartement:hover, .aptPhotoSupp:hover {
@@ -219,8 +215,9 @@ input.slider {
     width: 6.5em; 
 }
 .aptPhotoModal {
-    height: 45em;
-    width: 60em; 
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
 }
 .aptPhotoProprio, .aptPhotoComment {
     height: 5em;
@@ -282,8 +279,7 @@ input.slider {
 /* --------------------------------------------------- page Recherche appartement   */
 
 .listeApt, .resultatListeApt, .recherche, .inputListeApt  {
-    margin: 0!important;
-    padding: 0!important;
+    margin: 0;
 }
 
 /* --------------------------------------------------- page AfficheAptsProprio */
@@ -311,11 +307,6 @@ input.slider {
     top: 5em;
     padding: 20px;
     border: 1px solid #585759;
-}
-.recherche  {
-    box-sizing: border-box;
-    margin-left: 15px!important;
-    margin-left: 15px!important;  
 }
 
 /* --------------------------------------------------- google carte   */
